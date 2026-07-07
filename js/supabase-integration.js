@@ -1,5 +1,5 @@
-const supabaseUrl = "https://cchrljjdthzpanqwguld.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjaHJsampkdGh6cGFucXdndWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzU3OTksImV4cCI6MjA5NzgxMTc5OX0.1Jx4UTfhHnHboEjdue6B-vv3YRwgtdlBIcUeJbtZmAQ";
+const supabaseUrl = "https://idbftfamynqdebxlazvv.supabase.co";
+const supabaseAnonKey = "sb_publishable_KqRrc5gvU0HzhkZSN60k3w_0w7zfEOg";
 
 window.supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
@@ -29,21 +29,22 @@ window.fetch = async function(resource, config) {
         }
 
         try {
-            if (endpoint === 'cepin') {
+            if (endpoint === 'cepin' || endpoint === 'mulheres') {
+                const targetId = endpoint === 'mulheres' ? 2 : 1;
                 if (method === 'GET') {
                     try {
-                        const { data, error } = await supabaseClient.from('cepin_info').select('content').eq('id', 1).single();
+                        const { data, error } = await supabaseClient.from('cepin_info').select('content').eq('id', targetId).single();
                         if (error) throw error;
                         return new Response(JSON.stringify(data.content || {}), { status: 200, headers: { 'Content-Type': 'application/json' } });
                     } catch (supabaseError) {
-                        console.warn("Supabase fetch cepin_info failed, trying offline fallback...", supabaseError);
-                        let prefix = window.location.pathname.includes('/cepin') ? '../' : './';
-                        const fallbackRes = await originalFetch(`${prefix}cepin_info.json`);
+                        console.warn(`Supabase fetch ${endpoint} failed, trying offline fallback...`, supabaseError);
+                        let prefix = window.location.pathname.includes('/cepin') || window.location.pathname.includes('/mulheres') ? '../' : './';
+                        const fallbackRes = await originalFetch(`${prefix}${endpoint === 'mulheres' ? 'mulheres_info.json' : 'cepin_info.json'}`);
                         if (fallbackRes.ok) return fallbackRes;
                         throw supabaseError;
                     }
                 } else if (method === 'POST') {
-                    const { data, error } = await supabaseClient.from('cepin_info').upsert({ id: 1, content: body }).select();
+                    const { data, error } = await supabaseClient.from('cepin_info').upsert({ id: targetId, content: body }).select();
                     if (error) throw error;
                     return new Response(JSON.stringify({ success: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
                 }

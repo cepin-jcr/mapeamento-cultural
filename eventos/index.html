@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Eventos Culturais • Jacareí</title>
+<title>Eventos Culturais • Vale do Paraíba</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
@@ -394,7 +394,7 @@ footer { padding: 40px; text-align: center; color: #777; }
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
   <div>
     <b>Mapeamento Cultural</b>
-    <span>Jacareí • IFSP</span>
+    <span>Vale do Paraíba • IFSP</span>
   </div>
 </div>
 
@@ -417,7 +417,7 @@ footer { padding: 40px; text-align: center; color: #777; }
 
 <section class="hero">
   <div class="badge"> Viva a diversidade cultural valeparaibana</div>
-  <h1>Eventos em Jacareí</h1>
+  <h1>Eventos no Vale do Paraíba</h1>
   <p>Explore festivais, concertos, exibições, teatro e encontros comunitários que enriquecem nossa cidade.</p>
 </section>
 
@@ -579,7 +579,7 @@ footer { padding: 40px; text-align: center; color: #777; }
     
     <div class="footer-column results-column">
       <h3> Resultados</h3>
-      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural de Jacareí completo e seu resumo.</p>
+      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural do Vale do Paraíba completo e seu resumo.</p>
     </div>
     
     <div class="footer-column social-column">
@@ -597,7 +597,7 @@ footer { padding: 40px; text-align: center; color: #777; }
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural de Jacareí via projetos de pesquisa e extensão.</p>
+    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural do Vale do Paraíba via projetos de pesquisa e extensão.</p>
   </div>
 </footer>
 
@@ -606,10 +606,10 @@ let isApiOnline = false;
 
 // Mock de Eventos para Fallback
 const MOCK_EVENTOS = [
-    {id: 1, titulo: "Feira de Artesanato & Memória", data: "2026-06-15", horario: "10:00", local: "Pátio dos Trilhos", descricao: "Uma feira vibrante reunindo os melhores artesãos de Jacareí, com oficinas gratuitas de cerâmica, música ao vivo e comidas típicas regionais.", organizador: "Ana Silva", foto: "https://picsum.photos/600/350?20"},
-    {id: 2, titulo: "Concerto Especial: Orquestra Sinfônica de Jacareí", data: "2026-06-20", horario: "20:00", local: "Sala Mário Lago", descricao: "Apresentação emocionante da Orquestra Sinfônica Municipal interpretando clássicos brasileiros e trilhas sonoras famosas do cinema.", organizador: "Secretaria de Cultura", foto: "https://picsum.photos/600/350?21"},
-    {id: 3, titulo: "Festival de Teatro de Jacareí (FESTE)", data: "2026-07-05", horario: "18:00", local: "Praça Raul Chaves", descricao: "Grande festival reunindo trupes de teatro locais e convidadas de todo o país para apresentações abertas, intervenções públicas e oficinas formativas.", organizador: "Coletivo Jacareí de Teatro", foto: "https://picsum.photos/600/350?22"},
-    {id: 4, titulo: "Exposição Olhares Jacareí", data: "2026-06-28", horario: "14:00", local: "MAB - Museu de Antropologia", descricao: "Exposição fotográfica e de murais digitais destacando a arquitetura colonial de Jacareí e a diversidade étnica da população valeparaibana.", organizador: "Juliana Mendes", foto: "https://picsum.photos/600/350?23"},
+    {id: 1, titulo: "Feira de Artesanato & Memória", data: "2026-06-15", horario: "10:00", local: "Pátio dos Trilhos", descricao: "Uma feira vibrante reunindo os melhores artesãos de Jacareí, com oficinas gratuitas de cerâmica, música ao vivo e comidas típicas regionais.", organizador: "Ana Silva", foto: "https://picsum.photos/600/350?20", projeto_mulheres: true},
+    {id: 2, titulo: "Concerto Especial: Orquestra Sinfônica", data: "2026-06-20", horario: "20:00", local: "Sala Mário Lago", descricao: "Apresentação emocionante da Orquestra Sinfônica Municipal interpretando clássicos brasileiros e trilhas sonoras famosas do cinema.", organizador: "Secretaria de Cultura", foto: "https://picsum.photos/600/350?21"},
+    {id: 3, titulo: "Festival de Teatro (FESTE)", data: "2026-07-05", horario: "18:00", local: "Praça Raul Chaves", descricao: "Grande festival reunindo trupes de teatro locais e convidadas de todo o país para apresentações abertas, intervenções públicas e oficinas formativas.", organizador: "Coletivo de Teatro", foto: "https://picsum.photos/600/350?22"},
+    {id: 4, titulo: "Exposição Olhares", data: "2026-06-28", horario: "14:00", local: "MAB - Museu de Antropologia", descricao: "Exposição fotográfica e de murais digitais destacando a arquitetura colonial e a diversidade étnica da população valeparaibana.", organizador: "Juliana Mendes", foto: "https://picsum.photos/600/350?23", projeto_mulheres: true},
     {id: 5, titulo: "Encontro de Moçambique & Capoeira", data: "2026-07-12", horario: "09:00", local: "Praça do Rosário", descricao: "Celebração das tradições populares afro-brasileiras com roda de capoeira angola, apresentações do grupo de Moçambique, cantos rituais e almoço comunitário.", organizador: "Mestre Benedito", foto: "https://picsum.photos/600/350?24"}
 ];
 
@@ -820,15 +820,24 @@ function renderizarGrid(eventos) {
         const card = document.createElement('div');
         card.className = "event-card";
         
+        let dateBadgeStyle = "";
+        let h3Style = "";
+        if (ev.projeto_mulheres === true) {
+            card.style.borderColor = "#b83b5e44";
+            card.style.background = "#fff0f5b3";
+            dateBadgeStyle = "style='background: #B83B5E;'";
+            h3Style = "style='color: #B83B5E;'";
+        }
+        
         const badgeHtml = isApiOnline ? '<span class="api-source-badge online"> API Real</span>' : '<span class="api-source-badge offline"> Dados locais (Mock)</span>';
         card.innerHTML = `
             <div class="event-img" style="position:relative;">
                 ${badgeHtml}
-                <span class="event-date-badge" style="z-index:11;">️ ${formatarData(ev.data)}</span>
+                <span class="event-date-badge" ${dateBadgeStyle} style="z-index:11;">️ ${formatarData(ev.data)}</span>
                 <img src="${ev.foto || 'https://picsum.photos/600/350?random=' + ev.id}" alt="${ev.titulo}">
             </div>
             <div class="event-body">
-                <h3>${ev.titulo}</h3>
+                <h3 ${h3Style}>${ev.titulo}</h3>
                 <p>${ev.descricao}</p>
                 <div class="event-meta-info">
                     <span> <b>Horário:</b> ${ev.horario || 'Não informado'}</span>

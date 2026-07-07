@@ -213,6 +213,21 @@ p { max-width: 800px; margin: auto; line-height: 1.9; color: #666; }
   box-shadow: 0 10px 25px rgba(91,140,90,0.3);
 }
 
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  transition: .3s;
+}
+.btn-mulheres {
+  background: #b83b5e !important;
+  color: #fff !important;
+  box-shadow: 0 8px 20px rgba(184, 59, 94, 0.2);
+}
+.btn-mulheres:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(184, 59, 94, 0.3);
+}
+
 /* Coordinates Helper Map */
 #helperMap {
   height: 250px;
@@ -415,7 +430,7 @@ footer { padding: 40px; text-align: center; color: #777; }
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
   <div>
     <b>Mapeamento Cultural</b>
-    <span>Jacareí • IFSP</span>
+    <span>Vale do Paraíba • IFSP</span>
   </div>
 </div>
 
@@ -437,7 +452,7 @@ footer { padding: 40px; text-align: center; color: #777; }
 </nav>
 
 <section class="hero">
-  <div class="badge"> Fortaleça a cena local de Jacareí</div>
+  <div class="badge"> Fortaleça a cena local do Vale do Paraíba</div>
   <h1>Meu Perfil</h1>
   <p>Cadastre-se como artista, mapeie novos espaços culturais, anuncie eventos e administre suas criações na plataforma.</p>
 </section>
@@ -450,7 +465,7 @@ footer { padding: 40px; text-align: center; color: #777; }
     <button class="tab-btn" onclick="switchTab('cadastro-evento')"> Cadastrar Evento</button>
     <button class="tab-btn" onclick="switchTab('minhas-criacoes')"> Administrar</button>
     <button class="tab-btn" onclick="switchTab('config-api')"> Configurar Conexão</button>
-    <button class="tab-btn" id="btnAdminDestaques" onclick="switchTab('admin-destaques')" style="display:none; background:#d9534f; color:#fff;"> Aprovar Destaques</button>
+    <button class="tab-btn" id="btnAdminDestaques" onclick="switchTab('admin-destaques')" style="display:none; background:#d9534f; color:#fff;"> Painel Admin</button>
   </div>
 
   <!-- CADASTRO AGENTE -->
@@ -485,6 +500,10 @@ footer { padding: 40px; text-align: center; color: #777; }
       <div class="form-group">
         <label>URL de Foto/Imagem de Perfil (Opcional):</label>
         <input type="url" id="agFoto" placeholder="Link de foto online, ex: https://images.unsplash.com/...">
+      </div>
+      <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:15px; margin-bottom:20px;">
+        <input type="checkbox" id="agProjetoMulheres" style="width:20px; height:20px; margin:0; cursor:pointer;">
+        <label for="agProjetoMulheres" style="margin:0; font-weight:600; color:#555; cursor:pointer;">Fazer parte do projeto "Mulheres na Música"?</label>
       </div>
       <button type="submit" class="submit-btn">Salvar Registro de Agente</button>
     </form>
@@ -541,6 +560,10 @@ footer { padding: 40px; text-align: center; color: #777; }
         <label>Descrição do Espaço (Estrutura, atividades):</label>
         <textarea id="espDescricao" rows="4" placeholder="Descreva quais oficinas acontecem, a capacidade física do local..." required></textarea>
       </div>
+      <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:15px; margin-bottom:20px;">
+        <input type="checkbox" id="espProjetoMulheres" style="width:20px; height:20px; margin:0; cursor:pointer;">
+        <label for="espProjetoMulheres" style="margin:0; font-weight:600; color:#555; cursor:pointer;">Este espaço faz parte do projeto "Mulheres na Música"?</label>
+      </div>
       <button type="submit" class="submit-btn">Mapear Espaço Cultural</button>
     </form>
   </div>
@@ -575,6 +598,10 @@ footer { padding: 40px; text-align: center; color: #777; }
         <label>Descrição Detalhada do Evento:</label>
         <textarea id="evDescricao" rows="4" placeholder="Descreva a programação, classificação indicativa, preço (se houver)..." required></textarea>
       </div>
+      <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:15px; margin-bottom:20px;">
+        <input type="checkbox" id="evProjetoMulheres" style="width:20px; height:20px; margin:0; cursor:pointer;">
+        <label for="evProjetoMulheres" style="margin:0; font-weight:600; color:#555; cursor:pointer;">Este evento faz parte do projeto "Mulheres na Música"?</label>
+      </div>
       <button type="submit" class="submit-btn">Agendar Evento Cultural</button>
     </form>
   </div>
@@ -601,9 +628,18 @@ footer { padding: 40px; text-align: center; color: #777; }
 
   <!-- ADMIN DESTAQUES -->
   <div class="tab-content" id="admin-destaques">
-    <h2>Aprovação de Destaques</h2>
-    <p>Escolha quais imagens devem aparecer na página principal para todos. Se desmarcado, a imagem só aparecerá na aba Agentes.</p>
-    <div id="destaquesList" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px; margin-top:20px;">
+    <h2>Painel do Administrador</h2>
+    
+    <h3 style="color:#5B8C5A; margin-top:20px; margin-bottom:10px; border-bottom:2px dashed #5b8c5a22; padding-bottom:5px;">Gerenciamento de Conteúdo Institucional</h3>
+    <p style="margin-bottom:15px;">Edite as páginas institucionais em tempo real clicando nos botões abaixo:</p>
+    <div style="display:flex; gap:15px; margin-bottom:40px; flex-wrap:wrap;">
+      <a href="../cepin/index.html?admin=true" target="_blank" class="btn" style="background:#5B8C5A; color:#fff; font-weight:600; padding:12px 20px; border-radius:12px;">Editar Página CEPIN</a>
+      <a href="../mulheres/index.html?admin=true" target="_blank" class="btn btn-mulheres" style="font-weight:600; padding:12px 20px; border-radius:12px;">Editar Página Mulheres na Música</a>
+    </div>
+
+    <h3 style="color:#5B8C5A; margin-bottom:10px; border-bottom:2px dashed #5b8c5a22; padding-bottom:5px;">Aprovação de Destaques (Agentes na Home)</h3>
+    <p style="margin-bottom:20px;">Escolha quais agentes cadastrados devem aparecer em destaque na página principal.</p>
+    <div id="destaquesList" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px;">
        Carregando...
     </div>
   </div>
@@ -993,7 +1029,8 @@ async function enviarAgente(e) {
         area: document.getElementById('agArea').value,
         bio: document.getElementById('agBio').value,
         contato: document.getElementById('agContato').value,
-        foto: document.getElementById('agFoto').value || "https://picsum.photos/400/400?random=" + Math.random()
+        foto: document.getElementById('agFoto').value || "https://picsum.photos/400/400?random=" + Math.random(),
+        projeto_mulheres: document.getElementById('agProjetoMulheres').checked
     };
     
     const isOnline = await APIManager.checkStatus();
@@ -1034,7 +1071,8 @@ async function enviarEspaco(e) {
         lat: parseFloat(document.getElementById('espLat').value),
         lng: parseFloat(document.getElementById('espLng').value),
         descricao: document.getElementById('espDescricao').value,
-        contato: document.getElementById('espContato').value
+        contato: document.getElementById('espContato').value,
+        projeto_mulheres: document.getElementById('espProjetoMulheres').checked
     };
     
     const isOnline = await APIManager.checkStatus();
@@ -1073,7 +1111,8 @@ async function enviarEvento(e) {
         horario: document.getElementById('evHorario').value,
         local: document.getElementById('evLocal').value,
         organizador: document.getElementById('evOrganizador').value,
-        descricao: document.getElementById('evDescricao').value
+        descricao: document.getElementById('evDescricao').value,
+        projeto_mulheres: document.getElementById('evProjetoMulheres').checked
     };
     
     const isOnline = await APIManager.checkStatus();

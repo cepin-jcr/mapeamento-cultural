@@ -1,0 +1,69 @@
+{
+  "apresentacao": {
+    "titulo": "Mapeamento das Mulheres na Música",
+    "subtitulo": "Projeto de visibilidade e valorização das mulheres na cena musical do Vale do Paraíba",
+    "texto1": "O Mapeamento das Mulheres na Música é uma iniciativa dedicada a catalogar, divulgar e fortalecer a presença feminina na cadeia produtiva da música na região do Vale do Paraíba.",
+    "texto2": "Buscamos criar uma rede de apoio, capacitação e fomento para musicistas, compositoras, produtoras, técnicas de som e todas as profissionais que dão vida à nossa música.",
+    "texto3": "Acreditamos que dar visibilidade a essas trajetórias é fundamental para construir um mercado musical mais igualitário, diverso e representativo no Vale do Paraíba.",
+    "texto4": "Unimos rigor e paixão para amplificar vozes históricas e contemporâneas, estimulando contratações justas, debates produtivos e formação continuada."
+  },
+  "sobre_nos": {
+    "titulo": "SOBRE O PROJETO",
+    "texto": "O projeto 'Mapeamento das Mulheres na Música' nasceu do desejo de visibilizar e conectar as mulheres que atuam na cadeia da música no Vale do Paraíba. Unindo o Centro de Pesquisa e Inovação (CEPIN) com a comunidade artística regional, a proposta é impulsionar a equidade de gênero através do registro de dados, fomento a novas parcerias e compartilhamento de conhecimento prático."
+  },
+  "competencias": [
+    "Identificar e mapear musicistas, compositoras e técnicas de som e luz na região do Vale do Paraíba.",
+    "Criar uma base de dados pública para facilitar a contratação e contratação justa de profissionais mulheres na música.",
+    "Promover encontros, debates e oficinas de formação técnica voltados à cadeia produtiva musical sob perspectiva de gênero.",
+    "Estimular a produção acadêmica e diagnósticos práticos sobre o mercado de trabalho da música para mulheres na região."
+  ],
+  "localizacao_contato": {
+    "titulo": "CONTATO E PARTICIPAÇÃO",
+    "endereco": "IFSP Campus Jacareí - Sala 116 – CEPIN JCR",
+    "email": "mulheresnamusica.vale@gmail.com"
+  },
+  "projetos": [
+    {
+      "titulo": "Encontro Mulheres na Música 2026",
+      "descricao": "Ciclo de palestras, shows acústicos e oficinas gratuitas reunindo musicistas e produtoras regionais para debater caminhos e oportunidades no mercado independente.",
+      "link": "#"
+    }
+  ],
+  "outros_trabalhos": {
+    "titulo": "Conheça Nossos Canais",
+    "texto": "Acompanhe de perto as ações do projeto e as produções das mulheres mapeadas:",
+    "itens": [
+      {
+        "titulo": "Instagram do Projeto",
+        "link": "https://www.instagram.com",
+        "detalhes": "Instagram"
+      },
+      {
+        "titulo": "Playlist de Destaques",
+        "link": "https://open.spotify.com",
+        "detalhes": "Spotify"
+      }
+    ]
+  },
+  "resultados": {
+    "titulo": "DIAGNÓSTICO E DADOS",
+    "texto": "Em breve publicaremos o I Diagnóstico da Participação Feminina na Música do Vale do Paraíba.",
+    "link": "#"
+  },
+  "redes_sociais": {
+    "instagram": "@mulheresnamusica.vale",
+    "facebook": "Mulheres na Música Vale",
+    "youtube": "Mulheres na Música Vale"
+  },
+  "equipe": {
+    "titulo": "EQUIPE E APOIO",
+    "texto": "O projeto é coordenado em parceria com a equipe de pesquisadores do CEPIN e representantes da classe artística regional.",
+    "coordenacao": "Coordenação Coletiva",
+    "membros": [
+      {"nome": "Professora Simone Lisboa", "campus": "IFSP Jacareí", "cargo": "Coordenadora e Pesquisadora", "contato": "simone.lisboa@ifsp.edu.br"},
+      {"nome": "Profa. Denise Franca Barros", "campus": "IFSP Jacareí", "cargo": "Pesquisadora Adjunta", "contato": "barros.denise@ifsp.edu.br"}
+    ],
+    "desenvolvedores": [],
+    "colaboradores": []
+  }
+}

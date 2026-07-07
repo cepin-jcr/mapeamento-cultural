@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Espaços Culturais • Jacareí</title>
+<title>Espaços Culturais • Vale do Paraíba</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
@@ -424,7 +424,7 @@ footer { padding: 40px; text-align: center; color: #777; }
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
   <div>
     <b>Mapeamento Cultural</b>
-    <span>Jacareí • IFSP</span>
+    <span>Vale do Paraíba • IFSP</span>
   </div>
 </div>
 
@@ -446,7 +446,7 @@ footer { padding: 40px; text-align: center; color: #777; }
 </nav>
 
 <section class="hero">
-  <div class="badge">️ Os polos criativos de Jacareí</div>
+  <div class="badge">️ Os polos criativos do Vale do Paraíba</div>
   <h1>Espaços Culturais</h1>
   <p>Encontre centros culturais, teatros, ateliês, bibliotecas e museus que oferecem atividades e movimentam o cenário cultural local.</p>
 </section>
@@ -609,7 +609,7 @@ footer { padding: 40px; text-align: center; color: #777; }
     
     <div class="footer-column results-column">
       <h3> Resultados</h3>
-      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural de Jacareí completo e seu resumo.</p>
+      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural do Vale do Paraíba completo e seu resumo.</p>
     </div>
     
     <div class="footer-column social-column">
@@ -627,7 +627,7 @@ footer { padding: 40px; text-align: center; color: #777; }
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural de Jacareí via projetos de pesquisa e extensão.</p>
+    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural do Vale do Paraíba via projetos de pesquisa e extensão.</p>
   </div>
 </footer>
 
@@ -640,7 +640,7 @@ const MOCK_ESPACOS = [
     {id: 2, nome: "Sala Mário Lago", tipo: "Teatro", endereco: "Pça. Raul Chaves, 110 - Centro, Jacareí - SP", lat: -23.3061, lng: -45.9669, descricao: "Importante casa de espetáculos municipal, palco de apresentações teatrais, dança, exibições cinematográficas e concertos musicais gratuitos.", contato: "cultura@jacarei.sp.gov.br", foto: "https://picsum.photos/600/400?11"},
     {id: 3, nome: "Parque dos Espanhóis", tipo: "Centro Cultural", endereco: "Av. Joaquim Alvarenga, 450 - Jardim Santa Maria, Jacareí - SP", lat: -23.2980, lng: -45.9750, descricao: "Espaço verde voltado ao lazer, com anfiteatro ao ar livre, quadras esportivas e encontros de coletivos artísticos nos finais de semana.", contato: "parque.espanhois@email.com", foto: "https://picsum.photos/600/400?12"},
     {id: 4, nome: "Biblioteca Municipal Macedo Soares", tipo: "Biblioteca", endereco: "Av. Nove de Julho, 215 - Centro, Jacareí - SP", lat: -23.3035, lng: -45.9610, descricao: "Ambiente tranquilo de leitura com acervo de milhares de livros, espaço infantil, computadores para estudo e oficinas literárias.", contato: "biblioteca@jacarei.sp.gov.br", foto: "https://picsum.photos/600/400?13"},
-    {id: 5, nome: "Ateliê Vivo de Jacareí", tipo: "Ateliê Coletivo", endereco: "Rua Dr. Lúcio Malta, 380 - Centro, Jacareí - SP", lat: -23.3075, lng: -45.9640, descricao: "Espaço colaborativo independente de artistas locais, promovendo cursos de pintura, argila, escrita criativa e saraus abertos à comunidade.", contato: "atelievivo@email.com", foto: "https://picsum.photos/600/400?14"}
+    {id: 5, nome: "Ateliê Vivo", tipo: "Ateliê Coletivo", endereco: "Rua Dr. Lúcio Malta, 380 - Centro, Jacareí - SP", lat: -23.3075, lng: -45.9640, descricao: "Espaço colaborativo independente de artistas locais, promovendo cursos de pintura, argila, escrita criativa e saraus abertos à comunidade.", contato: "atelievivo@email.com", foto: "https://picsum.photos/600/400?14", projeto_mulheres: true}
 ];
 
 let todosEspacos = [];
@@ -841,23 +841,36 @@ function renderizarGrid(espacos) {
         const card = document.createElement('div');
         card.className = "space-card";
         
+        let tagStyle = "";
+        let h3Style = "";
+        let btnMapStyle = "";
+        let btnContactStyle = "";
+        if (esp.projeto_mulheres === true) {
+            card.style.borderColor = "#b83b5e44";
+            card.style.background = "#fff0f5b3";
+            tagStyle = "style='background: #B83B5E;'";
+            h3Style = "style='color: #B83B5E;'";
+            btnMapStyle = "style='background: #B83B5E; border-color: #B83B5E; color: #fff;'";
+            btnContactStyle = "style='background: transparent; border-color: #B83B5E; color: #B83B5E;'";
+        }
+        
         const badgeHtml = isApiOnline ? '<span class="api-source-badge online"> API Real</span>' : '<span class="api-source-badge offline"> Dados locais (Mock)</span>';
         card.innerHTML = `
             <div class="space-img" style="position:relative;">
                 ${badgeHtml}
-                <span class="space-tag" style="z-index: 11;">${esp.tipo}</span>
+                <span class="space-tag" ${tagStyle} style="z-index: 11;">${esp.tipo}</span>
                 <img src="${esp.foto || 'https://picsum.photos/600/400?random=' + esp.id}" alt="${esp.nome}">
             </div>
             <div class="space-body">
-                <h3>${esp.nome}</h3>
+                <h3 ${h3Style}>${esp.nome}</h3>
                 <p>${esp.descricao || 'Sem descrição cadastrada.'}</p>
                 <div class="space-details">
                     <span> <b>Endereço:</b> ${esp.endereco}</span>
                     <span>️ <b>Contato:</b> ${esp.contato || 'Não informado'}</span>
                 </div>
                 <div class="space-btns">
-                    <a class="space-btn map" href="../mapa/?lat=${esp.lat}&lng=${esp.lng}">Ver no Mapa</a>
-                    <a class="space-btn contact" href="mailto:${esp.contato}">Contato</a>
+                    <a class="space-btn map" ${btnMapStyle} href="../mapa/?lat=${esp.lat}&lng=${esp.lng}">Ver no Mapa</a>
+                    <a class="space-btn contact" ${btnContactStyle} href="mailto:${esp.contato}">Contato</a>
                 </div>
             </div>
         `;

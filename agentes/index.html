@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Agentes Culturais • Jacareí</title>
+<title>Agentes Culturais • Vale do Paraíba</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
@@ -399,7 +399,7 @@ footer { padding: 40px; text-align: center; color: #777; }
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
   <div>
     <b>Mapeamento Cultural</b>
-    <span>Jacareí • IFSP</span>
+    <span>Vale do Paraíba • IFSP</span>
   </div>
 </div>
 
@@ -421,9 +421,9 @@ footer { padding: 40px; text-align: center; color: #777; }
 </nav>
 
 <section class="hero">
-  <div class="badge"> Rostos, mentes e talentos locais</div>
+  <div class="badge"> Rostos, mentes e talentos regionais</div>
   <h1>Agentes Culturais</h1>
-  <p>Conheça os artesãos, músicos, atores, escritores e produtores culturais que dão vida, cor e história à Jacareí.</p>
+  <p>Conheça os artesãos, músicos, atores, escritores e produtores culturais que dão vida, cor e história ao Vale do Paraíba.</p>
 </section>
 
 <!-- Painel de Busca e Filtros -->
@@ -584,7 +584,7 @@ footer { padding: 40px; text-align: center; color: #777; }
     
     <div class="footer-column results-column">
       <h3> Resultados</h3>
-      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural de Jacareí completo e seu resumo.</p>
+      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural do Vale do Paraíba completo e seu resumo.</p>
     </div>
     
     <div class="footer-column social-column">
@@ -602,7 +602,7 @@ footer { padding: 40px; text-align: center; color: #777; }
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural de Jacareí via projetos de pesquisa e extensão.</p>
+    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural do Vale do Paraíba via projetos de pesquisa e extensão.</p>
   </div>
 </footer>
 
@@ -611,11 +611,11 @@ let isApiOnline = false;
 
 // Mock de Agentes para Fallback
 const MOCK_AGENTES = [
-    {id: 1, nome: "Ana Silva", area: "Artesanato", bio: "Artesã local especializada em crochê e cerâmica com elementos tradicionais do Vale do Paraíba.", contato: "ana.artes@email.com", foto: "https://picsum.photos/400/400?1"},
-    {id: 2, nome: "Carlos Souza", area: "Música", bio: "Músico, compositor e violonista clássico, com projetos sociais de educação musical para jovens em Jacareí.", contato: "carlossouza@email.com", foto: "https://picsum.photos/400/400?2"},
-    {id: 3, nome: "Coletivo Jacareí de Teatro", area: "Teatro", bio: "Grupo independente focado em teatro de rua, intervenções urbanas e contação de histórias históricas.", contato: "coletivojacarei@email.com", foto: "https://picsum.photos/400/400?3"},
-    {id: 4, nome: "Juliana Mendes", area: "Artes Visuais", bio: "Artista visual, muralista e pintora que explora as paisagens naturais e o patrimônio histórico da região.", contato: "juliana.mendes@email.com", foto: "https://picsum.photos/400/400?4"},
-    {id: 5, nome: "Mestre Benedito", area: "Cultura Popular", bio: "Líder comunitário do grupo de Moçambique de Jacareí, preservando a dança e os cantos de raiz afro-brasileira.", contato: "benedito.popular@email.com", foto: "https://picsum.photos/400/400?5"}
+    {id: 1, nome: "Ana Silva", area: "Artesanato", bio: "Artesã local especializada em crochê e cerâmica com elementos tradicionais do Vale do Paraíba.", contato: "ana.artes@email.com", foto: "https://picsum.photos/400/400?1", projeto_mulheres: true},
+    {id: 2, nome: "Carlos Souza", area: "Música", bio: "Músico, compositor e violonista clássico, com projetos sociais de educação musical para jovens na região.", contato: "carlossouza@email.com", foto: "https://picsum.photos/400/400?2"},
+    {id: 3, nome: "Coletivo de Teatro", area: "Teatro", bio: "Grupo independente focado em teatro de rua, intervenções urbanas e contação de histórias históricas.", contato: "coletivo@email.com", foto: "https://picsum.photos/400/400?3"},
+    {id: 4, nome: "Juliana Mendes", area: "Artes Visuais", bio: "Artista visual, muralista e pintora que explora as paisagens naturais e o patrimônio histórico da região.", contato: "juliana.mendes@email.com", foto: "https://picsum.photos/400/400?4", projeto_mulheres: true},
+    {id: 5, nome: "Mestre Benedito", area: "Cultura Popular", bio: "Líder comunitário do grupo de Moçambique, preservando a dança e os cantos de raiz afro-brasileira.", contato: "benedito.popular@email.com", foto: "https://picsum.photos/400/400?5"}
 ];
 
 let todosAgentes = [];
@@ -816,16 +816,27 @@ function renderizarGrid(agentes) {
         const card = document.createElement('div');
         card.className = "agent-card";
         
+        let expStyle = "";
+        let h3Style = "";
+        let btnStyle = "";
+        if (ag.projeto_mulheres === true) {
+            card.style.borderColor = "#b83b5e44";
+            card.style.background = "#fff0f5b3";
+            expStyle = "style='background: rgba(184, 59, 94, 0.1); color: #B83B5E;'";
+            h3Style = "style='color: #B83B5E;'";
+            btnStyle = "style='background: #B83B5E; box-shadow: 0 4px 10px rgba(184, 59, 94, 0.2);'";
+        }
+        
         const badgeHtml = isApiOnline ? '<span class="api-source-badge online"> API Real</span>' : '<span class="api-source-badge offline"> Dados locais (Mock)</span>';
         card.innerHTML = `
             <div class="agent-avatar" style="position:relative;">
                 ${badgeHtml}
                 <img src="${ag.foto || 'https://picsum.photos/400/400?random=' + ag.id}" alt="${ag.nome}">
             </div>
-            <span class="agent-expertise">#${ag.area}</span>
-            <h3>${ag.nome}</h3>
+            <span class="agent-expertise" ${expStyle}>#${ag.area}</span>
+            <h3 ${h3Style}>${ag.nome}</h3>
             <p>${ag.bio || 'Sem biografia disponível.'}</p>
-            <button class="agent-contact-btn" onclick="location.href='mailto:${ag.contato}'">Entrar em Contato</button>
+            <button class="agent-contact-btn" ${btnStyle} onclick="location.href='mailto:${ag.contato}'">Entrar em Contato</button>
         `;
         grid.appendChild(card);
     });

@@ -588,7 +588,7 @@ textarea.edit-field {
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
     <div>
       <b>Mapeamento Cultural</b>
-      <span>Jacareí • IFSP</span>
+      <span>Vale do Paraíba • IFSP</span>
     </div>
   </div>
 
@@ -886,7 +886,7 @@ const defaultCepinData = {
     },
     "resultados": {
         "titulo": "RESULTADOS",
-        "texto": "Acesse Aqui o I Diagnóstico do Mercado Cultural de Jacareí completo e seu resumo.",
+        "texto": "Acesse Aqui o I Diagnóstico do Mercado Cultural do Vale do Paraíba completo e seu resumo.",
         "link": "https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing"
     },
     "redes_sociais": {
@@ -992,7 +992,7 @@ async function loadCepinData() {
     // Migração de cache automático para o novo link de Diagnóstico do Google Drive
     if (activeCepinData && activeCepinData.resultados && (activeCepinData.resultados.link === "https://ocs.jcr.ifsp.edu.br/index.php/IEnCEPIN/CEPIN" || activeCepinData.resultados.texto.includes("resumo do I Diagnóstico"))) {
         activeCepinData.resultados.link = "https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing";
-        activeCepinData.resultados.texto = "Acesse Aqui o I Diagnóstico do Mercado Cultural de Jacareí completo e seu resumo.";
+        activeCepinData.resultados.texto = "Acesse Aqui o I Diagnóstico do Mercado Cultural do Vale do Paraíba completo e seu resumo.";
         localStorage.setItem('cepin_info_data', JSON.stringify(activeCepinData));
     }
     
