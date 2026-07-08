@@ -167,27 +167,29 @@ p { max-width: 800px; margin: auto; line-height: 1.9; color: #666; }
   margin: 0 auto 100px;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
 .space-card {
-  background: #ffffffb3;
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
-  border-radius: 28px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--s);
-  border: 6px solid #ffffffaa;
-  transition: .5s;
+  box-shadow: 0 8px 24px rgba(91, 140, 90, 0.06);
+  border: 1px solid rgba(91, 140, 90, 0.15);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: flex;
   flex-direction: column;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .space-card:hover {
-  transform: translateY(-14px) rotate(0.5deg);
-  box-shadow: 0 20px 40px rgba(91,140,90,0.25);
-  border-color: #ffffff;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(91, 140, 90, 0.15);
+  border-color: rgba(91, 140, 90, 0.35);
 }
 .space-img {
-  height: 240px;
+  height: 160px;
   overflow: hidden;
   position: relative;
 }
@@ -202,32 +204,33 @@ p { max-width: 800px; margin: auto; line-height: 1.9; color: #666; }
 }
 .space-tag {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   background: var(--v);
   color: #fff;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
   font-weight: 600;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 .space-body {
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 .space-body h3 {
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   color: var(--v);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 .space-body p {
-  font-size: 0.92rem;
-  line-height: 1.8;
+  font-size: 0.82rem;
+  line-height: 1.6;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   flex-grow: 1;
   text-align: left;
 }
@@ -415,6 +418,9 @@ footer { padding: 40px; text-align: center; color: #777; }
        100% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0); }
    }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-integration.js?v=2"></script>
 </head>
 
 <body>
@@ -601,15 +607,15 @@ footer { padding: 40px; text-align: center; color: #777; }
 
 <footer class="cute-footer">
   <div class="footer-container">
+    <div class="footer-column results-column">
+      <h3> Conheça o I Diagnóstico do Mercado Cultural de Jacareí que deu origem a essa e outras ações</h3>
+      <p>Clique <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">AQUI</a> para conhecer o Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</p>
+    </div>
+    
     <div class="footer-column info-column">
       <h3> Localização e Contato</h3>
       <p><strong>Endereço:</strong> R. Antônio Fogaça de Almeida, 200 - Jardim América, Jacareí - SP, 12322-030 Sala 116 – CEPIN JCR</p>
       <p><strong>Contato:</strong> Email: <a href="mailto:cepinjcr@gmail.com">cepinjcr@gmail.com</a></p>
-    </div>
-    
-    <div class="footer-column results-column">
-      <h3> Resultados</h3>
-      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural do Vale do Paraíba completo e seu resumo.</p>
     </div>
     
     <div class="footer-column social-column">
@@ -854,6 +860,14 @@ function renderizarGrid(espacos) {
             btnContactStyle = "style='background: transparent; border-color: #B83B5E; color: #B83B5E;'";
         }
         
+        let descText = esp.descricao || 'Sem descrição cadastrada.';
+        let descHtml = descText;
+        if (descText.length > 150) {
+            const shortText = descText.substring(0, 150) + '...';
+            descHtml = `<span class="bio-short">${shortText} <a href="#" class="ver-mais-link" onclick="window.toggleBio(event, this)" style="color: ${esp.projeto_mulheres ? '#b83b5e' : 'var(--v)'}; font-weight: 600; cursor: pointer; text-decoration: underline;">Ver mais</a></span>
+                        <span class="bio-full" style="display: none;">${descText} <a href="#" class="ver-mais-link" onclick="window.toggleBio(event, this)" style="color: ${esp.projeto_mulheres ? '#b83b5e' : 'var(--v)'}; font-weight: 600; cursor: pointer; text-decoration: underline;">Ver menos</a></span>`;
+        }
+        
         const badgeHtml = isApiOnline ? '<span class="api-source-badge online"> API Real</span>' : '<span class="api-source-badge offline"> Dados locais (Mock)</span>';
         card.innerHTML = `
             <div class="space-img" style="position:relative;">
@@ -863,7 +877,7 @@ function renderizarGrid(espacos) {
             </div>
             <div class="space-body">
                 <h3 ${h3Style}>${esp.nome}</h3>
-                <p>${esp.descricao || 'Sem descrição cadastrada.'}</p>
+                <p>${descHtml}</p>
                 <div class="space-details">
                     <span> <b>Endereço:</b> ${esp.endereco}</span>
                     <span>️ <b>Contato:</b> ${esp.contato || 'Não informado'}</span>
@@ -931,7 +945,7 @@ if (debugFooter) {
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/supabase-integration.js"></script>
+
+
 </body>
 </html>

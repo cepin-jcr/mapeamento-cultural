@@ -434,12 +434,66 @@ text-align:center
        color: #3b3b3b !important;
        border: 1px solid rgba(255, 255, 255, 0.2);
    }
-   @keyframes pulseFixed {
-       0% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0.4); }
-       70% { box-shadow: 0 0 0 6px rgba(91, 140, 90, 0); }
-       100% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0); }
-   }
+    @keyframes pulseFixed {
+        0% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0.4); }
+        70% { box-shadow: 0 0 0 6px rgba(91, 140, 90, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0); }
+    }
+
+    /* Modern Hero Cards split design */
+    .hero-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(91, 140, 90, 0.04);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        text-align: left;
+    }
+    .hero-card h1 {
+        font-size: 2.2rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 16px !important;
+        font-weight: 700;
+    }
+    .hero-card.vale {
+        border: 1px solid rgba(91, 140, 90, 0.15);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(91, 140, 90, 0.02) 100%);
+    }
+    .hero-card.vale h1 {
+        color: var(--v) !important;
+    }
+    .hero-card.vale:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(91, 140, 90, 0.12);
+        border-color: rgba(91, 140, 90, 0.35);
+    }
+    .hero-card.mulheres {
+        border: 1px solid rgba(184, 59, 94, 0.15);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(184, 59, 94, 0.02) 100%);
+    }
+    .hero-card.mulheres h1 {
+        color: #b83b5e !important;
+    }
+    .hero-card.mulheres:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(184, 59, 94, 0.12);
+        border-color: rgba(184, 59, 94, 0.35);
+    }
+    @media (max-width: 1000px) {
+        .hero-card.mulheres {
+            border-top: 1px solid rgba(184, 59, 94, 0.15) !important;
+            padding-top: 40px !important;
+            margin-top: 20px !important;
+        }
+    }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./js/supabase-integration.js?v=2"></script>
 </head>
 
 <body>
@@ -477,7 +531,7 @@ text-align:center
 
 <div class="hero-content">
 
-<div class="hero-text">
+<div class="hero-card vale hero-text">
 
 <div class="badge">
  Plataforma colaborativa de cultura
@@ -491,7 +545,7 @@ Conheça a cultura do Vale do Paraíba!
 Conecte artistas, espaços culturais, eventos e toda a diversidade criativa da região.
 </p>
 
-<div class="btns">
+<div class="btns" style="margin-top: auto;">
 <a class="btn btn1" href="mapa/index.html">
 Explorar mapa
 </a>
@@ -503,13 +557,13 @@ Ver agenda
 
 </div>
 
-<div class="hero-text hero-text-mulheres" style="border-left: 2px solid #b83b5e33; padding-left: 40px; animation: right 1s;">
+<div class="hero-card mulheres hero-text-mulheres" style="animation: right 1s;">
 
 <div class="badge" style="background:#b83b5e22; color:#b83b5e; border: 1px solid #b83b5e44; animation: pulse 2s infinite;">
  Projeto Especial
 </div>
 
-<h1 style="color:#b83b5e;">
+<h1>
  Conheça o projeto:<br>Mulheres na Música
 </h1>
 
@@ -517,7 +571,7 @@ Ver agenda
  Descubra e apoie o mapeamento das cantoras, compositoras, instrumentistas e produtoras da nossa região.
 </p>
 
-<div class="btns">
+<div class="btns" style="margin-top: auto;">
 <a class="btn btn-mulheres" href="mulheres/index.html">
  Conhecer Projeto
 </a>
@@ -714,15 +768,15 @@ Comunidade
 
 <footer class="cute-footer">
   <div class="footer-container">
+    <div class="footer-column results-column">
+      <h3> Conheça o I Diagnóstico do Mercado Cultural de Jacareí que deu origem a essa e outras ações</h3>
+      <p>Clique <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">AQUI</a> para conhecer o Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</p>
+    </div>
+    
     <div class="footer-column info-column">
       <h3> Localização e Contato</h3>
       <p><strong>Endereço:</strong> R. Antônio Fogaça de Almeida, 200 - Jardim América, Jacareí - SP, 12322-030 Sala 116 – CEPIN JCR</p>
       <p><strong>Contato:</strong> Email: <a href="mailto:cepinjcr@gmail.com">cepinjcr@gmail.com</a></p>
-    </div>
-    
-    <div class="footer-column results-column">
-      <h3> Resultados</h3>
-      <p>Acesse <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">Aqui</a> o I Diagnóstico do Mercado Cultural do Vale do Paraíba completo e seu resumo.</p>
     </div>
     
     <div class="footer-column social-column">
@@ -1056,7 +1110,7 @@ if (debugFooter) {
 </script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./js/supabase-integration.js"></script>
+
+
 </body>
 </html>

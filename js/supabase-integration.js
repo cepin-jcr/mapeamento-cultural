@@ -1,5 +1,5 @@
 const supabaseUrl = "https://idbftfamynqdebxlazvv.supabase.co";
-const supabaseAnonKey = "sb_publishable_KqRrc5gvU0HzhkZSN60k3w_0w7zfEOg";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkYmZ0ZmFteW5xZGVieGxhenZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExOTQ2NzEsImV4cCI6MjA5Njc3MDY3MX0.9uHMKNEhYI2NMjs2EG7es1pNR2bFtyQ9SLj7pQ-exfI";
 
 window.supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
@@ -88,20 +88,42 @@ window.fetch = async function(resource, config) {
 };
 
 // UI adjustments when loaded
-document.addEventListener("DOMContentLoaded", async () => {
-    // Override API Badge directly
-    setTimeout(() => {
+const initSupabaseUI = async () => {
+    // Set isApiOnline to true globally since we are running Supabase integration
+    window.isApiOnline = true;
+
+    // Force badges to reflect Connected status
+    const updateBadges = () => {
         const badge = document.getElementById('apiStatusBadge');
-        if (badge) badge.style.display = 'none';
+        const dot = document.getElementById('apiStatusDot');
+        const text = document.getElementById('apiStatusText');
+        if (badge && dot && text) {
+            badge.style.background = '#5b8c5a22';
+            badge.style.color = '#5b8c5a';
+            dot.style.background = '#5b8c5a';
+            text.innerText = 'API Conectada';
+        }
+
         const fixedBadge = document.getElementById('fixedApiStatus');
-        if (fixedBadge) fixedBadge.style.display = 'none';
-        
-        const apiModal = document.getElementById('apiModal');
-        if (apiModal) apiModal.remove();
-        
-        const configBtn = document.querySelector('.tab-btn[onclick="switchTab(\'config-api\')"]');
-        if (configBtn) configBtn.style.display = 'none';
-    }, 500);
+        if (fixedBadge) {
+            fixedBadge.style.border = '1px solid rgba(91, 140, 90, 0.3)';
+            fixedBadge.style.background = 'rgba(255, 255, 255, 0.95)';
+            fixedBadge.innerHTML = `
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #5b8c5a; display: inline-block; animation: pulseFixed 2s infinite;"></span>
+                <span style="color: #5b8c5a;"> API Conectada</span>
+            `;
+        }
+    };
+
+    updateBadges();
+    setTimeout(updateBadges, 600); // Re-run to override any late checkStatus calls
+
+    // Remove the config options that make no sense now
+    const apiModal = document.getElementById('apiModal');
+    if (apiModal) apiModal.remove();
+    
+    const configBtn = document.querySelector('.tab-btn[onclick="switchTab(\'config-api\')"]');
+    if (configBtn) configBtn.style.display = 'none';
 
     // Setup Auth UI in Perfil page
     if (window.location.href.includes('perfil')) {
@@ -184,7 +206,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
     }
-});
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener("DOMContentLoaded", initSupabaseUI);
+} else {
+    initSupabaseUI();
+}
 
 // Global function for the Admin panel toggle
 window.toggleDestaque = async (id, checkbox, cardElement) => {
@@ -203,5 +231,23 @@ window.toggleDestaque = async (id, checkbox, cardElement) => {
         checkbox.checked = !checkbox.checked; // Revert visually
     } finally {
         checkbox.disabled = false;
+    }
+};
+
+// Global function for toggling biography/description text in-place
+window.toggleBio = (e, link) => {
+    e.preventDefault();
+    const p = link.closest('p');
+    if (!p) return;
+    const short = p.querySelector('.bio-short');
+    const full = p.querySelector('.bio-full');
+    if (short && full) {
+        if (short.style.display === 'none') {
+            short.style.display = 'inline';
+            full.style.display = 'none';
+        } else {
+            short.style.display = 'none';
+            full.style.display = 'inline';
+        }
     }
 };
