@@ -1,951 +1,172 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Espaços Culturais • Vale do Paraíba</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espaços Culturais • Mapeamento Cultural</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --v: #5B8C5A;
-  --vc: #B8D8BA;
-  --b: #F7F2EA;
-  --t: #3B3B3B;
-  --s: 0 10px 40px rgba(91,140,90,.15);
-}
-body {
-  font-family: Poppins, sans-serif;
-  background: var(--b);
-  color: var(--t);
-  overflow-x: hidden;
-}
-body:before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(circle at 10% 20%, #5b8c5a11, transparent 20%),
-    radial-gradient(circle at 80% 80%, #b8d8ba44, transparent 20%);
-}
-.leaf {
-  position: fixed;
-  width: 30px;
-  opacity: .12;
-  z-index: -1;
-  animation: fall linear infinite;
-}
-.leaf:nth-child(1) { left: 5%; animation-duration: 25s; }
-.leaf:nth-child(2) { left: 85%; animation-duration: 19s; }
-@keyframes fall {
-  from { top: -100px; transform: rotate(0); }
-  to { top: 110vh; transform: rotate(360deg); }
-}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+              glow: "hsl(var(--primary-glow))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+            mulheres: "hsl(var(--mulheres-pink))"
+          },
+          boxShadow: {
+            'carnival': 'var(--shadow-carnival)',
+            'soft': 'var(--shadow-soft)',
+          },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          }
+        }
+      }
+    }
+  </script>
 
-/* Navbar */
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: 18px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffffbb;
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid #5b8c5a22;
-  z-index: 999;
-  transition: .4s;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.logo img {
-  width: 58px;
-  animation: logo 4s ease-in-out infinite;
-}
-@keyframes logo { 50% { transform: translateY(-8px); } }
-.logo b { display: block; font-size: 1.1rem; color: var(--v); }
-.logo span { font-size: .85rem; color: #777; }
-.links { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-a {
-  text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 14px;
-  font-weight: 500;
-  color: var(--t);
-  transition: .35s;
-}
-a:hover, .active {
-  background: var(--v);
-  color: #fff;
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px #5b8c5a33;
-}
-
-/* Hero Section */
-.hero {
-  padding: 170px 30px 40px;
-  text-align: center;
-}
-.badge {
-  display: inline-block;
-  padding: 12px 18px;
-  border-radius: 999px;
-  background: #5b8c5a22;
-  color: var(--v);
-  font-weight: 600;
-  margin-bottom: 24px;
-}
-h1 { font-size: 4.5rem; color: var(--v); margin-bottom: 20px; line-height: 1; }
-p { max-width: 800px; margin: auto; line-height: 1.9; color: #666; }
-
-/* Filter Container */
-.search-filter-box {
-  max-width: 1200px;
-  margin: 0 auto 40px;
-  padding: 0 20px;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.search-input-wrapper {
-  flex: 1;
-  min-width: 280px;
-  position: relative;
-}
-.search-input-wrapper input {
-  width: 100%;
-  padding: 18px 24px;
-  border-radius: 20px;
-  border: 4px solid #ffffffaa;
-  outline: none;
-  font-family: inherit;
-  font-size: 1rem;
-  background: #ffffffb3;
-  box-shadow: var(--s);
-  transition: .3s;
-}
-.search-input-wrapper input:focus {
-  border-color: var(--v);
-  background: #fff;
-}
-.category-filters {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.cat-btn {
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 2px solid #5b8c5a22;
-  background: #ffffffaa;
-  color: var(--t);
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: .3s;
-}
-.cat-btn:hover, .cat-btn.active {
-  background: var(--v);
-  color: #fff;
-  border-color: var(--v);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(91,140,90,0.15);
-}
-
-/* Grid layout for cards */
-.spaces-grid {
-  max-width: 1200px;
-  margin: 0 auto 100px;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-.space-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(91, 140, 90, 0.06);
-  border: 1px solid rgba(91, 140, 90, 0.15);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  display: flex;
-  flex-direction: column;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-.space-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(91, 140, 90, 0.15);
-  border-color: rgba(91, 140, 90, 0.35);
-}
-.space-img {
-  height: 160px;
-  overflow: hidden;
-  position: relative;
-}
-.space-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: .6s;
-}
-.space-card:hover .space-img img {
-  transform: scale(1.08);
-}
-.space-tag {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: var(--v);
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-.space-body {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-.space-body h3 {
-  font-size: 1.15rem;
-  color: var(--v);
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-.space-body p {
-  font-size: 0.82rem;
-  line-height: 1.6;
-  color: #666;
-  margin-bottom: 16px;
-  flex-grow: 1;
-  text-align: left;
-}
-.space-details {
-  border-top: 1px solid #5b8c5a11;
-  padding-top: 16px;
-  font-size: 0.82rem;
-  color: #777;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-.space-btns {
-  display: flex;
-  gap: 12px;
-}
-.space-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-align: center;
-  transition: .3s;
-  cursor: pointer;
-}
-.space-btn.map {
-  background: var(--v);
-  color: #fff !important;
-  box-shadow: 0 4px 10px rgba(91,140,90,0.2);
-}
-.space-btn.map:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(91,140,90,0.3);
-}
-.space-btn.contact {
-  border: 2px solid var(--v);
-  color: var(--v);
-  background: transparent;
-}
-.space-btn.contact:hover {
-  background: var(--v);
-  color: #fff !important;
-}
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 60px 0;
-  color: #888;
-  font-style: italic;
-  font-size: 1.1rem;
-}
-
-/* API Modal */
-.api-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px);
-  z-index: 100000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: .4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.api-modal.show {
-  opacity: 1;
-  pointer-events: all;
-}
-.api-modal-content {
-  background: #F7F2EA;
-  border: 4px solid #ffffffaa;
-  border-radius: 28px;
-  padding: 35px;
-  width: 90%;
-  max-width: 480px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-  transform: translateY(30px) scale(0.95);
-  transition: .4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.api-modal.show .api-modal-content {
-  transform: translateY(0) scale(1);
-}
-.api-modal-content h3 {
-  color: #5B8C5A;
-  margin-bottom: 12px;
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.api-modal-content p {
-  font-size: 0.88rem;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-.api-modal-content input {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 2px solid #5b8c5a22;
-  outline: none;
-  font-family: inherit;
-  font-size: 0.95rem;
-  background: #fff;
-  margin-bottom: 20px;
-  transition: .3s;
-}
-.api-modal-content input:focus {
-  border-color: #5B8C5A;
-  box-shadow: 0 0 10px rgba(91,140,90,0.15);
-}
-.api-modal-btns {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-.api-modal-btn {
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  transition: .3s;
-  font-size: 0.9rem;
-}
-.api-modal-btn.save {
-  background: #5B8C5A;
-  color: #fff;
-}
-.api-modal-btn.save:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(91,140,90,0.3);
-}
-.api-modal-btn.cancel {
-  background: #e0dcd5;
-  color: #555;
-}
-
-footer { padding: 40px; text-align: center; color: #777; }
-
-@media(max-width: 900px) {
-  h1 { font-size: 3rem; }
-  .hero { padding-top: 240px; }
-}
-@media(max-width: 700px) {
-  nav { padding: 14px; flex-direction: column; gap: 15px; }
-  .links { justify-content: center; }
-  .hero { padding-top: 260px; }
-}
-
-   /* Custom API Styles */
-   .api-source-badge {
-       position: absolute;
-       top: 14px;
-       left: 14px;
-       padding: 6px 12px;
-       border-radius: 20px;
-       font-size: 0.72rem;
-       font-weight: 700;
-       text-transform: uppercase;
-       letter-spacing: 0.5px;
-       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-       z-index: 10;
-       font-family: 'Poppins', sans-serif;
-   }
-   .api-source-badge.online {
-       background: #5b8c5a !important;
-       color: #ffffff !important;
-       border: 1px solid rgba(255, 255, 255, 0.2);
-   }
-   .api-source-badge.offline {
-       background: #e5c158 !important;
-       color: #3b3b3b !important;
-       border: 1px solid rgba(255, 255, 255, 0.2);
-   }
-   @keyframes pulseFixed {
-       0% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0.4); }
-       70% { box-shadow: 0 0 0 6px rgba(91, 140, 90, 0); }
-       100% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0); }
-   }
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/supabase-integration.js?v=2"></script>
+  <link rel="stylesheet" href="../css/global.css">
 </head>
+<body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
-<body>
-
-<nav>
-<div class="logo">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
-  <div>
-    <b>Mapeamento Cultural</b>
-    <span>Vale do Paraíba • IFSP</span>
-  </div>
-</div>
-
-<div class="links">
-  <a href="../index.html">Home</a>
-  <a href="../mapa/index.html">Mapa</a>
-  <a href="../calendario/index.html">Calendário</a>
-  <a href="../eventos/index.html">Eventos</a>
-  <a href="../espacos/index.html" class="active">Espaços</a>
-  <a href="../agentes/index.html">Agentes</a>
-  <a href="../perfil/index.html">Perfil</a>
-  <a href="../mensagens/index.html">Mensagens</a>
-
-  <div class="api-status-badge" id="apiStatusBadge" onclick="abrirConfiguradorAPI()" style="display:flex;align-items:center;gap:6px;font-size:0.8rem;background:#e5c15822;color:#c68d1b;padding:8px 14px;border-radius:12px;cursor:pointer;font-weight:600;transition:.3s;">
-    <span style="width:8px;height:8px;border-radius:50%;background:#c68d1b;display:inline-block;" id="apiStatusDot"></span>
-    <span id="apiStatusText">Modo Estático</span>
-  </div>
-</div>
-</nav>
-
-<section class="hero">
-  <div class="badge">️ Os polos criativos do Vale do Paraíba</div>
-  <h1>Espaços Culturais</h1>
-  <p>Encontre centros culturais, teatros, ateliês, bibliotecas e museus que oferecem atividades e movimentam o cenário cultural local.</p>
-</section>
-
-<!-- Painel de Busca e Filtros -->
-<section class="search-filter-box">
-  <div class="search-input-wrapper">
-    <input type="text" id="searchInput" placeholder="Pesquisar espaço por nome, endereço ou tipo..." oninput="filtrarEspacos()">
-  </div>
-  <div class="category-filters">
-    <button class="cat-btn active" onclick="filtrarTipo('todos', this)">Todos</button>
-    <button class="cat-btn" onclick="filtrarTipo('Museu', this)">Museus</button>
-    <button class="cat-btn" onclick="filtrarTipo('Teatro', this)">Teatros</button>
-    <button class="cat-btn" onclick="filtrarTipo('Biblioteca', this)">Bibliotecas</button>
-    <button class="cat-btn" onclick="filtrarTipo('Coletivo', this)">Coletivos</button>
-  </div>
-</section>
-
-<!-- Grid de Espaços -->
-<section class="spaces-grid" id="spacesGrid">
-  <!-- Gerado dinamicamente -->
-</section>
-
-<!-- Modal de Configuração de API (Premium) -->
-<div class="api-modal" id="apiModal">
-  <div class="api-modal-content">
-    <h3> Configurar Conexão do Servidor</h3>
-    <p>O Mapeamento Cultural funciona por padrão em <b>Modo Estático (Dados Locais Mockados)</b>. Para conectá-lo a um banco real usando o backend Python com túnel Cloudflare, insira a URL gerada abaixo.</p>
-    <label style="display:block;margin-bottom:8px;font-size:0.85rem;font-weight:600;color:#555;">URL do Servidor API:</label>
-    <input type="text" id="apiUrlInput" placeholder="Ex: https://xxx.trycloudflare.com ou http://localhost:8000">
-    <div class="api-modal-btns">
-      <button class="api-modal-btn cancel" onclick="fecharConfiguradorAPI()">Cancelar</button>
-      <button class="api-modal-btn save" onclick="salvarConfiguradorAPI()">Salvar & Testar</button>
-    </div>
-  </div>
-</div>
-
-<style>
-.cute-footer {
-  background: #ffffffb3;
-  backdrop-filter: blur(12px);
-  border-top: 2px solid #5b8c5a22;
-  padding: 60px 40px 20px;
-  color: var(--t);
-  margin-top: 60px;
-  border-radius: 40px 40px 0 0;
-  box-shadow: 0 -10px 40px rgba(91,140,90,.05);
-}
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 2fr;
-  gap: 40px;
-  text-align: left;
-}
-.footer-column h3 {
-  color: var(--v);
-  font-size: 1.15rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-.footer-column p {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: #666;
-  margin-bottom: 12px;
-}
-.footer-column a {
-  padding: 0;
-  border-radius: 0;
-  color: var(--v);
-  font-weight: 600;
-  display: inline;
-}
-.footer-column a:hover {
-  background: transparent;
-  color: var(--v);
-  text-decoration: underline;
-  transform: none;
-  box-shadow: none;
-}
-.footer-socials {
-  list-style: none;
-}
-.footer-socials li {
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-}
-.footer-socials a {
-  color: #666;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-.footer-socials a:hover {
-  color: var(--v);
-  text-decoration: none;
-}
-.cepin-btn-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-cepin {
-  background: var(--v);
-  color: #fff !important;
-  font-size: 1.1rem;
-  padding: 16px 28px !important;
-  border-radius: 20px !important;
-  box-shadow: 0 10px 25px rgba(91,140,90,.3);
-  text-align: center;
-  width: 100%;
-  display: block !important;
-  font-weight: 700 !important;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-.btn-cepin:hover {
-  background: var(--v) !important;
-  color: #fff !important;
-  transform: translateY(-5px) scale(1.02) !important;
-  box-shadow: 0 15px 30px rgba(91,140,90,.45) !important;
-}
-.footer-bottom {
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding-top: 20px;
-  border-top: 1px solid #5b8c5a11;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #888;
-}
-@media (max-width: 900px) {
-  .footer-container {
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-  }
-}
-@media (max-width: 600px) {
-  .footer-container {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    text-align: center;
-  }
-  .cepin-btn-column {
-    justify-content: center;
-  }
-  .btn-cepin {
-    width: 80%;
-  }
-}
-</style>
-
-<footer class="cute-footer">
-  <div class="footer-container">
-    <div class="footer-column results-column">
-      <h3> Conheça o I Diagnóstico do Mercado Cultural de Jacareí que deu origem a essa e outras ações</h3>
-      <p>Clique <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">AQUI</a> para conhecer o Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</p>
+  <nav id="navbar" class="fixed top-0 w-full px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
+    <div class="flex items-center gap-3 mb-4 md:mb-0">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
+      <div>
+        <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
+        <span class="text-xs text-muted-foreground font-medium uppercase tracking-widest">Vale do Paraíba</span>
+      </div>
     </div>
     
-    <div class="footer-column info-column">
-      <h3> Localização e Contato</h3>
-      <p><strong>Endereço:</strong> R. Antônio Fogaça de Almeida, 200 - Jardim América, Jacareí - SP, 12322-030 Sala 116 – CEPIN JCR</p>
-      <p><strong>Contato:</strong> Email: <a href="mailto:cepinjcr@gmail.com">cepinjcr@gmail.com</a></p>
+    <div class="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-sm font-medium">
+      <a href="../index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="../mapa/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="../calendario/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="../eventos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="index.html" class="px-4 py-2 rounded-lg bg-primary/10 text-primary font-semibold transition-colors">Espaços</a>
+      <a href="../agentes/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="../perfil/index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Entrar
+      </a>
     </div>
-    
-    <div class="footer-column social-column">
-      <h3> Redes Sociais</h3>
-      <ul class="footer-socials">
-        <li><a href="https://instagram.com/cepinjcr" target="_blank"> Instagram: @cepinjcr</a></li>
-        <li><a href="https://facebook.com" target="_blank"> Facebook: Cepin Jcr</a></li>
-        <li><a href="https://youtube.com" target="_blank"> YouTube: CEPIN JCR</a></li>
-      </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="pt-32 pb-16 px-6 bg-muted/30 border-b border-border text-center">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Espaços Culturais</h1>
+      <p class="text-lg text-muted-foreground">
+        Descubra museus, teatros, praças e ateliês que movimentam a cultura no Vale do Paraíba.
+      </p>
     </div>
-    
-    <div class="footer-column cepin-btn-column" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <a href="../cepin/index.html" class="btn btn-cepin"> Conheça o nosso projeto e o CEPIN</a>
-      <p style="font-size: 0.8rem; color: #666; text-align: center; margin-top: 10px; line-height: 1.4;">conheça os detalhes do nosso projeto de extensão, pesquisa e o CEPIN.</p>
+  </header>
+
+  <!-- Search and Filters Section -->
+  <section class="max-w-7xl mx-auto px-6 py-8">
+    <div class="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col md:flex-row gap-4 items-center">
+      <div class="w-full md:flex-1 relative">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="Buscar espaços..." class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+      </div>
+      <div class="flex flex-wrap gap-2 w-full md:w-auto justify-center">
+        <button class="cat-btn bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors shadow-sm">Todos</button>
+        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary">Públicos</button>
+        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary">Privados</button>
+      </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural do Vale do Paraíba via projetos de pesquisa e extensão.</p>
-  </div>
-</footer>
+  </section>
 
-<script>
-let isApiOnline = false;
+  <!-- Grid -->
+  <section class="max-w-7xl mx-auto px-6 mb-24">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- Card -->
+      <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
+        <div class="h-48 overflow-hidden bg-muted relative">
+          <img src="https://picsum.photos/600/400?1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2 py-1 rounded">Museu</div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">MAB - Museu de Antropologia</h3>
+          <p class="text-sm text-muted-foreground mb-4 line-clamp-3">Espaço histórico que abriga acervos valiosos sobre a cultura, arte popular e a memória da sociedade do Vale do Paraíba.</p>
+          <div class="flex items-center gap-2 text-xs text-muted-foreground mt-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Centro, Jacareí - SP
+          </div>
+        </div>
+      </div>
 
-// Mock de Espaços para Fallback
-const MOCK_ESPACOS = [
-    {id: 1, nome: "MAB - Museu de Antropologia do Vale do Paraíba", tipo: "Museu", endereco: "R. XV de Novembro, 143 - Centro, Jacareí - SP", lat: -23.3053, lng: -45.9658, descricao: "Espaço histórico que abriga acervos valiosos sobre a cultura, arte popular e a memória da sociedade do Vale do Paraíba.", contato: "mab@jacarei.sp.gov.br", foto: "https://picsum.photos/600/400?10"},
-    {id: 2, nome: "Sala Mário Lago", tipo: "Teatro", endereco: "Pça. Raul Chaves, 110 - Centro, Jacareí - SP", lat: -23.3061, lng: -45.9669, descricao: "Importante casa de espetáculos municipal, palco de apresentações teatrais, dança, exibições cinematográficas e concertos musicais gratuitos.", contato: "cultura@jacarei.sp.gov.br", foto: "https://picsum.photos/600/400?11"},
-    {id: 3, nome: "Parque dos Espanhóis", tipo: "Centro Cultural", endereco: "Av. Joaquim Alvarenga, 450 - Jardim Santa Maria, Jacareí - SP", lat: -23.2980, lng: -45.9750, descricao: "Espaço verde voltado ao lazer, com anfiteatro ao ar livre, quadras esportivas e encontros de coletivos artísticos nos finais de semana.", contato: "parque.espanhois@email.com", foto: "https://picsum.photos/600/400?12"},
-    {id: 4, nome: "Biblioteca Municipal Macedo Soares", tipo: "Biblioteca", endereco: "Av. Nove de Julho, 215 - Centro, Jacareí - SP", lat: -23.3035, lng: -45.9610, descricao: "Ambiente tranquilo de leitura com acervo de milhares de livros, espaço infantil, computadores para estudo e oficinas literárias.", contato: "biblioteca@jacarei.sp.gov.br", foto: "https://picsum.photos/600/400?13"},
-    {id: 5, nome: "Ateliê Vivo", tipo: "Ateliê Coletivo", endereco: "Rua Dr. Lúcio Malta, 380 - Centro, Jacareí - SP", lat: -23.3075, lng: -45.9640, descricao: "Espaço colaborativo independente de artistas locais, promovendo cursos de pintura, argila, escrita criativa e saraus abertos à comunidade.", contato: "atelievivo@email.com", foto: "https://picsum.photos/600/400?14", projeto_mulheres: true}
-];
+      <!-- Card -->
+      <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
+        <div class="h-48 overflow-hidden bg-muted relative">
+          <img src="https://picsum.photos/600/400?2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2 py-1 rounded">Teatro</div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Sala Mário Lago</h3>
+          <p class="text-sm text-muted-foreground mb-4 line-clamp-3">Importante casa de espetáculos municipal, palco de apresentações teatrais, dança, exibições cinematográficas e concertos.</p>
+          <div class="flex items-center gap-2 text-xs text-muted-foreground mt-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Centro, Jacareí - SP
+          </div>
+        </div>
+      </div>
 
-let todosEspacos = [];
-let tipoAtivo = 'todos';
+    </div>
+  </section>
 
-// Gerenciador de API
-const APIManager = {
-    async getApiUrl() {
-        let savedUrl = localStorage.getItem('cultural_api_url');
-        
-        // Testa se a URL salva está respondendo, se não, limpa para buscar a nova
-        if (savedUrl) {
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 1500);
-                const res = await fetch(`${savedUrl}/api/test`, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                if (res.ok) return savedUrl;
-            } catch(e) {}
-            localStorage.removeItem('cultural_api_url');
-        }
-        
-        // Tenta auto-descoberta no diretório atual e no diretório pai
-        try {
-            let paths = ['./local_api_url.txt', '../local_api_url.txt', '/mapeamento-cultural-jacarei/local_api_url.txt', '/local_api_url.txt'];
-            for (let path of paths) {
-                const res = await fetch(path);
-                if (res.ok) {
-                    const text = await res.text();
-                    const url = text.trim();
-                    if (url.startsWith('http')) {
-                        localStorage.setItem('cultural_api_url', url);
-                        return url;
-                    }
-                }
-            }
-        } catch(e) {}
-        
-        return 'http://localhost:8000';
-    },
+  <!-- Footer -->
+  <footer class="bg-background pt-16 pb-8 px-6 border-t border-border mt-12">
+    <div class="max-w-7xl mx-auto border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+      <p>© 2026 Mapeamento Cultural do Vale do Paraíba.</p>
+    </div>
+  </footer>
 
-        async checkStatus() {
-        const apiUrl = await this.getApiUrl();
-        const badge = document.getElementById('apiStatusBadge');
-        const dot = document.getElementById('apiStatusDot');
-        const text = document.getElementById('apiStatusText');
-        
-        let isOnline = false;
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 2000);
-            const res = await fetch(`${apiUrl}/api/test`, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (res.ok) isOnline = true;
-        } catch(e) {}
-        
-        // Atualiza o badge superior se ele existir na página
-        if (badge && dot && text) {
-            if (isOnline) {
-                badge.style.background = '#5b8c5a22';
-                badge.style.color = '#5b8c5a';
-                dot.style.background = '#5b8c5a';
-                text.innerText = 'API Conectada';
-            } else {
-                badge.style.background = '#e5c15822';
-                badge.style.color = '#c68d1b';
-                dot.style.background = '#c68d1b';
-                text.innerText = 'Modo Estático';
-            }
-        }
-        
-        // Atualiza a variável global de controle de status se ela existir
-        if (typeof isApiOnline !== 'undefined') {
-            isApiOnline = isOnline;
-        }
-        
-        // Injeta/Atualiza o indicador flutuante fixado no canto inferior direito
-        let fixedBadge = document.getElementById('fixedApiStatus');
-        if (!fixedBadge) {
-            fixedBadge = document.createElement('div');
-            fixedBadge.id = 'fixedApiStatus';
-            fixedBadge.onclick = abrirConfiguradorAPI;
-            fixedBadge.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 99999;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 30px;
-                padding: 10px 18px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-                font-size: 0.82rem;
-                font-weight: 700;
-                font-family: 'Poppins', sans-serif;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            `;
-            fixedBadge.onmouseover = () => {
-                fixedBadge.style.transform = 'translateY(-4px) scale(1.03)';
-                fixedBadge.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.18)';
-            };
-            fixedBadge.onmouseout = () => {
-                fixedBadge.style.transform = 'none';
-                fixedBadge.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.12)';
-            };
-            document.body.appendChild(fixedBadge);
-        }
-        
-        if (isOnline) {
-            fixedBadge.style.border = '1px solid rgba(91, 140, 90, 0.3)';
-            fixedBadge.style.background = 'rgba(255, 255, 255, 0.95)';
-            fixedBadge.innerHTML = `
-                <span style="width: 10px; height: 10px; border-radius: 50%; background: #5b8c5a; display: inline-block; animation: pulseFixed 2s infinite;"></span>
-                <span style="color: #5b8c5a;"> API Conectada</span>
-            `;
-            fixedBadge.onclick = abrirConfiguradorAPI;
-        } else {
-            fixedBadge.style.border = '1px solid rgba(220, 53, 69, 0.3)';
-            fixedBadge.style.background = 'rgba(255, 255, 255, 0.95)';
-            fixedBadge.innerHTML = `
-                <span style="width: 10px; height: 10px; border-radius: 50%; background: #dc3545; display: inline-block;"></span>
-                <span style="color: #dc3545;"> API Desconectada (Modo Estático)</span>
-            `;
-            fixedBadge.onclick = abrirConfiguradorAPI;
-        }
-        
-        return isOnline;
-    }
-};
-
-function abrirConfiguradorAPI() {
-    APIManager.getApiUrl().then(url => {
-        document.getElementById('apiUrlInput').value = url;
-        document.getElementById('apiModal').classList.add('show');
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-md', 'bg-background/95');
+        navbar.classList.remove('bg-background/80');
+      } else {
+        navbar.classList.add('bg-background/80');
+        navbar.classList.remove('shadow-md', 'bg-background/95');
+      }
     });
-}
-
-function fecharConfiguradorAPI() {
-    document.getElementById('apiModal').classList.remove('show');
-}
-
-function salvarConfiguradorAPI() {
-    let url = document.getElementById('apiUrlInput').value.trim();
-    if (url.endsWith('/')) url = url.slice(0, -1);
-    
-    if (url) {
-        localStorage.setItem('cultural_api_url', url);
-    } else {
-        localStorage.removeItem('cultural_api_url');
-    }
-    
-    fecharConfiguradorAPI();
-    APIManager.checkStatus().then(connected => {
-        if (connected) {
-            alert(" Conectado com sucesso! A lista de espaços será recarregada.");
-        } else {
-            alert("️ Servidor indisponível. A lista usará o Modo Estático.");
-        }
-        window.location.reload();
-    });
-}
-
-// LOGICA DOS ESPAÇOS
-
-async function carregarEspacos() {
-    const isOnline = await APIManager.checkStatus();
-    isApiOnline = isOnline;
-    todosEspacos = MOCK_ESPACOS;
-    
-    if (isOnline) {
-        try {
-            const apiUrl = await APIManager.getApiUrl();
-            const res = await fetch(`${apiUrl}/api/espacos`);
-            if (res.ok) {
-                todosEspacos = await res.json();
-            }
-        } catch(e) {
-            console.error("Erro ao carregar espaços da API", e);
-        }
-    }
-    renderizarGrid(todosEspacos);
-}
-
-function renderizarGrid(espacos) {
-    const grid = document.getElementById('spacesGrid');
-    grid.innerHTML = "";
-    
-    if (espacos.length === 0) {
-        grid.innerHTML = `<div class="no-results">Nenhum espaço cultural localizado para a busca atual.</div>`;
-        return;
-    }
-    
-    espacos.forEach(esp => {
-        const card = document.createElement('div');
-        card.className = "space-card";
-        
-        let tagStyle = "";
-        let h3Style = "";
-        let btnMapStyle = "";
-        let btnContactStyle = "";
-        if (esp.projeto_mulheres === true) {
-            card.style.borderColor = "#b83b5e44";
-            card.style.background = "#fff0f5b3";
-            tagStyle = "style='background: #B83B5E;'";
-            h3Style = "style='color: #B83B5E;'";
-            btnMapStyle = "style='background: #B83B5E; border-color: #B83B5E; color: #fff;'";
-            btnContactStyle = "style='background: transparent; border-color: #B83B5E; color: #B83B5E;'";
-        }
-        
-        let descText = esp.descricao || 'Sem descrição cadastrada.';
-        let descHtml = descText;
-        if (descText.length > 150) {
-            const shortText = descText.substring(0, 150) + '...';
-            descHtml = `<span class="bio-short">${shortText} <a href="#" class="ver-mais-link" onclick="window.toggleBio(event, this)" style="color: ${esp.projeto_mulheres ? '#b83b5e' : 'var(--v)'}; font-weight: 600; cursor: pointer; text-decoration: underline;">Ver mais</a></span>
-                        <span class="bio-full" style="display: none;">${descText} <a href="#" class="ver-mais-link" onclick="window.toggleBio(event, this)" style="color: ${esp.projeto_mulheres ? '#b83b5e' : 'var(--v)'}; font-weight: 600; cursor: pointer; text-decoration: underline;">Ver menos</a></span>`;
-        }
-        
-        const badgeHtml = isApiOnline ? '<span class="api-source-badge online"> API Real</span>' : '<span class="api-source-badge offline"> Dados locais (Mock)</span>';
-        card.innerHTML = `
-            <div class="space-img" style="position:relative;">
-                ${badgeHtml}
-                <span class="space-tag" ${tagStyle} style="z-index: 11;">${esp.tipo}</span>
-                <img src="${esp.foto || 'https://picsum.photos/600/400?random=' + esp.id}" alt="${esp.nome}">
-            </div>
-            <div class="space-body">
-                <h3 ${h3Style}>${esp.nome}</h3>
-                <p>${descHtml}</p>
-                <div class="space-details">
-                    <span> <b>Endereço:</b> ${esp.endereco}</span>
-                    <span>️ <b>Contato:</b> ${esp.contato || 'Não informado'}</span>
-                </div>
-                <div class="space-btns">
-                    <a class="space-btn map" ${btnMapStyle} href="../mapa/?lat=${esp.lat}&lng=${esp.lng}">Ver no Mapa</a>
-                    <a class="space-btn contact" ${btnContactStyle} href="mailto:${esp.contato}">Contato</a>
-                </div>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function filtrarEspacos() {
-    const query = document.getElementById('searchInput').value.toLowerCase().trim();
-    
-    const filtrados = todosEspacos.filter(esp => {
-        const matchesQuery = esp.nome.toLowerCase().includes(query) || 
-                             esp.endereco.toLowerCase().includes(query) || 
-                             esp.tipo.toLowerCase().includes(query) ||
-                             (esp.descricao && esp.descricao.toLowerCase().includes(query));
-                             
-        const matchesType = (tipoAtivo === 'todos') || 
-                            esp.tipo.toLowerCase().includes(tipoAtivo.toLowerCase());
-                                
-        return matchesQuery && matchesType;
-    });
-    
-    renderizarGrid(filtrados);
-}
-
-function filtrarTipo(tipo, button) {
-    document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-    tipoAtivo = tipo;
-    filtrarEspacos();
-}
-
-// Inicializações da barra superior
-const n = document.querySelector('nav');
-onscroll = () => {
-    n.style.padding = scrollY > 50 ? '14px 40px' : '18px 40px';
-    n.style.boxShadow = scrollY > 50 ? '0 10px 30px rgba(0,0,0,.08)' : 'none';
-};
-
-// Execução ao carregar
-carregarEspacos();
-
-// Diagnostic code to check footer status in console
-console.log("=== DIAGNÓSTICO DO RODAPÉ ===");
-const debugFooter = document.querySelector('.cute-footer');
-if (debugFooter) {
-    console.log(" Elemento do rodapé encontrado no DOM.");
-    const debugStyle = window.getComputedStyle(debugFooter);
-    console.log("Display:", debugStyle.display);
-    console.log("Visibility:", debugStyle.visibility);
-    console.log("Opacity:", debugStyle.opacity);
-    console.log("Height (offsetHeight):", debugFooter.offsetHeight, "px");
-    if (debugFooter.offsetHeight === 0) {
-        console.warn("Atenção: O rodapé tem altura 0! Pode estar ocultado por layout.");
-    }
-} else {
-    console.error(" Elemento do rodapé NÃO encontrado no DOM! A página pode estar desatualizada (cache).");
-}
-</script>
-
-
-
+  </script>
 </body>
 </html>

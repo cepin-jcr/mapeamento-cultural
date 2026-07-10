@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil do Agente • Mapeamento Cultural</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind CSS Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+              glow: "hsl(var(--primary-glow))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+            mulheres: "hsl(var(--mulheres-pink))"
+          },
+          boxShadow: {
+            'carnival': 'var(--shadow-carnival)',
+            'soft': 'var(--shadow-soft)',
+          },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Global Custom CSS -->
+  <link rel="stylesheet" href="../css/global.css">
+
+  <!-- Leaflet CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Supabase Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-integration.js?v=2"></script>
+</head>
+<body class="min-h-screen bg-background text-foreground transition-all duration-300">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-0 w-full px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
+    <div class="flex items-center gap-3 mb-4 md:mb-0">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
+      <div>
+        <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
+        <span class="text-xs text-muted-foreground font-medium uppercase tracking-widest">Vale do Paraíba</span>
+      </div>
+    </div>
+    
+    <div class="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-sm font-medium">
+      <a href="../index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="../mapa/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="../calendario/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="../eventos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="../espacos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
+      <a href="index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="../perfil/index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Entrar
+      </a>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-6 py-32 max-w-7xl">
+    
+    <!-- Back Navigation Button -->
+    <a href="index.html" class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Voltar para Agentes
+    </a>
+    
+    <!-- NotFound Container (Hidden by default) -->
+    <div id="agente-not-found" class="hidden text-center py-24 bg-card rounded-xl border border-border shadow-sm">
+      <h1 class="text-3xl font-display font-bold mb-4 text-foreground">Agente não encontrado</h1>
+      <p class="text-muted-foreground mb-8">O perfil solicitado não existe ou foi removido.</p>
+      <a href="index.html" class="bg-primary hover:bg-primary-glow text-primary-foreground font-medium py-2.5 px-6 rounded-md shadow-sm transition-colors">
+        Voltar à página inicial
+      </a>
+    </div>
+
+    <!-- Profile Grid Container -->
+    <div id="agente-profile-content" class="grid lg:grid-cols-3 gap-8 hidden">
+      
+      <!-- Main Content (Left Column) -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Hero Section Card -->
+        <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm relative group">
+          <div class="relative h-64 md:h-80 w-full">
+            <img 
+              id="agente-hero-image"
+              src="https://picsum.photos/800/400" 
+              alt="Capa do Agente"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            
+            <div id="badge-mulheres" class="absolute top-4 right-4 hidden">
+              <span class="bg-mulheres text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-md shadow-sm border border-white/20 flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                Mulheres na Música
+              </span>
+            </div>
+
+            <div class="absolute bottom-6 left-6 right-6">
+              <span id="agente-area" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/10 text-white text-xs font-semibold uppercase tracking-wider mb-3 shadow-sm border border-white/20 backdrop-blur-sm">
+                Área
+              </span>
+              <h1 id="agente-name" class="text-3xl md:text-5xl font-display font-bold text-white mb-2 leading-tight">
+                Carregando...
+              </h1>
+              <div class="flex items-center gap-1.5 text-white/80">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span id="agente-location" class="text-sm font-medium">Vale do Paraíba - SP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Section Card -->
+        <div class="rounded-xl border border-border bg-card text-card-foreground p-6 md:p-8 shadow-sm">
+          <h2 class="text-xl font-display font-bold flex items-center gap-2 mb-6 border-b border-border pb-4 text-foreground">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Sobre o Agente
+          </h2>
+          <div class="space-y-4">
+            <p id="agente-bio" class="text-muted-foreground leading-relaxed">
+              Carregando biografia...
+            </p>
+          </div>
+        </div>
+
+        <!-- Photo Gallery Carousel Card -->
+        <div id="gallery-card" class="rounded-xl border border-border bg-card p-6 md:p-8 shadow-sm">
+          <h2 class="text-xl font-display font-bold mb-6 border-b border-border pb-4 text-foreground flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            Galeria de Fotos
+          </h2>
+          
+          <div class="space-y-4">
+            <!-- Main Display Image -->
+            <div class="relative overflow-hidden rounded-lg aspect-video bg-muted border border-border group">
+              <img 
+                id="gallery-main-image"
+                src="https://picsum.photos/800/400" 
+                alt="Foto"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              />
+              <button
+                onclick="prevGalleryImage()"
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full transition-colors opacity-0 group-hover:opacity-100"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button
+                onclick="nextGalleryImage()"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full transition-colors opacity-0 group-hover:opacity-100"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <div id="gallery-counter" class="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-md text-xs font-medium">
+                1 / 1
+              </div>
+            </div>
+            <!-- Thumbnails Container -->
+            <div id="gallery-thumbnails" class="grid grid-cols-5 sm:grid-cols-6 gap-2">
+              <!-- Rendered Dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Sidebar Content (Right Column) -->
+      <div class="space-y-6">
+        
+        <!-- Details Card -->
+        <div class="rounded-xl border border-border bg-card text-card-foreground p-6 shadow-sm sticky top-24">
+          <h3 class="text-lg font-display font-bold mb-4 border-b border-border pb-3 text-foreground">Ficha Técnica</h3>
+          
+          <div class="space-y-4">
+            
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border">
+              <div class="text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div>
+                <p class="font-semibold text-xs text-foreground uppercase tracking-wider">Especialidade</p>
+                <p id="sidebar-area" class="text-sm text-muted-foreground">Carregando...</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border">
+              <div class="text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </div>
+              <div class="overflow-hidden">
+                <p class="font-semibold text-xs text-foreground uppercase tracking-wider">Contato</p>
+                <p id="sidebar-contato" class="text-sm text-muted-foreground truncate">Carregando...</p>
+              </div>
+            </div>
+
+            <div class="h-[1px] bg-border my-6"></div>
+            
+            <!-- Action buttons -->
+            <div class="flex flex-col gap-3">
+              <button 
+                id="btn-direct-contact"
+                class="w-full bg-foreground hover:bg-foreground/90 text-background font-medium py-2.5 px-4 rounded-md text-sm transition-colors flex items-center justify-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Entrar em Contato
+              </button>
+              
+              <div class="grid grid-cols-2 gap-3">
+                <button 
+                  onclick="alert('Link copiado!')"
+                  class="bg-background border border-border hover:border-foreground text-foreground font-medium py-2.5 px-3 rounded-md text-xs transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  Compartilhar
+                </button>
+                <button 
+                  id="btn-favorite"
+                  onclick="toggleFavorite()"
+                  class="bg-background border border-border hover:border-foreground text-foreground font-medium py-2.5 px-3 rounded-md text-xs transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <svg id="fav-icon-svg" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                  Salvar
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-background pt-16 pb-8 px-6 border-t border-border mt-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-3 mb-6">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10">
+          <b class="text-foreground font-display font-bold">CEPIN JCR</b>
+        </div>
+        <p class="text-sm text-muted-foreground leading-relaxed">
+          Desenvolvido em parceria com a classe artística e cultural do Vale do Paraíba via projetos de pesquisa e extensão do IFSP Campus Jacareí.
+        </p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto border-t border-border pt-8 text-xs text-muted-foreground">
+      <p>© 2026 Mapeamento Cultural do Vale do Paraíba.</p>
+    </div>
+  </footer>
+
+  <script>
+    let agente = null;
+    let galleryImages = [];
+    let currentImgIdx = 0;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug');
+
+    function slugify(text) {
+      if(!text) return '';
+      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+    }
+
+    async function loadAgente() {
+      if (!slug || !window.supabaseClient) {
+        document.getElementById('agente-not-found').classList.remove('hidden');
+        return;
+      }
+      
+      let extraData = {};
+      let supaData = null;
+      
+      try {
+        const [extraRes, supaRes] = await Promise.all([
+          fetch('../data/agentes_extra.json').then(r => r.json()).catch(() => ({})),
+          supabaseClient.from('agentes').select('*')
+        ]);
+        
+        extraData = extraRes[slug] || {};
+        
+        if (supaRes.data) {
+          supaData = supaRes.data.find(a => slugify(a.nome) === slug);
+        }
+      } catch(e) {}
+      
+      if (!supaData && !extraData.nome_original) {
+        document.getElementById('agente-not-found').classList.remove('hidden');
+        return;
+      }
+      
+      agente = supaData || { nome: extraData.nome_original, bio: "Nenhuma biografia informada.", area: "Diversos" };
+
+      document.getElementById('agente-profile-content').classList.remove('hidden');
+      
+      document.title = `${agente.nome || 'Agente'} • Mapeamento Cultural`;
+
+      document.getElementById('agente-name').innerText = agente.nome || 'Sem Nome';
+      document.getElementById('agente-area').innerText = agente.area || 'Diversos';
+      document.getElementById('sidebar-area').innerText = agente.area || 'Diversos';
+      document.getElementById('agente-bio').innerText = agente.bio || 'Nenhuma biografia informada.';
+      
+      let contatoText = agente.contato || 'Não informado';
+      if (extraData.localizacao) contatoText += `\\n\\n📍 Endereço:\\n${extraData.localizacao}`;
+      document.getElementById('sidebar-contato').innerText = contatoText;
+
+      if (agente.projeto_mulheres) {
+        document.getElementById('badge-mulheres').classList.remove('hidden');
+      }
+
+      document.getElementById('agente-hero-image').src = agente.foto && agente.foto !== '../img/agentes/default.webp' ? agente.foto : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+
+      // Gallery
+      galleryImages = [];
+      if (agente.foto && agente.foto !== '../img/agentes/default.webp') galleryImages.push(agente.foto);
+      if (extraData.fotos_galeria && Array.isArray(extraData.fotos_galeria)) {
+        galleryImages = galleryImages.concat(extraData.fotos_galeria);
+      }
+      
+      if (galleryImages.length === 0) {
+        galleryImages.push('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800');
+        document.getElementById('gallery-card').style.display = 'none';
+      } else if (galleryImages.length === 1 && galleryImages[0] === agente.foto) {
+        document.getElementById('gallery-card').style.display = 'none';
+      } else {
+        renderGallery();
+      }
+      
+      updateFavIcon();
+
+      document.getElementById('btn-direct-contact').onclick = () => {
+        if (agente.contato) {
+          window.location.href = `mailto:${agente.contato.split(' | ')[0]}`;
+        } else {
+          alert('Contato não disponível.');
+        }
+      };
+      
+      injectDynamicSections(extraData);
+    }
+    
+    function createSection(title, content, iconHtml) {
+      if (!content || content.trim() === '') return '';
+      return `
+        <div class="rounded-xl border border-border bg-card text-card-foreground p-6 md:p-8 shadow-sm mt-8">
+          <h2 class="text-xl font-display font-bold flex items-center gap-2 mb-6 border-b border-border pb-4 text-foreground">
+            ${iconHtml}
+            ${title}
+          </h2>
+          <div class="space-y-4 text-muted-foreground leading-relaxed break-words whitespace-pre-wrap">${content}</div>
+        </div>
+      `;
+    }
+    
+    function injectDynamicSections(extra) {
+      const container = document.querySelector('.lg\\:col-span-2');
+      let html = '';
+      
+      const svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+      const docIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>';
+      const mapIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+      const vidIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polygon points="23 7 16 12 23 17 23 7"/><rect width="15" height="14" x="1" y="5" rx="2" ry="2"/></svg>';
+      
+      html += createSection('Linguagens Artísticas e Produtos', extra.linguagens, svgIcon);
+      html += createSection('Redes Sociais', extra.redes_sociais, svgIcon);
+      
+      if (extra.videos_galeria && extra.videos_galeria.length > 0) {
+        let vidHtml = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+        extra.videos_galeria.forEach(v => {
+          vidHtml += `<video controls preload="metadata" class="w-full rounded-lg aspect-video bg-black/5 border border-border"><source src="${v}" type="video/webm">Seu navegador não suporta vídeos.</video>`;
+        });
+        vidHtml += '</div>';
+        html += createSection('Vídeos e Mídias', vidHtml, vidIcon);
+      }
+      
+      if (extra.documentos && extra.documentos.length > 0) {
+        let docHtml = '<div class="flex flex-col gap-2">';
+        extra.documentos.forEach(d => {
+          const parts = d.split('/');
+          const filename = parts[parts.length - 1];
+          docHtml += `<a href="${d}" target="_blank" class="text-primary hover:underline flex items-center gap-2">${docIcon} ${filename}</a>`;
+        });
+        docHtml += '</div>';
+        html += createSection('Documentos', docHtml, docIcon);
+      }
+      
+      if (extra.coordenadas && extra.coordenadas.length === 2) {
+        let mapHtml = `<div id="agent-map" class="w-full rounded-lg border border-border" style="height: 350px; z-index: 10;"></div>`;
+        html += createSection('Localização no Mapa', mapHtml, mapIcon);
+      }
+      
+      if(container) container.insertAdjacentHTML('beforeend', html);
+      
+      if (extra.coordenadas && extra.coordenadas.length === 2) {
+        setTimeout(() => {
+          const map = L.map('agent-map').setView([extra.coordenadas[0], extra.coordenadas[1]], 16);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+          }).addTo(map);
+          L.marker([extra.coordenadas[0], extra.coordenadas[1]]).addTo(map)
+            .bindPopup(`<b>${agente.nome}</b>`)
+            .openPopup();
+        }, 100);
+      }
+    }
+
+    function updateFavIcon() {
+      const favs = JSON.parse(localStorage.getItem('map_favs') || '[]');
+      const iconSvg = document.getElementById('fav-icon-svg');
+      if (favs.includes(agente.id)) {
+        iconSvg.setAttribute('fill', 'currentColor');
+      } else {
+        iconSvg.setAttribute('fill', 'none');
+      }
+    }
+
+    function toggleFavorite() {
+      let favs = JSON.parse(localStorage.getItem('map_favs') || '[]');
+      if (favs.includes(agente.id)) {
+        favs = favs.filter(i => i !== agente.id);
+      } else {
+        favs.push(agente.id);
+      }
+      localStorage.setItem('map_favs', JSON.stringify(favs));
+      updateFavIcon();
+    }
+
+    // Gallery Logic
+    function renderGallery() {
+      const mainImg = document.getElementById('gallery-main-image');
+      const counter = document.getElementById('gallery-counter');
+      const thumbsGrid = document.getElementById('gallery-thumbnails');
+      
+      mainImg.src = galleryImages[currentImgIdx];
+      counter.innerText = `${currentImgIdx + 1} / ${galleryImages.length}`;
+
+      thumbsGrid.innerHTML = '';
+      if (galleryImages.length > 1) {
+        galleryImages.forEach((img, idx) => {
+          const btn = document.createElement('button');
+          btn.className = `relative overflow-hidden rounded-md aspect-square border-2 transition-all duration-300 ${
+            idx === currentImgIdx ? 'border-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-border'
+          }`;
+          btn.onclick = () => {
+            currentImgIdx = idx;
+            renderGallery();
+          };
+          btn.innerHTML = `<img src="${img}" class="w-full h-full object-cover" />`;
+          thumbsGrid.appendChild(btn);
+        });
+      }
+    }
+
+    function prevGalleryImage() {
+      currentImgIdx = (currentImgIdx === 0) ? galleryImages.length - 1 : currentImgIdx - 1;
+      renderGallery();
+    }
+
+    function nextGalleryImage() {
+      currentImgIdx = (currentImgIdx === galleryImages.length - 1) ? 0 : currentImgIdx + 1;
+      renderGallery();
+    }
+
+    // Scroll Navbar Effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-md', 'bg-background/95');
+        navbar.classList.remove('bg-background/80');
+      } else {
+        navbar.classList.add('bg-background/80');
+        navbar.classList.remove('shadow-md', 'bg-background/95');
+      }
+    });
+
+    window.onload = loadAgente;
+  </script>
+</body>
+</html>

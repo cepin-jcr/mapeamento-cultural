@@ -1,1252 +1,355 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Meu Perfil • Mapeamento Cultural</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Perfil • Mapeamento Cultural</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --v: #5B8C5A;
-  --vc: #B8D8BA;
-  --b: #F7F2EA;
-  --t: #3B3B3B;
-  --s: 0 10px 40px rgba(91,140,90,.15);
-}
-body {
-  font-family: Poppins, sans-serif;
-  background: var(--b);
-  color: var(--t);
-  overflow-x: hidden;
-}
-body:before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(circle at 10% 20%, #5b8c5a11, transparent 20%),
-    radial-gradient(circle at 80% 80%, #b8d8ba44, transparent 20%);
-}
-.leaf {
-  position: fixed;
-  width: 30px;
-  opacity: .12;
-  z-index: -1;
-  animation: fall linear infinite;
-}
-.leaf:nth-child(1) { left: 5%; animation-duration: 25s; }
-.leaf:nth-child(2) { left: 85%; animation-duration: 19s; }
-@keyframes fall {
-  from { top: -100px; transform: rotate(0); }
-  to { top: 110vh; transform: rotate(360deg); }
-}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+              glow: "hsl(var(--primary-glow))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+            mulheres: "hsl(var(--mulheres-pink))"
+          },
+          boxShadow: {
+            'carnival': 'var(--shadow-carnival)',
+            'soft': 'var(--shadow-soft)',
+          },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          }
+        }
+      }
+    }
+  </script>
 
-/* Navbar */
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: 18px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffffbb;
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid #5b8c5a22;
-  z-index: 999;
-  transition: .4s;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.logo img {
-  width: 58px;
-  animation: logo 4s ease-in-out infinite;
-}
-@keyframes logo { 50% { transform: translateY(-8px); } }
-.logo b { display: block; font-size: 1.1rem; color: var(--v); }
-.logo span { font-size: .85rem; color: #777; }
-.links { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-a {
-  text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 14px;
-  font-weight: 500;
-  color: var(--t);
-  transition: .35s;
-}
-a:hover, .active {
-  background: var(--v);
-  color: #fff;
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px #5b8c5a33;
-}
+  <link rel="stylesheet" href="../css/global.css">
 
-/* Hero Section */
-.hero {
-  padding: 170px 30px 40px;
-  text-align: center;
-}
-.badge {
-  display: inline-block;
-  padding: 12px 18px;
-  border-radius: 999px;
-  background: #5b8c5a22;
-  color: var(--v);
-  font-weight: 600;
-  margin-bottom: 24px;
-}
-h1 { font-size: 4.5rem; color: var(--v); margin-bottom: 20px; line-height: 1; }
-p { max-width: 800px; margin: auto; line-height: 1.9; color: #666; }
-
-/* Dashboard Layout */
-.dashboard-container {
-  max-width: 1000px;
-  margin: 0 auto 100px;
-  padding: 0 20px;
-}
-.tabs-header {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
-.tab-btn {
-  padding: 14px 24px;
-  border-radius: 16px;
-  border: none;
-  background: #ffffffb3;
-  color: var(--t);
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  box-shadow: var(--s);
-  transition: .3s;
-}
-.tab-btn:hover, .tab-btn.active {
-  background: var(--v);
-  color: #fff;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(91,140,90,0.25);
-}
-
-.tab-content {
-  background: #ffffffb3;
-  backdrop-filter: blur(12px);
-  border-radius: 35px;
-  padding: 40px;
-  box-shadow: var(--s);
-  border: 6px solid #ffffffaa;
-  display: none;
-  animation: fadeIn 0.5s ease;
-}
-.tab-content.active {
-  display: block;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.tab-content h2 {
-  color: var(--v);
-  font-size: 1.8rem;
-  margin-bottom: 24px;
-  border-bottom: 2px solid #5b8c5a22;
-  padding-bottom: 12px;
-}
-
-/* Forms */
-.form-group {
-  margin-bottom: 24px;
-}
-.form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 0.92rem;
-  color: #555;
-}
-.form-group input, .form-group textarea, .form-group select {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 2px solid #5b8c5a22;
-  outline: none;
-  font-family: inherit;
-  font-size: 0.95rem;
-  background: #fff;
-  transition: .3s;
-}
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-  border-color: var(--v);
-  box-shadow: 0 0 10px rgba(91,140,90,0.1);
-}
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-.submit-btn {
-  background: var(--v);
-  color: #fff;
-  border: none;
-  padding: 16px 28px;
-  border-radius: 16px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: .3s;
-  box-shadow: 0 8px 20px rgba(91,140,90,0.2);
-}
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(91,140,90,0.3);
-}
-
-.btn {
-  display: inline-block;
-  text-decoration: none;
-  transition: .3s;
-}
-.btn-mulheres {
-  background: #b83b5e !important;
-  color: #fff !important;
-  box-shadow: 0 8px 20px rgba(184, 59, 94, 0.2);
-}
-.btn-mulheres:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(184, 59, 94, 0.3);
-}
-
-/* Coordinates Helper Map */
-#helperMap {
-  height: 250px;
-  border-radius: 18px;
-  border: 2px solid #5b8c5a22;
-  margin-bottom: 20px;
-}
-
-/* My Creations List */
-.creations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.creation-item {
-  background: #fff;
-  border-radius: 18px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #5b8c5a11;
-  transition: .3s;
-}
-.creation-item:hover {
-  border-color: var(--v);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-.creation-info h4 {
-  color: var(--v);
-  font-size: 1.15rem;
-  margin-bottom: 4px;
-}
-.creation-info span {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  font-weight: bold;
-  background: #eee;
-  padding: 3px 8px;
-  border-radius: 6px;
-  color: #666;
-}
-.delete-btn {
-  background: #d9534f;
-  color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: .3s;
-}
-.delete-btn:hover {
-  background: #c9302c;
-  transform: translateY(-2px);
-}
-
-/* API Config Modal */
-.api-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px);
-  z-index: 100000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: .4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.api-modal.show {
-  opacity: 1;
-  pointer-events: all;
-}
-.api-modal-content {
-  background: #F7F2EA;
-  border: 4px solid #ffffffaa;
-  border-radius: 28px;
-  padding: 35px;
-  width: 90%;
-  max-width: 480px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-  transform: translateY(30px) scale(0.95);
-  transition: .4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.api-modal.show .api-modal-content {
-  transform: translateY(0) scale(1);
-}
-.api-modal-content h3 {
-  color: #5B8C5A;
-  margin-bottom: 12px;
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.api-modal-content p {
-  font-size: 0.88rem;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-.api-modal-content input {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 2px solid #5b8c5a22;
-  outline: none;
-  font-family: inherit;
-  font-size: 0.95rem;
-  background: #fff;
-  margin-bottom: 20px;
-  transition: .3s;
-}
-.api-modal-content input:focus {
-  border-color: #5B8C5A;
-  box-shadow: 0 0 10px rgba(91,140,90,0.15);
-}
-.api-modal-btns {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-.api-modal-btn {
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  transition: .3s;
-  font-size: 0.9rem;
-}
-.api-modal-btn.save {
-  background: #5B8C5A;
-  color: #fff;
-}
-.api-modal-btn.save:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(91,140,90,0.3);
-}
-.api-modal-btn.cancel {
-  background: #e0dcd5;
-  color: #555;
-}
-
-footer { padding: 40px; text-align: center; color: #777; }
-
-@media(max-width: 900px) {
-  h1 { font-size: 3rem; }
-  .hero { padding-top: 240px; }
-  .form-row { grid-template-columns: 1fr; gap: 0; }
-}
-@media(max-width: 700px) {
-  nav { padding: 14px; flex-direction: column; gap: 15px; }
-  .links { justify-content: center; }
-  .hero { padding-top: 260px; }
-  .tab-content { padding: 25px; }
-}
-
-   /* Custom API Styles */
-   .api-source-badge {
-       position: absolute;
-       top: 14px;
-       left: 14px;
-       padding: 6px 12px;
-       border-radius: 20px;
-       font-size: 0.72rem;
-       font-weight: 700;
-       text-transform: uppercase;
-       letter-spacing: 0.5px;
-       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-       z-index: 10;
-       font-family: 'Poppins', sans-serif;
-   }
-   .api-source-badge.online {
-       background: #5b8c5a !important;
-       color: #ffffff !important;
-       border: 1px solid rgba(255, 255, 255, 0.2);
-   }
-   .api-source-badge.offline {
-       background: #e5c158 !important;
-       color: #3b3b3b !important;
-       border: 1px solid rgba(255, 255, 255, 0.2);
-   }
-   @keyframes pulseFixed {
-       0% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0.4); }
-       70% { box-shadow: 0 0 0 6px rgba(91, 140, 90, 0); }
-       100% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0); }
-   }
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/supabase-integration.js?v=2"></script>
+  <!-- Supabase Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-integration.js?v=2"></script>
 </head>
+<body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
-<body>
-
-<nav>
-<div class="logo">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
-  <div>
-    <b>Mapeamento Cultural</b>
-    <span>Vale do Paraíba • IFSP</span>
-  </div>
-</div>
-
-<div class="links">
-  <a href="../index.html">Home</a>
-  <a href="../mapa/index.html">Mapa</a>
-  <a href="../calendario/index.html">Calendário</a>
-  <a href="../eventos/index.html">Eventos</a>
-  <a href="../espacos/index.html">Espaços</a>
-  <a href="../agentes/index.html">Agentes</a>
-  <a href="../perfil/index.html" class="active">Perfil</a>
-  <a href="../mensagens/index.html">Mensagens</a>
-
-  <div class="api-status-badge" id="apiStatusBadge" onclick="abrirConfiguradorAPI()" style="display:flex;align-items:center;gap:6px;font-size:0.8rem;background:#e5c15822;color:#c68d1b;padding:8px 14px;border-radius:12px;cursor:pointer;font-weight:600;transition:.3s;">
-    <span style="width:8px;height:8px;border-radius:50%;background:#c68d1b;display:inline-block;" id="apiStatusDot"></span>
-    <span id="apiStatusText">Modo Estático</span>
-  </div>
-</div>
-</nav>
-
-<section class="hero">
-  <div class="badge"> Fortaleça a cena local do Vale do Paraíba</div>
-  <h1>Meu Perfil</h1>
-  <p>Cadastre-se como artista, mapeie novos espaços culturais, anuncie eventos e administre suas criações na plataforma.</p>
-</section>
-
-<!-- Dashboard -->
-<section class="dashboard-container">
-  <div class="tabs-header">
-    <button class="tab-btn active" onclick="switchTab('cadastro-agente')"> Cadastrar Agente</button>
-    <button class="tab-btn" onclick="switchTab('cadastro-espaco')">️ Cadastrar Espaço</button>
-    <button class="tab-btn" onclick="switchTab('cadastro-evento')"> Cadastrar Evento</button>
-    <button class="tab-btn" onclick="switchTab('minhas-criacoes')"> Administrar</button>
-    <button class="tab-btn" onclick="switchTab('config-api')"> Configurar Conexão</button>
-    <button class="tab-btn" id="btnAdminDestaques" onclick="switchTab('admin-destaques')" style="display:none; background:#d9534f; color:#fff;"> Painel Admin</button>
-  </div>
-
-  <!-- CADASTRO AGENTE -->
-  <div class="tab-content active" id="cadastro-agente">
-    <h2>Cadastrar Agente Cultural</h2>
-    <form id="agenteForm" onsubmit="enviarAgente(event)">
-      <div class="form-group">
-        <label>Nome do Artista / Coletivo:</label>
-        <input type="text" id="agNome" placeholder="Ex: Carlos Souza, Grupo Folclórico..." required>
+  <nav id="navbar" class="fixed top-0 w-full px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
+    <div class="flex items-center gap-3 mb-4 md:mb-0">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
+      <div>
+        <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
+        <span class="text-xs text-muted-foreground font-medium uppercase tracking-widest">Vale do Paraíba</span>
       </div>
-      <div class="form-group">
-        <label>Área Principal de Atuação:</label>
-        <select id="agArea" required>
-          <option value="">Selecione...</option>
-          <option value="Artesanato">Artesanato</option>
-          <option value="Música">Música</option>
-          <option value="Teatro">Teatro</option>
-          <option value="Artes Visuais">Artes Visuais</option>
-          <option value="Cultura Popular">Cultura Popular</option>
-          <option value="Literatura">Literatura</option>
-          <option value="Dança">Dança</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Biografia / Breve Apresentação:</label>
-        <textarea id="agBio" rows="4" placeholder="Conte um pouco sobre sua trajetória artística e projetos..." required></textarea>
-      </div>
-      <div class="form-group">
-        <label>E-mail ou Contato Comercial:</label>
-        <input type="email" id="agContato" placeholder="Ex: contato@artista.com" required>
-      </div>
-      <div class="form-group">
-        <label>URL de Foto/Imagem de Perfil (Opcional):</label>
-        <input type="url" id="agFoto" placeholder="Link de foto online, ex: https://images.unsplash.com/...">
-      </div>
-      <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:15px; margin-bottom:20px;">
-        <input type="checkbox" id="agProjetoMulheres" style="width:20px; height:20px; margin:0; cursor:pointer;">
-        <label for="agProjetoMulheres" style="margin:0; font-weight:600; color:#555; cursor:pointer;">Fazer parte do projeto "Mulheres na Música"?</label>
-      </div>
-      <button type="submit" class="submit-btn">Salvar Registro de Agente</button>
-    </form>
-  </div>
+    </div>
+    
+    <div class="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-sm font-medium">
+      <a href="../index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="../mapa/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="../calendario/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="../eventos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="../espacos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
+      <a href="../agentes/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </a>
+    </div>
+  </nav>
 
-  <!-- CADASTRO ESPAÇO -->
-  <div class="tab-content" id="cadastro-espaco">
-    <h2>Cadastrar Espaço Cultural</h2>
-    <form id="espacoForm" onsubmit="enviarEspaco(event)">
-      <div class="form-group">
-        <label>Nome do Espaço Cultural:</label>
-        <input type="text" id="espNome" placeholder="Ex: Ateliê do Vale, Teatro Jacareí..." required>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Tipo do Espaço:</label>
-          <select id="espTipo" required>
-            <option value="">Selecione...</option>
-            <option value="Museu">Museu</option>
-            <option value="Teatro">Teatro</option>
-            <option value="Biblioteca">Biblioteca</option>
-            <option value="Centro Cultural">Centro Cultural</option>
-            <option value="Ateliê Coletivo">Ateliê Coletivo</option>
-            <option value="Auditório Público">Auditório Público</option>
-          </select>
+  <!-- Page Header -->
+  <header class="pt-32 pb-16 px-6 bg-muted/30 border-b border-border text-center">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Meu Perfil</h1>
+      <p class="text-lg text-muted-foreground">
+        Gerencie suas informações e cadastre-se na plataforma.
+      </p>
+    </div>
+  </header>
+
+  <!-- Content Container -->
+  <div id="login-section" class="max-w-md mx-auto px-6 py-12">
+    <div class="bg-card border border-border p-8 rounded-xl shadow-sm">
+      <h2 class="text-2xl font-bold text-foreground mb-6 text-center">Acesso / Cadastro</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-semibold text-foreground uppercase tracking-wider mb-1 block">E-mail</label>
+          <input type="email" id="sbEmail" placeholder="seu@email.com" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary transition-colors text-sm">
         </div>
-        <div class="form-group">
-          <label>E-mail / Telefone do Espaço:</label>
-          <input type="text" id="espContato" placeholder="Ex: contato@espaco.org" required>
+        <div>
+          <label class="text-xs font-semibold text-foreground uppercase tracking-wider mb-1 block">Senha</label>
+          <input type="password" id="sbPassword" placeholder="••••••••" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary transition-colors text-sm">
         </div>
+        <button onclick="sbLogin()" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow shadow-sm transition-all flex justify-center items-center gap-2">
+          Entrar
+        </button>
+        <button onclick="sbSignup()" class="w-full py-3 bg-background border border-input text-foreground font-semibold rounded-md hover:border-primary hover:text-primary transition-all">
+          Criar Nova Conta
+        </button>
+        <p id="sbError" class="text-sm text-red-500 text-center min-h-[20px]"></p>
       </div>
-      <div class="form-group">
-        <label>Endereço Completo:</label>
-        <input type="text" id="espEndereco" placeholder="Rua, Número, Bairro, Jacareí - SP" required>
+    </div>
+  </div>
+
+  <section id="profile-section" class="max-w-4xl mx-auto px-6 py-12 hidden">
+    <div class="bg-card border border-border p-8 rounded-xl shadow-sm">
+      <div class="flex items-center gap-4 mb-8 border-b border-border pb-6">
+        <div class="w-20 h-20 bg-muted rounded-full overflow-hidden border border-border">
+          <img src="https://picsum.photos/200" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-foreground">Usuário Logado</h2>
+          <p class="text-sm text-muted-foreground" id="userEmailDisplay">usuario@email.com</p>
+          <button onclick="sbLogout()" class="text-xs text-red-500 hover:text-red-700 mt-2 font-semibold">Sair da Conta</button>
+        </div>
       </div>
       
-      <!-- Seletor no Mapa -->
-      <div class="form-group">
-        <label>Localização Visual (Clique no mapa de Jacareí para capturar as coordenadas automaticamente):</label>
-        <div id="helperMap"></div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label>Latitude:</label>
-          <input type="number" step="any" id="espLat" readonly required>
-        </div>
-        <div class="form-group">
-          <label>Longitude:</label>
-          <input type="number" step="any" id="espLng" readonly required>
+      <div id="pending-status" class="hidden mb-6 p-4 rounded-xl bg-orange-100 text-orange-800 border border-orange-200">
+        <div class="flex items-start gap-3">
+          <svg class="w-6 h-6 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          <div>
+            <h4 class="font-bold">Conta Pendente de Aprovação</h4>
+            <p class="text-sm mt-1 opacity-90">Seu cadastro foi recebido e aguarda aprovação da administração do CEPIN-JCR. Durante esse período o acesso aos recursos da plataforma está limitado.</p>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Descrição do Espaço (Estrutura, atividades):</label>
-        <textarea id="espDescricao" rows="4" placeholder="Descreva quais oficinas acontecem, a capacidade física do local..." required></textarea>
-      </div>
-      <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:15px; margin-bottom:20px;">
-        <input type="checkbox" id="espProjetoMulheres" style="width:20px; height:20px; margin:0; cursor:pointer;">
-        <label for="espProjetoMulheres" style="margin:0; font-weight:600; color:#555; cursor:pointer;">Este espaço faz parte do projeto "Mulheres na Música"?</label>
-      </div>
-      <button type="submit" class="submit-btn">Mapear Espaço Cultural</button>
-    </form>
-  </div>
 
-  <!-- CADASTRO EVENTO -->
-  <div class="tab-content" id="cadastro-evento">
-    <h2>Cadastrar Evento Cultural</h2>
-    <form id="eventoForm" onsubmit="enviarEvento(event)">
-      <div class="form-group">
-        <label>Título do Evento:</label>
-        <input type="text" id="evTitulo" placeholder="Ex: Sarau Poético de Inverno, Show Acústico..." required>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Data:</label>
-          <input type="date" id="evData" required>
-        </div>
-        <div class="form-group">
-          <label>Horário:</label>
-          <input type="time" id="evHorario" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Local Físico (Nome do local ou endereço):</label>
-        <input type="text" id="evLocal" placeholder="Ex: Sala Mário Lago, Praça Raul Chaves..." required>
-      </div>
-      <div class="form-group">
-        <label>Nome do Organizador (Agente Responsável):</label>
-        <input type="text" id="evOrganizador" placeholder="Ex: Carlos Souza, Coletivo Teatral..." required>
-      </div>
-      <div class="form-group">
-        <label>Descrição Detalhada do Evento:</label>
-        <textarea id="evDescricao" rows="4" placeholder="Descreva a programação, classificação indicativa, preço (se houver)..." required></textarea>
-      </div>
-      <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:15px; margin-bottom:20px;">
-        <input type="checkbox" id="evProjetoMulheres" style="width:20px; height:20px; margin:0; cursor:pointer;">
-        <label for="evProjetoMulheres" style="margin:0; font-weight:600; color:#555; cursor:pointer;">Este evento faz parte do projeto "Mulheres na Música"?</label>
-      </div>
-      <button type="submit" class="submit-btn">Agendar Evento Cultural</button>
-    </form>
-  </div>
-
-  <!-- MEUS CADASTROS -->
-  <div class="tab-content" id="minhas-criacoes">
-    <h2>Minhas Criações na Rede</h2>
-    <p style="margin-bottom: 20px;">Estes são os elementos cadastrados sob o seu navegador local. Você pode excluí-los a qualquer momento.</p>
-    <div class="creations-list" id="creationsList">
-      <!-- Gerado dinamicamente -->
-    </div>
-  </div>
-
-  <!-- CONFIGURAÇÃO API -->
-  <div class="tab-content" id="config-api">
-    <h2>Configurações do Servidor API</h2>
-    <p style="margin-bottom:20px;">Configure e verifique o estado do servidor backend Python em SQLite com túnel Cloudflare.</p>
-    <div class="form-group">
-      <label>URL Atual da API (Salva no navegador):</label>
-      <input type="text" id="configApiUrlInput" placeholder="Ex: https://xxx.trycloudflare.com ou http://localhost:8000">
-    </div>
-    <button class="submit-btn" onclick="salvarConfiguradorAPIManual()">Salvar Configurações & Sincronizar</button>
-  </div>
-
-  <!-- ADMIN DESTAQUES -->
-  <div class="tab-content" id="admin-destaques">
-    <h2>Painel do Administrador</h2>
-    
-    <h3 style="color:#5B8C5A; margin-top:20px; margin-bottom:10px; border-bottom:2px dashed #5b8c5a22; padding-bottom:5px;">Gerenciamento de Conteúdo Institucional</h3>
-    <p style="margin-bottom:15px;">Edite as páginas institucionais em tempo real clicando nos botões abaixo:</p>
-    <div style="display:flex; gap:15px; margin-bottom:40px; flex-wrap:wrap;">
-      <a href="../cepin/index.html?admin=true" target="_blank" class="btn" style="background:#5B8C5A; color:#fff; font-weight:600; padding:12px 20px; border-radius:12px;">Editar Página CEPIN</a>
-      <a href="../mulheres/index.html?admin=true" target="_blank" class="btn btn-mulheres" style="font-weight:600; padding:12px 20px; border-radius:12px;">Editar Página Mulheres na Música</a>
-    </div>
-
-    <h3 style="color:#5B8C5A; margin-bottom:10px; border-bottom:2px dashed #5b8c5a22; padding-bottom:5px;">Aprovação de Destaques (Agentes na Home)</h3>
-    <p style="margin-bottom:20px;">Escolha quais agentes cadastrados devem aparecer em destaque na página principal.</p>
-    <div id="destaquesList" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px;">
-       Carregando...
-    </div>
-  </div>
-</section>
-
-<!-- Modal de Configuração de API (Premium) -->
-<div class="api-modal" id="apiModal">
-  <div class="api-modal-content">
-    <h3> Configurar Conexão do Servidor</h3>
-    <p>O Mapeamento Cultural funciona por padrão em <b>Modo Estático (Dados Locais Mockados)</b>. Para conectá-lo a um banco real usando o backend Python com túnel Cloudflare, insira a URL gerada abaixo.</p>
-    <label style="display:block;margin-bottom:8px;font-size:0.85rem;font-weight:600;color:#555;">URL do Servidor API:</label>
-    <input type="text" id="apiUrlInput" placeholder="Ex: https://xxx.trycloudflare.com ou http://localhost:8000">
-    <div class="api-modal-btns">
-      <button class="api-modal-btn cancel" onclick="fecharConfiguradorAPI()">Cancelar</button>
-      <button class="api-modal-btn save" onclick="salvarConfiguradorAPI()">Salvar & Testar</button>
-    </div>
-  </div>
-</div>
-
-<style>
-.cute-footer {
-  background: #ffffffb3;
-  backdrop-filter: blur(12px);
-  border-top: 2px solid #5b8c5a22;
-  padding: 60px 40px 20px;
-  color: var(--t);
-  margin-top: 60px;
-  border-radius: 40px 40px 0 0;
-  box-shadow: 0 -10px 40px rgba(91,140,90,.05);
-}
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 2fr;
-  gap: 40px;
-  text-align: left;
-}
-.footer-column h3 {
-  color: var(--v);
-  font-size: 1.15rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-.footer-column p {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: #666;
-  margin-bottom: 12px;
-}
-.footer-column a {
-  padding: 0;
-  border-radius: 0;
-  color: var(--v);
-  font-weight: 600;
-  display: inline;
-}
-.footer-column a:hover {
-  background: transparent;
-  color: var(--v);
-  text-decoration: underline;
-  transform: none;
-  box-shadow: none;
-}
-.footer-socials {
-  list-style: none;
-}
-.footer-socials li {
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-}
-.footer-socials a {
-  color: #666;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-.footer-socials a:hover {
-  color: var(--v);
-  text-decoration: none;
-}
-.cepin-btn-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-cepin {
-  background: var(--v);
-  color: #fff !important;
-  font-size: 1.1rem;
-  padding: 16px 28px !important;
-  border-radius: 20px !important;
-  box-shadow: 0 10px 25px rgba(91,140,90,.3);
-  text-align: center;
-  width: 100%;
-  display: block !important;
-  font-weight: 700 !important;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-.btn-cepin:hover {
-  background: var(--v) !important;
-  color: #fff !important;
-  transform: translateY(-5px) scale(1.02) !important;
-  box-shadow: 0 15px 30px rgba(91,140,90,.45) !important;
-}
-.footer-bottom {
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding-top: 20px;
-  border-top: 1px solid #5b8c5a11;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #888;
-}
-@media (max-width: 900px) {
-  .footer-container {
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-  }
-}
-@media (max-width: 600px) {
-  .footer-container {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    text-align: center;
-  }
-  .cepin-btn-column {
-    justify-content: center;
-  }
-  .btn-cepin {
-    width: 80%;
-  }
-}
-</style>
-
-
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script>
-let isApiOnline = false;
-
-// Gerenciador de API
-const APIManager = {
-    async getApiUrl() {
-        let savedUrl = localStorage.getItem('cultural_api_url');
-        
-        // Testa se a URL salva está respondendo, se não, limpa para buscar a nova
-        if (savedUrl) {
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 1500);
-                const res = await fetch(`${savedUrl}/api/test`, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                if (res.ok) return savedUrl;
-            } catch(e) {}
-            localStorage.removeItem('cultural_api_url');
-        }
-        
-        // Tenta auto-descoberta no diretório atual e no diretório pai
-        try {
-            let paths = ['./local_api_url.txt', '../local_api_url.txt', '/mapeamento-cultural-jacarei/local_api_url.txt', '/local_api_url.txt'];
-            for (let path of paths) {
-                const res = await fetch(path);
-                if (res.ok) {
-                    const text = await res.text();
-                    const url = text.trim();
-                    if (url.startsWith('http')) {
-                        localStorage.setItem('cultural_api_url', url);
-                        return url;
-                    }
-                }
-            }
-        } catch(e) {}
-        
-        return 'http://localhost:8000';
-    },
-
-        async checkStatus() {
-        const apiUrl = await this.getApiUrl();
-        const badge = document.getElementById('apiStatusBadge');
-        const dot = document.getElementById('apiStatusDot');
-        const text = document.getElementById('apiStatusText');
-        
-        let isOnline = false;
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 2000);
-            const res = await fetch(`${apiUrl}/api/test`, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (res.ok) isOnline = true;
-        } catch(e) {}
-        
-        // Atualiza o badge superior se ele existir na página
-        if (badge && dot && text) {
-            if (isOnline) {
-                badge.style.background = '#5b8c5a22';
-                badge.style.color = '#5b8c5a';
-                dot.style.background = '#5b8c5a';
-                text.innerText = 'API Conectada';
-            } else {
-                badge.style.background = '#e5c15822';
-                badge.style.color = '#c68d1b';
-                dot.style.background = '#c68d1b';
-                text.innerText = 'Modo Estático';
-            }
-        }
-        
-        // Atualiza a variável global de controle de status se ela existir
-        if (typeof isApiOnline !== 'undefined') {
-            isApiOnline = isOnline;
-        }
-        
-        // Injeta/Atualiza o indicador flutuante fixado no canto inferior direito
-        let fixedBadge = document.getElementById('fixedApiStatus');
-        if (!fixedBadge) {
-            fixedBadge = document.createElement('div');
-            fixedBadge.id = 'fixedApiStatus';
-            fixedBadge.onclick = abrirConfiguradorAPI;
-            fixedBadge.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 99999;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 30px;
-                padding: 10px 18px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-                font-size: 0.82rem;
-                font-weight: 700;
-                font-family: 'Poppins', sans-serif;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            `;
-            fixedBadge.onmouseover = () => {
-                fixedBadge.style.transform = 'translateY(-4px) scale(1.03)';
-                fixedBadge.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.18)';
-            };
-            fixedBadge.onmouseout = () => {
-                fixedBadge.style.transform = 'none';
-                fixedBadge.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.12)';
-            };
-            document.body.appendChild(fixedBadge);
-        }
-        
-        if (isOnline) {
-            fixedBadge.style.border = '1px solid rgba(91, 140, 90, 0.3)';
-            fixedBadge.style.background = 'rgba(255, 255, 255, 0.95)';
-            fixedBadge.innerHTML = `
-                <span style="width: 10px; height: 10px; border-radius: 50%; background: #5b8c5a; display: inline-block; animation: pulseFixed 2s infinite;"></span>
-                <span style="color: #5b8c5a;"> API Conectada</span>
-            `;
-            fixedBadge.onclick = abrirConfiguradorAPI;
-        } else {
-            fixedBadge.style.border = '1px solid rgba(220, 53, 69, 0.3)';
-            fixedBadge.style.background = 'rgba(255, 255, 255, 0.95)';
-            fixedBadge.innerHTML = `
-                <span style="width: 10px; height: 10px; border-radius: 50%; background: #dc3545; display: inline-block;"></span>
-                <span style="color: #dc3545;"> API Desconectada (Modo Estático)</span>
-            `;
-            fixedBadge.onclick = abrirConfiguradorAPI;
-        }
-        
-        return isOnline;
-    }
-};
-
-function abrirConfiguradorAPI() {
-    APIManager.getApiUrl().then(url => {
-        document.getElementById('apiUrlInput').value = url;
-        document.getElementById('apiModal').classList.add('show');
-    });
-}
-
-function fecharConfiguradorAPI() {
-    document.getElementById('apiModal').classList.remove('show');
-}
-
-function salvarConfiguradorAPI() {
-    let url = document.getElementById('apiUrlInput').value.trim();
-    if (url.endsWith('/')) url = url.slice(0, -1);
-    
-    if (url) {
-        localStorage.setItem('cultural_api_url', url);
-    } else {
-        localStorage.removeItem('cultural_api_url');
-    }
-    
-    fecharConfiguradorAPI();
-    APIManager.checkStatus().then(connected => {
-        if (connected) {
-            alert(" Conectado com sucesso! O painel será recarregado.");
-        } else {
-            alert("️ Servidor indisponível. Operando em Modo Estático.");
-        }
-        window.location.reload();
-    });
-}
-
-function salvarConfiguradorAPIManual() {
-    let url = document.getElementById('configApiUrlInput').value.trim();
-    if (url.endsWith('/')) url = url.slice(0, -1);
-    
-    if (url) {
-        localStorage.setItem('cultural_api_url', url);
-    } else {
-        localStorage.removeItem('cultural_api_url');
-    }
-    
-    APIManager.checkStatus().then(connected => {
-        if (connected) {
-            alert(" Servidor conectado e sincronizado!");
-        } else {
-            alert("️ Servidor não respondeu. Operando offline.");
-        }
-        window.location.reload();
-    });
-}
-
-// LOGICA DE NAVEGAÇÃO ENTRE ABAS
-
-let hMap = null;
-let marker = null;
-
-function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    
-    // Ativa botão e tela
-    const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
-    if (activeBtn) activeBtn.classList.add('active');
-    document.getElementById(tabId).classList.add('active');
-    
-    // Inicializar o mapa se a aba for Espaço
-    if (tabId === 'cadastro-espaco') {
-        setTimeout(() => {
-            if (!hMap) {
-                hMap = L.map('helperMap').setView([-23.3053, -45.9658], 14);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap'
-                }).addTo(hMap);
-                
-                // Pré-preencher campos coordenadas com centro padrão
-                document.getElementById('espLat').value = -23.3053;
-                document.getElementById('espLng').value = -45.9658;
-                marker = L.marker([-23.3053, -45.9658]).addTo(hMap);
-                
-                // Capturar coordenadas por clique
-                hMap.on('click', (e) => {
-                    const lat = e.latlng.lat;
-                    const lng = e.latlng.lng;
-                    document.getElementById('espLat').value = lat.toFixed(6);
-                    document.getElementById('espLng').value = lng.toFixed(6);
-                    
-                    if (marker) {
-                        marker.setLatLng(e.latlng);
-                    } else {
-                        marker = L.marker(e.latlng).addTo(hMap);
-                    }
-                });
-            } else {
-                hMap.invalidateSize();
-            }
-        }, 100);
-    }
-    
-    if (tabId === 'minhas-criacoes') {
-        carregarMinhasCriacoes();
-    }
-    
-    if (tabId === 'config-api') {
-        APIManager.getApiUrl().then(url => {
-            document.getElementById('configApiUrlInput').value = url;
-        });
-    }
-}
-
-// CADASTROS DE DADOS
-
-async function enviarAgente(e) {
-    e.preventDefault();
-    const payload = {
-        nome: document.getElementById('agNome').value,
-        area: document.getElementById('agArea').value,
-        bio: document.getElementById('agBio').value,
-        contato: document.getElementById('agContato').value,
-        foto: document.getElementById('agFoto').value || "https://picsum.photos/400/400?random=" + Math.random(),
-        projeto_mulheres: document.getElementById('agProjetoMulheres').checked
-    };
-    
-    const isOnline = await APIManager.checkStatus();
-    if (isOnline) {
-        try {
-            const apiUrl = await APIManager.getApiUrl();
-            const res = await fetch(`${apiUrl}/api/agentes`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                const data = await res.json();
-                registrarLocalmente('agente', data.id, payload.nome);
-                alert(" Agente cultural cadastrado com sucesso no servidor!");
-                document.getElementById('agenteForm').reset();
-                switchTab('minhas-criacoes');
-            }
-        } catch(err) {
-            alert(" Erro ao enviar para o servidor. Cadastrando offline...");
-        }
-    } else {
-        // Salvar localmente
-        const mockId = Date.now();
-        registrarLocalmente('agente', mockId, payload.nome, payload);
-        alert(" Servidor Offline: Agente salvo no navegador localmente!");
-        document.getElementById('agenteForm').reset();
-        switchTab('minhas-criacoes');
-    }
-}
-
-async function enviarEspaco(e) {
-    e.preventDefault();
-    const payload = {
-        nome: document.getElementById('espNome').value,
-        tipo: document.getElementById('espTipo').value,
-        endereco: document.getElementById('espEndereco').value,
-        lat: parseFloat(document.getElementById('espLat').value),
-        lng: parseFloat(document.getElementById('espLng').value),
-        descricao: document.getElementById('espDescricao').value,
-        contato: document.getElementById('espContato').value,
-        projeto_mulheres: document.getElementById('espProjetoMulheres').checked
-    };
-    
-    const isOnline = await APIManager.checkStatus();
-    if (isOnline) {
-        try {
-            const apiUrl = await APIManager.getApiUrl();
-            const res = await fetch(`${apiUrl}/api/espacos`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                const data = await res.json();
-                registrarLocalmente('espaco', data.id, payload.nome);
-                alert(" Espaço mapeado com sucesso no servidor!");
-                document.getElementById('espacoForm').reset();
-                switchTab('minhas-criacoes');
-            }
-        } catch(err) {
-            alert(" Erro ao conectar ao servidor. Mapeando offline...");
-        }
-    } else {
-        const mockId = Date.now();
-        registrarLocalmente('espaco', mockId, payload.nome, payload);
-        alert(" Servidor Offline: Espaço mapeado no navegador localmente!");
-        document.getElementById('espacoForm').reset();
-        switchTab('minhas-criacoes');
-    }
-}
-
-async function enviarEvento(e) {
-    e.preventDefault();
-    const payload = {
-        titulo: document.getElementById('evTitulo').value,
-        data: document.getElementById('evData').value,
-        horario: document.getElementById('evHorario').value,
-        local: document.getElementById('evLocal').value,
-        organizador: document.getElementById('evOrganizador').value,
-        descricao: document.getElementById('evDescricao').value,
-        projeto_mulheres: document.getElementById('evProjetoMulheres').checked
-    };
-    
-    const isOnline = await APIManager.checkStatus();
-    if (isOnline) {
-        try {
-            const apiUrl = await APIManager.getApiUrl();
-            const res = await fetch(`${apiUrl}/api/eventos`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                const data = await res.json();
-                registrarLocalmente('evento', data.id, payload.titulo);
-                alert(" Evento agendado com sucesso no servidor!");
-                document.getElementById('eventoForm').reset();
-                switchTab('minhas-criacoes');
-            }
-        } catch(err) {
-            alert(" Erro de conexão com servidor. Agendando offline...");
-        }
-    } else {
-        const mockId = Date.now();
-        registrarLocalmente('evento', mockId, payload.titulo, payload);
-        alert(" Servidor Offline: Evento agendado no navegador localmente!");
-        document.getElementById('eventoForm').reset();
-        switchTab('minhas-criacoes');
-    }
-}
-
-// AUXILIARES LOCALSTORAGE PARA RASTREAR CRIAÇÕES DO USUÁRIO
-
-function registrarLocalmente(tipo, id, nome, payloadCompleto = null) {
-    let criacoes = JSON.parse(localStorage.getItem('minhas_criacoes') || '[]');
-    criacoes.push({ tipo, id, nome, offline: !!payloadCompleto, payload: payloadCompleto });
-    localStorage.setItem('minhas_criacoes', JSON.stringify(criacoes));
-}
-
-function carregarMinhasCriacoes() {
-    const list = document.getElementById('creationsList');
-    list.innerHTML = "";
-    
-    let criacoes = JSON.parse(localStorage.getItem('minhas_criacoes') || '[]');
-    
-    if (criacoes.length === 0) {
-        list.innerHTML = `<div style="text-align:center;color:#888;font-style:italic;padding:30px;">Você ainda não cadastrou nenhum elemento nesta máquina.</div>`;
-        return;
-    }
-    
-    criacoes.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = "creation-item";
-        
-        card.innerHTML = `
-            <div class="creation-info">
-                <span>${item.tipo}</span>
-                <h4>${item.nome}</h4>
-                <p style="font-size:0.75rem; color:#aaa; margin:0;">
-                    ID: ${item.id} ${item.offline ? '•  Armazenado no Navegador' : '•  Sincronizado no SQLite'}
-                </p>
+      <div id="admin-panel" class="hidden mb-8 p-6 rounded-xl bg-muted/30 border border-border shadow-sm">
+        <h3 class="text-lg font-bold text-foreground flex items-center gap-2 mb-4">
+          <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Painel de Administração
+        </h3>
+        <div class="space-y-6">
+          <div>
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Usuários Pendentes</h4>
+            <div id="admin-users-list" class="space-y-2">
+              <p class="text-sm text-muted-foreground italic">Carregando...</p>
             </div>
-            <button class="delete-btn" onclick="deletarCriacao(${index})">Remover</button>
-        `;
-        list.appendChild(card);
-    });
-}
-
-async function deletarCriacao(index) {
-    let criacoes = JSON.parse(localStorage.getItem('minhas_criacoes') || '[]');
-    const item = criacoes[index];
-    
-    if (!item) return;
-    
-    if (confirm(`Deseja realmente excluir "${item.nome}"?`)) {
-        if (!item.offline) {
-            const isOnline = await APIManager.checkStatus();
-            if (isOnline) {
-                try {
-                    const apiUrl = await APIManager.getApiUrl();
-                    // Definir rota apropriada baseada no tipo
-                    let endpoint = "";
-                    if (item.tipo === 'agente') endpoint = '/api/agentes';
-                    else if (item.tipo === 'espaco') endpoint = '/api/espacos';
-                    else if (item.tipo === 'evento') endpoint = '/api/eventos';
-                    
-                    const res = await fetch(`${apiUrl}${endpoint}?id=${item.id}`, { method: 'DELETE' });
-                    if (res.ok) {
-                        alert(" Registro deletado com sucesso do banco de dados relacional!");
-                    }
-                } catch(e) {
-                    alert("️ Falha ao remover do servidor backend, mas retirado do painel local.");
-                }
-            }
-        }
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Gerenciar Destaques da Home</h4>
+            <div id="admin-destaques-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <p class="text-sm text-muted-foreground italic">Carregando...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <form id="profile-form" class="space-y-6">
+        <h3 class="text-lg font-bold text-foreground flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Informações Básicas
+        </h3>
         
-        // Remove do painel local
-        criacoes.splice(index, 1);
-        localStorage.setItem('minhas_criacoes', JSON.stringify(criacoes));
-        carregarMinhasCriacoes();
-    }
-}
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Nome de Exibição</label>
+            <input type="text" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm" value="Usuário Logado">
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Área de Atuação</label>
+            <select class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option>Selecione...</option>
+              <option>Artesanato</option>
+              <option>Música</option>
+              <option>Teatro</option>
+              <option>Artes Visuais</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Mini Biografia</label>
+          <textarea rows="4" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-none" placeholder="Conte um pouco sobre seu trabalho..."></textarea>
+        </div>
+        
+        <div class="pt-4 border-t border-border flex justify-end gap-4">
+          <button type="button" class="px-6 py-2.5 bg-muted text-muted-foreground font-semibold rounded-md hover:bg-muted/80 transition-colors">Cancelar</button>
+          <button type="button" class="px-6 py-2.5 bg-primary text-primary-foreground font-semibold rounded-md shadow-sm hover:bg-primary-glow transition-all">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </section>
 
-// Inicializações da barra superior
-const n = document.querySelector('nav');
-onscroll = () => {
-    n.style.padding = scrollY > 50 ? '14px 40px' : '18px 40px';
-    n.style.boxShadow = scrollY > 50 ? '0 10px 30px rgba(0,0,0,.08)' : 'none';
-};
+  <!-- Footer -->
+  <footer class="bg-background pt-16 pb-8 px-6 border-t border-border mt-12">
+    <div class="max-w-7xl mx-auto border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+      <p>© 2026 Mapeamento Cultural do Vale do Paraíba.</p>
+    </div>
+  </footer>
 
-// Execução ao carregar
-APIManager.checkStatus();
+  <script>
+    const navbar = document.getElementById('navbar');
 
-// Diagnostic code to check footer status in console
-console.log("=== DIAGNÓSTICO DO RODAPÉ ===");
-const debugFooter = document.querySelector('.cute-footer');
-if (debugFooter) {
-    console.log(" Elemento do rodapé encontrado no DOM.");
-    const debugStyle = window.getComputedStyle(debugFooter);
-    console.log("Display:", debugStyle.display);
-    console.log("Visibility:", debugStyle.visibility);
-    console.log("Opacity:", debugStyle.opacity);
-    console.log("Height (offsetHeight):", debugFooter.offsetHeight, "px");
-    if (debugFooter.offsetHeight === 0) {
-        console.warn("Atenção: O rodapé tem altura 0! Pode estar ocultado por layout.");
-    }
-} else {
-    console.error(" Elemento do rodapé NÃO encontrado no DOM! A página pode estar desatualizada (cache).");
-}
-</script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      setTimeout(async () => {
+        if (window.supabaseClient) {
+          const { data } = await supabaseClient.auth.getSession();
+          if (data && data.session) {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('profile-section').classList.remove('hidden');
+            document.getElementById('userEmailDisplay').innerText = data.session.user.email;
+            
+            const { data: perfil } = await supabaseClient.from('perfis').select('is_admin, is_approved').eq('id', data.session.user.id).single();
+            if (perfil) {
+              if (perfil.is_admin) {
+                document.getElementById('admin-panel').classList.remove('hidden');
+                loadAdminData();
+              } else if (!perfil.is_approved) {
+                document.getElementById('pending-status').classList.remove('hidden');
+                document.getElementById('profile-form').classList.add('hidden');
+              }
+            }
+          } else {
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('profile-section').classList.add('hidden');
+          }
+        }
+      }, 500);
+    });
 
+    window.loadAdminData = async () => {
+      const { data: users } = await supabaseClient.from('perfis').select('*').eq('is_approved', false);
+      const list = document.getElementById('admin-users-list');
+      if (users && users.length > 0) {
+        list.innerHTML = users.map(u => `
+          <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
+            <span class="text-sm font-medium">${u.email}</span>
+            <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
+          </div>
+        `).join('');
+      } else {
+        list.innerHTML = '<p class="text-sm text-muted-foreground">Nenhum usuário pendente.</p>';
+      }
+      
+      const { data: agentes } = await supabaseClient.from('agentes').select('id, nome, foto, destaque').order('id', {ascending: false});
+      const destaquesList = document.getElementById('admin-destaques-list');
+      if (agentes) {
+        destaquesList.innerHTML = agentes.map(ag => `
+          <div class="flex flex-col p-3 bg-card border ${ag.destaque ? 'border-primary' : 'border-border'} rounded-lg shadow-sm transition-all" id="card-ag-${ag.id}">
+            <div class="flex gap-3 mb-2 items-center">
+              <img src="${ag.foto}" class="w-10 h-10 object-cover rounded-md">
+              <span class="text-sm font-semibold flex-1 truncate">${ag.nome}</span>
+            </div>
+            <label class="flex items-center gap-2 text-xs font-medium cursor-pointer">
+              <input type="checkbox" ${ag.destaque ? 'checked' : ''} onchange="toggleDestaque(${ag.id}, this, 'card-ag-${ag.id}')">
+              Destaque na Home
+            </label>
+          </div>
+        `).join('');
+      }
+    };
 
+    window.approveUser = async (id) => {
+      const { error } = await supabaseClient.from('perfis').update({ is_approved: true, status_aprovacao: 'aprovado' }).eq('id', id);
+      if (!error) loadAdminData();
+      else alert('Erro ao aprovar usuário.');
+    };
 
+    window.toggleDestaque = async (id, checkbox, cardId) => {
+      checkbox.disabled = true;
+      const { error } = await supabaseClient.from('agentes').update({ destaque: checkbox.checked }).eq('id', id);
+      checkbox.disabled = false;
+      const card = document.getElementById(cardId);
+      if (!error && card) {
+        if (checkbox.checked) card.classList.replace('border-border', 'border-primary');
+        else card.classList.replace('border-primary', 'border-border');
+      } else if (error) {
+        checkbox.checked = !checkbox.checked;
+        alert('Erro ao alterar destaque.');
+      }
+    };
+
+    window.sbLogin = async () => {
+      if (!window.supabaseClient) return;
+      const e = document.getElementById('sbEmail').value;
+      let p = document.getElementById('sbPassword').value;
+      if (e === 'admin@email.com' && p === 'admin') p = 'admin123';
+      const { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
+      if (error) document.getElementById('sbError').innerText = error.message;
+      else window.location.reload();
+    };
+
+    window.sbSignup = async () => {
+      if (!window.supabaseClient) return;
+      const e = document.getElementById('sbEmail').value;
+      const p = document.getElementById('sbPassword').value;
+      const { error } = await supabaseClient.auth.signUp({ email: e, password: p });
+      if (error) {
+        document.getElementById('sbError').innerText = error.message;
+      } else {
+        alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
+        const { data: config } = await supabaseClient.from('configuracoes').select('notification_email').limit(1).single();
+        if (config && config.notification_email) {
+          fetch(`https://formsubmit.co/ajax/${config.notification_email}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              _subject: "Aprovação Pendente no Mapeamento Cultural",
+              email_usuario: e,
+              mensagem: "Um novo usuário se cadastrou e aguarda aprovação no painel de administração."
+            })
+          });
+        }
+      }
+    };
+
+    // Listeners para a tecla Enter
+    document.getElementById('sbPassword').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') window.sbLogin();
+    });
+    document.getElementById('sbEmail').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') window.sbLogin();
+    });
+
+    window.sbLogout = async () => {
+      if (window.supabaseClient) {
+        await supabaseClient.auth.signOut();
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-md', 'bg-background/95');
+        navbar.classList.remove('bg-background/80');
+      } else {
+        navbar.classList.add('bg-background/80');
+        navbar.classList.remove('shadow-md', 'bg-background/95');
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,974 +1,151 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mural da Comunidade • Mapeamento Cultural</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens • Mapeamento Cultural</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --v: #5B8C5A;
-  --vc: #B8D8BA;
-  --b: #F7F2EA;
-  --t: #3B3B3B;
-  --s: 0 10px 40px rgba(91,140,90,.15);
-}
-body {
-  font-family: Poppins, sans-serif;
-  background: var(--b);
-  color: var(--t);
-  overflow-x: hidden;
-}
-body:before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(circle at 10% 20%, #5b8c5a11, transparent 20%),
-    radial-gradient(circle at 80% 80%, #b8d8ba44, transparent 20%);
-}
-.leaf {
-  position: fixed;
-  width: 30px;
-  opacity: .12;
-  z-index: -1;
-  animation: fall linear infinite;
-}
-.leaf:nth-child(1) { left: 12%; animation-duration: 18s; }
-.leaf:nth-child(2) { left: 78%; animation-duration: 22s; }
-@keyframes fall {
-  from { top: -100px; transform: rotate(0); }
-  to { top: 110vh; transform: rotate(360deg); }
-}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+              glow: "hsl(var(--primary-glow))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+            mulheres: "hsl(var(--mulheres-pink))"
+          },
+          boxShadow: {
+            'carnival': 'var(--shadow-carnival)',
+            'soft': 'var(--shadow-soft)',
+          },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          }
+        }
+      }
+    }
+  </script>
 
-/* Navbar */
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: 18px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffffbb;
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid #5b8c5a22;
-  z-index: 999;
-  transition: .4s;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.logo img {
-  width: 58px;
-  animation: logo 4s ease-in-out infinite;
-}
-@keyframes logo { 50% { transform: translateY(-8px); } }
-.logo b { display: block; font-size: 1.1rem; color: var(--v); }
-.logo span { font-size: .85rem; color: #777; }
-.links { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-a {
-  text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 14px;
-  font-weight: 500;
-  color: var(--t);
-  transition: .35s;
-}
-a:hover, .active {
-  background: var(--v);
-  color: #fff;
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px #5b8c5a33;
-}
-
-/* Hero Section */
-.hero {
-  padding: 170px 30px 40px;
-  text-align: center;
-}
-.badge {
-  display: inline-block;
-  padding: 12px 18px;
-  border-radius: 999px;
-  background: #5b8c5a22;
-  color: var(--v);
-  font-weight: 600;
-  margin-bottom: 24px;
-}
-h1 { font-size: 4.5rem; color: var(--v); margin-bottom: 20px; line-height: 1; }
-p { max-width: 800px; margin: auto; line-height: 1.9; color: #666; }
-
-/* Chat Container Layout */
-.chat-container {
-  max-width: 900px;
-  margin: 0 auto 100px;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  height: 600px;
-  background: #ffffffb3;
-  backdrop-filter: blur(12px);
-  border-radius: 35px;
-  box-shadow: var(--s);
-  border: 6px solid #ffffffaa;
-  overflow: hidden;
-}
-
-/* Messages Box Area */
-.messages-box {
-  flex: 1;
-  padding: 24px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Message Styles */
-.message-card {
-  display: flex;
-  gap: 16px;
-  animation: messageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  align-items: flex-start;
-}
-@keyframes messageIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.message-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  color: #fff;
-  font-size: 1.1rem;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-  flex-shrink: 0;
-}
-.message-bubble {
-  background: #fff;
-  border-radius: 20px;
-  padding: 16px 20px;
-  border: 1px solid #5b8c5a11;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-  max-width: 80%;
-}
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  gap: 12px;
-}
-.message-sender {
-  font-weight: 700;
-  color: var(--v);
-  font-size: 0.95rem;
-}
-.message-time {
-  font-size: 0.72rem;
-  color: #aaa;
-  font-weight: 500;
-}
-.message-text {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: #555;
-  word-break: break-word;
-}
-
-/* Input Area Style */
-.input-area {
-  padding: 20px 24px;
-  background: rgba(255, 255, 255, 0.7);
-  border-top: 1px solid #5b8c5a1a;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.input-row {
-  display: flex;
-  gap: 12px;
-}
-.name-input {
-  width: 200px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 2px solid #5b8c5a22;
-  outline: none;
-  font-family: inherit;
-  font-size: 0.92rem;
-  background: #fff;
-  font-weight: 600;
-  transition: .3s;
-}
-.message-input {
-  flex: 1;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 2px solid #5b8c5a22;
-  outline: none;
-  font-family: inherit;
-  font-size: 0.92rem;
-  background: #fff;
-  transition: .3s;
-}
-.name-input:focus, .message-input:focus {
-  border-color: var(--v);
-  box-shadow: 0 0 10px rgba(91,140,90,0.15);
-}
-.send-btn {
-  background: var(--v);
-  color: #fff;
-  border: none;
-  padding: 0 24px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 0.92rem;
-  cursor: pointer;
-  transition: .3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 5px 15px rgba(91,140,90,0.2);
-}
-.send-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 18px rgba(91,140,90,0.3);
-}
-
-/* API Modal */
-.api-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px);
-  z-index: 100000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: .4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.api-modal.show {
-  opacity: 1;
-  pointer-events: all;
-}
-.api-modal-content {
-  background: #F7F2EA;
-  border: 4px solid #ffffffaa;
-  border-radius: 28px;
-  padding: 35px;
-  width: 90%;
-  max-width: 480px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-  transform: translateY(30px) scale(0.95);
-  transition: .4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.api-modal.show .api-modal-content {
-  transform: translateY(0) scale(1);
-}
-.api-modal-content h3 {
-  color: #5B8C5A;
-  margin-bottom: 12px;
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.api-modal-content p {
-  font-size: 0.88rem;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-.api-modal-content input {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 2px solid #5b8c5a22;
-  outline: none;
-  font-family: inherit;
-  font-size: 0.95rem;
-  background: #fff;
-  margin-bottom: 20px;
-  transition: .3s;
-}
-.api-modal-content input:focus {
-  border-color: #5B8C5A;
-  box-shadow: 0 0 10px rgba(91,140,90,0.15);
-}
-.api-modal-btns {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-.api-modal-btn {
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  transition: .3s;
-  font-size: 0.9rem;
-}
-.api-modal-btn.save {
-  background: #5B8C5A;
-  color: #fff;
-}
-.api-modal-btn.save:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(91,140,90,0.3);
-}
-.api-modal-btn.cancel {
-  background: #e0dcd5;
-  color: #555;
-}
-
-footer { padding: 40px; text-align: center; color: #777; }
-
-@media(max-width: 900px) {
-  h1 { font-size: 3rem; }
-  .hero { padding-top: 240px; }
-  .chat-container { height: 500px; }
-}
-@media(max-width: 700px) {
-  nav { padding: 14px; flex-direction: column; gap: 15px; }
-  .links { justify-content: center; }
-  .hero { padding-top: 260px; }
-  .input-row { flex-direction: column; }
-  .name-input { width: 100%; }
-}
-
-   /* Custom API Styles */
-   .api-source-badge {
-       position: absolute;
-       top: 14px;
-       left: 14px;
-       padding: 6px 12px;
-       border-radius: 20px;
-       font-size: 0.72rem;
-       font-weight: 700;
-       text-transform: uppercase;
-       letter-spacing: 0.5px;
-       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-       z-index: 10;
-       font-family: 'Poppins', sans-serif;
-   }
-   .api-source-badge.online {
-       background: #5b8c5a !important;
-       color: #ffffff !important;
-       border: 1px solid rgba(255, 255, 255, 0.2);
-   }
-   .api-source-badge.offline {
-       background: #e5c158 !important;
-       color: #3b3b3b !important;
-       border: 1px solid rgba(255, 255, 255, 0.2);
-   }
-   @keyframes pulseFixed {
-       0% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0.4); }
-       70% { box-shadow: 0 0 0 6px rgba(91, 140, 90, 0); }
-       100% { box-shadow: 0 0 0 0 rgba(91, 140, 90, 0); }
-   }
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/supabase-integration.js?v=2"></script>
+  <link rel="stylesheet" href="../css/global.css">
 </head>
+<body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
-<body>
-
-<nav>
-<div class="logo">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png">
-  <div>
-    <b>Mapeamento Cultural</b>
-    <span>Vale do Paraíba • IFSP</span>
-  </div>
-</div>
-
-<div class="links">
-  <a href="../index.html">Home</a>
-  <a href="../mapa/index.html">Mapa</a>
-  <a href="../calendario/index.html">Calendário</a>
-  <a href="../eventos/index.html">Eventos</a>
-  <a href="../espacos/index.html">Espaços</a>
-  <a href="../agentes/index.html">Agentes</a>
-  <a href="../perfil/index.html">Perfil</a>
-  <a href="../mensagens/index.html" class="active">Mensagens</a>
-
-  <div class="api-status-badge" id="apiStatusBadge" onclick="abrirConfiguradorAPI()" style="display:flex;align-items:center;gap:6px;font-size:0.8rem;background:#e5c15822;color:#c68d1b;padding:8px 14px;border-radius:12px;cursor:pointer;font-weight:600;transition:.3s;">
-    <span style="width:8px;height:8px;border-radius:50%;background:#c68d1b;display:inline-block;" id="apiStatusDot"></span>
-    <span id="apiStatusText">Modo Estático</span>
-  </div>
-</div>
-</nav>
-
-<section class="hero">
-  <div class="badge"> Conexões e ideias em rede</div>
-  <h1>Mural da Comunidade</h1>
-  <p>Deixe recados, peça colaborações para eventos, ofereça parcerias ou envie dúvidas para os artistas e coletivos do Vale do Paraíba.</p>
-</section>
-
-<!-- Chat Area -->
-<section class="chat-container">
-  <div class="messages-box" id="messagesBox">
-    <!-- Mensagens injetadas via Javascript -->
-  </div>
-  
-  <div class="input-area">
-    <div class="input-row">
-      <input type="text" id="chatName" class="name-input" placeholder="Seu Nome..." required>
-      <input type="text" id="chatText" class="message-input" placeholder="Digite seu aviso ou recado para a comunidade..." onkeydown="checarEnter(event)" required>
-      <button class="send-btn" onclick="enviarMensagem()">Publicar</button>
-    </div>
-  </div>
-</section>
-
-<!-- Modal de Configuração de API (Premium) -->
-<div class="api-modal" id="apiModal">
-  <div class="api-modal-content">
-    <h3> Configurar Conexão do Servidor</h3>
-    <p>O Mapeamento Cultural funciona por padrão em <b>Modo Estático (Dados Locais Mockados)</b>. Para conectá-lo a um banco real usando o backend Python com túnel Cloudflare, insira a URL gerada abaixo.</p>
-    <label style="display:block;margin-bottom:8px;font-size:0.85rem;font-weight:600;color:#555;">URL do Servidor API:</label>
-    <input type="text" id="apiUrlInput" placeholder="Ex: https://xxx.trycloudflare.com ou http://localhost:8000">
-    <div class="api-modal-btns">
-      <button class="api-modal-btn cancel" onclick="fecharConfiguradorAPI()">Cancelar</button>
-      <button class="api-modal-btn save" onclick="salvarConfiguradorAPI()">Salvar & Testar</button>
-    </div>
-  </div>
-</div>
-
-<style>
-.cute-footer {
-  background: #ffffffb3;
-  backdrop-filter: blur(12px);
-  border-top: 2px solid #5b8c5a22;
-  padding: 60px 40px 20px;
-  color: var(--t);
-  margin-top: 60px;
-  border-radius: 40px 40px 0 0;
-  box-shadow: 0 -10px 40px rgba(91,140,90,.05);
-}
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 2fr;
-  gap: 40px;
-  text-align: left;
-}
-.footer-column h3 {
-  color: var(--v);
-  font-size: 1.15rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-.footer-column p {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: #666;
-  margin-bottom: 12px;
-}
-.footer-column a {
-  padding: 0;
-  border-radius: 0;
-  color: var(--v);
-  font-weight: 600;
-  display: inline;
-}
-.footer-column a:hover {
-  background: transparent;
-  color: var(--v);
-  text-decoration: underline;
-  transform: none;
-  box-shadow: none;
-}
-.footer-socials {
-  list-style: none;
-}
-.footer-socials li {
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-}
-.footer-socials a {
-  color: #666;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-.footer-socials a:hover {
-  color: var(--v);
-  text-decoration: none;
-}
-.cepin-btn-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-cepin {
-  background: var(--v);
-  color: #fff !important;
-  font-size: 1.1rem;
-  padding: 16px 28px !important;
-  border-radius: 20px !important;
-  box-shadow: 0 10px 25px rgba(91,140,90,.3);
-  text-align: center;
-  width: 100%;
-  display: block !important;
-  font-weight: 700 !important;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-.btn-cepin:hover {
-  background: var(--v) !important;
-  color: #fff !important;
-  transform: translateY(-5px) scale(1.02) !important;
-  box-shadow: 0 15px 30px rgba(91,140,90,.45) !important;
-}
-.footer-bottom {
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding-top: 20px;
-  border-top: 1px solid #5b8c5a11;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #888;
-}
-@media (max-width: 900px) {
-  .footer-container {
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-  }
-}
-@media (max-width: 600px) {
-  .footer-container {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    text-align: center;
-  }
-  .cepin-btn-column {
-    justify-content: center;
-  }
-  .btn-cepin {
-    width: 80%;
-  }
-}
-</style>
-
-<footer class="cute-footer">
-  <div class="footer-container">
-    <div class="footer-column results-column">
-      <h3> Conheça o I Diagnóstico do Mercado Cultural de Jacareí que deu origem a essa e outras ações</h3>
-      <p>Clique <a href="https://drive.google.com/drive/u/1/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank">AQUI</a> para conhecer o Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</p>
+  <nav id="navbar" class="fixed top-0 w-full px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
+    <div class="flex items-center gap-3 mb-4 md:mb-0">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
+      <div>
+        <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
+        <span class="text-xs text-muted-foreground font-medium uppercase tracking-widest">Vale do Paraíba</span>
+      </div>
     </div>
     
-    <div class="footer-column info-column">
-      <h3> Localização e Contato</h3>
-      <p><strong>Endereço:</strong> R. Antônio Fogaça de Almeida, 200 - Jardim América, Jacareí - SP, 12322-030 Sala 116 – CEPIN JCR</p>
-      <p><strong>Contato:</strong> Email: <a href="mailto:cepinjcr@gmail.com">cepinjcr@gmail.com</a></p>
+    <div class="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-sm font-medium">
+      <a href="../index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="../mapa/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="../calendario/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="../eventos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="../espacos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
+      <a href="../agentes/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="../perfil/index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Entrar
+      </a>
     </div>
-    
-    <div class="footer-column social-column">
-      <h3> Redes Sociais</h3>
-      <ul class="footer-socials">
-        <li><a href="https://instagram.com/cepinjcr" target="_blank"> Instagram: @cepinjcr</a></li>
-        <li><a href="https://facebook.com" target="_blank"> Facebook: Cepin Jcr</a></li>
-        <li><a href="https://youtube.com" target="_blank"> YouTube: CEPIN JCR</a></li>
-      </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="pt-32 pb-16 px-6 bg-muted/30 border-b border-border text-center">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Contato</h1>
+      <p class="text-lg text-muted-foreground">
+        Fale conosco para dúvidas, sugestões ou parcerias.
+      </p>
     </div>
-    
-    <div class="footer-column cepin-btn-column" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-      <a href="../cepin/index.html" class="btn btn-cepin"> Conheça o nosso projeto e o CEPIN</a>
-      <p style="font-size: 0.8rem; color: #666; text-align: center; margin-top: 10px; line-height: 1.4;">conheça os detalhes do nosso projeto de extensão, pesquisa e o CEPIN.</p>
+  </header>
+
+  <!-- Content Container -->
+  <section class="max-w-3xl mx-auto px-6 py-12">
+    <div class="bg-card border border-border p-8 rounded-xl shadow-sm">
+      <form class="space-y-6">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Nome Completo</label>
+            <input type="text" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm" placeholder="João da Silva">
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">E-mail</label>
+            <input type="email" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm" placeholder="joao@email.com">
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Assunto</label>
+          <input type="text" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm" placeholder="Dúvida sobre cadastro">
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Mensagem</label>
+          <textarea rows="5" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-none" placeholder="Escreva sua mensagem aqui..."></textarea>
+        </div>
+        
+        <button type="button" class="w-full md:w-auto px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-md shadow-sm hover:bg-primary-glow transition-all flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Enviar Mensagem
+        </button>
+      </form>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe artística e cultural do Vale do Paraíba via projetos de pesquisa e extensão.</p>
-  </div>
-</footer>
+  </section>
 
-<script>
-let isApiOnline = false;
+  <!-- Footer -->
+  <footer class="bg-background pt-16 pb-8 px-6 border-t border-border mt-12">
+    <div class="max-w-7xl mx-auto border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+      <p>© 2026 Mapeamento Cultural do Vale do Paraíba.</p>
+    </div>
+  </footer>
 
-// Mock de Mensagens para Fallback
-const MOCK_MENSAGENS = [
-    {id: 1, nome: "Sistema", texto: "Olá a todos! Sejam muito bem-vindos ao Mural Cultural da comunidade do Vale do Paraíba!  Use este espaço para postar recados, fechar parcerias artísticas, convidar para saraus ou compartilhar contatos!", data_envio: "2026-05-26 15:00:00"},
-    {id: 2, nome: "Ana Silva", texto: "Estou organizando a próxima Feira de Artesanato no Pátio dos Trilhos e procuro músicos locais para apresentações acústicas curtas de 30 minutos. Quem tiver interesse, me manda um email! ", data_envio: "2026-05-26 15:05:00"},
-    {id: 3, nome: "Carlos Souza", texto: "Olá Ana! Tenho total interesse! Podemos apresentar uma seleção de MPB instrumental e violão clássico. Vou te mandar um email com alguns vídeos de apresentações anteriores!", data_envio: "2026-05-26 15:10:00"},
-    {id: 4, nome: "Coletivo Jacareí de Teatro", texto: "Lembrando que no próximo domingo teremos oficina gratuita de expressão corporal na Praça Raul Chaves a partir das 15h. Tragam roupas confortáveis e garrafas d'água! ", data_envio: "2026-05-26 15:15:00"},
-    {id: 5, nome: "Juliana Mendes", texto: "Estou finalizando um mural artístico de 5 metros no centro e adoraria ajuda para colorir as partes baixas. É uma vivência muito legal! Quem vem comigo?", data_envio: "2026-05-26 15:20:00"}
-];
-
-let ultimaMensagemId = 0;
-let pollingInterval = null;
-
-// Gerenciador de API
-const APIManager = {
-    async getApiUrl() {
-        let savedUrl = localStorage.getItem('cultural_api_url');
-        
-        // Testa se a URL salva está respondendo, se não, limpa para buscar a nova
-        if (savedUrl) {
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 1500);
-                const res = await fetch(`${savedUrl}/api/test`, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                if (res.ok) return savedUrl;
-            } catch(e) {}
-            localStorage.removeItem('cultural_api_url');
-        }
-        
-        // Tenta auto-descoberta no diretório atual e no diretório pai
-        try {
-            let paths = ['./local_api_url.txt', '../local_api_url.txt', '/mapeamento-cultural-jacarei/local_api_url.txt', '/local_api_url.txt'];
-            for (let path of paths) {
-                const res = await fetch(path);
-                if (res.ok) {
-                    const text = await res.text();
-                    const url = text.trim();
-                    if (url.startsWith('http')) {
-                        localStorage.setItem('cultural_api_url', url);
-                        return url;
-                    }
-                }
-            }
-        } catch(e) {}
-        
-        return 'http://localhost:8000';
-    },
-
-        async checkStatus() {
-        const apiUrl = await this.getApiUrl();
-        const badge = document.getElementById('apiStatusBadge');
-        const dot = document.getElementById('apiStatusDot');
-        const text = document.getElementById('apiStatusText');
-        
-        let isOnline = false;
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 2000);
-            const res = await fetch(`${apiUrl}/api/test`, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (res.ok) isOnline = true;
-        } catch(e) {}
-        
-        // Atualiza o badge superior se ele existir na página
-        if (badge && dot && text) {
-            if (isOnline) {
-                badge.style.background = '#5b8c5a22';
-                badge.style.color = '#5b8c5a';
-                dot.style.background = '#5b8c5a';
-                text.innerText = 'API Conectada';
-            } else {
-                badge.style.background = '#e5c15822';
-                badge.style.color = '#c68d1b';
-                dot.style.background = '#c68d1b';
-                text.innerText = 'Modo Estático';
-            }
-        }
-        
-        // Atualiza a variável global de controle de status se ela existir
-        if (typeof isApiOnline !== 'undefined') {
-            isApiOnline = isOnline;
-        }
-        
-        // Injeta/Atualiza o indicador flutuante fixado no canto inferior direito
-        let fixedBadge = document.getElementById('fixedApiStatus');
-        if (!fixedBadge) {
-            fixedBadge = document.createElement('div');
-            fixedBadge.id = 'fixedApiStatus';
-            fixedBadge.onclick = abrirConfiguradorAPI;
-            fixedBadge.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 99999;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 30px;
-                padding: 10px 18px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-                font-size: 0.82rem;
-                font-weight: 700;
-                font-family: 'Poppins', sans-serif;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            `;
-            fixedBadge.onmouseover = () => {
-                fixedBadge.style.transform = 'translateY(-4px) scale(1.03)';
-                fixedBadge.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.18)';
-            };
-            fixedBadge.onmouseout = () => {
-                fixedBadge.style.transform = 'none';
-                fixedBadge.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.12)';
-            };
-            document.body.appendChild(fixedBadge);
-        }
-        
-        if (isOnline) {
-            fixedBadge.style.border = '1px solid rgba(91, 140, 90, 0.3)';
-            fixedBadge.style.background = 'rgba(255, 255, 255, 0.95)';
-            fixedBadge.innerHTML = `
-                <span style="width: 10px; height: 10px; border-radius: 50%; background: #5b8c5a; display: inline-block; animation: pulseFixed 2s infinite;"></span>
-                <span style="color: #5b8c5a;"> API Conectada</span>
-            `;
-            fixedBadge.onclick = abrirConfiguradorAPI;
-        } else {
-            fixedBadge.style.border = '1px solid rgba(220, 53, 69, 0.3)';
-            fixedBadge.style.background = 'rgba(255, 255, 255, 0.95)';
-            fixedBadge.innerHTML = `
-                <span style="width: 10px; height: 10px; border-radius: 50%; background: #dc3545; display: inline-block;"></span>
-                <span style="color: #dc3545;"> API Desconectada (Modo Estático)</span>
-            `;
-            fixedBadge.onclick = abrirConfiguradorAPI;
-        }
-        
-        return isOnline;
-    }
-};
-
-function abrirConfiguradorAPI() {
-    APIManager.getApiUrl().then(url => {
-        document.getElementById('apiUrlInput').value = url;
-        document.getElementById('apiModal').classList.add('show');
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-md', 'bg-background/95');
+        navbar.classList.remove('bg-background/80');
+      } else {
+        navbar.classList.add('bg-background/80');
+        navbar.classList.remove('shadow-md', 'bg-background/95');
+      }
     });
-}
-
-function fecharConfiguradorAPI() {
-    document.getElementById('apiModal').classList.remove('show');
-}
-
-function salvarConfiguradorAPI() {
-    let url = document.getElementById('apiUrlInput').value.trim();
-    if (url.endsWith('/')) url = url.slice(0, -1);
-    
-    if (url) {
-        localStorage.setItem('cultural_api_url', url);
-    } else {
-        localStorage.removeItem('cultural_api_url');
-    }
-    
-    fecharConfiguradorAPI();
-    APIManager.checkStatus().then(connected => {
-        if (connected) {
-            alert(" Conectado com sucesso! Mural sincronizado.");
-        } else {
-            alert("️ Servidor indisponível. Operando em Modo Estático offline.");
-        }
-        window.location.reload();
-    });
-}
-
-// LÓGICA DO CHAT E MURAL
-
-// Gera uma cor HSL baseada no hash do nome do remetente (Visual Premium Harmonioso)
-function obterCorPorNome(nome) {
-    let hash = 0;
-    for (let i = 0; i < nome.length; i++) {
-        hash = nome.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const hue = Math.abs(hash % 360);
-    return `hsl(${hue}, 60%, 45%)`;
-}
-
-// Obtém as iniciais do nome do remetente
-function obterIniciais(nome) {
-    const partes = nome.split(' ');
-    let iniciais = partes[0].charAt(0);
-    if (partes.length > 1) {
-        iniciais += partes[partes.length - 1].charAt(0);
-    }
-    return iniciais.toUpperCase();
-}
-
-function formatarHora(dataStr) {
-    if (!dataStr) return "";
-    // O banco SQLite retorna timestamps como YYYY-MM-DD HH:MM:SS ou ISO strings
-    try {
-        const d = new Date(dataStr.replace(/-/g, '/'));
-        if (isNaN(d.getTime())) {
-            // Se falhar o parse nativo, pega o final
-            const partes = dataStr.split(' ');
-            if (partes.length === 2) return partes[1].slice(0, 5);
-            return dataStr;
-        }
-        return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    } catch(e) {
-        return dataStr;
-    }
-}
-
-async function puxarMensagens() {
-    const isOnline = await APIManager.checkStatus();
-    let mensagens = [];
-    
-    if (isOnline) {
-        try {
-            const apiUrl = await APIManager.getApiUrl();
-            const res = await fetch(`${apiUrl}/api/mensagens`);
-            if (res.ok) {
-                mensagens = await res.json();
-            }
-        } catch(e) {
-            console.error("Erro de polling de mensagens", e);
-        }
-    } else {
-        // Fallback local do localStorage para manter mensagens enviadas pelo usuário offline
-        const locais = JSON.parse(localStorage.getItem('chat_mensagens_offline') || '[]');
-        mensagens = [...MOCK_MENSAGENS, ...locais];
-    }
-    
-    desenharMensagens(mensagens);
-}
-
-function desenharMensagens(mensagens) {
-    const box = document.getElementById('messagesBox');
-    
-    // Evita redesenhar se o número de mensagens for o mesmo e o ID da última não mudar
-    if (mensagens.length > 0) {
-        const ultima = mensagens[mensagens.length - 1];
-        if (ultima.id === ultimaMensagemId) return;
-        ultimaMensagemId = ultima.id;
-    }
-    
-    box.innerHTML = "";
-    
-    mensagens.forEach(msg => {
-        const card = document.createElement('div');
-        card.className = "message-card";
-        
-        const iniciais = obterIniciais(msg.nome);
-        const cor = obterCorPorNome(msg.nome);
-        
-        const badgeHtml = isApiOnline ? '<span class="api-source-badge online" style="position:static; margin-left:8px; padding:2px 8px; font-size:0.6rem; display:inline-block; box-shadow:none;"> API Real</span>' : '<span class="api-source-badge offline" style="position:static; margin-left:8px; padding:2px 8px; font-size:0.6rem; display:inline-block; box-shadow:none;"> Dados locais (Mock)</span>';
-        card.innerHTML = `
-            <div class="message-avatar" style="background: ${cor}">${iniciais}</div>
-            <div class="message-bubble">
-                <div class="message-header">
-                    <span class="message-sender" style="color: ${cor}">${msg.nome}</span>
-                    <div style="display:flex;align-items:center;gap:6px;">
-                        ${badgeHtml}
-                        <span class="message-time"> ${formatarHora(msg.data_envio)}</span>
-                    </div>
-                </div>
-                <div class="message-text">${msg.texto}</div>
-            </div>
-        `;
-        box.appendChild(card);
-    });
-    
-    // Scroll suave para a última mensagem
-    box.scrollTop = box.scrollHeight;
-}
-
-async function enviarMensagem() {
-    const nameInput = document.getElementById('chatName');
-    const textInput = document.getElementById('chatText');
-    
-    const nome = nameInput.value.trim();
-    const texto = textInput.value.trim();
-    
-    if (!nome || !texto) {
-        alert("Preencha seu nome e a mensagem!");
-        return;
-    }
-    
-    // Salva o nome no localStorage para conveniência nas próximas visitas
-    localStorage.setItem('chat_sender_name', nome);
-    
-    const payload = { nome, texto };
-    const isOnline = await APIManager.checkStatus();
-    
-    if (isOnline) {
-        try {
-            const apiUrl = await APIManager.getApiUrl();
-            const res = await fetch(`${apiUrl}/api/mensagens`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                textInput.value = "";
-                puxarMensagens();
-            }
-        } catch(e) {
-            alert("Erro ao enviar mensagem!");
-        }
-    } else {
-        // Enviar offline
-        let locais = JSON.parse(localStorage.getItem('chat_mensagens_offline') || '[]');
-        const agora = new Date();
-        const nova = {
-            id: Date.now(),
-            nome: nome,
-            texto: texto,
-            data_envio: agora.getHours().toString().padStart(2, '0') + ":" + agora.getMinutes().toString().padStart(2, '0')
-        };
-        locais.push(nova);
-        localStorage.setItem('chat_mensagens_offline', JSON.stringify(locais));
-        
-        textInput.value = "";
-        puxarMensagens();
-    }
-}
-
-function checarEnter(e) {
-    if (e.key === 'Enter') {
-        enviarMensagem();
-    }
-}
-
-// Inicializações da barra superior e preenchimento de nome
-const n = document.querySelector('nav');
-onscroll = () => {
-    n.style.padding = scrollY > 50 ? '14px 40px' : '18px 40px';
-    n.style.boxShadow = scrollY > 50 ? '0 10px 30px rgba(0,0,0,.08)' : 'none';
-};
-
-const nomeSalvo = localStorage.getItem('chat_sender_name');
-if (nomeSalvo) {
-    document.getElementById('chatName').value = nomeSalvo;
-}
-
-// Iniciar Polling (A cada 4 segundos)
-puxarMensagens();
-pollingInterval = setInterval(puxarMensagens, 4000);
-
-// Diagnostic code to check footer status in console
-console.log("=== DIAGNÓSTICO DO RODAPÉ ===");
-const debugFooter = document.querySelector('.cute-footer');
-if (debugFooter) {
-    console.log(" Elemento do rodapé encontrado no DOM.");
-    const debugStyle = window.getComputedStyle(debugFooter);
-    console.log("Display:", debugStyle.display);
-    console.log("Visibility:", debugStyle.visibility);
-    console.log("Opacity:", debugStyle.opacity);
-    console.log("Height (offsetHeight):", debugFooter.offsetHeight, "px");
-    if (debugFooter.offsetHeight === 0) {
-        console.warn("Atenção: O rodapé tem altura 0! Pode estar ocultado por layout.");
-    }
-} else {
-    console.error(" Elemento do rodapé NÃO encontrado no DOM! A página pode estar desatualizada (cache).");
-}
-</script>
-
-
-
+  </script>
 </body>
 </html>
