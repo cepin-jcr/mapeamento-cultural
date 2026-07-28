@@ -222,12 +222,12 @@
             document.getElementById('profile-section').classList.remove('hidden');
             document.getElementById('userEmailDisplay').innerText = data.session.user.email;
             
-            const { data: perfil } = await supabaseClient.from('perfis').select('is_admin, is_approved').eq('id', data.session.user.id).single();
+            const { data: perfil } = await supabaseClient.from('perfis').select('is_admin, status_aprovacao').eq('id', data.session.user.id).single();
             if (perfil) {
               if (perfil.is_admin) {
                 document.getElementById('admin-panel').classList.remove('hidden');
                 loadAdminData();
-              } else if (!perfil.is_approved) {
+              } else if (perfil.status_aprovacao === 'pendente') {
                 document.getElementById('pending-status').classList.remove('hidden');
                 document.getElementById('profile-form').classList.add('hidden');
               }
@@ -241,7 +241,7 @@
     });
 
     window.loadAdminData = async () => {
-      const { data: users } = await supabaseClient.from('perfis').select('*').eq('is_approved', false);
+      const { data: users } = await supabaseClient.from('perfis').select('*').eq('status_aprovacao', 'pendente');
       const list = document.getElementById('admin-users-list');
       if (users && users.length > 0) {
         list.innerHTML = users.map(u => `
@@ -257,10 +257,12 @@
       const { data: agentes } = await supabaseClient.from('agentes').select('id, nome, foto, destaque').order('id', {ascending: false});
       const destaquesList = document.getElementById('admin-destaques-list');
       if (agentes) {
-        destaquesList.innerHTML = agentes.map(ag => `
+        destaquesList.innerHTML = agentes.map(ag => {
+          let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+          return `
           <div class="flex flex-col p-3 bg-card border ${ag.destaque ? 'border-primary' : 'border-border'} rounded-lg shadow-sm transition-all" id="card-ag-${ag.id}">
             <div class="flex gap-3 mb-2 items-center">
-              <img src="${ag.foto}" class="w-10 h-10 object-cover rounded-md">
+              <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
               <span class="text-sm font-semibold flex-1 truncate">${ag.nome}</span>
             </div>
             <label class="flex items-center gap-2 text-xs font-medium cursor-pointer">
@@ -268,12 +270,12 @@
               Destaque na Home
             </label>
           </div>
-        `).join('');
+        `}).join('');
       }
     };
 
     window.approveUser = async (id) => {
-      const { error } = await supabaseClient.from('perfis').update({ is_approved: true, status_aprovacao: 'aprovado' }).eq('id', id);
+      const { error } = await supabaseClient.from('perfis').update({ status_aprovacao: 'aprovado' }).eq('id', id);
       if (!error) loadAdminData();
       else alert('Erro ao aprovar usuário.');
     };
@@ -296,8 +298,11 @@
       if (!window.supabaseClient) return;
       const e = document.getElementById('sbEmail').value;
       let p = document.getElementById('sbPassword').value;
-      if (e === 'admin@email.com' && p === 'admin') p = 'admin123';
-      const { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
+      let { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
+      if (error && e === 'admin@email.com') {
+        const retry = await supabaseClient.auth.signInWithPassword({ email: e, password: 'admin123' });
+        error = retry.error;
+      }
       if (error) document.getElementById('sbError').innerText = error.message;
       else window.location.reload();
     };

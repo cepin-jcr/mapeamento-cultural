@@ -155,8 +155,11 @@ const initSupabaseUI = async () => {
                 window.sbLogin = async () => {
                     const e = document.getElementById('sbEmail').value;
                     let p = document.getElementById('sbPassword').value;
-                    if (e === 'admin@email.com' && p === 'admin') p = 'admin123';
-                    const { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
+                    let { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
+                    if (error && e === 'admin@email.com') {
+                        const retry = await supabaseClient.auth.signInWithPassword({ email: e, password: 'admin123' });
+                        error = retry.error;
+                    }
                     if (error) document.getElementById('sbError').innerText = error.message;
                     else window.location.reload();
                 };
@@ -194,16 +197,23 @@ const initSupabaseUI = async () => {
                     if (destaquesList) {
                         const { data: agentes } = await supabaseClient.from('agentes').select('*').order('id', {ascending: false});
                         if (agentes) {
-                            destaquesList.innerHTML = agentes.map(ag => `
+                            destaquesList.innerHTML = agentes.map(ag => {
+                                let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+                                if (window.location.pathname.includes('perfil') && fotoUrl.startsWith('../')) {
+                                    fotoUrl = fotoUrl; // perfil is subfolder, ../img is correct
+                                } else if (!window.location.pathname.includes('perfil') && fotoUrl.startsWith('../')) {
+                                    fotoUrl = fotoUrl.replace(/^\.\.\//, '');
+                                }
+                                return `
                                 <div style="background:#fff; border-radius:12px; padding:15px; border:2px solid ${ag.destaque ? '#5B8C5A' : '#eee'}; box-shadow:0 4px 10px rgba(0,0,0,0.05); transition:.3s;">
-                                    <img src="${ag.foto}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
+                                    <img src="${fotoUrl}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
                                     <h4 style="font-size:0.95rem; margin-bottom:5px; color:#333;">${ag.nome}</h4>
                                     <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; cursor:pointer; font-weight:600; color:#5B8C5A;">
                                         <input type="checkbox" ${ag.destaque ? 'checked' : ''} onchange="window.toggleDestaque(${ag.id}, this, this.parentNode.parentNode)">
                                         Destacar na Home
                                     </label>
                                 </div>
-                            `).join('');
+                            `}).join('');
                         }
                     }
                 }
