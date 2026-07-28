@@ -1,5 +1,5 @@
 const supabaseUrl = "https://cchrljjdthzpanqwguld.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkYmZ0ZmFteW5xZGVieGxhenZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExOTQ2NzEsImV4cCI6MjA5Njc3MDY3MX0.9uHMKNEhYI2NMjs2EG7es1pNR2bFtyQ9SLj7pQ-exfI";
+const supabaseAnonKey = "sb_publishable_8d-74DfMFs3l2OHSMLaGzA_bvXHEd03";
 
 window.supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
@@ -57,13 +57,17 @@ window.fetch = async function(resource, config) {
                         return new Response(JSON.stringify(data || []), { status: 200, headers: { 'Content-Type': 'application/json' } });
                     } catch (supabaseError) {
                         console.warn("Supabase fetch failed, trying offline fallback...", supabaseError);
-                        // Offline fallback: fetch local JSON file
+                        // Offline fallback: fetch local JSON file from data/
                         let prefix = window.location.pathname.includes('/agentes') || window.location.pathname.includes('/perfil') || window.location.pathname.includes('/cepin') ? '../' : './';
-                        const fallbackRes = await originalFetch(`${prefix}dados/${endpoint}.json`);
-                        if (fallbackRes.ok) {
-                            return fallbackRes;
+                        let filename = endpoint === 'agentes' ? 'agentes_extra.json' : `${endpoint}.json`;
+                        try {
+                            const fallbackRes = await originalFetch(`${prefix}data/${filename}`);
+                            if (fallbackRes.ok) return fallbackRes;
+                        } catch (e) {
+                            console.warn("Offline fallback fetch failed:", e);
                         }
-                        throw supabaseError; // Re-throw if fallback fails
+                        // If no fallback data, return empty array to prevent UI breaking
+                        return new Response(JSON.stringify([]), { status: 200, headers: { 'Content-Type': 'application/json' } });
                     }
                 } else if (method === 'POST') {
                     const { data, error } = await supabaseClient.from(endpoint).insert(body).select();
