@@ -251,7 +251,10 @@
         list.innerHTML = users.map(u => `
           <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
             <span class="text-sm font-medium">${u.email}</span>
-            <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
+            <div class="flex gap-2">
+              <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
+              <button onclick="deleteUser('${u.id}')" class="px-3 py-1.5 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
+            </div>
           </div>
         `).join('');
       } else {
@@ -282,6 +285,14 @@
       const { error } = await supabaseClient.from('perfis').update({ status_aprovacao: 'aprovado' }).eq('id', id);
       if (!error) loadAdminData();
       else alert('Erro ao aprovar usuário.');
+    };
+
+    window.deleteUser = async (id) => {
+      if (confirm('Tem certeza que deseja excluir este usuário definitivamente?')) {
+        const { error } = await supabaseClient.from('perfis').delete().eq('id', id);
+        if (!error) loadAdminData();
+        else alert('Erro ao excluir usuário.');
+      }
     };
 
     window.toggleDestaque = async (id, checkbox, cardId) => {
