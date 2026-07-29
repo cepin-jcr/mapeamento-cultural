@@ -326,15 +326,19 @@
         document.getElementById('sbError').innerText = "Erro ao criar conta. E-mail já existe?";
       } else {
         alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
-        fetch(`https://formsubmit.co/ajax/juanperuibe6@gmail.com`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            _subject: "Aprovação Pendente no Mapeamento Cultural",
-            email_usuario: e,
-            mensagem: "Um novo usuário (" + e + ") se cadastrou e aguarda aprovação.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. Faça login com o e-mail: admin@email.com e a senha: admin\n3. No 'Painel de Administração', encontre o usuário e clique em 'Aprovar'."
-          })
-        });
+        try {
+          await fetch(`https://formsubmit.co/ajax/juanperuibe6@gmail.com`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              _subject: "Aprovação Pendente no Mapeamento Cultural",
+              email_usuario: e,
+              mensagem: "Um novo usuário (" + e + ") se cadastrou e aguarda aprovação.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. Faça login com o e-mail: admin@email.com e a senha: admin\n3. No 'Painel de Administração', encontre o usuário e clique em 'Aprovar'."
+            })
+          });
+        } catch (err) {
+          console.error("Erro ao enviar email via FormSubmit:", err);
+        }
         localStorage.setItem('custom_session', JSON.stringify(data));
         window.location.reload();
       }
