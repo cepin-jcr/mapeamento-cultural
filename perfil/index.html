@@ -76,13 +76,13 @@
     </div>
     
     <div class="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-sm font-medium">
-      <a href="../index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
-      <a href="../mapa/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
-      <a href="../calendario/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
-      <a href="../eventos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
-      <a href="../espacos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
-      <a href="../agentes/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
-      <a href="index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+      <a href="../" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="../mapa/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="../calendario/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="../eventos/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="../espacos/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
+      <a href="../agentes/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="./" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Perfil
       </a>
@@ -216,21 +216,25 @@
     document.addEventListener("DOMContentLoaded", async () => {
       setTimeout(async () => {
         if (window.supabaseClient) {
-          const { data } = await supabaseClient.auth.getSession();
-          if (data && data.session) {
+          const storedSession = localStorage.getItem('custom_session');
+          if (storedSession) {
+            const sessionUser = JSON.parse(storedSession);
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('profile-section').classList.remove('hidden');
-            document.getElementById('userEmailDisplay').innerText = data.session.user.email;
+            document.getElementById('userEmailDisplay').innerText = sessionUser.email;
             
-            const { data: perfil } = await supabaseClient.from('perfis').select('is_admin, status_aprovacao').eq('id', data.session.user.id).single();
+            const { data: perfil } = await supabaseClient.from('perfis').select('id, email, is_admin, status_aprovacao').eq('id', sessionUser.id).single();
             if (perfil) {
               if (perfil.is_admin) {
                 document.getElementById('admin-panel').classList.remove('hidden');
                 loadAdminData();
-              } else if (perfil.status_aprovacao === 'pendente') {
+              } else if (perfil.status_aprovacao !== 'aprovado') {
                 document.getElementById('pending-status').classList.remove('hidden');
                 document.getElementById('profile-form').classList.add('hidden');
               }
+            } else {
+              document.getElementById('pending-status').classList.remove('hidden');
+              document.getElementById('profile-form').classList.add('hidden');
             }
           } else {
             document.getElementById('login-section').classList.remove('hidden');
@@ -297,37 +301,42 @@
     window.sbLogin = async () => {
       if (!window.supabaseClient) return;
       const e = document.getElementById('sbEmail').value;
-      let p = document.getElementById('sbPassword').value;
-      let { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
-      if (error && e === 'admin@email.com') {
-        const retry = await supabaseClient.auth.signInWithPassword({ email: e, password: 'admin123' });
-        error = retry.error;
+      const p = document.getElementById('sbPassword').value;
+      
+      const { data, error } = await supabaseClient.rpc('login_user', { p_email: e, p_password: p });
+      
+      if (error) {
+        document.getElementById('sbError').innerText = error.message;
+      } else if (!data) {
+        document.getElementById('sbError').innerText = "Credenciais inválidas.";
+      } else {
+        localStorage.setItem('custom_session', JSON.stringify(data));
+        window.location.reload();
       }
-      if (error) document.getElementById('sbError').innerText = error.message;
-      else window.location.reload();
     };
 
     window.sbSignup = async () => {
       if (!window.supabaseClient) return;
       const e = document.getElementById('sbEmail').value;
       const p = document.getElementById('sbPassword').value;
-      const { error } = await supabaseClient.auth.signUp({ email: e, password: p });
+      
+      const { data, error } = await supabaseClient.from('perfis').insert({ email: e, senha: p }).select().single();
+      
       if (error) {
-        document.getElementById('sbError').innerText = error.message;
+        document.getElementById('sbError').innerText = "Erro ao criar conta. E-mail já existe?";
       } else {
         alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
-        const { data: config } = await supabaseClient.from('configuracoes').select('notification_email').limit(1).single();
-        if (config && config.notification_email) {
-          fetch(`https://formsubmit.co/ajax/${config.notification_email}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              _subject: "Aprovação Pendente no Mapeamento Cultural",
-              email_usuario: e,
-              mensagem: "Um novo usuário se cadastrou e aguarda aprovação no painel de administração."
-            })
-          });
-        }
+        fetch(`https://formsubmit.co/ajax/juanperuibe6@gmail.com`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            _subject: "Aprovação Pendente no Mapeamento Cultural",
+            email_usuario: e,
+            mensagem: "Um novo usuário (" + e + ") se cadastrou e aguarda aprovação.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. Faça login com o e-mail: admin@email.com e a senha: admin\n3. No 'Painel de Administração', encontre o usuário e clique em 'Aprovar'."
+          })
+        });
+        localStorage.setItem('custom_session', JSON.stringify(data));
+        window.location.reload();
       }
     };
 
@@ -340,10 +349,8 @@
     });
 
     window.sbLogout = async () => {
-      if (window.supabaseClient) {
-        await supabaseClient.auth.signOut();
-        window.location.reload();
-      }
+      localStorage.removeItem('custom_session');
+      window.location.reload();
     };
 
     window.addEventListener('scroll', () => {

@@ -3,6 +3,23 @@ const supabaseAnonKey = "sb_publishable_8d-74DfMFs3l2OHSMLaGzA_bvXHEd03";
 
 window.supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
+// Fix local file:// navigation for clean URLs
+if (window.location.protocol === 'file:') {
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (link && link.getAttribute('href')) {
+            let href = link.getAttribute('href');
+            // If the link points to a directory and doesn't start with http/https
+            if (!href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto:')) {
+                if (href === './' || href === '../' || href.endsWith('/')) {
+                    e.preventDefault();
+                    window.location.href = href + 'index.html';
+                }
+            }
+        }
+    });
+}
+
 // Intercept window.fetch
 const originalFetch = window.fetch;
 window.fetch = async function(resource, config) {
@@ -23,9 +40,9 @@ window.fetch = async function(resource, config) {
         }
 
         // Attach user_id to body if user is logged in and method is POST/PUT
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (session && body) {
-            body.user_id = session.user.id;
+        const storedSession = localStorage.getItem('custom_session');
+        if (storedSession && body) {
+            body.user_id = JSON.parse(storedSession).id;
         }
 
         try {
@@ -129,97 +146,7 @@ const initSupabaseUI = async () => {
     const configBtn = document.querySelector('.tab-btn[onclick="switchTab(\'config-api\')"]');
     if (configBtn) configBtn.style.display = 'none';
 
-    // Setup Auth UI in Perfil page
-    if (window.location.href.includes('perfil')) {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        
-        if (!session) {
-            // Show Login screen over Dashboard
-            const dashboard = document.querySelector('.dashboard-container');
-            if (dashboard) {
-                dashboard.style.display = 'none';
-                
-                const loginDiv = document.createElement('div');
-                loginDiv.innerHTML = `
-                    <div style="max-width: 400px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                        <h2 style="color: #5B8C5A; margin-bottom: 20px;">Acesso / Cadastro</h2>
-                        <input type="email" id="sbEmail" placeholder="E-mail" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ccc;">
-                        <input type="password" id="sbPassword" placeholder="Senha" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ccc;">
-                        <button onclick="sbLogin()" style="width: 100%; padding: 12px; background: #5B8C5A; color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-bottom: 10px;">Entrar</button>
-                        <button onclick="sbSignup()" style="width: 100%; padding: 12px; background: #B8D8BA; color: #333; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">Cadastrar</button>
-                        <p id="sbError" style="color: red; font-size: 0.8rem; margin-top: 10px;"></p>
-                    </div>
-                `;
-                dashboard.parentNode.insertBefore(loginDiv, dashboard);
-                
-                window.sbLogin = async () => {
-                    const e = document.getElementById('sbEmail').value;
-                    let p = document.getElementById('sbPassword').value;
-                    let { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
-                    if (error && e === 'admin@email.com') {
-                        const retry = await supabaseClient.auth.signInWithPassword({ email: e, password: 'admin123' });
-                        error = retry.error;
-                    }
-                    if (error) document.getElementById('sbError').innerText = error.message;
-                    else window.location.reload();
-                };
-                
-                window.sbSignup = async () => {
-                    const e = document.getElementById('sbEmail').value;
-                    const p = document.getElementById('sbPassword').value;
-                    const { error } = await supabaseClient.auth.signUp({ email: e, password: p });
-                    if (error) document.getElementById('sbError').innerText = error.message;
-                    else alert("Cadastro realizado com sucesso! Faça login.");
-                };
-            }
-        } else {
-            // Logged in. Show logout button.
-            const tabsHeader = document.querySelector('.tabs-header');
-            if (tabsHeader) {
-                const logoutBtn = document.createElement('button');
-                logoutBtn.className = 'tab-btn';
-                logoutBtn.innerText = 'Sair da Conta';
-                logoutBtn.style.background = '#d9534f';
-                logoutBtn.style.color = '#fff';
-                logoutBtn.onclick = async () => {
-                    await supabaseClient.auth.signOut();
-                    window.location.reload();
-                };
-                tabsHeader.appendChild(logoutBtn);
-
-                // Check Admin Status
-                const { data: perfil } = await supabaseClient.from('perfis').select('is_admin').eq('id', session.user.id).single();
-                if (perfil && perfil.is_admin) {
-                    const btnAdminDestaques = document.getElementById('btnAdminDestaques');
-                    if (btnAdminDestaques) btnAdminDestaques.style.display = 'inline-block';
-
-                    const destaquesList = document.getElementById('destaquesList');
-                    if (destaquesList) {
-                        const { data: agentes } = await supabaseClient.from('agentes').select('*').order('id', {ascending: false});
-                        if (agentes) {
-                            destaquesList.innerHTML = agentes.map(ag => {
-                                let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
-                                if (window.location.pathname.includes('perfil') && fotoUrl.startsWith('../')) {
-                                    fotoUrl = fotoUrl; // perfil is subfolder, ../img is correct
-                                } else if (!window.location.pathname.includes('perfil') && fotoUrl.startsWith('../')) {
-                                    fotoUrl = fotoUrl.replace(/^\.\.\//, '');
-                                }
-                                return `
-                                <div style="background:#fff; border-radius:12px; padding:15px; border:2px solid ${ag.destaque ? '#5B8C5A' : '#eee'}; box-shadow:0 4px 10px rgba(0,0,0,0.05); transition:.3s;">
-                                    <img src="${fotoUrl}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
-                                    <h4 style="font-size:0.95rem; margin-bottom:5px; color:#333;">${ag.nome}</h4>
-                                    <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; cursor:pointer; font-weight:600; color:#5B8C5A;">
-                                        <input type="checkbox" ${ag.destaque ? 'checked' : ''} onchange="window.toggleDestaque(${ag.id}, this, this.parentNode.parentNode)">
-                                        Destacar na Home
-                                    </label>
-                                </div>
-                            `}).join('');
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // Note: The Perfil Auth UI is handled entirely inside perfil/index.html
 };
 
 if (document.readyState === 'loading') {
