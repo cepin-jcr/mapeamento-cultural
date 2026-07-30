@@ -72,13 +72,13 @@
     </div>
     
     <div class="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-sm font-medium">
-      <a href="../" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
-      <a href="../mapa/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
-      <a href="../calendario/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
-      <a href="../eventos/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
-      <a href="../espacos/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
-      <a href="../agentes/" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
-      <a href="../perfil/" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+      <a href="../index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="../mapa/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="../calendario/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="../eventos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="../espacos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
+      <a href="../agentes/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="../perfil/index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Entrar
       </a>
@@ -129,11 +129,19 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-background pt-16 pb-8 px-6 border-t border-border mt-12">
-    <div class="max-w-7xl mx-auto border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
-      <p>© 2026 Mapeamento Cultural do Vale do Paraíba.</p>
-    </div>
-  </footer>
+    <!-- Footer Placeholder -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Shared JS Library & Components -->
+  <script src="../js/db.js"></script>
+  <script src="../js/components.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      if (typeof renderFooter === 'function') {
+        renderFooter();
+      }
+    });
+  </script>
 
   <script>
     const navbar = document.getElementById('navbar');
