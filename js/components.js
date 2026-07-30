@@ -31,7 +31,7 @@ function renderFooter() {
   footerContainer.innerHTML = `
     <footer class="bg-background pt-16 pb-8 px-6 border-t border-border mt-10">
       <div class="max-w-7xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-start mb-12">
           
           <!-- Column 1: Localização & Contato -->
           <div class="space-y-4">
@@ -65,7 +65,16 @@ function renderFooter() {
             </p>
           </div>
           
-          <!-- Column 3: Redes Sociais -->
+          <!-- Column 3: Diagnóstico Cultural -->
+          <div class="space-y-4">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-primary">Diagnóstico Cultural</h3>
+            <div class="text-sm text-muted-foreground leading-relaxed">
+              <p>Conheça o Diagnóstico Cultural que deu origem a essa e outras ações:</p>
+              <a href="https://drive.google.com/drive/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-green-600 dark:text-green-500 hover:underline font-medium inline-block mt-2">Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</a>
+            </div>
+          </div>
+          
+          <!-- Column 4: Redes Sociais -->
           <div class="space-y-4">
             <h3 class="text-sm font-bold uppercase tracking-wider text-primary">Redes Sociais</h3>
             <div class="flex flex-col gap-3 text-sm text-muted-foreground">
@@ -87,8 +96,8 @@ function renderFooter() {
         </div>
         
         <!-- Bottom copyright -->
-        <div class="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
-          <p>© ${currentYear} CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com Blocos Feministas.</p>
+        <div class="border-t border-border pt-8 text-center text-xs text-muted-foreground">
+          <p>© ${currentYear} CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe cultural de Jacareí.</p>
         </div>
       </div>
     </footer>
