@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Agente • Mapeamento Cultural</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+              glow: "hsl(var(--primary-glow))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="../css/global.css">
+
+  <!-- Supabase Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-integration.js?v=2"></script>
+</head>
+<body class="min-h-screen bg-background text-foreground transition-all duration-300">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-0 w-full px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
+    <div class="flex items-center gap-3 mb-4 md:mb-0">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
+      <div>
+        <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
+        <span class="text-xs text-muted-foreground font-medium uppercase tracking-widest">Vale do Paraíba</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-6 py-32 max-w-3xl">
+    
+    <a id="btn-back" href="#" class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Voltar para o Perfil
+    </a>
+
+    <div id="loading-state" class="text-center py-12">
+      <p class="text-muted-foreground">Carregando dados...</p>
+    </div>
+
+    <div id="edit-form-container" class="hidden bg-card border border-border p-8 rounded-xl shadow-sm">
+      <h2 class="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+        Editar Agente
+      </h2>
+      
+      <form id="agent-form" class="space-y-6">
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Nome</label>
+          <input type="text" id="edit-nome" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Área / Especialidade</label>
+          <input type="text" id="edit-area" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Biografia</label>
+          <textarea id="edit-bio" rows="6" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Contato</label>
+          <input type="text" id="edit-contato" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Endereço Físico</label>
+          <input type="text" id="edit-endereco" placeholder="Ex: Rua XV de Novembro, 143 - Centro, Jacareí - SP" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Foto de Capa</label>
+          <input type="file" id="edit-foto" accept="image/*" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <p class="text-xs text-muted-foreground">A imagem será automaticamente comprimida.</p>
+          <img id="preview-foto" class="hidden mt-2 h-32 object-cover rounded border border-border" />
+        </div>
+
+        <div class="space-y-2 border-t border-border pt-4">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Galeria de Imagens</label>
+          <input type="file" id="edit-galeria" accept="image/*" multiple class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <p class="text-xs text-muted-foreground">Selecione várias imagens para sua galeria.</p>
+          <div id="preview-galeria" class="mt-2 grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+        </div>
+
+        <div class="space-y-2 border-t border-border pt-4">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Links de Vídeos (YouTube / Vimeo)</label>
+          <textarea id="edit-videos" rows="4" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y" placeholder="Cole os links de vídeo aqui, um por linha..."></textarea>
+          <p class="text-xs text-muted-foreground">Ex: https://www.youtube.com/watch?v=...</p>
+        </div>
+
+        <div class="pt-4 border-t border-border flex justify-between gap-4">
+          <button type="button" id="btn-delete" onclick="deleteAgent()" class="px-6 py-2.5 bg-red-500 text-white font-semibold rounded-md shadow-sm hover:bg-red-600 transition-all flex items-center gap-2">
+            Excluir Agente
+          </button>
+          <button type="submit" id="btn-save" class="px-6 py-2.5 bg-primary text-primary-foreground font-semibold rounded-md shadow-sm hover:bg-primary-glow transition-all flex items-center gap-2">
+            Salvar Alterações
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    let agenteId = null;
+    let agenteSlug = null;
+    
+    function slugify(text) {
+      if(!text) return '';
+      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+    }
+
+    async function checkAuthAndLoad() {
+      const urlParams = new URLSearchParams(window.location.search);
+      agenteSlug = urlParams.get('slug');
+      
+      document.getElementById('btn-back').href = `./agente.html?slug=${agenteSlug}`;
+
+      if (!agenteSlug || !window.supabaseClient) {
+        alert('Agente não especificado ou falha na conexão.');
+        window.location.href = './index.html';
+        return;
+      }
+
+      const storedSession = localStorage.getItem('custom_session');
+      if (!storedSession) {
+        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('para editar sua pagina de agente cadastre-se com o mesmo e-mail utilizado no formulário')}`;
+        return;
+      }
+      const sessionUser = JSON.parse(storedSession);
+
+      const { data: agentes, error } = await supabaseClient.from('agentes').select('*');
+      if (error || !agentes) {
+        alert('Erro ao carregar dados do agente.');
+        return;
+      }
+
+      const agente = agentes.find(a => slugify(a.nome) === agenteSlug);
+      if (!agente) {
+        alert('Agente não encontrado no banco de dados principal.');
+        window.location.href = './index.html';
+        return;
+      }
+
+      if (!sessionUser.is_admin && agente.user_id !== sessionUser.id) {
+        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('para editar sua pagina de agente cadastre-se com o mesmo e-mail utilizado no formulário')}`;
+        return;
+      }
+
+      agenteId = agente.id;
+
+      document.getElementById('edit-nome').value = agente.nome || '';
+      document.getElementById('edit-area').value = agente.area || '';
+      document.getElementById('edit-bio').value = agente.bio || '';
+      document.getElementById('edit-contato').value = agente.contato || '';
+      document.getElementById('edit-endereco').value = agente.endereco || '';
+      window.originalEndereco = agente.endereco || '';
+      
+      if (agente.foto) {
+        const preview = document.getElementById('preview-foto');
+        preview.src = agente.foto;
+        preview.classList.remove('hidden');
+        window.currentFotoData = agente.foto;
+      }
+
+      if (agente.galeria && Array.isArray(agente.galeria)) {
+        window.currentGaleria = [...agente.galeria];
+        renderGaleriaPreview();
+      } else {
+        window.currentGaleria = [];
+      }
+
+      if (agente.videos && Array.isArray(agente.videos)) {
+        document.getElementById('edit-videos').value = agente.videos.join('\n');
+      }
+
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('edit-form-container').classList.remove('hidden');
+    }
+
+    async function compressImage(file, maxWidth = 1200) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/webp', 0.8));
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById('edit-foto').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const base64 = await compressImage(file);
+        window.currentFotoData = base64;
+        const preview = document.getElementById('preview-foto');
+        preview.src = base64;
+        preview.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('edit-galeria').addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files);
+      for (const file of files) {
+        const base64 = await compressImage(file);
+        window.currentGaleria.push(base64);
+      }
+      renderGaleriaPreview();
+      e.target.value = ''; // reset
+    });
+
+    function renderGaleriaPreview() {
+      const container = document.getElementById('preview-galeria');
+      container.innerHTML = '';
+      window.currentGaleria.forEach((b64, idx) => {
+        const div = document.createElement('div');
+        div.className = 'relative group';
+        div.innerHTML = `
+          <img src="${b64}" class="w-full h-24 object-cover rounded border border-border">
+          <button type="button" onclick="removeGaleriaItem(${idx})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    window.removeGaleriaItem = (idx) => {
+      window.currentGaleria.splice(idx, 1);
+      renderGaleriaPreview();
+    };
+
+    document.getElementById('agent-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save');
+      btn.innerText = 'Salvando... (Aguarde)';
+      btn.disabled = true;
+
+      const videoLines = document.getElementById('edit-videos').value.split('\n').map(v => v.trim()).filter(v => v.length > 0);
+
+      const enderecoDigitado = document.getElementById('edit-endereco').value.trim();
+      let newLat = undefined;
+      let newLng = undefined;
+
+      if (enderecoDigitado && enderecoDigitado !== window.originalEndereco) {
+        btn.innerText = 'Buscando Coordenadas...';
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoDigitado)}`);
+          const data = await res.json();
+          if (data && data.length > 0) {
+            newLat = parseFloat(data[0].lat);
+            newLng = parseFloat(data[0].lon);
+          } else {
+            console.warn('Geocoding não encontrou resultados para:', enderecoDigitado);
+          }
+        } catch (e) {
+          console.error('Erro na geocodificação:', e);
+        }
+      }
+
+      btn.innerText = 'Salvando... (Aguarde)';
+
+      const updates = {
+        nome: document.getElementById('edit-nome').value,
+        area: document.getElementById('edit-area').value,
+        bio: document.getElementById('edit-bio').value,
+        contato: document.getElementById('edit-contato').value,
+        endereco: enderecoDigitado,
+        foto: window.currentFotoData || null,
+        galeria: window.currentGaleria || [],
+        videos: videoLines
+      };
+
+      if (newLat !== undefined && newLng !== undefined) {
+        updates.lat = newLat;
+        updates.lng = newLng;
+      }
+
+      const { error } = await supabaseClient.from('agentes').update(updates).eq('id', agenteId);
+      
+      if (error) {
+        alert('Erro ao salvar alterações. Certifique-se de ter criado as colunas galeria e videos no Supabase. Erro: ' + error.message);
+        btn.innerText = 'Salvar Alterações';
+        btn.disabled = false;
+      } else {
+        alert('Agente atualizado com sucesso!');
+        const newSlug = slugify(updates.nome);
+        window.location.href = `./agente.html?slug=${newSlug}`;
+      }
+    });
+
+    window.deleteAgent = async () => {
+      if (!agenteId) return;
+      if (confirm('Tem certeza que deseja excluir sua página de agente definitivamente? Esta ação não pode ser desfeita.')) {
+        const { error } = await supabaseClient.from('agentes').delete().eq('id', agenteId);
+        if (!error) {
+          alert('Agente excluído com sucesso.');
+          window.location.href = './index.html';
+        } else {
+          alert('Erro ao excluir agente: ' + error.message);
+        }
+      }
+    };
+
+    window.onload = checkAuthAndLoad;
+  </script>
+</body>
+</html>

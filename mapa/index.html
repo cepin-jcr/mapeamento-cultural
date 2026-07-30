@@ -333,39 +333,60 @@
         L.marker([esp.lat, esp.lng]).bindPopup(popupContent).addTo(map);
       });
       
-      // Fetch and add pins for Agents
+      // Funções para Agentes
+      const addedSlugs = new Set();
+      const addAgentToMap = (nome, endereco, lat, lng, slug) => {
+        if (addedSlugs.has(slug)) return;
+        addedSlugs.add(slug);
+
+        const popupContent = `
+          <div class="p-4 min-w-[200px]">
+            <span class="text-xs font-semibold text-primary uppercase tracking-wider mb-1 block">Agente Cultural</span>
+            <h4 class="font-display font-bold text-foreground mb-2 leading-tight">${nome}</h4>
+            <p class="text-xs text-muted-foreground mb-3">${endereco || 'Endereço não informado'}</p>
+            <a href="../agentes/agente.html?slug=${slug}" class="text-xs font-medium text-background bg-foreground px-3 py-1.5 rounded inline-block hover:bg-foreground/80 transition-colors">Ver Perfil</a>
+          </div>
+        `;
+        
+        const agentIcon = L.icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+        
+        L.marker([lat, lng], {icon: agentIcon}).bindPopup(popupContent).addTo(map);
+      };
+
+      let count = 0;
+
+      // 1. Fetch from Supabase
+      if (window.supabaseClient) {
+        supabaseClient.from('agentes').select('*').not('lat', 'is', null).then(({data, error}) => {
+          if (data && !error) {
+            data.forEach(ag => {
+              const slug = ag.nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+              addAgentToMap(ag.nome, ag.endereco, ag.lat, ag.lng, slug);
+              count++;
+            });
+            console.log(`Loaded ${data.length} agents from Supabase.`);
+          }
+        });
+      }
+
+      // 2. Fetch fallback from JSON
       fetch('../data/agentes_extra.json')
         .then(res => res.json())
         .then(data => {
-          let count = 0;
           for (const [slug, info] of Object.entries(data)) {
             if (info.coordenadas && info.coordenadas.length === 2) {
-              const popupContent = `
-                <div class="p-4 min-w-[200px]">
-                  <span class="text-xs font-semibold text-primary uppercase tracking-wider mb-1 block">Agente Cultural</span>
-                  <h4 class="font-display font-bold text-foreground mb-2 leading-tight">${info.nome_original}</h4>
-                  <p class="text-xs text-muted-foreground mb-3">${info.localizacao}</p>
-                  <a href="../agentes/agente.html?slug=${slug}" class="text-xs font-medium text-background bg-foreground px-3 py-1.5 rounded inline-block hover:bg-foreground/80 transition-colors">Ver Perfil</a>
-                </div>
-              `;
-              
-              // Use a different color marker for agents (blueish)
-              const agentIcon = L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-              });
-              
-              L.marker([info.coordenadas[0], info.coordenadas[1]], {icon: agentIcon})
-               .bindPopup(popupContent)
-               .addTo(map);
+              addAgentToMap(info.nome_original, info.localizacao, info.coordenadas[0], info.coordenadas[1], slug);
               count++;
             }
           }
-          console.log(`Loaded ${count} agents on the map.`);
+          console.log(`Loaded fallback JSON agents.`);
         })
         .catch(err => console.error('Error loading agents map data:', err));
     });

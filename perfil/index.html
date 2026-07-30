@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil • Mapeamento Cultural</title>
+  <title>Meu Perfil " Mapeamento Cultural</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,6 +63,8 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <!-- bcryptjs for password hashing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -94,13 +96,17 @@
     <div class="max-w-3xl mx-auto">
       <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Meu Perfil</h1>
       <p class="text-lg text-muted-foreground">
-        Gerencie suas informações e cadastre-se na plataforma.
+        Gerencie suas Informações e cadastre-se na plataforma.
       </p>
     </div>
   </header>
 
   <!-- Content Container -->
   <div id="login-section" class="max-w-md mx-auto px-6 py-12">
+    <div id="url-msg-alert" class="hidden mb-6 p-4 rounded-xl bg-primary/10 text-primary border border-primary/20 flex items-start gap-3">
+      <svg class="w-5 h-5 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+      <p id="url-msg-text" class="text-sm font-medium"></p>
+    </div>
     <div class="bg-card border border-border p-8 rounded-xl shadow-sm">
       <h2 class="text-2xl font-bold text-foreground mb-6 text-center">Acesso / Cadastro</h2>
       <div class="space-y-4">
@@ -110,16 +116,37 @@
         </div>
         <div>
           <label class="text-xs font-semibold text-foreground uppercase tracking-wider mb-1 block">Senha</label>
-          <input type="password" id="sbPassword" placeholder="••••••••" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary transition-colors text-sm">
+          <input type="password" id="sbPassword" placeholder="""""""""" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary transition-colors text-sm">
         </div>
         <button onclick="sbLogin()" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow shadow-sm transition-all flex justify-center items-center gap-2">
           Entrar
         </button>
         <button onclick="sbSignup()" class="w-full py-3 bg-background border border-input text-foreground font-semibold rounded-md hover:border-primary hover:text-primary transition-all">
-          Criar Nova Conta
+          Criar Nova conta
         </button>
         <p id="sbError" class="text-sm text-red-500 text-center min-h-[20px]"></p>
+        <div class="flex flex-col items-center gap-2 mt-4 pt-4 border-t border-border">
+          <button onclick="showRecoveryModal('senha')" class="text-sm text-muted-foreground hover:text-primary transition-colors">Esqueci minha senha</button>
+          <button onclick="showRecoveryModal('email')" class="text-sm text-muted-foreground hover:text-primary transition-colors">Esqueci meu e-mail</button>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Recovery Modal -->
+  <div id="recovery-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div class="bg-card border border-border p-8 rounded-xl shadow-xl max-w-sm w-full transform scale-95 transition-transform duration-300">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold text-foreground">Recuperação de Conta</h3>
+        <button onclick="hideRecoveryModal()" class="text-muted-foreground hover:text-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <p class="text-sm text-muted-foreground mb-6">Para recuperar seu acesso, entre em contato com a administradora Simone através do WhatsApp.</p>
+      <a id="recovery-whatsapp-link" href="#" target="_blank" class="w-full py-3 bg-[#25D366] text-white font-semibold rounded-md hover:bg-[#20b958] transition-all flex justify-center items-center gap-2 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Falar no WhatsApp
+      </a>
     </div>
   </div>
 
@@ -131,8 +158,8 @@
         </div>
         <div>
           <h2 class="text-2xl font-bold text-foreground">Usuário Logado</h2>
-          <p class="text-sm text-muted-foreground" id="userEmailDisplay">usuario@email.com</p>
-          <button onclick="sbLogout()" class="text-xs text-red-500 hover:text-red-700 mt-2 font-semibold">Sair da Conta</button>
+          <p class="text-sm text-muted-foreground" id="userEmailDisplay">usuário@email.com</p>
+          <button onclick="sbLogout()" class="text-xs text-red-500 hover:text-red-700 mt-2 font-semibold">Sair da conta</button>
         </div>
       </div>
       
@@ -151,7 +178,15 @@
           <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Painel de Administração
         </h3>
-        <div class="space-y-6">
+        
+        <div class="flex gap-2 mb-6 border-b border-border pb-2 overflow-x-auto">
+          <button onclick="switchAdminTab('pendentes')" id="tab-pendentes" class="px-4 py-2 text-sm font-semibold text-primary border-b-2 border-primary whitespace-nowrap">Usuários Pendentes</button>
+          <button onclick="switchAdminTab('usuários')" id="tab-usuários" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Usuários</button>
+          <button onclick="switchAdminTab('agentes')" id="tab-agentes" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Agentes</button>
+        </div>
+
+        <!-- Tab: Pendentes (Includes Destaques as it was) -->
+        <div id="admin-tab-pendentes" class="space-y-6">
           <div>
             <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Usuários Pendentes</h4>
             <div id="admin-users-list" class="space-y-2">
@@ -163,6 +198,22 @@
             <div id="admin-destaques-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <p class="text-sm text-muted-foreground italic">Carregando...</p>
             </div>
+          </div>
+        </div>
+
+        <!-- Tab: Usuários -->
+        <div id="admin-tab-usuários" class="hidden space-y-4">
+          <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Todos os Usuários</h4>
+          <div id="admin-all-users-list" class="space-y-3">
+            <p class="text-sm text-muted-foreground italic">Carregando...</p>
+          </div>
+        </div>
+
+        <!-- Tab: Agentes -->
+        <div id="admin-tab-agentes" class="hidden space-y-4">
+          <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Vincular e Editar Agentes</h4>
+          <div id="admin-all-agentes-list" class="space-y-3">
+            <p class="text-sm text-muted-foreground italic">Carregando...</p>
           </div>
         </div>
       </div>
@@ -183,7 +234,7 @@
             <select class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
               <option>Selecione...</option>
               <option>Artesanato</option>
-              <option>Música</option>
+              <option>Música</option>>
               <option>Teatro</option>
               <option>Artes Visuais</option>
             </select>
@@ -213,7 +264,35 @@
   <script>
     const navbar = document.getElementById('navbar');
 
+    function showRecoveryModal(type) {
+      const modal = document.getElementById('recovery-modal');
+      const link = document.getElementById('recovery-whatsapp-link');
+      const text = type === 'senha' 
+        ? "Olá Simone, esqueci minha senha no Mapeamento Cultural. Pode me ajudar a recuperar?" 
+        : "Olá Simone, esqueci o e-mail da minha conta no Mapeamento Cultural. Pode me ajudar a recuperar?";
+      link.href = `https://wa.me/5512997678111?text=${encodeURIComponent(text)}`;
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.querySelector('.bg-card').classList.remove('scale-95');
+      }, 10);
+    }
+
+    function hideRecoveryModal() {
+      const modal = document.getElementById('recovery-modal');
+      modal.classList.add('opacity-0');
+      modal.querySelector('.bg-card').classList.add('scale-95');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
     document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const msg = urlParams.get('msg');
+      if (msg) {
+        document.getElementById('url-msg-alert').classList.remove('hidden');
+        document.getElementById('url-msg-text').innerText = msg;
+      }
+
       setTimeout(async () => {
         if (window.supabaseClient) {
           const storedSession = localStorage.getItem('custom_session');
@@ -244,25 +323,70 @@
       }, 500);
     });
 
+    window.switchAdminTab = (tabId) => {
+      document.getElementById('admin-tab-pendentes').classList.add('hidden');
+      document.getElementById('admin-tab-usuários').classList.add('hidden');
+      document.getElementById('admin-tab-agentes').classList.add('hidden');
+      
+      document.getElementById('tab-pendentes').classList.replace('text-primary', 'text-muted-foreground');
+      document.getElementById('tab-pendentes').classList.remove('border-b-2', 'border-primary');
+      document.getElementById('tab-usuários').classList.replace('text-primary', 'text-muted-foreground');
+      document.getElementById('tab-usuários').classList.remove('border-b-2', 'border-primary');
+      document.getElementById('tab-agentes').classList.replace('text-primary', 'text-muted-foreground');
+      document.getElementById('tab-agentes').classList.remove('border-b-2', 'border-primary');
+      
+      document.getElementById(`admin-tab-${tabId}`).classList.remove('hidden');
+      document.getElementById(`tab-${tabId}`).classList.replace('text-muted-foreground', 'text-primary');
+      document.getElementById(`tab-${tabId}`).classList.add('border-b-2', 'border-primary');
+    };
+
+    function slugify(text) {
+      if(!text) return '';
+      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+    }
+
     window.loadAdminData = async () => {
-      const { data: users } = await supabaseClient.from('perfis').select('*').eq('status_aprovacao', 'pendente');
-      const list = document.getElementById('admin-users-list');
-      if (users && users.length > 0) {
-        list.innerHTML = users.map(u => `
-          <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
-            <span class="text-sm font-medium">${u.email}</span>
+      // Load Pendentes
+      const { data: users } = await supabaseClient.from('perfis').select('*').order('id', {ascending: false});
+      const pendentesList = document.getElementById('admin-users-list');
+      const allUsersList = document.getElementById('admin-all-users-list');
+      
+      if (users) {
+        const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
+        if (pendentes.length > 0) {
+          pendentesList.innerHTML = pendentes.map(u => `
+            <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
+              <span class="text-sm font-medium">${u.email}</span>
+              <div class="flex gap-2">
+                <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
+                <button onclick="deleteUser('${u.id}')" class="px-3 py-1.5 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          pendentesList.innerHTML = '<p class="text-sm text-muted-foreground">Nenhum usuário pendente.</p>';
+        }
+
+        // All Users
+        allUsersList.innerHTML = users.map(u => `
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-card border border-border rounded-lg shadow-sm gap-3">
+            <div>
+              <span class="text-sm font-medium block">${u.email}</span>
+              <span class="text-xs text-muted-foreground">Status: ${u.status_aprovacao} | Admin: ${u.is_admin ? 'Sim' : 'Não'}</span>
+            </div>
             <div class="flex gap-2">
-              <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
-              <button onclick="deleteUser('${u.id}')" class="px-3 py-1.5 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
+              <button onclick="changeUserEmail('${u.id}', '${u.email}')" class="px-3 py-1.5 bg-secondary text-secondary-foreground text-xs font-semibold rounded hover:bg-secondary/80 transition-colors">Editar E-mail</button>
+              <button onclick="changeUserPassword('${u.id}')" class="px-3 py-1.5 bg-foreground text-background text-xs font-semibold rounded hover:bg-foreground/80 transition-colors">Alterar Senha</button>
             </div>
           </div>
         `).join('');
-      } else {
-        list.innerHTML = '<p class="text-sm text-muted-foreground">Nenhum usuário pendente.</p>';
       }
       
-      const { data: agentes } = await supabaseClient.from('agentes').select('id, nome, foto, destaque').order('id', {ascending: false});
+      // Load Agentes
+      const { data: agentes } = await supabaseClient.from('agentes').select('id, nome, foto, destaque, user_id').order('id', {ascending: false});
       const destaquesList = document.getElementById('admin-destaques-list');
+      const allAgentesList = document.getElementById('admin-all-agentes-list');
+      
       if (agentes) {
         destaquesList.innerHTML = agentes.map(ag => {
           let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
@@ -278,6 +402,88 @@
             </label>
           </div>
         `}).join('');
+
+        const userOptions = `<option value="">Nenhum usuário vinculado</option>` + (users ? users.map(u => `<option value="${u.id}">${u.email}</option>`).join('') : '');
+
+        allAgentesList.innerHTML = agentes.map(ag => {
+          let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+          return `
+          <div class="flex flex-col sm:flex-row sm:justify-between p-3 bg-card border border-border rounded-lg shadow-sm gap-4 items-start sm:items-center">
+            <div class="flex gap-3 items-center flex-1 w-full">
+              <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
+              <div class="flex-1">
+                <span class="text-sm font-semibold block">${ag.nome}</span>
+                <select onchange="linkAgentToUser(${ag.id}, this.value)" class="mt-1 w-full text-xs p-1 rounded border border-input bg-background">
+                  ${userOptions.replace(`value="${ag.user_id}"`, `value="${ag.user_id}" selected`)}
+                </select>
+              </div>
+            </div>
+            <div class="w-full sm:w-auto flex gap-2">
+              <button onclick="editAgentAdmin('${slugify(ag.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar Página</button>
+              <button onclick="deleteAgentAdmin(${ag.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
+            </div>
+          </div>
+        `}).join('');
+      }
+    };
+
+    window.changeUserEmail = async (id, currentEmail) => {
+      const newEmail = prompt('Novo e-mail para o usuário:', currentEmail);
+      if (newEmail && newEmail !== currentEmail) {
+        const { error } = await supabaseClient.from('perfis').update({ email: newEmail }).eq('id', id);
+        if (!error) {
+          alert('E-mail alterado com sucesso!');
+          loadAdminData();
+        } else {
+          alert('Erro ao alterar e-mail. Talvez já esteja em uso.');
+        }
+      }
+    };
+
+    window.changeUserPassword = async (id) => {
+      const newPass = prompt('Digite a nova senha para o usuário:');
+      if (newPass) {
+        if (!window.dcodeIO && !window.bcrypt) {
+          alert('Biblioteca bcrypt não carregada. Tente recarregar a página.');
+          return;
+        }
+        const bcrypt = window.bcrypt || window.dcodeIO.bcrypt;
+        const salt = bcrypt.genSaltSync(6);
+        const hash = bcrypt.hashSync(newPass, salt);
+        
+        const { error } = await supabaseClient.from('perfis').update({ senha: hash }).eq('id', id);
+        if (!error) {
+          alert('Senha alterada com sucesso!');
+        } else {
+          alert('Erro ao alterar senha.');
+        }
+      }
+    };
+
+    window.editAgentAdmin = (slug) => {
+      window.location.href = `../agentes/editar.html?slug=${slug}`;
+    };
+
+    window.linkAgentToUser = async (agentId, userId) => {
+      const val = userId ? userId : null;
+      const { error } = await supabaseClient.from('agentes').update({ user_id: val }).eq('id', agentId);
+      if (error) {
+        alert('Erro ao vincular e-mail ao agente.');
+        loadAdminData();
+      } else {
+        alert('E-mail vinculado ao agente com sucesso!');
+      }
+    };
+
+    window.deleteAgentAdmin = async (id) => {
+      if (confirm('Tem certeza que deseja excluir este agente definitivamente? Esta ação não pode ser desfeita.')) {
+        const { error } = await supabaseClient.from('agentes').delete().eq('id', id);
+        if (!error) {
+          alert('Agente excluído com sucesso.');
+          loadAdminData();
+        } else {
+          alert('Erro ao excluir agente: ' + error.message);
+        }
       }
     };
 
@@ -343,7 +549,7 @@
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({
               _subject: "Aprovação Pendente no Mapeamento Cultural",
-              email_usuario: e,
+              email_usuário: e,
               mensagem: "Um novo usuário (" + e + ") se cadastrou e aguarda aprovação.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. Faça login com o e-mail: admin@email.com e a senha: admin\n3. No 'Painel de Administração', encontre o usuário e clique em 'Aprovar'."
             })
           });
