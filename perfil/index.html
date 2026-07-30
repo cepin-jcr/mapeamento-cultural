@@ -524,7 +524,7 @@
       
       if (error) {
         document.getElementById('sbError').innerText = error.message;
-      } else if (!data) {
+      } else if (!data || !data.id) {
         document.getElementById('sbError').innerText = "Credenciais inválidas.";
       } else {
         localStorage.setItem('custom_session', JSON.stringify(data));
