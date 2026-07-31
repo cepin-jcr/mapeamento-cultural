@@ -59,6 +59,10 @@
   </script>
 
   <link rel="stylesheet" href="../css/global.css">
+
+  <!-- Supabase Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-integration.js?v=2"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -113,35 +117,8 @@
 
   <!-- Grid -->
   <section class="max-w-7xl mx-auto px-6 mb-24">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      
-      <!-- Card -->
-      <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
-        <div class="h-48 overflow-hidden bg-muted relative">
-          <img src="https://picsum.photos/600/400?10" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <div class="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded shadow-sm">
-            15 Julho
-          </div>
-          <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2 py-1 rounded">
-            Artes Visuais
-          </div>
-        </div>
-        <div class="p-6 flex-grow flex flex-col">
-          <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Exposição "Raízes do Vale"</h3>
-          <p class="text-sm text-muted-foreground mb-4 line-clamp-2">Artes visuais e história do patrimônio local. Entrada gratuita.</p>
-          <div class="flex flex-col gap-2 mt-auto">
-            <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              14:00 - 18:00
-            </div>
-            <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-              MAB - Museu de Antropologia
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="eventosGrid">
+      <!-- Gerado dinamicamente -->
     </div>
   </section>
 
@@ -161,6 +138,60 @@
   </script>
 
   <script>
+    let todosEventos = [];
+
+    async function carregarEventos() {
+      if (window.supabaseClient) {
+        const { data, error } = await supabaseClient.from('eventos').select('*').order('id', {ascending: false});
+        if (!error && data) {
+          todosEventos = data;
+        }
+      }
+      renderEventos(todosEventos);
+    }
+
+    function renderEventos(eventos) {
+      const grid = document.getElementById('eventosGrid');
+      grid.innerHTML = '';
+      if (eventos.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-16 text-muted-foreground text-sm font-medium">Nenhum evento encontrado.</div>';
+        return;
+      }
+
+      eventos.forEach(ev => {
+        const fotoUrl = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+        const card = `
+          <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
+            <div class="h-48 overflow-hidden bg-muted relative">
+              <img src="${fotoUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2 py-1 rounded">
+                ${ev.categoria || 'Evento'}
+              </div>
+            </div>
+            <div class="p-6 flex-grow flex flex-col">
+              <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">${ev.nome || 'Sem Nome'}</h3>
+              <p class="text-sm text-muted-foreground mb-4 line-clamp-2">${ev.descricao || 'Nenhuma descrição informada.'}</p>
+              <div class="flex flex-col gap-2 mt-auto">
+                <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  ${ev.data_hora || 'Data e hora não informada'}
+                </div>
+                <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  ${ev.local || 'Local não informado'}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.innerHTML += card;
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      carregarEventos();
+    });
+
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 50) {

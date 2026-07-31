@@ -265,12 +265,45 @@
   <div id="footer-placeholder"></div>
 
   <!-- Shared JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-integration.js?v=2"></script>
   <script src="../js/db.js"></script>
   <script src="../js/components.js"></script>
   
   <script>
-    function loadCepinPage() {
-      const data = getCepinData();
+    async function loadCepinPage() {
+      let data = null;
+      if (window.supabaseClient) {
+        const { data: dbData, error } = await supabaseClient.from('configuracoes_cepin').select('dados').eq('id', 1).single();
+        if (!error && dbData && dbData.dados && Object.keys(dbData.dados).length > 0) {
+           data = dbData.dados;
+        }
+      }
+      
+      if (!data) {
+        try {
+          const res = await fetch('../cepin_info.json');
+          if (res.ok) {
+            const json = await res.json();
+            data = {
+              apresentacaoTitulo: json.apresentacao?.titulo || "",
+              apresentacaoSubtitulo: json.apresentacao?.subtitulo || "",
+              apresentacaoTexto: (json.apresentacao?.texto1 || "") + "\n\n" + (json.apresentacao?.texto2 || "") + "\n\n" + (json.apresentacao?.texto3 || "") + "\n\n" + (json.apresentacao?.texto4 || ""),
+              competencias: json.competencias || [],
+              parceirosTexto: json.parceiros?.texto || "",
+              projetos: json.projetos || [],
+              equipeTexto: json.equipe?.texto || "",
+              equipeMembros: json.equipe?.membros || [],
+              equipeDesenvolvedores: json.equipe?.desenvolvedores || [],
+              equipeColaboradores: json.equipe?.colaboradores || []
+            };
+          }
+        } catch (e) {
+          console.error("Erro ao carregar cepin_info.json fallback", e);
+        }
+      }
+
+      if (!data) data = getCepinData(); // Final fallback
       
       if (data.apresentacaoTitulo) document.getElementById('page-title').innerHTML = data.apresentacaoTitulo.replace("CEPIN JCR", "<span class='text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-glow'>CEPIN JCR</span>");
       if (data.apresentacaoSubtitulo) document.getElementById('page-subtitle').innerText = data.apresentacaoSubtitulo;

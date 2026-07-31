@@ -63,6 +63,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <script src="../js/db.js"></script>
   <!-- bcryptjs for password hashing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 </head>
@@ -183,9 +184,14 @@
           <button onclick="switchAdminTab('pendentes')" id="tab-pendentes" class="px-4 py-2 text-sm font-semibold text-primary border-b-2 border-primary whitespace-nowrap">Usuários Pendentes</button>
           <button onclick="switchAdminTab('usuários')" id="tab-usuários" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Usuários</button>
           <button onclick="switchAdminTab('agentes')" id="tab-agentes" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Agentes</button>
+          <button onclick="switchAdminTab('espacos')" id="tab-espacos" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Espaços</button>
+          <button onclick="switchAdminTab('eventos')" id="tab-eventos" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Eventos</button>
+          <button onclick="switchAdminTab('cepin')" id="tab-cepin" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">CEPIN</button>
+          <button onclick="switchAdminTab('destaques')" id="tab-destaques" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Destaques da Home</button>
+          <button onclick="switchAdminTab('perfil')" id="tab-perfil" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Informações do Perfil</button>
         </div>
 
-        <!-- Tab: Pendentes (Includes Destaques as it was) -->
+        <!-- Tab: Pendentes -->
         <div id="admin-tab-pendentes" class="space-y-6">
           <div>
             <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Usuários Pendentes</h4>
@@ -193,6 +199,10 @@
               <p class="text-sm text-muted-foreground italic">Carregando...</p>
             </div>
           </div>
+        </div>
+
+        <!-- Tab: Destaques -->
+        <div id="admin-tab-destaques" class="hidden space-y-6">
           <div>
             <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Gerenciar Destaques da Home</h4>
             <div id="admin-destaques-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -211,9 +221,122 @@
 
         <!-- Tab: Agentes -->
         <div id="admin-tab-agentes" class="hidden space-y-4">
-          <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Vincular e Editar Agentes</h4>
+          <div class="flex justify-between items-center mb-3 border-b border-border pb-2">
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Gerenciar Agentes</h4>
+            <button onclick="createAgentAdmin()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Criar Novo Agente</button>
+          </div>
           <div id="admin-all-agentes-list" class="space-y-3">
             <p class="text-sm text-muted-foreground italic">Carregando...</p>
+          </div>
+        </div>
+
+        <!-- Tab: Espaços -->
+        <div id="admin-tab-espacos" class="hidden space-y-4">
+          <div class="flex justify-between items-center mb-3 border-b border-border pb-2">
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Gerenciar Espaços</h4>
+            <button onclick="createSpaceAdmin()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Criar Novo Espaço</button>
+          </div>
+          <div id="admin-all-espacos-list" class="space-y-3">
+            <p class="text-sm text-muted-foreground italic">Carregando...</p>
+          </div>
+        </div>
+
+        <!-- Tab: Eventos -->
+        <div id="admin-tab-eventos" class="hidden space-y-4">
+          <div class="flex justify-between items-center mb-3 border-b border-border pb-2">
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Gerenciar Eventos</h4>
+            <button onclick="createEventAdmin()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Criar Novo Evento</button>
+          </div>
+          <div id="admin-all-eventos-list" class="space-y-3">
+            <p class="text-sm text-muted-foreground italic">Carregando...</p>
+          </div>
+        </div>
+
+        <!-- Tab: CEPIN -->
+        <div id="admin-tab-cepin" class="hidden space-y-6">
+          <div class="flex justify-between items-center mb-3 border-b border-border pb-2">
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Configurações da Página CEPIN</h4>
+            <button onclick="saveCepinAdminData()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Salvar Alterações</button>
+          </div>
+          <div id="cepin-loading" class="text-sm text-muted-foreground italic hidden">Carregando dados...</div>
+          
+          <div id="cepin-form" class="space-y-6">
+            <!-- Apresentação -->
+            <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
+              <h5 class="font-bold text-sm uppercase text-foreground">Apresentação</h5>
+              <div class="space-y-2">
+                <label class="text-xs font-semibold">Título</label>
+                <input type="text" id="cepin-apresentacaoTitulo" class="w-full px-3 py-2 bg-background border border-input rounded text-sm">
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-semibold">Subtítulo</label>
+                <input type="text" id="cepin-apresentacaoSubtitulo" class="w-full px-3 py-2 bg-background border border-input rounded text-sm">
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-semibold">Texto Principal (Apresentação)</label>
+                <textarea id="cepin-apresentacaoTexto" rows="6" class="w-full px-3 py-2 bg-background border border-input rounded text-sm" placeholder="Separe os parágrafos com duas quebras de linha..."></textarea>
+              </div>
+            </div>
+
+            <!-- Competências -->
+            <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
+              <div class="flex justify-between items-center">
+                <h5 class="font-bold text-sm uppercase text-foreground">Competências</h5>
+                <button type="button" onclick="addCepinCompetencia()" class="text-xs text-primary font-semibold">+ Adicionar</button>
+              </div>
+              <div id="cepin-competencias-list" class="space-y-2"></div>
+            </div>
+
+            <!-- Parceiros -->
+            <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
+              <h5 class="font-bold text-sm uppercase text-foreground">Potenciais Parceiros</h5>
+              <div class="space-y-2">
+                <label class="text-xs font-semibold">Texto</label>
+                <textarea id="cepin-parceirosTexto" rows="4" class="w-full px-3 py-2 bg-background border border-input rounded text-sm"></textarea>
+              </div>
+            </div>
+
+            <!-- Projetos -->
+            <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
+              <div class="flex justify-between items-center">
+                <h5 class="font-bold text-sm uppercase text-foreground">Projetos em Destaque</h5>
+                <button type="button" onclick="addCepinProjeto()" class="text-xs text-primary font-semibold">+ Adicionar Projeto</button>
+              </div>
+              <div id="cepin-projetos-list" class="space-y-4"></div>
+            </div>
+
+            <!-- Equipe -->
+            <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
+              <h5 class="font-bold text-sm uppercase text-foreground">Equipe</h5>
+              <div class="space-y-2">
+                <label class="text-xs font-semibold">Texto Introdutório</label>
+                <textarea id="cepin-equipeTexto" rows="3" class="w-full px-3 py-2 bg-background border border-input rounded text-sm"></textarea>
+              </div>
+              
+              <div class="mt-4">
+                <div class="flex justify-between items-center mb-2">
+                  <h6 class="font-bold text-xs uppercase text-foreground">Membros (Pesquisadores/Coordenadores)</h6>
+                  <button type="button" onclick="addCepinEquipeMembro('membro')" class="text-xs text-primary font-semibold">+ Adicionar Membro</button>
+                </div>
+                <div id="cepin-equipe-membros-list" class="space-y-2"></div>
+              </div>
+
+              <div class="mt-4">
+                <div class="flex justify-between items-center mb-2">
+                  <h6 class="font-bold text-xs uppercase text-foreground">Colaboradores</h6>
+                  <button type="button" onclick="addCepinEquipeMembro('colab')" class="text-xs text-primary font-semibold">+ Adicionar Colaborador</button>
+                </div>
+                <div id="cepin-equipe-colab-list" class="space-y-2"></div>
+              </div>
+
+              <div class="mt-4">
+                <div class="flex justify-between items-center mb-2">
+                  <h6 class="font-bold text-xs uppercase text-foreground">Desenvolvedores</h6>
+                  <button type="button" onclick="addCepinEquipeMembro('dev')" class="text-xs text-primary font-semibold">+ Adicionar Dev</button>
+                </div>
+                <div id="cepin-equipe-dev-list" class="space-y-2"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -324,18 +447,28 @@
     });
 
     window.switchAdminTab = (tabId) => {
-      document.getElementById('admin-tab-pendentes').classList.add('hidden');
-      document.getElementById('admin-tab-usuários').classList.add('hidden');
-      document.getElementById('admin-tab-agentes').classList.add('hidden');
+      const tabs = ['pendentes', 'usuários', 'agentes', 'espacos', 'eventos', 'cepin', 'destaques', 'perfil'];
       
-      document.getElementById('tab-pendentes').classList.replace('text-primary', 'text-muted-foreground');
-      document.getElementById('tab-pendentes').classList.remove('border-b-2', 'border-primary');
-      document.getElementById('tab-usuários').classList.replace('text-primary', 'text-muted-foreground');
-      document.getElementById('tab-usuários').classList.remove('border-b-2', 'border-primary');
-      document.getElementById('tab-agentes').classList.replace('text-primary', 'text-muted-foreground');
-      document.getElementById('tab-agentes').classList.remove('border-b-2', 'border-primary');
+      tabs.forEach(t => {
+        const tabContent = document.getElementById(`admin-tab-${t}`);
+        if (tabContent) tabContent.classList.add('hidden');
+        const tabBtn = document.getElementById(`tab-${t}`);
+        if (tabBtn) {
+          tabBtn.classList.replace('text-primary', 'text-muted-foreground');
+          tabBtn.classList.remove('border-b-2', 'border-primary');
+        }
+      });
+      document.getElementById('profile-form').classList.add('hidden');
       
-      document.getElementById(`admin-tab-${tabId}`).classList.remove('hidden');
+      if (tabId === 'perfil') {
+        document.getElementById('profile-form').classList.remove('hidden');
+      } else {
+        document.getElementById(`admin-tab-${tabId}`).classList.remove('hidden');
+        if (tabId === 'cepin') {
+          loadCepinAdminData();
+        }
+      }
+      
       document.getElementById(`tab-${tabId}`).classList.replace('text-muted-foreground', 'text-primary');
       document.getElementById(`tab-${tabId}`).classList.add('border-b-2', 'border-primary');
     };
@@ -387,6 +520,8 @@
       const destaquesList = document.getElementById('admin-destaques-list');
       const allAgentesList = document.getElementById('admin-all-agentes-list');
       
+      const userOptions = `<option value="">Nenhum usuário vinculado</option>` + (users ? users.map(u => `<option value="${u.id}">${u.email}</option>`).join('') : '');
+
       if (agentes) {
         destaquesList.innerHTML = agentes.map(ag => {
           let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
@@ -403,8 +538,6 @@
           </div>
         `}).join('');
 
-        const userOptions = `<option value="">Nenhum usuário vinculado</option>` + (users ? users.map(u => `<option value="${u.id}">${u.email}</option>`).join('') : '');
-
         allAgentesList.innerHTML = agentes.map(ag => {
           let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
           return `
@@ -419,11 +552,63 @@
               </div>
             </div>
             <div class="w-full sm:w-auto flex gap-2">
-              <button onclick="editAgentAdmin('${slugify(ag.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar Página</button>
+              <button onclick="editAgentAdmin('${slugify(ag.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
               <button onclick="deleteAgentAdmin(${ag.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
             </div>
           </div>
         `}).join('');
+      } else {
+        allAgentesList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum agente encontrado.</p>';
+      }
+
+      // Load Espaços
+      const { data: espacos } = await supabaseClient.from('espacos').select('id, nome, foto').order('id', {ascending: false});
+      const allEspacosList = document.getElementById('admin-all-espacos-list');
+      
+      if (espacos && espacos.length > 0) {
+        allEspacosList.innerHTML = espacos.map(esp => {
+          let fotoUrl = esp.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+          return `
+          <div class="flex flex-col sm:flex-row sm:justify-between p-3 bg-card border border-border rounded-lg shadow-sm gap-4 items-start sm:items-center">
+            <div class="flex gap-3 items-center flex-1 w-full">
+              <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
+              <div class="flex-1">
+                <span class="text-sm font-semibold block">${esp.nome}</span>
+              </div>
+            </div>
+            <div class="w-full sm:w-auto flex gap-2">
+              <button onclick="editSpaceAdmin('${slugify(esp.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
+              <button onclick="deleteSpaceAdmin(${esp.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
+            </div>
+          </div>
+        `}).join('');
+      } else {
+        allEspacosList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum espaço encontrado.</p>';
+      }
+
+      // Load Eventos
+      const { data: eventos } = await supabaseClient.from('eventos').select('id, nome, foto').order('id', {ascending: false});
+      const allEventosList = document.getElementById('admin-all-eventos-list');
+      
+      if (eventos && eventos.length > 0) {
+        allEventosList.innerHTML = eventos.map(ev => {
+          let fotoUrl = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+          return `
+          <div class="flex flex-col sm:flex-row sm:justify-between p-3 bg-card border border-border rounded-lg shadow-sm gap-4 items-start sm:items-center">
+            <div class="flex gap-3 items-center flex-1 w-full">
+              <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
+              <div class="flex-1">
+                <span class="text-sm font-semibold block">${ev.nome}</span>
+              </div>
+            </div>
+            <div class="w-full sm:w-auto flex gap-2">
+              <button onclick="editEventAdmin('${slugify(ev.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
+              <button onclick="deleteEventAdmin(${ev.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
+            </div>
+          </div>
+        `}).join('');
+      } else {
+        allEventosList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum evento encontrado.</p>';
       }
     };
 
@@ -460,8 +645,28 @@
       }
     };
 
+    window.createAgentAdmin = () => {
+      window.location.href = `../agentes/editar.html`;
+    };
+    
+    window.createSpaceAdmin = () => {
+      window.location.href = `../espacos/editar.html`;
+    };
+
+    window.createEventAdmin = () => {
+      window.location.href = `../eventos/editar.html`;
+    };
+
     window.editAgentAdmin = (slug) => {
       window.location.href = `../agentes/editar.html?slug=${slug}`;
+    };
+
+    window.editSpaceAdmin = (slug) => {
+      window.location.href = `../espacos/editar.html?slug=${slug}`;
+    };
+
+    window.editEventAdmin = (slug) => {
+      window.location.href = `../eventos/editar.html?slug=${slug}`;
     };
 
     window.linkAgentToUser = async (agentId, userId) => {
@@ -484,6 +689,231 @@
         } else {
           alert('Erro ao excluir agente: ' + error.message);
         }
+      }
+    };
+
+    window.deleteSpaceAdmin = async (id) => {
+      if (confirm('Tem certeza que deseja excluir este espaço definitivamente? Esta ação não pode ser desfeita.')) {
+        const { error } = await supabaseClient.from('espacos').delete().eq('id', id);
+        if (!error) {
+          alert('Espaço excluído com sucesso.');
+          loadAdminData();
+        } else {
+          alert('Erro ao excluir espaço: ' + error.message);
+        }
+      }
+    };
+
+    window.deleteEventAdmin = async (id) => {
+      if (confirm('Tem certeza que deseja excluir este evento definitivamente? Esta ação não pode ser desfeita.')) {
+        const { error } = await supabaseClient.from('eventos').delete().eq('id', id);
+        if (!error) {
+          alert('Evento excluído com sucesso.');
+          loadAdminData();
+        } else {
+          alert('Erro ao excluir evento: ' + error.message);
+        }
+      }
+    };
+
+    let cepinCurrentData = {};
+
+    window.loadCepinAdminData = async () => {
+      document.getElementById('cepin-loading').classList.remove('hidden');
+      document.getElementById('cepin-form').classList.add('hidden');
+      
+      const { data, error } = await supabaseClient.from('configuracoes_cepin').select('dados').eq('id', 1).single();
+      
+      let dbHasData = false;
+      if (!error && data && data.dados && Object.keys(data.dados).length > 0) {
+        dbHasData = true;
+        cepinCurrentData = data.dados;
+      }
+      
+      if (!dbHasData) {
+        // Fallback to local DB if Supabase is empty
+        try {
+          if (typeof getCepinData === 'function') {
+            cepinCurrentData = getCepinData();
+          } else {
+            console.error("getCepinData não encontrado.");
+          }
+        } catch (e) {
+          console.error("Erro ao carregar getCepinData fallback", e);
+        }
+      }
+
+      document.getElementById('cepin-apresentacaoTitulo').value = cepinCurrentData.apresentacaoTitulo || '';
+      document.getElementById('cepin-apresentacaoSubtitulo').value = cepinCurrentData.apresentacaoSubtitulo || '';
+      
+      let textoPrincipal = cepinCurrentData.apresentacaoTexto || '';
+      if (!textoPrincipal && cepinCurrentData.apresentacaoTexto1) {
+          textoPrincipal = [
+              cepinCurrentData.apresentacaoTexto1,
+              cepinCurrentData.apresentacaoTexto2,
+              cepinCurrentData.apresentacaoTexto3,
+              cepinCurrentData.apresentacaoTexto4
+          ].filter(Boolean).join('\n\n');
+          cepinCurrentData.apresentacaoTexto = textoPrincipal;
+      }
+      
+      document.getElementById('cepin-apresentacaoTexto').value = textoPrincipal;
+      document.getElementById('cepin-parceirosTexto').value = cepinCurrentData.parceirosTexto || '';
+      document.getElementById('cepin-equipeTexto').value = cepinCurrentData.equipeTexto || '';
+
+      renderCepinCompetencias();
+      renderCepinProjetos();
+      renderCepinEquipes();
+
+      document.getElementById('cepin-loading').classList.add('hidden');
+      document.getElementById('cepin-form').classList.remove('hidden');
+    };
+
+    window.renderCepinCompetencias = () => {
+      const list = document.getElementById('cepin-competencias-list');
+      const comps = cepinCurrentData.competencias || [];
+      list.innerHTML = comps.map((c, i) => `
+        <div class="flex gap-2 items-start">
+          <textarea class="flex-1 px-3 py-2 bg-muted/30 border border-input rounded text-xs resize-none cepin-comp-input" rows="2">${c}</textarea>
+          <button type="button" onclick="removeCepinCompetencia(${i})" class="text-red-500 font-bold p-2 hover:bg-red-500/10 rounded">X</button>
+        </div>
+      `).join('');
+    };
+
+    window.addCepinCompetencia = () => {
+      if (!cepinCurrentData.competencias) cepinCurrentData.competencias = [];
+      updateLocalCepinData();
+      cepinCurrentData.competencias.push("");
+      renderCepinCompetencias();
+    };
+
+    window.removeCepinCompetencia = (idx) => {
+      updateLocalCepinData();
+      cepinCurrentData.competencias.splice(idx, 1);
+      renderCepinCompetencias();
+    };
+
+    window.renderCepinProjetos = () => {
+      const list = document.getElementById('cepin-projetos-list');
+      const projs = cepinCurrentData.projetos || [];
+      list.innerHTML = projs.map((p, i) => `
+        <div class="border border-border p-3 rounded bg-muted/20 space-y-2 relative">
+          <button type="button" onclick="removeCepinProjeto(${i})" class="absolute top-2 right-2 text-red-500 font-bold hover:bg-red-500/10 px-2 py-1 rounded text-xs">Remover</button>
+          <div class="grid grid-cols-2 gap-2 pr-16">
+            <input type="text" placeholder="Título" class="px-2 py-1 bg-background border border-input rounded text-xs cepin-proj-titulo" value="${p.titulo || ''}">
+            <input type="text" placeholder="Link" class="px-2 py-1 bg-background border border-input rounded text-xs cepin-proj-link" value="${p.link || ''}">
+          </div>
+          <textarea placeholder="Descrição" class="w-full px-2 py-1 bg-background border border-input rounded text-xs resize-none cepin-proj-desc" rows="2">${p.descricao || ''}</textarea>
+        </div>
+      `).join('');
+    };
+
+    window.addCepinProjeto = () => {
+      if (!cepinCurrentData.projetos) cepinCurrentData.projetos = [];
+      updateLocalCepinData();
+      cepinCurrentData.projetos.push({titulo: "", descricao: "", link: ""});
+      renderCepinProjetos();
+    };
+
+    window.removeCepinProjeto = (idx) => {
+      updateLocalCepinData();
+      cepinCurrentData.projetos.splice(idx, 1);
+      renderCepinProjetos();
+    };
+
+    window.renderCepinEquipes = () => {
+      const renderList = (id, arr, type) => {
+        const list = document.getElementById(id);
+        list.innerHTML = (arr || []).map((m, i) => `
+          <div class="flex gap-2 items-center">
+            <input type="text" placeholder="Nome" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${m.nome || ''}">
+            ${type === 'membro' ? `<input type="text" placeholder="Câmpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${m.campus || ''}">` : ''}
+            <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'Função'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${m.cargo || m.funcao || ''}">
+            <input type="text" placeholder="Contato" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${m.contato || ''}">
+            <button type="button" onclick="removeCepinEquipeMembro('${type}', ${i})" class="text-red-500 font-bold p-1 hover:bg-red-500/10 rounded">X</button>
+          </div>
+        `).join('');
+      };
+      renderList('cepin-equipe-membros-list', cepinCurrentData.equipeMembros, 'membro');
+      renderList('cepin-equipe-colab-list', cepinCurrentData.equipeColaboradores, 'colab');
+      renderList('cepin-equipe-dev-list', cepinCurrentData.equipeDesenvolvedores, 'dev');
+    };
+
+    window.addCepinEquipeMembro = (type) => {
+      updateLocalCepinData();
+      const obj = type === 'membro' ? {nome:"", campus:"", cargo:"", contato:""} : {nome:"", funcao:"", contato:""};
+      if (type === 'membro') { if(!cepinCurrentData.equipeMembros) cepinCurrentData.equipeMembros=[]; cepinCurrentData.equipeMembros.push(obj); }
+      if (type === 'colab') { if(!cepinCurrentData.equipeColaboradores) cepinCurrentData.equipeColaboradores=[]; cepinCurrentData.equipeColaboradores.push(obj); }
+      if (type === 'dev') { if(!cepinCurrentData.equipeDesenvolvedores) cepinCurrentData.equipeDesenvolvedores=[]; cepinCurrentData.equipeDesenvolvedores.push(obj); }
+      renderCepinEquipes();
+    };
+
+    window.removeCepinEquipeMembro = (type, idx) => {
+      updateLocalCepinData();
+      if (type === 'membro') cepinCurrentData.equipeMembros.splice(idx, 1);
+      if (type === 'colab') cepinCurrentData.equipeColaboradores.splice(idx, 1);
+      if (type === 'dev') cepinCurrentData.equipeDesenvolvedores.splice(idx, 1);
+      renderCepinEquipes();
+    };
+
+    function updateLocalCepinData() {
+      // Competencias
+      const compInputs = document.querySelectorAll('.cepin-comp-input');
+      cepinCurrentData.competencias = Array.from(compInputs).map(i => i.value);
+      
+      // Projetos
+      const projs = document.getElementById('cepin-projetos-list').children;
+      cepinCurrentData.projetos = Array.from(projs).map(p => ({
+        titulo: p.querySelector('.cepin-proj-titulo').value,
+        link: p.querySelector('.cepin-proj-link').value,
+        descricao: p.querySelector('.cepin-proj-desc').value,
+      }));
+
+      // Equipes
+      const getList = (type) => {
+        const container = document.getElementById(`cepin-equipe-${type === 'membro' ? 'membros' : type}-list`);
+        return Array.from(container.children).map(c => {
+          const obj = {
+            nome: c.querySelector(`.cepin-${type}-nome`).value,
+            contato: c.querySelector(`.cepin-${type}-contato`).value
+          };
+          if (type === 'membro') {
+            obj.campus = c.querySelector(`.cepin-${type}-campus`).value;
+            obj.cargo = c.querySelector(`.cepin-${type}-cargo`).value;
+          } else {
+            obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
+          }
+          return obj;
+        });
+      };
+
+      cepinCurrentData.equipeMembros = getList('membro');
+      cepinCurrentData.equipeColaboradores = getList('colab');
+      cepinCurrentData.equipeDesenvolvedores = getList('dev');
+    }
+
+    window.saveCepinAdminData = async () => {
+      updateLocalCepinData();
+      
+      const payload = {
+        apresentacaoTitulo: document.getElementById('cepin-apresentacaoTitulo').value,
+        apresentacaoSubtitulo: document.getElementById('cepin-apresentacaoSubtitulo').value,
+        apresentacaoTexto: document.getElementById('cepin-apresentacaoTexto').value,
+        parceirosTexto: document.getElementById('cepin-parceirosTexto').value,
+        equipeTexto: document.getElementById('cepin-equipeTexto').value,
+        competencias: cepinCurrentData.competencias,
+        projetos: cepinCurrentData.projetos,
+        equipeMembros: cepinCurrentData.equipeMembros,
+        equipeColaboradores: cepinCurrentData.equipeColaboradores,
+        equipeDesenvolvedores: cepinCurrentData.equipeDesenvolvedores
+      };
+
+      const { error } = await supabaseClient.from('configuracoes_cepin').upsert({ id: 1, dados: payload });
+      
+      if (!error) {
+        alert('Configurações da aba CEPIN salvas com sucesso!');
+      } else {
+        alert('Erro ao salvar. Verifique se você criou a tabela "configuracoes_cepin" no Supabase como indicado. Erro: ' + error.message);
       }
     };
 

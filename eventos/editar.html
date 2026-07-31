@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Agente • Mapeamento Cultural</title>
+  <title>Editar Evento • Mapeamento Cultural</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +69,7 @@
     
     <a id="btn-back" href="#" class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      Voltar para o Perfil
+      Voltar para Eventos
     </a>
 
     <div id="loading-state" class="text-center py-12">
@@ -79,7 +79,7 @@
     <div id="edit-form-container" class="hidden bg-card border border-border p-8 rounded-xl shadow-sm">
       <h2 class="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-4">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-        Editar Agente
+        Editar Evento
       </h2>
       
       <form id="agent-form" class="space-y-6">
@@ -89,23 +89,23 @@
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Área / Especialidade</label>
-          <input type="text" id="edit-area" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Data e Hora</label>
+          <input type="text" id="edit-data_hora" placeholder="Ex: 15 Julho, 14:00 - 18:00" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Biografia</label>
-          <textarea id="edit-bio" rows="6" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y"></textarea>
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Categoria</label>
+          <input type="text" id="edit-categoria" placeholder="Ex: Música, Teatro, etc." required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Contato</label>
-          <input type="text" id="edit-contato" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Descrição</label>
+          <textarea id="edit-descricao" rows="6" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y"></textarea>
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Endereço Físico</label>
-          <input type="text" id="edit-endereco" placeholder="Ex: Rua XV de Novembro, 143 - Centro, Jacareí - SP" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Local do Evento</label>
+          <input type="text" id="edit-local" required placeholder="Ex: MAB - Museu de Antropologia" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
 
         <div class="space-y-2">
@@ -115,22 +115,9 @@
           <img id="preview-foto" class="hidden mt-2 h-32 object-cover rounded border border-border" />
         </div>
 
-        <div class="space-y-2 border-t border-border pt-4">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Galeria de Imagens</label>
-          <input type="file" id="edit-galeria" accept="image/*" multiple class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
-          <p class="text-xs text-muted-foreground">Selecione várias imagens para sua galeria.</p>
-          <div id="preview-galeria" class="mt-2 grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
-        </div>
-
-        <div class="space-y-2 border-t border-border pt-4">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Links de Vídeos (YouTube / Vimeo)</label>
-          <textarea id="edit-videos" rows="4" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y" placeholder="Cole os links de vídeo aqui, um por linha..."></textarea>
-          <p class="text-xs text-muted-foreground">Ex: https://www.youtube.com/watch?v=...</p>
-        </div>
-
         <div class="pt-4 border-t border-border flex justify-between gap-4">
           <button type="button" id="btn-delete" onclick="deleteAgent()" class="px-6 py-2.5 bg-red-500 text-white font-semibold rounded-md shadow-sm hover:bg-red-600 transition-all flex items-center gap-2">
-            Excluir Agente
+            Excluir Evento
           </button>
           <button type="submit" id="btn-save" class="px-6 py-2.5 bg-primary text-primary-foreground font-semibold rounded-md shadow-sm hover:bg-primary-glow transition-all flex items-center gap-2">
             Salvar Alterações
@@ -170,7 +157,7 @@
           window.location.href = '../perfil/index.html';
           return;
         }
-        document.querySelector('h2').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>Criar Agente`;
+        document.querySelector('h2').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>Criar Evento`;
         document.getElementById('btn-delete').classList.add('hidden');
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('edit-form-container').classList.remove('hidden');
@@ -185,49 +172,32 @@
       }
       const sessionUser = JSON.parse(storedSession);
 
-      const { data: agentes, error } = await supabaseClient.from('agentes').select('*');
-      if (error || !agentes) {
-        alert('Erro ao carregar dados do agente.');
+      const { data: eventos, error } = await supabaseClient.from('eventos').select('*');
+      if (error || !eventos) {
+        alert('Erro ao carregar dados do evento.');
         return;
       }
 
-      const agente = agentes.find(a => slugify(a.nome) === agenteSlug);
+      const agente = eventos.find(a => slugify(a.nome) === agenteSlug);
       if (!agente) {
-        alert('Agente não encontrado no banco de dados principal.');
+        alert('Evento não encontrado no banco de dados principal.');
         window.location.href = './index.html';
-        return;
-      }
-
-      if (!sessionUser.is_admin && agente.user_id !== sessionUser.id) {
-        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('para editar sua pagina de agente cadastre-se com o mesmo e-mail utilizado no formulário')}`;
         return;
       }
 
       agenteId = agente.id;
 
       document.getElementById('edit-nome').value = agente.nome || '';
-      document.getElementById('edit-area').value = agente.area || '';
-      document.getElementById('edit-bio').value = agente.bio || '';
-      document.getElementById('edit-contato').value = agente.contato || '';
-      document.getElementById('edit-endereco').value = agente.endereco || '';
-      window.originalEndereco = agente.endereco || '';
+      if(document.getElementById('edit-data_hora')) document.getElementById('edit-data_hora').value = agente.data_hora || '';
+      if(document.getElementById('edit-categoria')) document.getElementById('edit-categoria').value = agente.categoria || '';
+      if(document.getElementById('edit-descricao')) document.getElementById('edit-descricao').value = agente.descricao || '';
+      if(document.getElementById('edit-local')) document.getElementById('edit-local').value = agente.local || '';
       
       if (agente.foto) {
         const preview = document.getElementById('preview-foto');
         preview.src = agente.foto;
         preview.classList.remove('hidden');
         window.currentFotoData = agente.foto;
-      }
-
-      if (agente.galeria && Array.isArray(agente.galeria)) {
-        window.currentGaleria = [...agente.galeria];
-        renderGaleriaPreview();
-      } else {
-        window.currentGaleria = [];
-      }
-
-      if (agente.videos && Array.isArray(agente.videos)) {
-        document.getElementById('edit-videos').value = agente.videos.join('\n');
       }
 
       document.getElementById('loading-state').classList.add('hidden');
@@ -270,36 +240,7 @@
       }
     });
 
-    document.getElementById('edit-galeria').addEventListener('change', async (e) => {
-      const files = Array.from(e.target.files);
-      for (const file of files) {
-        const base64 = await compressImage(file);
-        window.currentGaleria.push(base64);
-      }
-      renderGaleriaPreview();
-      e.target.value = ''; // reset
-    });
 
-    function renderGaleriaPreview() {
-      const container = document.getElementById('preview-galeria');
-      container.innerHTML = '';
-      window.currentGaleria.forEach((b64, idx) => {
-        const div = document.createElement('div');
-        div.className = 'relative group';
-        div.innerHTML = `
-          <img src="${b64}" class="w-full h-24 object-cover rounded border border-border">
-          <button type="button" onclick="removeGaleriaItem(${idx})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-          </button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    window.removeGaleriaItem = (idx) => {
-      window.currentGaleria.splice(idx, 1);
-      renderGaleriaPreview();
-    };
 
     document.getElementById('agent-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -333,13 +274,11 @@
 
       const updates = {
         nome: document.getElementById('edit-nome').value,
-        area: document.getElementById('edit-area').value,
-        bio: document.getElementById('edit-bio').value,
-        contato: document.getElementById('edit-contato').value,
-        endereco: enderecoDigitado,
-        foto: window.currentFotoData || null,
-        galeria: window.currentGaleria || [],
-        videos: videoLines
+        data_hora: document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value : '',
+        categoria: document.getElementById('edit-categoria') ? document.getElementById('edit-categoria').value : '',
+        descricao: document.getElementById('edit-descricao') ? document.getElementById('edit-descricao').value : '',
+        local: document.getElementById('edit-local') ? document.getElementById('edit-local').value : '',
+        foto: window.currentFotoData || null
       };
 
       if (newLat !== undefined && newLng !== undefined) {
@@ -350,36 +289,33 @@
       let error;
       if (agenteId) {
         // Atualizar
-        const res = await supabaseClient.from('agentes').update(updates).eq('id', agenteId);
+        const res = await supabaseClient.from('eventos').update(updates).eq('id', agenteId);
         error = res.error;
       } else {
         // Criar
-        const storedSession = JSON.parse(localStorage.getItem('custom_session'));
-        updates.user_id = storedSession.id;
-        const res = await supabaseClient.from('agentes').insert(updates);
+        const res = await supabaseClient.from('eventos').insert(updates);
         error = res.error;
       }
       
       if (error) {
-        alert('Erro ao salvar agente. Erro: ' + error.message);
-        btn.innerText = agenteId ? 'Salvar Alterações' : 'Criar Agente';
+        alert('Erro ao salvar evento. Erro: ' + error.message);
+        btn.innerText = agenteId ? 'Salvar Alterações' : 'Criar Evento';
         btn.disabled = false;
       } else {
-        alert(agenteId ? 'Agente atualizado com sucesso!' : 'Agente criado com sucesso!');
-        const newSlug = slugify(updates.nome);
-        window.location.href = `./agente.html?slug=${newSlug}`;
+        alert(agenteId ? 'Evento atualizado com sucesso!' : 'Evento criado com sucesso!');
+        window.location.href = `../perfil/index.html`;
       }
     });
 
     window.deleteAgent = async () => {
       if (!agenteId) return;
-      if (confirm('Tem certeza que deseja excluir sua página de agente definitivamente? Esta ação não pode ser desfeita.')) {
-        const { error } = await supabaseClient.from('agentes').delete().eq('id', agenteId);
+      if (confirm('Tem certeza que deseja excluir este evento definitivamente? Esta ação não pode ser desfeita.')) {
+        const { error } = await supabaseClient.from('eventos').delete().eq('id', agenteId);
         if (!error) {
-          alert('Agente excluído com sucesso.');
-          window.location.href = './index.html';
+          alert('Evento excluído com sucesso.');
+          window.location.href = '../perfil/index.html';
         } else {
-          alert('Erro ao excluir agente: ' + error.message);
+          alert('Erro ao excluir evento: ' + error.message);
         }
       }
     };
