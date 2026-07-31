@@ -361,10 +361,10 @@
               <h3 class="font-display font-bold text-lg text-primary tracking-tight">${proj.titulo}</h3>
               <p class="text-sm text-muted-foreground leading-relaxed font-medium">${proj.descricao}</p>
             </div>
-            <div class="pt-2">
-              <a href="${proj.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-primary font-bold uppercase tracking-wider hover:underline">
-                <span>Acessar Projeto</span>
-              </a>
+            <div class="pt-2 flex flex-wrap gap-4">
+              ${Array.isArray(proj.links) 
+                ? proj.links.map(l => `<a href="${l.url}" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-primary font-bold uppercase tracking-wider hover:underline"><span>${l.label}</span></a>`).join('')
+                : (proj.link && proj.link !== '#' ? `<a href="${proj.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-primary font-bold uppercase tracking-wider hover:underline"><span>Acessar Projeto</span></a>` : '')}
             </div>
           `;
           projetosGrid.appendChild(card);

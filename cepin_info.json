@@ -29,9 +29,18 @@
     },
     "projetos": [
         {
-            "titulo": "EnCEPIN 2022",
-            "descricao": "O primeiro Encontro Acadêmico do Centro de Pesquisa e Inovação em Consumo, Mercados e Negócios do IFSP Jacareí - EnCEPIN 2022, será realizado em formato on-line, no dia 26 de novembro de 2022. O evento será GRATUITO e aberto à participação de estudantes, professores, pesquisadores, profissionais de mercado e pessoas interessadas, tendo como temas Consumo, Mercados, Negócios e áreas afins.",
-            "link": "https://ocs.jcr.ifsp.edu.br/index.php/IEnCEPIN/CEPIN"
+            "titulo": "Podcast de Marketing",
+            "descricao": "Título: Disseminação do estado da arte do conhecimento de Marketing para comunidade interna e externa do IFSP. Edital 2023 JCR 01/2023 - Edital de Extensão. Coordenador: Prof. Ronan Torres Quintão. Bolsista: Fernanda Regina da Silva. De 03/04/2023 até 30/11/2023.",
+            "link": "#"
+        },
+        {
+            "titulo": "Ampliando a nossa Voz",
+            "descricao": "Aprovado pelo edital Edital PRX nº 479 - Programa Institucional de Arte, Cultura, Esporte e Lazer 2023 - Edital de Extensão. Coordenadora: Profa. Simone Lisboa. Participantes: Prof. Ronan Torres Quintão. Discentes participantes: Alessandra Sena Maia, Ana Beatriz Conde Alves Bezerra, Guilherme Mariano de Oliveira Sousa, Kamila Alves Ferreira. Sobre o Ampliando a Nossa Voz: O projeto \"Ampliando nossa voz: Audiovisual do I Diagnóstico do Mercado Cultural de Jacareí\", vinculado ao CEPIN/IFSP Jacareí e realizado em parceria com a Fundação Cultural de Jacarehy, teve como objetivo produzir e veicular 3 podcasts e 2 vídeos que traduzem, em linguagem acessível, os resultados do diagnóstico para gestores, produtores, patrocinadores e consumidores de cultura do município. A ação ampliou a comunicação entre IFSP, Fundação Cultural e classe artística, fortalecendo a participação popular nas políticas culturais locais. Como produtos, gerou material audiovisual de divulgação, um registro metodológico replicável para diagnósticos culturais em outras cidades e canais próprios no YouTube, Instagram e LinkedIn, hoje consolidados como espaços permanentes de divulgação das atividades de pesquisa e extensão do CEPIN.",
+            "link": "",
+            "links": [
+                { "label": "Acessar YouTube", "url": "https://youtube.com/@ampliandonossavoz?si=ovcGTOgDBqr3K-vA" },
+                { "label": "Acessar Instagram", "url": "https://www.instagram.com/ampliandonossavoz/" }
+            ]
         }
     ],
     "outros_trabalhos": {
