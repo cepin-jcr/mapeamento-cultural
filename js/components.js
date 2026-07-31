@@ -117,4 +117,21 @@ window.addEventListener('load', () => {
       window.history.replaceState(null, '', cleanUrl);
     }
   } catch(e) {}
+  
+  updateAuthNav();
 });
+
+function updateAuthNav() {
+  const session = localStorage.getItem('custom_session');
+  if (session) {
+    const authLinks = document.querySelectorAll('nav a[href*="perfil/index.html"], nav a[href="./perfil/index.html"], nav a[href="../perfil/index.html"]');
+    authLinks.forEach(link => {
+      // Keep the SVG icon but change the text to Perfil
+      link.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      `;
+    });
+  }
+}
+
