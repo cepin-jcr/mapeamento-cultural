@@ -67,17 +67,18 @@
 
   <div class="container mx-auto px-6 py-32 max-w-3xl">
     
-    <a id="btn-back" href="#" class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+    <a id="btn-back" href="../calendario/index.html" onclick="handleBack(event)" class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       Voltar para Eventos
     </a>
 
     <div id="loading-state" class="text-center py-12">
-      <p class="text-muted-foreground">Carregando dados...</p>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+      <p class="text-muted-foreground text-sm">Carregando dados...</p>
     </div>
 
     <div id="edit-form-container" class="hidden bg-card border border-border p-8 rounded-xl shadow-sm">
-      <h2 class="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-4">
+      <h2 id="form-title" class="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-4">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
         Editar Evento
       </h2>
@@ -137,40 +138,53 @@
       return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
     }
 
+    function handleBack(e) {
+      if (e) e.preventDefault();
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../calendario/index.html';
+      }
+    }
+
     async function checkAuthAndLoad() {
       const urlParams = new URLSearchParams(window.location.search);
-      agenteSlug = urlParams.get('slug');
-      
-      document.getElementById('btn-back').href = agenteSlug ? `./agente.html?slug=${agenteSlug}` : `./index.html`;
+      const rawSlug = urlParams.get('slug');
+      const paramId = urlParams.get('id');
+      agenteSlug = rawSlug ? decodeURIComponent(rawSlug) : (paramId ? paramId : null);
 
       const storedSession = localStorage.getItem('custom_session');
       if (!storedSession) {
-        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('Para editar ou criar, faça login primeiro')}`;
+        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('Para editar ou criar, faça login primeiro.')}`;
         return;
       }
       const sessionUser = JSON.parse(storedSession);
 
-      if (!agenteSlug) {
+      if (!agenteSlug && !paramId) {
         // Modo Criação
         if (!sessionUser.is_admin) {
-          alert('Apenas administradores podem criar agentes pelo painel. Cadastre-se normalmente.');
+          alert('Apenas administradores podem criar eventos.');
           window.location.href = '../perfil/index.html';
           return;
         }
-        document.querySelector('h2').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>Criar Evento`;
+        document.getElementById('form-title').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>Criar Evento`;
         document.getElementById('btn-delete').classList.add('hidden');
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('edit-form-container').classList.remove('hidden');
-        window.currentGaleria = [];
         return;
       }
 
+      let tries = 0;
+      while (!window.supabaseClient && tries < 10) {
+        await new Promise(r => setTimeout(r, 100));
+        tries++;
+      }
+
       if (!window.supabaseClient) {
-        alert('Falha na conexão.');
+        alert('Falha na conexão com o banco de dados.');
         window.location.href = './index.html';
         return;
       }
-      const sessionUser = JSON.parse(storedSession);
 
       const { data: eventos, error } = await supabaseClient.from('eventos').select('*');
       if (error || !eventos) {
@@ -178,10 +192,15 @@
         return;
       }
 
-      const agente = eventos.find(a => slugify(a.nome) === agenteSlug);
+      const agente = eventos.find(a => 
+        (paramId && String(a.id) === String(paramId)) ||
+        (agenteSlug && slugify(a.nome) === slugify(agenteSlug)) ||
+        (agenteSlug && a.nome.toLowerCase() === agenteSlug.toLowerCase()) ||
+        (agenteSlug && String(a.id) === String(agenteSlug))
+      );
       if (!agente) {
         alert('Evento não encontrado no banco de dados principal.');
-        window.location.href = './index.html';
+        window.location.href = '../calendario/index.html';
         return;
       }
 

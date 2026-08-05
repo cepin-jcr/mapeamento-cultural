@@ -67,17 +67,18 @@
 
   <div class="container mx-auto px-6 py-32 max-w-3xl">
     
-    <a id="btn-back" href="#" class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+    <a id="btn-back" href="./index.html" onclick="handleBack(event)" class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       Voltar para o Perfil
     </a>
 
     <div id="loading-state" class="text-center py-12">
-      <p class="text-muted-foreground">Carregando dados...</p>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+      <p class="text-muted-foreground text-sm">Carregando dados do agente...</p>
     </div>
 
     <div id="edit-form-container" class="hidden bg-card border border-border p-8 rounded-xl shadow-sm">
-      <h2 class="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-4">
+      <h2 id="form-title" class="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-4">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
         Editar Agente
       </h2>
@@ -100,7 +101,7 @@
 
         <div class="space-y-2">
           <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Contato</label>
-          <input type="text" id="edit-contato" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <input type="text" id="edit-contato" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm" placeholder="exemplo@email.com | (12) 99999-9999">
         </div>
 
         <div class="space-y-2">
@@ -144,66 +145,136 @@
   <script>
     let agenteId = null;
     let agenteSlug = null;
+    window.currentFotoData = null;
+    window.currentGaleria = [];
     
     function slugify(text) {
       if(!text) return '';
       return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
     }
 
+    function handleBack(e) {
+      if (e) e.preventDefault();
+      if (agenteSlug) {
+        window.location.href = `./agente.html?slug=${encodeURIComponent(agenteSlug)}`;
+      } else if (agenteId) {
+        window.location.href = `./agente.html?id=${agenteId}`;
+      } else if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = './index.html';
+      }
+    }
+
     async function checkAuthAndLoad() {
       const urlParams = new URLSearchParams(window.location.search);
-      agenteSlug = urlParams.get('slug');
+      const rawSlug = urlParams.get('slug');
+      const paramId = urlParams.get('id');
+      agenteSlug = rawSlug ? decodeURIComponent(rawSlug) : (paramId ? paramId : null);
       
-      document.getElementById('btn-back').href = agenteSlug ? `./agente.html?slug=${agenteSlug}` : `./index.html`;
-
       const storedSession = localStorage.getItem('custom_session');
       if (!storedSession) {
-        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('Para editar ou criar, faça login primeiro')}`;
+        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('Para editar ou criar agentes, faça login primeiro.')}`;
         return;
       }
-      const sessionUser = JSON.parse(storedSession);
+      
+      let sessionUser;
+      try {
+        sessionUser = JSON.parse(storedSession);
+      } catch(e) {
+        localStorage.removeItem('custom_session');
+        window.location.href = '../perfil/index.html';
+        return;
+      }
 
-      if (!agenteSlug) {
+      if (!agenteSlug && !paramId) {
         // Modo Criação
         if (!sessionUser.is_admin) {
           alert('Apenas administradores podem criar agentes pelo painel. Cadastre-se normalmente.');
           window.location.href = '../perfil/index.html';
           return;
         }
-        document.querySelector('h2').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>Criar Agente`;
+        document.getElementById('form-title').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>Criar Agente`;
         document.getElementById('btn-delete').classList.add('hidden');
+        document.getElementById('btn-save').innerText = 'Criar Agente';
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('edit-form-container').classList.remove('hidden');
-        window.currentGaleria = [];
         return;
+      }
+
+      // Aguarda supabase se necessário
+      let tries = 0;
+      while (!window.supabaseClient && tries < 10) {
+        await new Promise(r => setTimeout(r, 100));
+        tries++;
       }
 
       if (!window.supabaseClient) {
-        alert('Falha na conexão.');
+        alert('Falha na conexão com o banco de dados.');
         window.location.href = './index.html';
         return;
       }
-      const sessionUser = JSON.parse(storedSession);
 
-      const { data: agentes, error } = await supabaseClient.from('agentes').select('*');
-      if (error || !agentes) {
-        alert('Erro ao carregar dados do agente.');
-        return;
+      let agente = null;
+      try {
+        const [supaRes, extraRes] = await Promise.all([
+          supabaseClient.from('agentes').select('*'),
+          fetch('../data/agentes_extra.json').then(r => r.json()).catch(() => ({}))
+        ]);
+
+        if (supaRes.data && supaRes.data.length > 0) {
+          agente = supaRes.data.find(a => 
+            (paramId && String(a.id) === String(paramId)) ||
+            (agenteSlug && slugify(a.nome) === slugify(agenteSlug)) ||
+            (agenteSlug && a.nome.toLowerCase() === agenteSlug.toLowerCase()) ||
+            (agenteSlug && String(a.id) === String(agenteSlug))
+          );
+        }
+
+        if (!agente && agenteSlug && extraRes[agenteSlug]) {
+          const ex = extraRes[agenteSlug];
+          agente = {
+            nome: ex.nome_original,
+            area: ex.area || 'Diversos',
+            bio: ex.bio || '',
+            contato: ex.contato || '',
+            endereco: ex.localizacao || '',
+            foto: ex.foto || null,
+            galeria: ex.fotos_galeria || [],
+            videos: ex.videos_links || []
+          };
+        }
+      } catch(e) {
+        console.error('Erro ao buscar dados do agente:', e);
       }
 
-      const agente = agentes.find(a => slugify(a.nome) === agenteSlug);
       if (!agente) {
-        alert('Agente não encontrado no banco de dados principal.');
-        window.location.href = './index.html';
+        document.getElementById('loading-state').innerHTML = `
+          <div class="p-6 bg-card border border-border rounded-xl">
+            <h3 class="text-lg font-bold text-foreground mb-2">Agente não encontrado</h3>
+            <p class="text-sm text-muted-foreground mb-4">O perfil solicitado não foi localizado no banco de dados.</p>
+            <a href="./index.html" class="inline-block px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded hover:bg-primary-glow transition-colors">Voltar para Agentes</a>
+          </div>
+        `;
         return;
       }
 
-      if (!sessionUser.is_admin && agente.user_id !== sessionUser.id) {
-        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('para editar sua pagina de agente cadastre-se com o mesmo e-mail utilizado no formulário')}`;
+      // Permissão
+      const isOwner = sessionUser.is_admin || (agente.user_id === sessionUser.id) || (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
+      if (!isOwner) {
+        window.location.href = `../perfil/index.html?msg=${encodeURIComponent('Para editar este perfil, você precisa ser administrador ou o agente responsável.')}`;
         return;
       }
 
-      agenteId = agente.id;
+      // Auto-link do user_id se bater o email
+      if (agente.id && !agente.user_id && sessionUser.id) {
+        supabaseClient.from('agentes').update({ user_id: sessionUser.id }).eq('id', agente.id).then();
+        agente.user_id = sessionUser.id;
+      }
+
+      agenteId = agente.id || null;
+      agenteSlug = agenteSlug || slugify(agente.nome);
+      document.getElementById('btn-back').href = `./agente.html?slug=${encodeURIComponent(agenteSlug)}`;
 
       document.getElementById('edit-nome').value = agente.nome || '';
       document.getElementById('edit-area').value = agente.area || '';
@@ -321,15 +392,13 @@
           if (data && data.length > 0) {
             newLat = parseFloat(data[0].lat);
             newLng = parseFloat(data[0].lon);
-          } else {
-            console.warn('Geocoding não encontrou resultados para:', enderecoDigitado);
           }
         } catch (e) {
           console.error('Erro na geocodificação:', e);
         }
       }
 
-      btn.innerText = 'Salvando... (Aguarde)';
+      btn.innerText = 'Salvando no Banco...';
 
       const updates = {
         nome: document.getElementById('edit-nome').value,
@@ -348,6 +417,8 @@
       }
 
       let error;
+      let targetSlug = slugify(updates.nome);
+
       if (agenteId) {
         // Atualizar
         const res = await supabaseClient.from('agentes').update(updates).eq('id', agenteId);
@@ -356,24 +427,26 @@
         // Criar
         const storedSession = JSON.parse(localStorage.getItem('custom_session'));
         updates.user_id = storedSession.id;
-        const res = await supabaseClient.from('agentes').insert(updates);
+        const res = await supabaseClient.from('agentes').insert(updates).select().single();
         error = res.error;
+        if (res.data) {
+          agenteId = res.data.id;
+        }
       }
       
       if (error) {
-        alert('Erro ao salvar agente. Erro: ' + error.message);
+        alert('Erro ao salvar agente: ' + error.message);
         btn.innerText = agenteId ? 'Salvar Alterações' : 'Criar Agente';
         btn.disabled = false;
       } else {
         alert(agenteId ? 'Agente atualizado com sucesso!' : 'Agente criado com sucesso!');
-        const newSlug = slugify(updates.nome);
-        window.location.href = `./agente.html?slug=${newSlug}`;
+        window.location.href = `./agente.html?slug=${encodeURIComponent(targetSlug)}`;
       }
     });
 
     window.deleteAgent = async () => {
       if (!agenteId) return;
-      if (confirm('Tem certeza que deseja excluir sua página de agente definitivamente? Esta ação não pode ser desfeita.')) {
+      if (confirm('Tem certeza que deseja excluir esta página de agente definitivamente? Esta ação não pode ser desfeita.')) {
         const { error } = await supabaseClient.from('agentes').delete().eq('id', agenteId);
         if (!error) {
           alert('Agente excluído com sucesso.');
@@ -384,7 +457,7 @@
       }
     };
 
-    window.onload = checkAuthAndLoad;
+    window.addEventListener('DOMContentLoaded', checkAuthAndLoad);
   </script>
 </body>
 </html>

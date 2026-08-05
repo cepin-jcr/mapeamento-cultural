@@ -304,7 +304,8 @@
     let currentImgIdx = 0;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get('slug');
+    const rawSlug = urlParams.get('slug') || urlParams.get('id');
+    const slug = rawSlug ? decodeURIComponent(rawSlug) : '';
 
     function slugify(text) {
       if(!text) return '';
@@ -326,12 +327,18 @@
           supabaseClient.from('agentes').select('*')
         ]);
         
-        extraData = extraRes[slug] || {};
+        extraData = extraRes[slug] || extraRes[slugify(slug)] || {};
         
         if (supaRes.data) {
-          supaData = supaRes.data.find(a => slugify(a.nome) === slug);
+          supaData = supaRes.data.find(a => 
+            String(a.id) === String(slug) || 
+            slugify(a.nome) === slugify(slug) || 
+            a.nome.toLowerCase() === slug.toLowerCase()
+          );
         }
-      } catch(e) {}
+      } catch(e) {
+        console.error(e);
+      }
       
       if (!supaData && !extraData.nome_original) {
         document.getElementById('agente-not-found').classList.remove('hidden');
@@ -350,7 +357,7 @@
       document.getElementById('agente-bio').innerText = agente.bio || 'Nenhuma biografia informada.';
       
       let contatoText = agente.contato || 'Não informado';
-      if (extraData.localizacao) contatoText += `\\n\\n📍 Endereço:\\n${extraData.localizacao}`;
+      if (extraData.localizacao) contatoText += `\n\n📍 Endereço:\n${extraData.localizacao}`;
       document.getElementById('sidebar-contato').innerText = contatoText;
 
       if (agente.projeto_mulheres) {
@@ -395,15 +402,23 @@
     }
 
     function handleEditClick() {
+      const currentSlug = slug || (agente && agente.nome ? slugify(agente.nome) : '');
+      const currentId = agente && agente.id ? agente.id : '';
       const storedSession = localStorage.getItem('custom_session');
+      
       if (storedSession) {
-        const sessionUser = JSON.parse(storedSession);
-        if (sessionUser.is_admin || (agente && agente.user_id === sessionUser.id)) {
-          window.location.href = `./editar.html?slug=${slug}`;
-          return;
+        try {
+          const sessionUser = JSON.parse(storedSession);
+          const isOwner = agente && (agente.user_id === sessionUser.id || (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase())));
+          if (sessionUser.is_admin || isOwner) {
+            window.location.href = `./editar.html?slug=${encodeURIComponent(currentSlug)}${currentId ? '&id=' + currentId : ''}`;
+            return;
+          }
+        } catch(e) {
+          console.error(e);
         }
       }
-      window.location.href = `../perfil/index.html?msg=${encodeURIComponent('para editar sua pagina de agente cadastre-se com o mesmo e-mail utilizado no formulário')}`;
+      window.location.href = `../perfil/index.html?msg=${encodeURIComponent('Para editar a página deste agente, faça login como administrador ou com o e-mail do agente.')}`;
     }
     
     function createSection(title, content, iconHtml) {

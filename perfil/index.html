@@ -163,6 +163,26 @@
         </div>
       </div>
 
+      <div id="user-agent-card" class="hidden mb-6 p-6 rounded-xl bg-card border border-border shadow-sm">
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Seu Agente Cultural Vinculado
+        </h4>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <img id="user-agent-img" src="" class="w-14 h-14 rounded-lg object-cover border border-border shadow-xs" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
+            <div>
+              <h3 id="user-agent-nome" class="font-bold text-base text-foreground"></h3>
+              <p id="user-agent-categoria" class="text-xs text-muted-foreground"></p>
+            </div>
+          </div>
+          <div class="flex gap-2 w-full sm:w-auto">
+            <a id="user-agent-view-btn" href="#" class="flex-1 sm:flex-initial px-4 py-2 bg-secondary text-secondary-foreground text-xs font-semibold rounded-md hover:bg-secondary/80 transition-colors text-center">Ver Perfil</a>
+            <a id="user-agent-edit-btn" href="#" class="flex-1 sm:flex-initial px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-md hover:bg-primary-glow transition-all text-center">Editar Perfil</a>
+          </div>
+        </div>
+      </div>
+
       <div id="admin-panel" class="hidden mb-8 p-6 rounded-xl bg-muted/30 border border-border shadow-sm">
         <h3 class="text-lg font-bold text-foreground flex items-center gap-2 mb-4">
           <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -420,6 +440,34 @@
             } else {
               document.getElementById('pending-status').classList.remove('hidden');
               document.getElementById('profile-form').classList.add('hidden');
+            }
+
+            // Buscar agente vinculado a este usuário
+            try {
+              const { data: agentes } = await supabaseClient.from('agentes').select('*');
+              if (agentes) {
+                const myAgent = agentes.find(a => 
+                  (a.user_id && String(a.user_id) === String(sessionUser.id)) ||
+                  (a.contato_email && a.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+                  (a.email && a.email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase())
+                );
+                if (myAgent) {
+                  const card = document.getElementById('user-agent-card');
+                  if (card) {
+                    card.classList.remove('hidden');
+                    document.getElementById('user-agent-nome').innerText = myAgent.nome || 'Agente Cultural';
+                    document.getElementById('user-agent-categoria').innerText = myAgent.categoria || myAgent.area_de_atuacao || '';
+                    if (myAgent.foto) {
+                      document.getElementById('user-agent-img').src = myAgent.foto;
+                    }
+                    const agentSlug = slugify(myAgent.nome);
+                    document.getElementById('user-agent-view-btn').href = `../agentes/agente.html?slug=${agentSlug}`;
+                    document.getElementById('user-agent-edit-btn').href = `../agentes/editar.html?slug=${agentSlug}`;
+                  }
+                }
+              }
+            } catch (err) {
+              console.error('Erro ao verificar agente vinculado:', err);
             }
           } else {
             document.getElementById('login-section').classList.remove('hidden');
