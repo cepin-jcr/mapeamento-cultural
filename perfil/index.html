@@ -929,31 +929,48 @@
     };
 
     window.sbLogin = async () => {
-      if (!window.supabaseClient) return;
-      const e = document.getElementById('sbEmail').value;
+      if (!window.supabaseClient) {
+        document.getElementById('sbError').innerText = "Conexão com o banco indisponível.";
+        return;
+      }
+      const e = document.getElementById('sbEmail').value.trim();
       const p = document.getElementById('sbPassword').value;
       
+      if (!e || !p) {
+        document.getElementById('sbError').innerText = "Por favor, preencha o e-mail e a senha.";
+        return;
+      }
+
+      document.getElementById('sbError').innerText = "";
       const { data, error } = await supabaseClient.rpc('login_user', { p_email: e, p_password: p });
       
       if (error) {
-        document.getElementById('sbError').innerText = error.message;
-      } else if (!data || !data.id) {
-        document.getElementById('sbError').innerText = "Credenciais inválidas.";
+        document.getElementById('sbError').innerText = error.message || "Erro ao conectar.";
       } else {
-        localStorage.setItem('custom_session', JSON.stringify(data));
-        window.location.reload();
+        const user = Array.isArray(data) ? data[0] : data;
+        if (!user || !user.id) {
+          document.getElementById('sbError').innerText = "Credenciais inválidas ou conta inexistente.";
+        } else {
+          localStorage.setItem('custom_session', JSON.stringify(user));
+          window.location.reload();
+        }
       }
     };
 
     window.sbSignup = async () => {
       if (!window.supabaseClient) return;
-      const e = document.getElementById('sbEmail').value;
+      const e = document.getElementById('sbEmail').value.trim();
       const p = document.getElementById('sbPassword').value;
       
-      const { data, error } = await supabaseClient.from('perfis').insert({ email: e, senha: p }).select().single();
+      if (!e || !p) {
+        document.getElementById('sbError').innerText = "Por favor, preencha o e-mail e a senha.";
+        return;
+      }
+
+      const { data, error } = await supabaseClient.from('perfis').insert({ email: e, senha: p, status_aprovacao: 'pendente' }).select().single();
       
       if (error) {
-        document.getElementById('sbError').innerText = "Erro ao criar conta. E-mail já existe?";
+        document.getElementById('sbError').innerText = "Erro ao criar conta. E-mail já existe ou inválido.";
       } else {
         alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
         try {

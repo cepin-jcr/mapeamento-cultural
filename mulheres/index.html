@@ -59,6 +59,8 @@
   </script>
 
   <link rel="stylesheet" href="../css/global.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-integration.js"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -112,39 +114,22 @@
         </p>
       </div>
       <div class="relative rounded-xl overflow-hidden shadow-sm border border-border aspect-video bg-muted">
-        <img src="https://picsum.photos/800/450?7" class="w-full h-full object-cover">
+        <img src="https://picsum.photos/800/450?7" class="w-full h-full object-cover" alt="Mulheres na Música">
         <div class="absolute inset-0 bg-[#b1336b]/20 mix-blend-multiply"></div>
       </div>
     </div>
 
     <!-- Featured Grid -->
     <h3 class="text-xl font-display font-bold text-foreground mb-6 border-b border-border pb-2">Artistas em Destaque</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      
-      <!-- Card -->
-      <div class="group bg-card border border-[#b1336b]/20 rounded-xl p-5 shadow-sm hover:shadow-soft hover:border-[#b1336b]/50 transition-all duration-300 flex flex-col h-full relative">
-        <div class="absolute top-3 right-3 bg-mulheres text-white text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md shadow-sm border border-white/20">
-          Música
-        </div>
-        <div class="flex justify-center mb-4 relative z-10">
-          <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-[#b1336b]/30 group-hover:scale-105 transition-transform duration-300">
-            <img src="https://picsum.photos/400/300?1" alt="Ana" class="w-full h-full object-cover">
-          </div>
-        </div>
-        <div class="text-center flex-grow flex flex-col items-center">
-          <h3 class="text-lg font-bold text-foreground mb-1 group-hover:text-[#b1336b] transition-colors">Ana Luísa</h3>
-          <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-4">Cantora e compositora de MPB com fortes raízes na cultura popular.</p>
-        </div>
-        <a href="../agentes/agente.html?id=1" class="w-full text-center py-2 bg-[#b1336b]/10 text-[#b1336b] font-medium rounded-md hover:bg-[#b1336b] hover:text-white transition-colors mt-auto block text-sm">
-          Ver Perfil
-        </a>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="mulheresGrid">
+      <div class="col-span-full text-center py-12 text-muted-foreground">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#b1336b] mb-3"></div>
+        <p class="text-sm">Carregando artistas do projeto...</p>
       </div>
-
     </div>
   </section>
 
   <!-- Footer -->
-    <!-- Footer Placeholder -->
   <div id="footer-placeholder"></div>
 
   <!-- Shared JS Library & Components -->
@@ -156,9 +141,64 @@
         renderFooter();
       }
     });
-  </script>
 
-  <script>
+    function slugify(text) {
+      if(!text) return '';
+      return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+    }
+
+    async function carregarMulheres() {
+      const grid = document.getElementById('mulheresGrid');
+      try {
+        let artistas = [];
+        if (window.supabaseClient) {
+          const { data, error } = await supabaseClient.from('agentes').select('*').eq('projeto_mulheres', true).order('id', {ascending: false});
+          if (!error && data && data.length > 0) {
+            artistas = data;
+          }
+        }
+
+        if (artistas.length === 0) {
+          grid.innerHTML = '<div class="col-span-full text-center py-12 text-muted-foreground">Nenhuma artista cadastrada neste projeto no momento.</div>';
+          return;
+        }
+
+        grid.innerHTML = '';
+        artistas.forEach(ag => {
+          const slug = slugify(ag.nome || 'Agente');
+          let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+          const bioResumo = ag.bio ? ag.bio.replace(/<[^>]*>?/gm, '').substring(0, 110) + '...' : 'Artista cultural participante do projeto.';
+
+          grid.innerHTML += `
+            <div class="group bg-card border border-[#b1336b]/20 rounded-xl p-5 shadow-sm hover:shadow-soft hover:border-[#b1336b]/50 transition-all duration-300 flex flex-col h-full relative">
+              <div class="absolute top-3 right-3 bg-mulheres text-white text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md shadow-sm border border-white/20">
+                ${ag.area ? ag.area.split(' ')[0] : 'Música'}
+              </div>
+              <div class="flex justify-center mb-4 relative z-10">
+                <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-[#b1336b]/30 group-hover:scale-105 transition-transform duration-300">
+                  <img src="${fotoUrl}" alt="${ag.nome}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
+                </div>
+              </div>
+              <div class="text-center flex-grow flex flex-col items-center">
+                <h3 class="text-lg font-bold text-foreground mb-1 group-hover:text-[#b1336b] transition-colors">${ag.nome || 'Sem Nome'}</h3>
+                <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-4">${bioResumo}</p>
+              </div>
+              <a href="../agentes/agente.html?slug=${slug}" class="w-full text-center py-2 bg-[#b1336b]/10 text-[#b1336b] font-medium rounded-md hover:bg-[#b1336b] hover:text-white transition-colors mt-auto block text-sm">
+                Ver Perfil
+              </a>
+            </div>
+          `;
+        });
+      } catch (err) {
+        console.error('Erro ao carregar projeto mulheres:', err);
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-destructive">Erro ao carregar artistas.</div>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      carregarMulheres();
+    });
+
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 50) {
