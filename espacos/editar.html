@@ -207,6 +207,14 @@
         return;
       }
 
+      const isAdmin = sessionUser.is_admin === true || sessionUser.is_admin === 1 || sessionUser.is_admin === 'true';
+      const isOwner = isAdmin || (agente.user_id && String(agente.user_id) === String(sessionUser.id));
+      if (!isOwner) {
+        alert('Você não tem permissão para editar este espaço.');
+        window.location.href = './index.html';
+        return;
+      }
+
       agenteId = agente.id;
 
       document.getElementById('edit-nome').value = agente.nome || '';

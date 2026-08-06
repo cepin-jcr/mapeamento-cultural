@@ -63,6 +63,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <script src="../js/cadastro-modal.js"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -83,6 +84,10 @@
       <a href="./index.html" class="px-4 py-2 rounded-lg bg-primary/10 text-primary font-semibold transition-colors">Espaços</a>
       <a href="../agentes/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
       <a href="../mulheres/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-[#b1336b] transition-colors">Mulheres na Música</a>
+      <a href="../chat/index.html" style="display: none;" class="nav-chat-link hidden px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-primary transition-colors flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+      </a>
       <a href="../perfil/index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Entrar
@@ -105,12 +110,59 @@
     <div class="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col md:flex-row gap-4 items-center">
       <div class="w-full md:flex-1 relative">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" id="searchInput" placeholder="Buscar espaços..." class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+        <input type="text" id="searchInput" placeholder="Buscar espaços por nome, endereço ou tipo..." class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
       </div>
-      <div class="flex flex-wrap gap-2 w-full md:w-auto justify-center">
-        <button class="cat-btn bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors shadow-sm">Todos</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary">Públicos</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary">Privados</button>
+      <div class="flex items-center gap-2 w-full md:w-auto justify-center md:justify-end relative" id="categoryFilters">
+        <button id="btnFilterTodos" onclick="selecionarFiltro('Todos')" class="cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0">
+          Todos
+        </button>
+
+        <div class="relative shrink-0" id="filterDropdownContainer">
+          <button id="btnFilterDropdown" onclick="toggleDropdownFiltros(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            <span id="filterDropdownLabel">Filtros</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform duration-200" id="filterDropdownChevron"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+
+          <div id="filterDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-56 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
+              Tipo e Categoria
+            </div>
+            <button onclick="selecionarFiltro('Público')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Público">
+              <span>Espaços Públicos</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Privado')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Privado">
+              <span>Privados / Coletivos</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Museu')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Museu">
+              <span>Museus</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Teatro')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Teatro">
+              <span>Teatros</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Centro Cultural')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Centro Cultural">
+              <span>Centros Culturais</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Biblioteca')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Biblioteca">
+              <span>Bibliotecas</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Ateliê')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Ateliê">
+              <span>Ateliês</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button onclick="abrirModalCadastro('espaco')" class="btn-novo-item hidden px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 font-semibold text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          <span>Novo Espaço</span>
+        </button>
       </div>
     </div>
   </section>
@@ -123,7 +175,6 @@
   </section>
 
   <!-- Footer -->
-    <!-- Footer Placeholder -->
   <div id="footer-placeholder"></div>
 
   <!-- Shared JS Library & Components -->
@@ -139,15 +190,95 @@
 
   <script>
     let todosEspacos = [];
+    let tipoAtual = 'Todos';
+    let termoBusca = '';
+
+    const MOCK_ESPACOS_DEFAULT = [
+      {
+        id: 1,
+        nome: "MAB - Museu de Antropologia do Vale do Paraíba",
+        tipo: "Público",
+        categoria: "Museu",
+        endereco: "R. XV de Novembro, 143 - Centro, Jacareí - SP",
+        lat: -23.3053,
+        lng: -45.9658,
+        foto: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&q=80&w=800",
+        descricao: "Espaço histórico que abriga acervos valiosos sobre a cultura, arte popular e a memória da sociedade do Vale do Paraíba.",
+        contato: "mab@jacarei.sp.gov.br"
+      },
+      {
+        id: 2,
+        nome: "Sala Mário Lago",
+        tipo: "Público",
+        categoria: "Teatro",
+        endereco: "Pça. Raul Chaves, 110 - Centro, Jacareí - SP",
+        lat: -23.3061,
+        lng: -45.9669,
+        foto: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800",
+        descricao: "Importante casa de espetáculos municipal, palco de apresentações teatrais, dança, exibições cinematográficas e concertos musicais gratuitos.",
+        contato: "cultura@jacarei.sp.gov.br"
+      },
+      {
+        id: 3,
+        nome: "Parque dos Espanhóis",
+        tipo: "Público",
+        categoria: "Centro Cultural",
+        endereco: "Av. Joaquim Alvarenga, 450 - Jardim Santa Maria, Jacareí - SP",
+        lat: -23.2980,
+        lng: -45.9750,
+        foto: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&q=80&w=800",
+        descricao: "Espaço verde voltado ao lazer, com anfiteatro ao ar livre, quadras esportivas e encontros de coletivos artísticos nos finais de semana.",
+        contato: "parque.espanhois@email.com"
+      },
+      {
+        id: 4,
+        nome: "Biblioteca Municipal Macedo Soares",
+        tipo: "Público",
+        categoria: "Biblioteca",
+        endereco: "Av. Nove de Julho, 215 - Centro, Jacareí - SP",
+        lat: -23.3035,
+        lng: -45.9610,
+        foto: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=800",
+        descricao: "Ambiente tranquilo de leitura com acervo de milhares de livros, espaço infantil, computadores para estudo e oficinas literárias.",
+        contato: "biblioteca@jacarei.sp.gov.br"
+      },
+      {
+        id: 5,
+        nome: "Ateliê Vivo de Jacareí",
+        tipo: "Privado",
+        categoria: "Ateliê Coletivo",
+        endereco: "Rua Dr. Lúcio Malta, 380 - Centro, Jacareí - SP",
+        lat: -23.3075,
+        lng: -45.9640,
+        foto: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800",
+        descricao: "Espaço colaborativo independente de artistas locais, promovendo cursos de pintura, argila, escrita criativa e saraus abertos à comunidade.",
+        contato: "atelievivo@email.com"
+      }
+    ];
 
     async function carregarEspacos() {
+      let fetched = [];
       if (window.supabaseClient) {
-        const { data, error } = await supabaseClient.from('espacos').select('*').order('id', {ascending: false});
-        if (!error && data) {
-          todosEspacos = data;
+        try {
+          const { data, error } = await supabaseClient.from('espacos').select('*').order('id', {ascending: false});
+          if (!error && data && data.length > 0) {
+            fetched = data;
+          }
+        } catch (e) {
+          console.warn("Erro ao buscar do supabase:", e);
         }
       }
-      renderEspacos(todosEspacos);
+
+      // Combinar dados do banco com mock sem duplicar
+      const list = [...fetched];
+      MOCK_ESPACOS_DEFAULT.forEach(mock => {
+        if (!list.some(item => String(item.id) === String(mock.id) || (item.nome && mock.nome && item.nome.toLowerCase() === mock.nome.toLowerCase()))) {
+          list.push(mock);
+        }
+      });
+
+      todosEspacos = list;
+      aplicarFiltros();
     }
 
     function renderEspacos(espacos) {
@@ -160,19 +291,29 @@
 
       espacos.forEach(esp => {
         const fotoUrl = esp.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+        const lat = esp.lat || -23.3053;
+        const lng = esp.lng || -45.9658;
+        const mapUrl = `../mapa/index.html?espaco=${encodeURIComponent(esp.id || '')}&nome=${encodeURIComponent(esp.nome || '')}&lat=${lat}&lng=${lng}`;
+
         const card = `
           <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
             <div class="h-48 overflow-hidden bg-muted relative">
-              <img src="${fotoUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2 py-1 rounded">${esp.categoria || 'Espaço'}</div>
-              <div class="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold uppercase px-2 py-1 rounded shadow-sm">${esp.tipo || 'Público'}</div>
+              <img src="${fotoUrl}" alt="${esp.nome || 'Espaço'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2.5 py-1 rounded shadow-sm">${esp.categoria || 'Espaço'}</div>
+              <div class="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold uppercase px-2.5 py-1 rounded shadow-sm">${esp.tipo || 'Público'}</div>
             </div>
             <div class="p-6 flex-grow flex flex-col">
-              <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">${esp.nome || 'Sem Nome'}</h3>
-              <p class="text-sm text-muted-foreground mb-4 line-clamp-3">${esp.descricao || 'Nenhuma descrição informada.'}</p>
-              <div class="flex items-center gap-2 text-xs text-muted-foreground mt-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                ${esp.endereco || 'Endereço não informado'}
+              <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">${esp.nome || 'Sem Nome'}</h3>
+              <p class="text-sm text-muted-foreground mb-4 line-clamp-3 leading-relaxed">${esp.descricao || 'Nenhuma descrição informada.'}</p>
+              <div class="flex items-center gap-2 text-xs text-muted-foreground mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary flex-shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span class="truncate">${esp.endereco || 'Endereço não informado'}</span>
+              </div>
+              <div class="mt-auto pt-3 border-t border-border/60">
+                <a href="${mapUrl}" class="w-full py-2 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-xs rounded-lg transition-all text-center flex items-center justify-center gap-2 shadow-sm">
+                  <span>Ver no Mapa</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
               </div>
             </div>
           </div>
@@ -180,6 +321,104 @@
         grid.innerHTML += card;
       });
     }
+
+    function toggleDropdownFiltros(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('filterDropdownMenu');
+      const chevron = document.getElementById('filterDropdownChevron');
+      const isOpen = !menu.classList.contains('hidden');
+      if (isOpen) {
+        fecharDropdownFiltros();
+      } else {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      }
+    }
+
+    function fecharDropdownFiltros() {
+      const menu = document.getElementById('filterDropdownMenu');
+      const chevron = document.getElementById('filterDropdownChevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('filterDropdownContainer');
+      if (container && !container.contains(e.target)) {
+        fecharDropdownFiltros();
+      }
+    });
+
+    function selecionarFiltro(tipo) {
+      tipoAtual = tipo;
+      fecharDropdownFiltros();
+
+      const btnTodos = document.getElementById('btnFilterTodos');
+      const btnDropdown = document.getElementById('btnFilterDropdown');
+      const label = document.getElementById('filterDropdownLabel');
+
+      document.querySelectorAll('.filter-opt-btn').forEach(btn => {
+        const isMatch = btn.getAttribute('data-value') === tipo;
+        const checkIcon = btn.querySelector('.check-icon');
+        if (isMatch) {
+          btn.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.remove('hidden');
+        } else {
+          btn.classList.remove('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.add('hidden');
+        }
+      });
+
+      if (tipo === 'Todos') {
+        if (btnTodos) {
+          btnTodos.className = "cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0";
+        }
+        if (btnDropdown) {
+          btnDropdown.className = "bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        }
+        if (label) label.innerText = 'Filtros';
+      } else {
+        if (btnTodos) {
+          btnTodos.className = "cat-btn bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-1.5 shrink-0";
+        }
+        if (btnDropdown) {
+          btnDropdown.className = "bg-primary/10 border border-primary text-primary font-semibold px-4 py-2.5 rounded-md text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        }
+        if (label) label.innerText = `Filtro: ${tipo}`;
+      }
+
+      aplicarFiltros();
+    }
+
+    function filtrarTipo(tipo, btn) {
+      selecionarFiltro(tipo);
+    }
+
+    function aplicarFiltros() {
+      let filtrados = todosEspacos;
+      if (tipoAtual !== 'Todos') {
+        const target = tipoAtual.toLowerCase();
+        filtrados = filtrados.filter(esp => 
+          (esp.tipo && esp.tipo.toLowerCase().includes(target)) ||
+          (esp.categoria && esp.categoria.toLowerCase().includes(target))
+        );
+      }
+      if (termoBusca) {
+        const termo = termoBusca.toLowerCase();
+        filtrados = filtrados.filter(esp => 
+          (esp.nome && esp.nome.toLowerCase().includes(termo)) ||
+          (esp.descricao && esp.descricao.toLowerCase().includes(termo)) ||
+          (esp.endereco && esp.endereco.toLowerCase().includes(termo)) ||
+          (esp.categoria && esp.categoria.toLowerCase().includes(termo))
+        );
+      }
+      renderEspacos(filtrados);
+    }
+
+    document.getElementById('searchInput')?.addEventListener('input', (e) => {
+      termoBusca = e.target.value.trim();
+      aplicarFiltros();
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
       carregarEspacos();

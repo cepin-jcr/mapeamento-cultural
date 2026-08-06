@@ -118,20 +118,101 @@ window.addEventListener('load', () => {
     }
   } catch(e) {}
   
+  loadCadastroModalScript();
   updateAuthNav();
 });
 
-function updateAuthNav() {
-  const session = localStorage.getItem('custom_session');
-  if (session) {
-    const authLinks = document.querySelectorAll('nav a[href*="perfil/index.html"], nav a[href="./perfil/index.html"], nav a[href="../perfil/index.html"]');
-    authLinks.forEach(link => {
-      // Keep the SVG icon but change the text to Perfil
+function loadCadastroModalScript() {
+  if (window.abrirModalCadastro) return;
+  const path = window.location.pathname.toLowerCase();
+  const isInSubdir = path.includes('/cepin/') || path.includes('/mapa/') || path.includes('/eventos/') || path.includes('/espacos/') || path.includes('/agentes/') || path.includes('/calendario/') || path.includes('/mulheres/') || path.includes('/perfil/') || path.includes('/chat/');
+  const scriptSrc = isInSubdir ? '../js/cadastro-modal.js' : 'js/cadastro-modal.js';
+  
+  if (!document.querySelector(`script[src*="cadastro-modal.js"]`)) {
+    const s = document.createElement('script');
+    s.src = scriptSrc;
+    document.body.appendChild(s);
+  }
+}
+
+async function updateAuthNav() {
+  const rawSession = localStorage.getItem('custom_session');
+  let session = null;
+  try {
+    session = rawSession ? JSON.parse(rawSession) : null;
+  } catch(e) {}
+
+  const isLoggedIn = !!session;
+  
+  const isApproved = (user) => {
+    if (!user) return false;
+    if (user.is_admin === true || user.is_admin === 'true') return true;
+    return user.status_aprovacao === 'aprovado' || user.status === 'aprovado';
+  };
+
+  let userIsApproved = isApproved(session);
+
+  const authLinks = document.querySelectorAll('nav a[href*="perfil/index.html"], nav a[href="./perfil/index.html"], nav a[href="../perfil/index.html"]');
+  authLinks.forEach(link => {
+    if (isLoggedIn) {
       link.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Perfil
       `;
+    }
+  });
+
+  const setChatVisibility = (show) => {
+    const chatLinks = document.querySelectorAll('.nav-chat-btn, #nav-chat-btn, .nav-chat-link, a[href*="chat/index.html"], a[href*="/chat/"], a[href*="../chat/"]');
+    chatLinks.forEach(link => {
+      if (show) {
+        link.classList.remove('hidden');
+        link.style.display = 'inline-flex';
+      } else {
+        link.classList.add('hidden');
+        link.style.display = 'none';
+      }
     });
+  };
+
+  const setCadastroVisibility = (show) => {
+    // Contextual buttons in listing pages
+    const pageButtons = document.querySelectorAll('.btn-novo-item, .btn-cadastrar-contextual');
+    pageButtons.forEach(btn => {
+      if (show) {
+        btn.classList.remove('hidden');
+        btn.style.display = 'inline-flex';
+      } else {
+        btn.classList.add('hidden');
+        btn.style.display = 'none';
+      }
+    });
+
+    // Remove any leftover navbar button if present
+    const navCadastroBtn = document.getElementById('nav-btn-cadastro');
+    if (navCadastroBtn) {
+      navCadastroBtn.remove();
+    }
+  };
+
+  // Visibilidade imediata baseada na sessão armazenada (apenas para aprovados)
+  setChatVisibility(isLoggedIn && userIsApproved);
+  setCadastroVisibility(isLoggedIn && userIsApproved);
+
+  // Se logado e houver cliente Supabase disponível, verificar em tempo real o status no banco
+  if (isLoggedIn && session && session.id && window.supabaseClient) {
+    try {
+      const { data: perfil } = await supabaseClient.from('perfis').select('id, email, is_admin, status_aprovacao').eq('id', session.id).single();
+      if (perfil) {
+        session.is_admin = perfil.is_admin;
+        session.status_aprovacao = perfil.status_aprovacao;
+        localStorage.setItem('custom_session', JSON.stringify(session));
+        userIsApproved = isApproved(perfil);
+        setChatVisibility(userIsApproved);
+        setCadastroVisibility(userIsApproved);
+      }
+    } catch(e) {
+      console.warn("Erro ao checar status de aprovação para chat e cadastro:", e);
+    }
   }
 }
-

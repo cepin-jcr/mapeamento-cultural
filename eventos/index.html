@@ -63,6 +63,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <script src="../js/cadastro-modal.js"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -83,6 +84,10 @@
       <a href="../espacos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
       <a href="../agentes/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
       <a href="../mulheres/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-[#b1336b] transition-colors">Mulheres na Música</a>
+      <a href="../chat/index.html" style="display: none;" class="nav-chat-link hidden px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-primary transition-colors flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+      </a>
       <a href="../perfil/index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Entrar
@@ -105,13 +110,47 @@
     <div class="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col md:flex-row gap-4 items-center">
       <div class="w-full md:flex-1 relative">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" id="searchInput" placeholder="Buscar eventos..." class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+        <input type="text" id="searchInput" placeholder="Buscar eventos por nome, local ou descrição..." class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
       </div>
-      <div class="flex flex-wrap gap-2 w-full md:w-auto justify-center">
-        <button class="cat-btn bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors shadow-sm">Todos</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary">Música</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary">Teatro</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary">Artes Visuais</button>
+      <div class="flex items-center gap-2 w-full md:w-auto justify-center md:justify-end relative" id="categoryFilters">
+        <button id="btnFilterTodos" onclick="selecionarFiltro('Todos')" class="cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0">
+          Todos
+        </button>
+
+        <div class="relative shrink-0" id="filterDropdownContainer">
+          <button id="btnFilterDropdown" onclick="toggleDropdownFiltros(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            <span id="filterDropdownLabel">Filtros</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform duration-200" id="filterDropdownChevron"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+
+          <div id="filterDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-52 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
+              Filtrar por Categoria
+            </div>
+            <button onclick="selecionarFiltro('Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Música">
+              <span>Música</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Teatro')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Teatro">
+              <span>Teatro</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Artes Visuais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes Visuais">
+              <span>Artes Visuais</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Oficina')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Oficina">
+              <span>Oficina</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button onclick="abrirModalCadastro('evento')" class="btn-novo-item hidden px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 font-semibold text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          <span>Novo Evento</span>
+        </button>
       </div>
     </div>
   </section>
@@ -123,8 +162,60 @@
     </div>
   </section>
 
+  <!-- Modal de Detalhes do Evento -->
+  <div id="eventoModal" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[999] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div id="eventoModalContent" class="bg-card border border-border rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-carnival scale-95 transition-transform duration-300">
+      <div class="relative h-64 w-full overflow-hidden bg-muted">
+        <img id="modalEventoFoto" src="" alt="Imagem do Evento" class="w-full h-full object-cover">
+        <button onclick="fecharModalEvento()" class="absolute top-4 right-4 bg-background/80 hover:bg-background text-foreground p-2 rounded-full backdrop-blur-sm shadow-md transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <div id="modalEventoCategoria" class="absolute bottom-4 left-4 bg-primary text-primary-foreground font-semibold text-xs uppercase px-3 py-1 rounded-md shadow-md"></div>
+      </div>
+      <div class="p-6 md:p-8 space-y-6">
+        <div>
+          <h2 id="modalEventoNome" class="text-2xl md:text-3xl font-display font-extrabold text-foreground mb-3 leading-tight"></h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-muted/40 rounded-xl border border-border">
+            <div class="flex items-center gap-3 text-sm text-foreground">
+              <div class="p-2 rounded-lg bg-primary/10 text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <span class="block text-[11px] uppercase font-bold text-muted-foreground">Data & Horário</span>
+                <span id="modalEventoDataHora" class="font-semibold text-xs md:text-sm"></span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 text-sm text-foreground">
+              <div class="p-2 rounded-lg bg-primary/10 text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <span class="block text-[11px] uppercase font-bold text-muted-foreground">Local</span>
+                <span id="modalEventoLocal" class="font-semibold text-xs md:text-sm"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm uppercase font-bold text-muted-foreground tracking-wider mb-2">Sobre o Evento</h3>
+          <p id="modalEventoDescricao" class="text-muted-foreground text-sm md:text-base leading-relaxed whitespace-pre-wrap"></p>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-border">
+          <a href="../calendario/index.html" class="px-4 py-2.5 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            Ver Calendário
+          </a>
+          <button onclick="fecharModalEvento()" class="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary-glow transition-all shadow-sm">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
-    <!-- Footer Placeholder -->
   <div id="footer-placeholder"></div>
 
   <!-- Shared JS Library & Components -->
@@ -140,53 +231,245 @@
 
   <script>
     let todosEventos = [];
+    let categoriaAtual = 'Todos';
+    let termoBusca = '';
 
     async function carregarEventos() {
       if (window.supabaseClient) {
-        const { data, error } = await supabaseClient.from('eventos').select('*').order('id', {ascending: false});
-        if (!error && data) {
-          todosEventos = data;
+        try {
+          const { data, error } = await supabaseClient.from('eventos').select('*').order('id', {ascending: false});
+          if (!error && data && data.length > 0) {
+            todosEventos = data;
+          }
+        } catch (e) {
+          console.warn("Erro ao buscar do supabase:", e);
         }
       }
-      renderEventos(todosEventos);
+
+      // Se vazio, fallback básico
+      if (todosEventos.length === 0) {
+        todosEventos = [
+          {
+            id: 1,
+            nome: "Festival de Música da Mantiqueira",
+            categoria: "Música",
+            data_hora: "20/09/2026 às 19:00",
+            local: "Parque dos Espanhóis, Jacareí",
+            foto: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
+            descricao: "Um grande encontro musical celebrando a diversidade sonora do Vale do Paraíba e da Serra da Mantiqueira com artistas autorais e atrações convidadas."
+          },
+          {
+            id: 2,
+            nome: "Exposição Olhares do Vale",
+            categoria: "Artes Visuais",
+            data_hora: "15/10/2026 às 14:00",
+            local: "MAB - Museu de Antropologia",
+            foto: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800",
+            descricao: "Mostra fotográfica e artística retratando as tradições, o patrimônio histórico e as manifestações culturais populares do Vale do Paraíba."
+          },
+          {
+            id: 3,
+            nome: "Teatro na Praça: Histórias do Rio",
+            categoria: "Teatro",
+            data_hora: "05/11/2026 às 16:30",
+            local: "Sala Mário Lago",
+            foto: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800",
+            descricao: "Espetáculo cênico gratuito e ao ar livre baseado nas lendas e contos ribeirinhos que marcaram as gerações da nossa região."
+          }
+        ];
+      }
+
+      aplicarFiltros();
+      verificarParametrosUrl();
     }
 
     function renderEventos(eventos) {
       const grid = document.getElementById('eventosGrid');
       grid.innerHTML = '';
       if (eventos.length === 0) {
-        grid.innerHTML = '<div class="col-span-full text-center py-16 text-muted-foreground text-sm font-medium">Nenhum evento encontrado.</div>';
+        grid.innerHTML = '<div class="col-span-full text-center py-16 text-muted-foreground text-sm font-medium">Nenhum evento encontrado para os filtros selecionados.</div>';
         return;
       }
 
       eventos.forEach(ev => {
         const fotoUrl = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
         const card = `
-          <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
+          <div id="evento-card-${ev.id}" data-id="${ev.id}" data-nome="${(ev.nome || '').toLowerCase()}" class="evento-card group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
             <div class="h-48 overflow-hidden bg-muted relative">
-              <img src="${fotoUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2 py-1 rounded">
+              <img src="${fotoUrl}" alt="${ev.nome || 'Evento'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2.5 py-1 rounded-md shadow-sm">
                 ${ev.categoria || 'Evento'}
               </div>
             </div>
             <div class="p-6 flex-grow flex flex-col">
-              <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">${ev.nome || 'Sem Nome'}</h3>
+              <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">${ev.nome || 'Sem Nome'}</h3>
               <p class="text-sm text-muted-foreground mb-4 line-clamp-2">${ev.descricao || 'Nenhuma descrição informada.'}</p>
               <div class="flex flex-col gap-2 mt-auto">
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  ${ev.data_hora || 'Data e hora não informada'}
+                  ${ev.data_hora || ev.data || 'Data a confirmar'}
                 </div>
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                   ${ev.local || 'Local não informado'}
                 </div>
+                <button onclick='abrirDetalhesEvento(${JSON.stringify(ev).replace(/'/g, "&apos;")})' class="mt-4 w-full py-2 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-xs rounded-lg transition-all text-center flex items-center justify-center gap-2">
+                  <span>Ver Detalhes</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </button>
               </div>
             </div>
           </div>
         `;
         grid.innerHTML += card;
       });
+    }
+
+    function toggleDropdownFiltros(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('filterDropdownMenu');
+      const chevron = document.getElementById('filterDropdownChevron');
+      const isOpen = !menu.classList.contains('hidden');
+      if (isOpen) {
+        fecharDropdownFiltros();
+      } else {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      }
+    }
+
+    function fecharDropdownFiltros() {
+      const menu = document.getElementById('filterDropdownMenu');
+      const chevron = document.getElementById('filterDropdownChevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('filterDropdownContainer');
+      if (container && !container.contains(e.target)) {
+        fecharDropdownFiltros();
+      }
+    });
+
+    function selecionarFiltro(cat) {
+      categoriaAtual = cat;
+      fecharDropdownFiltros();
+
+      const btnTodos = document.getElementById('btnFilterTodos');
+      const btnDropdown = document.getElementById('btnFilterDropdown');
+      const label = document.getElementById('filterDropdownLabel');
+
+      document.querySelectorAll('.filter-opt-btn').forEach(btn => {
+        const isMatch = btn.getAttribute('data-value') === cat;
+        const checkIcon = btn.querySelector('.check-icon');
+        if (isMatch) {
+          btn.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.remove('hidden');
+        } else {
+          btn.classList.remove('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.add('hidden');
+        }
+      });
+
+      if (cat === 'Todos') {
+        if (btnTodos) {
+          btnTodos.className = "cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0";
+        }
+        if (btnDropdown) {
+          btnDropdown.className = "bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        }
+        if (label) label.innerText = 'Filtros';
+      } else {
+        if (btnTodos) {
+          btnTodos.className = "cat-btn bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-1.5 shrink-0";
+        }
+        if (btnDropdown) {
+          btnDropdown.className = "bg-primary/10 border border-primary text-primary font-semibold px-4 py-2.5 rounded-md text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        }
+        if (label) label.innerText = `Filtro: ${cat}`;
+      }
+
+      aplicarFiltros();
+    }
+
+    function filtrarCategoria(cat, btn) {
+      selecionarFiltro(cat);
+    }
+
+    function aplicarFiltros() {
+      let filtrados = todosEventos;
+      if (categoriaAtual !== 'Todos') {
+        filtrados = filtrados.filter(ev => ev.categoria && ev.categoria.toLowerCase() === categoriaAtual.toLowerCase());
+      }
+      if (termoBusca) {
+        const termo = termoBusca.toLowerCase();
+        filtrados = filtrados.filter(ev => 
+          (ev.nome && ev.nome.toLowerCase().includes(termo)) ||
+          (ev.descricao && ev.descricao.toLowerCase().includes(termo)) ||
+          (ev.local && ev.local.toLowerCase().includes(termo))
+        );
+      }
+      renderEventos(filtrados);
+    }
+
+    document.getElementById('searchInput')?.addEventListener('input', (e) => {
+      termoBusca = e.target.value.trim();
+      aplicarFiltros();
+    });
+
+    function abrirDetalhesEvento(ev) {
+      document.getElementById('modalEventoNome').innerText = ev.nome || 'Evento Cultural';
+      document.getElementById('modalEventoCategoria').innerText = ev.categoria || 'Evento';
+      document.getElementById('modalEventoDataHora').innerText = ev.data_hora || ev.data || 'Data a confirmar';
+      document.getElementById('modalEventoLocal').innerText = ev.local || 'Local não informado';
+      document.getElementById('modalEventoDescricao').innerText = ev.descricao || 'Nenhuma descrição adicional informada para este evento.';
+      document.getElementById('modalEventoFoto').src = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+      
+      const modal = document.getElementById('eventoModal');
+      const content = document.getElementById('eventoModalContent');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-95');
+      content.classList.add('scale-100');
+    }
+
+    function fecharModalEvento() {
+      const modal = document.getElementById('eventoModal');
+      const content = document.getElementById('eventoModalContent');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+    }
+
+    // Fechar ao clicar fora
+    document.getElementById('eventoModal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'eventoModal') fecharModalEvento();
+    });
+
+    function verificarParametrosUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramId = urlParams.get('id');
+      const paramNome = urlParams.get('nome') ? decodeURIComponent(urlParams.get('nome')).trim().toLowerCase() : null;
+
+      if (!paramId && !paramNome) return;
+
+      const eventoEncontrado = todosEventos.find(ev => 
+        (paramId && String(ev.id) === String(paramId)) ||
+        (paramNome && ev.nome && ev.nome.toLowerCase() === paramNome) ||
+        (paramNome && ev.nome && ev.nome.toLowerCase().includes(paramNome))
+      );
+
+      if (eventoEncontrado) {
+        setTimeout(() => {
+          const cardEl = document.getElementById(`evento-card-${eventoEncontrado.id}`) || 
+                         document.querySelector(`[data-nome="${(eventoEncontrado.nome || '').toLowerCase()}"]`);
+          if (cardEl) {
+            cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            cardEl.classList.add('ring-4', 'ring-primary', 'shadow-carnival');
+          }
+          abrirDetalhesEvento(eventoEncontrado);
+        }, 300);
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {

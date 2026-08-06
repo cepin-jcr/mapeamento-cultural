@@ -68,6 +68,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <script src="../js/cadastro-modal.js"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -87,8 +88,12 @@
       <a href="../calendario/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
       <a href="../eventos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
       <a href="../espacos/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
-      <a href="./index.html" class="px-4 py-2 rounded-lg bg-primary/10 text-primary font-semibold transition-colors">Agentes</a>
+      <a href="../agentes/index.html" class="px-4 py-2 rounded-lg bg-primary/10 text-primary font-semibold transition-colors">Agentes</a>
       <a href="../mulheres/index.html" class="px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-[#b1336b] transition-colors">Mulheres na Música</a>
+      <a href="../chat/index.html" style="display: none;" class="nav-chat-link hidden px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-primary transition-colors flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+      </a>
       <a href="../perfil/index.html" class="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Entrar
@@ -119,16 +124,64 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="searchInput" placeholder="Pesquisar agente por nome, bio ou especialidade..." oninput="filtrarAgentes()" class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
       </div>
-      <div class="flex flex-wrap gap-2 w-full md:w-auto justify-center">
-        <button class="cat-btn bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors shadow-sm" onclick="filtrarArea('todos', this)">Todos</button>
-        <button class="cat-btn bg-background border border-pink-500/40 text-pink-600 dark:text-pink-400 px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-pink-500 hover:bg-pink-500/10 flex items-center gap-1.5" onclick="filtrarArea('Mulheres na Música', this)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-          Mulheres na Música
+      <div class="flex items-center gap-2 w-full md:w-auto justify-center md:justify-end relative" id="categoryFilters">
+        <button id="btnFilterTodos" onclick="selecionarFiltro('todos')" class="cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0">
+          Todos
         </button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary" onclick="filtrarArea('Artesanato', this)">Artesanato</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary" onclick="filtrarArea('Música', this)">Música</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary" onclick="filtrarArea('Teatro', this)">Teatro</button>
-        <button class="cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary" onclick="filtrarArea('Cultura Popular', this)">Cultura Popular</button>
+
+        <div class="relative shrink-0" id="filterDropdownContainer">
+          <button id="btnFilterDropdown" onclick="toggleDropdownFiltros(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            <span id="filterDropdownLabel">Filtros</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform duration-200" id="filterDropdownChevron"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+
+          <div id="filterDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-60 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
+              Áreas e Projetos
+            </div>
+            <button onclick="selecionarFiltro('Mulheres na Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-pink-500/10 font-medium text-pink-600 dark:text-pink-400 transition-colors flex items-center justify-between" data-value="Mulheres na Música">
+              <span class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                Mulheres na Música
+              </span>
+              <svg class="check-icon hidden text-[#b1336b]" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Artesanato')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artesanato">
+              <span>Artesanato</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Música">
+              <span>Música</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Teatro')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Teatro">
+              <span>Teatro</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Cultura Popular')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Cultura Popular">
+              <span>Cultura Popular</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Dança')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Dança">
+              <span>Dança</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Literatura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Literatura">
+              <span>Literatura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Artes Visuais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes Visuais">
+              <span>Artes Visuais</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button onclick="abrirModalCadastro('agente')" class="btn-novo-item hidden px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 font-semibold text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          <span>Novo Agente</span>
+        </button>
       </div>
     </div>
   </section>
@@ -335,21 +388,88 @@
       });
     }
 
-    function filtrarArea(area, btnElem) {
+    function toggleDropdownFiltros(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('filterDropdownMenu');
+      const chevron = document.getElementById('filterDropdownChevron');
+      const isOpen = !menu.classList.contains('hidden');
+      if (isOpen) {
+        fecharDropdownFiltros();
+      } else {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      }
+    }
+
+    function fecharDropdownFiltros() {
+      const menu = document.getElementById('filterDropdownMenu');
+      const chevron = document.getElementById('filterDropdownChevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('filterDropdownContainer');
+      if (container && !container.contains(e.target)) {
+        fecharDropdownFiltros();
+      }
+    });
+
+    function selecionarFiltro(area) {
       areaAtiva = area;
-      document.querySelectorAll('.cat-btn').forEach(b => {
-        if (b.innerText.includes('Mulheres')) {
-          b.className = "cat-btn bg-background border border-pink-500/40 text-pink-600 dark:text-pink-400 px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-pink-500 hover:bg-pink-500/10 flex items-center gap-1.5";
+      fecharDropdownFiltros();
+
+      const btnTodos = document.getElementById('btnFilterTodos');
+      const btnDropdown = document.getElementById('btnFilterDropdown');
+      const label = document.getElementById('filterDropdownLabel');
+
+      document.querySelectorAll('.filter-opt-btn').forEach(btn => {
+        const isMatch = btn.getAttribute('data-value') === area;
+        const checkIcon = btn.querySelector('.check-icon');
+        if (isMatch) {
+          if (area === 'Mulheres na Música') {
+            btn.classList.add('bg-[#b1336b]/15', 'text-[#b1336b]', 'font-semibold');
+          } else {
+            btn.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+          }
+          if (checkIcon) checkIcon.classList.remove('hidden');
         } else {
-          b.className = "cat-btn bg-background border border-input text-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors hover:border-primary hover:text-primary";
+          btn.classList.remove('bg-primary/10', 'text-primary', 'font-semibold', 'bg-[#b1336b]/15', 'text-[#b1336b]');
+          if (checkIcon) checkIcon.classList.add('hidden');
         }
       });
-      if (area === 'Mulheres na Música') {
-        btnElem.className = "cat-btn bg-[#b1336b] text-white px-4 py-2 rounded-md font-medium text-sm transition-colors shadow-sm flex items-center gap-1.5";
+
+      if (area === 'todos') {
+        if (btnTodos) {
+          btnTodos.className = "cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0";
+        }
+        if (btnDropdown) {
+          btnDropdown.className = "bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        }
+        if (label) label.innerText = 'Filtros';
+      } else if (area === 'Mulheres na Música') {
+        if (btnTodos) {
+          btnTodos.className = "cat-btn bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-1.5 shrink-0";
+        }
+        if (btnDropdown) {
+          btnDropdown.className = "bg-[#b1336b]/10 border border-[#b1336b] text-[#b1336b] font-semibold px-4 py-2.5 rounded-md text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        }
+        if (label) label.innerText = 'Mulheres na Música';
       } else {
-        btnElem.className = "cat-btn bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm transition-colors shadow-sm";
+        if (btnTodos) {
+          btnTodos.className = "cat-btn bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-1.5 shrink-0";
+        }
+        if (btnDropdown) {
+          btnDropdown.className = "bg-primary/10 border border-primary text-primary font-semibold px-4 py-2.5 rounded-md text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        }
+        if (label) label.innerText = `Filtro: ${area}`;
       }
+
       aplicarFiltros();
+    }
+
+    function filtrarArea(area, btnElem) {
+      selecionarFiltro(area);
     }
 
     function filtrarAgentes() {

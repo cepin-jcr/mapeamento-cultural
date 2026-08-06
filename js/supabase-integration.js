@@ -139,6 +139,40 @@ const initSupabaseUI = async () => {
     updateBadges();
     setTimeout(updateBadges, 600); // Re-run to override any late checkStatus calls
 
+    // Controle de exibição do botão de Chat e Perfil na navbar baseado em autenticação
+    window.updateNavbarAuthState = () => {
+        const storedSession = localStorage.getItem('custom_session');
+        const isLoggedIn = !!storedSession;
+        const chatLinks = document.querySelectorAll('.nav-chat-btn, #nav-chat-btn, .nav-chat-link, a[href*="chat/index.html"], a[href*="/chat/"], a[href*="../chat/"]');
+        const loginLinks = document.querySelectorAll('.nav-login-btn, #nav-login-btn, a[href*="perfil/index.html"], a[href*="/perfil/"], a[href*="../perfil/"]');
+
+        chatLinks.forEach(link => {
+            if (isLoggedIn) {
+                link.classList.remove('hidden');
+                link.style.display = 'inline-flex';
+            } else {
+                link.classList.add('hidden');
+                link.style.display = 'none';
+            }
+        });
+
+        loginLinks.forEach(link => {
+            if (isLoggedIn) {
+                // Manter SVG e mudar texto para Perfil se for Entrar
+                if (link.innerHTML.includes('Entrar')) {
+                    link.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Perfil
+                    `;
+                }
+            }
+        });
+    };
+
+    updateNavbarAuthState();
+    setTimeout(updateNavbarAuthState, 200);
+    setTimeout(updateNavbarAuthState, 600);
+
     // Remove the config options that make no sense now
     const apiModal = document.getElementById('apiModal');
     if (apiModal) apiModal.remove();
