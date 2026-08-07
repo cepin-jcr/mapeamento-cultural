@@ -1131,11 +1131,15 @@
       
       // Projetos
       const projs = document.getElementById('cepin-projetos-list').children;
-      cepinCurrentData.projetos = Array.from(projs).map(p => ({
-        titulo: p.querySelector('.cepin-proj-titulo').value,
-        link: p.querySelector('.cepin-proj-link').value,
-        descricao: p.querySelector('.cepin-proj-desc').value,
-      }));
+      cepinCurrentData.projetos = Array.from(projs).map((p, index) => {
+          const originalProj = cepinCurrentData.projetos && cepinCurrentData.projetos[index] ? cepinCurrentData.projetos[index] : {};
+          return {
+            ...originalProj,
+            titulo: p.querySelector('.cepin-proj-titulo').value,
+            link: p.querySelector('.cepin-proj-link').value,
+            descricao: p.querySelector('.cepin-proj-desc').value,
+          };
+        });
 
       // Equipes
       const getList = (type) => {

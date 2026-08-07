@@ -405,7 +405,7 @@
           tr.innerHTML = `
             <td class="p-4 pl-6 font-bold text-foreground">${memb.nome}</td>
             <td class="p-4 text-muted-foreground">${memb.campus}</td>
-            <td class="p-4 text-muted-foreground">${memb.cargo}</td>
+            <td class="p-4 text-muted-foreground">${memb.cargo || memb.funcao || ''}</td>
             <td class="p-4 pr-6 text-right text-xs font-mono">
               <a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold">${memb.contato}</a>
             </td>
@@ -424,7 +424,7 @@
           tr.className = "hover:bg-muted/10 transition-colors";
           tr.innerHTML = `
             <td class="p-3 pl-4 font-bold text-foreground">${memb.nome}</td>
-            <td class="p-3 text-muted-foreground">${memb.funcao}</td>
+            <td class="p-3 text-muted-foreground">${memb.funcao || memb.cargo || ''}</td>
             <td class="p-3 pr-4 text-right text-xs font-mono">
               ${memb.contato.includes('@') ? `<a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold">${memb.contato}</a>` : `<span class="text-muted-foreground">${memb.contato}</span>`}
             </td>
@@ -445,7 +445,7 @@
           tr.className = "hover:bg-muted/10 transition-colors";
           tr.innerHTML = `
             <td class="p-3 pl-4 font-bold text-foreground">${memb.nome}</td>
-            <td class="p-3 text-muted-foreground">${memb.funcao}</td>
+            <td class="p-3 text-muted-foreground">${memb.funcao || memb.cargo || ''}</td>
             <td class="p-3 pr-4 text-right text-xs font-mono">
               ${memb.contato.includes('@') ? `<a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold">${memb.contato}</a>` : `<span class="text-muted-foreground">${memb.contato}</span>`}
             </td>
