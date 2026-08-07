@@ -552,14 +552,19 @@
       const link = document.getElementById('cad-evento-link').value.trim();
       const fotoInput = document.getElementById('cad-evento-foto');
 
+      const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
+      const descricaoFinal = descricaoFull;
+
       const payload = {
         nome,
+        titulo: nome,
         categoria,
         data_hora,
+        data: data_hora,
+        horario: data_hora,
         local,
-        descricao,
-        link: link || null,
-        user_id: user ? user.id : null
+        organizador: user ? user.email : 'Não informado',
+        descricao: descricaoFinal
       };
 
       if (fotoInput.files && fotoInput.files[0]) {
@@ -615,17 +620,15 @@
       const instagram = document.getElementById('cad-agente-instagram').value.trim();
       const fotoInput = document.getElementById('cad-agente-foto');
 
+      const contatoFull = instagram ? contato + ' | Redes: ' + instagram : contato;
+      const contatoFinal = user ? contatoFull + ` | Email: ${user.email}` : contatoFull;
+
       const payload = {
         nome,
         area,
-        area_de_atuacao: area,
-        categoria: area,
         bio,
-        contato,
-        contato_email: user ? user.email : contato,
-        instagram,
-        projeto_mulheres: mulheres,
-        user_id: user ? user.id : null
+        contato: contatoFinal,
+        projeto_mulheres: mulheres
       };
 
       if (fotoInput.files && fotoInput.files[0]) {
@@ -681,16 +684,17 @@
       const contato = document.getElementById('cad-espaco-contato').value.trim();
       const fotoInput = document.getElementById('cad-espaco-foto');
 
+      const contatoFinal = user ? contato + ` | Email: ${user.email}` : contato;
+
       const payload = {
         nome,
         tipo,
         categoria,
         endereco,
         descricao,
-        contato,
+        contato: contatoFinal,
         lat: -23.3055, // Coordenadas centrais padrão de Jacareí
-        lng: -45.9658,
-        user_id: user ? user.id : null
+        lng: -45.9658
       };
 
       if (fotoInput.files && fotoInput.files[0]) {

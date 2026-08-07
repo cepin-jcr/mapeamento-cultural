@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espaços Culturais • Mapeamento Cultural</title>
+  <title>Espaços <span class="text-primary">Culturais</span> • Mapeamento Cultural</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,7 +63,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
-  <script src="../js/cadastro-modal.js"></script>
+  <script src="../js/cadastro-modal.js?v=4"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -96,9 +96,9 @@
   </nav>
 
   <!-- Page Header -->
-  <header class="pt-32 pb-16 px-6 bg-muted/30 border-b border-border text-center">
+  <header class="pt-32 pb-16 px-6 bg-background border-b border-border text-center">
     <div class="max-w-3xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Espaços Culturais</h1>
+      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Espaços <span class="text-primary">Culturais</span></h1>
       <p class="text-lg text-muted-foreground">
         Descubra museus, teatros, praças e ateliês que movimentam a cultura no Vale do Paraíba.
       </p>
@@ -310,9 +310,8 @@
                 <span class="truncate">${esp.endereco || 'Endereço não informado'}</span>
               </div>
               <div class="mt-auto pt-3 border-t border-border/60">
-                <a href="${mapUrl}" class="w-full py-2 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-xs rounded-lg transition-all text-center flex items-center justify-center gap-2 shadow-sm">
-                  <span>Ver no Mapa</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <a href="${mapUrl}" class="w-full py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-sm rounded-lg transition-all text-center block shadow-sm">
+                  Ver no Mapa
                 </a>
               </div>
             </div>
@@ -437,3 +436,4 @@
   </script>
 </body>
 </html>
+

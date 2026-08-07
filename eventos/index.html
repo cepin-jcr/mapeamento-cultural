@@ -63,7 +63,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
-  <script src="../js/cadastro-modal.js"></script>
+  <script src="../js/cadastro-modal.js?v=4"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -96,9 +96,9 @@
   </nav>
 
   <!-- Page Header -->
-  <header class="pt-32 pb-16 px-6 bg-muted/30 border-b border-border text-center">
-    <div class="max-w-3xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Eventos Culturais</h1>
+    <header class="pt-32 pb-16 px-6 bg-muted/30 border-b border-border text-center">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Agenda <span class="text-primary">Cultural</span></h1>
       <p class="text-lg text-muted-foreground">
         Acompanhe shows, exposições, peças teatrais e festivais que acontecem na nossa região.
       </p>
@@ -293,6 +293,7 @@
 
       eventos.forEach(ev => {
         const fotoUrl = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+        const descLimpa = (ev.descricao || 'Nenhuma descrição informada.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
         const card = `
           <div id="evento-card-${ev.id}" data-id="${ev.id}" data-nome="${(ev.nome || '').toLowerCase()}" class="evento-card group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
             <div class="h-48 overflow-hidden bg-muted relative">
@@ -303,7 +304,7 @@
             </div>
             <div class="p-6 flex-grow flex flex-col">
               <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">${ev.nome || 'Sem Nome'}</h3>
-              <p class="text-sm text-muted-foreground mb-4 line-clamp-2">${ev.descricao || 'Nenhuma descrição informada.'}</p>
+              <p class="text-sm text-muted-foreground mb-4 line-clamp-2">${descLimpa}</p>
               <div class="flex flex-col gap-2 mt-auto">
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -313,9 +314,12 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                   ${ev.local || 'Local não informado'}
                 </div>
-                <button onclick='abrirDetalhesEvento(${JSON.stringify(ev).replace(/'/g, "&apos;")})' class="mt-4 w-full py-2 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-xs rounded-lg transition-all text-center flex items-center justify-center gap-2">
-                  <span>Ver Detalhes</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                  Organizado por: ${ev.organizador || 'Não informado'}
+                </div>
+                <button onclick='abrirDetalhesEvento(${JSON.stringify(ev).replace(/'/g, "&apos;")})' class="mt-4 w-full py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-sm rounded-lg transition-all text-center block shadow-sm">
+                  Ver Detalhes
                 </button>
               </div>
             </div>
@@ -423,7 +427,8 @@
       document.getElementById('modalEventoCategoria').innerText = ev.categoria || 'Evento';
       document.getElementById('modalEventoDataHora').innerText = ev.data_hora || ev.data || 'Data a confirmar';
       document.getElementById('modalEventoLocal').innerText = ev.local || 'Local não informado';
-      document.getElementById('modalEventoDescricao').innerText = ev.descricao || 'Nenhuma descrição adicional informada para este evento.';
+      const descModal = (ev.descricao || 'Nenhuma descrição adicional informada para este evento.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
+      document.getElementById('modalEventoDescricao').innerText = descModal;
       document.getElementById('modalEventoFoto').src = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
       
       const modal = document.getElementById('eventoModal');
@@ -489,3 +494,4 @@
   </script>
 </body>
 </html>
+

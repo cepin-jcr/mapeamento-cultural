@@ -64,7 +64,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
   <script src="../js/db.js"></script>
-  <script src="../js/cadastro-modal.js"></script>
+  <script src="../js/cadastro-modal.js?v=4"></script>
   <!-- bcryptjs for password hashing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 </head>
@@ -142,7 +142,7 @@
         </button>
       </div>
       <p class="text-sm text-muted-foreground mb-6">Para recuperar seu acesso, entre em contato com a administradora Simone através do WhatsApp.</p>
-      <a id="recovery-whatsapp-link" href="#" target="_blank" class="w-full py-3 bg-[#25D366] text-white font-semibold rounded-md hover:bg-[#20b958] transition-all flex justify-center items-center gap-2 shadow-sm">
+      <a id="recovery-whatsapp-link" href="#" target="_blank" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow transition-all flex justify-center items-center gap-2 shadow-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Falar no WhatsApp
       </a>
@@ -898,15 +898,15 @@
     };
 
     window.createAgentAdmin = () => {
-      window.location.href = `../agentes/editar.html`;
+      abrirModalCadastro('agente');
     };
     
     window.createSpaceAdmin = () => {
-      window.location.href = `../espacos/editar.html`;
+      abrirModalCadastro('espaco');
     };
 
     window.createEventAdmin = () => {
-      window.location.href = `../eventos/editar.html`;
+      abrirModalCadastro('evento');
     };
 
     window.editAgentAdmin = (slug) => {
@@ -1306,7 +1306,10 @@
       try {
         // 1. Meus Eventos
         const { data: eventos } = await supabaseClient.from('eventos').select('*');
-        const myEventos = (eventos || []).filter(e => e.user_id && String(e.user_id) === String(sessionUser.id));
+        const myEventos = (eventos || []).filter(e => 
+          (e.user_id && String(e.user_id) === String(sessionUser.id)) ||
+          (e.organizador && sessionUser.email && e.organizador.toLowerCase().includes(sessionUser.email.toLowerCase()))
+        );
         
         const countEventosEl = document.getElementById('user-count-eventos');
         if (countEventosEl) countEventosEl.innerText = myEventos.length;
@@ -1363,8 +1366,9 @@
         const { data: agentes } = await supabaseClient.from('agentes').select('*');
         const myAgentes = (agentes || []).filter(a => 
           (a.user_id && String(a.user_id) === String(sessionUser.id)) ||
-          (a.contato_email && a.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-          (a.email && a.email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase())
+          (a.contato_email && sessionUser.email && a.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+          (a.email && sessionUser.email && a.email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+          (a.contato && sessionUser.email && a.contato.toLowerCase().includes(sessionUser.email.toLowerCase()))
         );
 
         const countAgentesEl = document.getElementById('user-count-agentes');
@@ -1416,7 +1420,10 @@
 
         // 3. Meus Espaços
         const { data: espacos } = await supabaseClient.from('espacos').select('*');
-        const myEspacos = (espacos || []).filter(s => s.user_id && String(s.user_id) === String(sessionUser.id));
+        const myEspacos = (espacos || []).filter(s => 
+          (s.user_id && String(s.user_id) === String(sessionUser.id)) ||
+          (s.contato && sessionUser.email && s.contato.toLowerCase().includes(sessionUser.email.toLowerCase()))
+        );
 
         const countEspacosEl = document.getElementById('user-count-espacos');
         if (countEspacosEl) countEspacosEl.innerText = myEspacos.length;

@@ -143,11 +143,27 @@ const initSupabaseUI = async () => {
     window.updateNavbarAuthState = () => {
         const storedSession = localStorage.getItem('custom_session');
         const isLoggedIn = !!storedSession;
+        let isApproved = false;
+        
+        if (isLoggedIn) {
+            try {
+                const user = JSON.parse(storedSession);
+                if (user.is_admin === true || user.is_admin === 'true' || user.is_admin === 1) {
+                    isApproved = true;
+                } else {
+                    const status = String(user.status_aprovacao || user.status || '').toLowerCase().trim();
+                    if (status === 'aprovado' || status === 'approved') {
+                        isApproved = true;
+                    }
+                }
+            } catch (e) {}
+        }
+
         const chatLinks = document.querySelectorAll('.nav-chat-btn, #nav-chat-btn, .nav-chat-link, a[href*="chat/index.html"], a[href*="/chat/"], a[href*="../chat/"]');
         const loginLinks = document.querySelectorAll('.nav-login-btn, #nav-login-btn, a[href*="perfil/index.html"], a[href*="/perfil/"], a[href*="../perfil/"]');
 
         chatLinks.forEach(link => {
-            if (isLoggedIn) {
+            if (isApproved) {
                 link.classList.remove('hidden');
                 link.style.display = 'inline-flex';
             } else {

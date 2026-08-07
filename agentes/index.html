@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agentes Culturais • Vale do Paraíba</title>
+  <title>Agentes <span class="text-primary">Culturais</span> • Vale do Paraíba</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,7 +68,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
-  <script src="../js/cadastro-modal.js"></script>
+  <script src="../js/cadastro-modal.js?v=4"></script>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300">
 
@@ -98,19 +98,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Entrar
       </a>
-      <div class="h-6 w-[1px] bg-border mx-2"></div>
 
-      <div class="api-status-badge cursor-pointer flex items-center gap-2 text-xs bg-muted text-muted-foreground px-3 py-1.5 rounded-lg border border-border transition-colors hover:bg-border" id="apiStatusBadge" onclick="abrirConfiguradorAPI()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="apiStatusIcon"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        <span id="apiStatusText">Modo Estático</span>
-      </div>
     </div>
   </nav>
 
   <!-- Page Header -->
   <header class="pt-32 pb-16 px-6 bg-muted/30 border-b border-border text-center">
     <div class="max-w-3xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Agentes Culturais</h1>
+      <h1 class="text-4xl md:text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Agentes <span class="text-primary">Culturais</span></h1>
       <p class="text-lg text-muted-foreground">
         Conheça os artesãos, músicos, atores, escritores e produtores culturais que dão vida, cor e história ao Vale do Paraíba.
       </p>
@@ -379,7 +374,7 @@
                 ${ag.bio || 'Nenhuma biografia informada.'}
               </p>
             </div>
-            <a href="agente.html?slug=${encodeURIComponent(slug)}&id=${ag.id}" class="w-full text-center py-2.5 bg-background border border-border text-foreground font-medium rounded-md shadow-sm hover:bg-muted hover:text-foreground transition-colors mt-auto block text-sm">
+            <a href="agente.html?slug=${encodeURIComponent(slug)}&id=${ag.id}" class="mt-auto w-full py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-sm rounded-lg transition-all text-center block shadow-sm">
               Ver Perfil
             </a>
           </div>
@@ -517,3 +512,5 @@
   </script>
 </body>
 </html>
+
+
