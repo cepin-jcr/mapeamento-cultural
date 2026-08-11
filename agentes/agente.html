@@ -531,16 +531,19 @@
         html += createSection('Documentos', docHtml, docIcon);
       }
       
-      if (extra.coordenadas && extra.coordenadas.length === 2) {
+      let mapLat = agente.lat || (extra.coordenadas ? extra.coordenadas[0] : null);
+      let mapLng = agente.lng || (extra.coordenadas ? extra.coordenadas[1] : null);
+
+      if (mapLat && mapLng) {
         let mapHtml = `<div id="agent-map" class="w-full rounded-lg border border-border" style="height: 350px; z-index: 10;"></div>`;
         html += createSection('Localização no Mapa', mapHtml, mapIcon);
       }
       
       if(container) container.insertAdjacentHTML('beforeend', html);
       
-      if (extra.coordenadas && extra.coordenadas.length === 2) {
+      if (mapLat && mapLng) {
         setTimeout(() => {
-          const map = L.map('agent-map', { attributionControl: false }).setView([extra.coordenadas[0], extra.coordenadas[1]], 16);
+          const map = L.map('agent-map', { attributionControl: false }).setView([mapLat, mapLng], 16);
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: ''
           }).addTo(map);
@@ -560,7 +563,7 @@
             popupAnchor: [0, -36]
           });
 
-          L.marker([extra.coordenadas[0], extra.coordenadas[1]], { icon: greenIcon }).addTo(map)
+          L.marker([mapLat, mapLng], { icon: greenIcon }).addTo(map)
             .bindPopup(`<b>${agente.nome}</b>`)
             .openPopup();
         }, 100);
