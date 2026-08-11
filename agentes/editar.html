@@ -314,7 +314,6 @@
       // Auto-link do user_id se bater o email
       if (agente.id && !agente.user_id && sessionUser.id) {
         const matchesEmail = (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-                             (agente.contato_email && sessionUser.email && agente.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
                              (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
         if (matchesEmail) {
           supabaseClient.from('agentes').update({ user_id: sessionUser.id }).eq('id', agente.id).then();
@@ -575,4 +574,5 @@
 
 </body>
 </html>
+
 

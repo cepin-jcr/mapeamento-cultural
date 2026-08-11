@@ -431,7 +431,7 @@
               if (agente.user_id) {
                 isOwner = String(agente.user_id) === String(sessionUser.id);
               } else {
-                isOwner = (agente.contato_email && sessionUser.email && agente.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+                isOwner =
                           (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
                           (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
               }
@@ -466,7 +466,7 @@
             if (agente.user_id) {
               isOwner = String(agente.user_id) === String(sessionUser.id);
             } else {
-              isOwner = (agente.contato_email && sessionUser.email && agente.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+              isOwner =
                         (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
                         (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
             }
@@ -699,5 +699,6 @@
 
 </body>
 </html>
+
 
 
