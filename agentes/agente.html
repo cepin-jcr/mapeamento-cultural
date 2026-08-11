@@ -432,8 +432,7 @@
                 isOwner = String(agente.user_id) === String(sessionUser.id);
               } else {
                 isOwner =
-                          (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-                          (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
+                          (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase());
               }
             }
             if (isAdmin || isOwner) {
@@ -467,8 +466,7 @@
               isOwner = String(agente.user_id) === String(sessionUser.id);
             } else {
               isOwner =
-                        (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-                        (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
+                        (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase());
             }
           }
           if (isAdmin || isOwner) {
@@ -699,6 +697,7 @@
 
 </body>
 </html>
+
 
 
 

@@ -1261,7 +1261,7 @@
         const { data: matchedAgents } = await supabaseClient
           .from('agentes')
           .select('id')
-          .or(`email_sujestao.ilike.%${e}%,contato.ilike.%${e}%`);
+          .ilike('email_sujestao', `%${e}%`);
         if (matchedAgents && matchedAgents.length > 0) {
           initialStatus = 'aprovado';
         }
@@ -1403,9 +1403,7 @@
         const { data: agentes } = await supabaseClient.from('agentes').select('*');
         const myAgentes = (agentes || []).filter(a => {
           if (a.user_id) return String(a.user_id) === String(sessionUser.id);
-          return
-                 (a.email_sujestao && sessionUser.email && a.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-                 (a.contato && sessionUser.email && a.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
+          return (a.email_sujestao && sessionUser.email && a.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase());
         });
 
         const countAgentesEl = document.getElementById('user-count-agentes');
