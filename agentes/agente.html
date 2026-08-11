@@ -378,7 +378,6 @@
       document.getElementById('agente-bio').innerText = agente.bio || 'Nenhuma biografia informada.';
       
       let contatoText = agente.contato || 'Não informado';
-      if (extraData.localizacao) contatoText += `\n\n📍 Endereço:\n${extraData.localizacao}`;
       document.getElementById('sidebar-contato').innerText = contatoText;
 
       if (agente.projeto_mulheres) {
@@ -697,6 +696,7 @@
 
 </body>
 </html>
+
 
 
 
