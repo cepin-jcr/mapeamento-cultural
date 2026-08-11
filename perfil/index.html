@@ -1256,12 +1256,29 @@
         return;
       }
 
-      const { data, error } = await supabaseClient.from('perfis').insert({ email: e, senha: p, status_aprovacao: 'pendente' }).select().single();
+      let initialStatus = 'pendente';
+      try {
+        const { data: matchedAgents } = await supabaseClient
+          .from('agentes')
+          .select('id')
+          .or(`email_sujestao.ilike.%${e}%,contato_email.ilike.%${e}%,contato.ilike.%${e}%`);
+        if (matchedAgents && matchedAgents.length > 0) {
+          initialStatus = 'aprovado';
+        }
+      } catch (err) {
+        console.error('Erro ao verificar email do agente', err);
+      }
+
+      const { data, error } = await supabaseClient.from('perfis').insert({ email: e, senha: p, status_aprovacao: initialStatus }).select().single();
       
       if (error) {
         document.getElementById('sbError').innerText = "Erro ao criar conta. E-mail já existe ou inválido.";
       } else {
-        alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
+        if (initialStatus === 'aprovado') {
+          alert("Cadastro aprovado automaticamente! Seu e-mail foi reconhecido no sistema.");
+        } else {
+          alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
+        }
         try {
           await fetch(`https://formsubmit.co/ajax/juanperuibe6@gmail.com`, {
             method: 'POST',
@@ -1575,4 +1592,3 @@
 
 </body>
 </html>
-
