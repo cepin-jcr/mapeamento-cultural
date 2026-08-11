@@ -500,8 +500,8 @@
       html += createSection('Redes Sociais', extra.redes_sociais, svgIcon);
       
       let videosHtml = '';
-      const vids = (window.agente && window.agente.videos && Array.isArray(window.agente.videos) && window.agente.videos.length > 0) 
-                    ? window.agente.videos 
+      const vids = (agente && agente.videos && Array.isArray(agente.videos) && agente.videos.length > 0) 
+                    ? agente.videos 
                     : extra.videos_links;
 
       if (vids && Array.isArray(vids)) {
