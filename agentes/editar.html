@@ -311,16 +311,21 @@
       }
 
       // Permissão
-      const isOwner = sessionUser.is_admin || (agente.user_id === sessionUser.id) || (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
+      // Auto-link do user_id se bater o email
+      if (agente.id && !agente.user_id && sessionUser.id) {
+        const matchesEmail = (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+                             (agente.contato_email && sessionUser.email && agente.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+                             (agente.contato && sessionUser.email && agente.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
+        if (matchesEmail) {
+          supabaseClient.from('agentes').update({ user_id: sessionUser.id }).eq('id', agente.id).then();
+          agente.user_id = sessionUser.id;
+        }
+      }
+
+      const isOwner = sessionUser.is_admin || (sessionUser.status_aprovacao === 'aprovado' && agente.user_id === sessionUser.id);
       if (!isOwner) {
         window.location.href = `../perfil/index.html?msg=${encodeURIComponent('Para editar este perfil, você precisa ser administrador ou o agente responsável.')}`;
         return;
-      }
-
-      // Auto-link do user_id se bater o email
-      if (agente.id && !agente.user_id && sessionUser.id) {
-        supabaseClient.from('agentes').update({ user_id: sessionUser.id }).eq('id', agente.id).then();
-        agente.user_id = sessionUser.id;
       }
 
       agenteId = agente.id || null;
@@ -570,3 +575,4 @@
 
 </body>
 </html>
+

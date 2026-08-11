@@ -1384,12 +1384,12 @@
 
         // 2. Meus Agentes
         const { data: agentes } = await supabaseClient.from('agentes').select('*');
-        const myAgentes = (agentes || []).filter(a => 
-          (a.user_id && String(a.user_id) === String(sessionUser.id)) ||
-          (a.contato_email && sessionUser.email && a.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-          (a.email && sessionUser.email && a.email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-          (a.contato && sessionUser.email && a.contato.toLowerCase().includes(sessionUser.email.toLowerCase()))
-        );
+        const myAgentes = (agentes || []).filter(a => {
+          if (a.user_id) return String(a.user_id) === String(sessionUser.id);
+          return (a.contato_email && sessionUser.email && a.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+                 (a.email_sujestao && sessionUser.email && a.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
+                 (a.contato && sessionUser.email && a.contato.toLowerCase().includes(sessionUser.email.toLowerCase()));
+        });
 
         const countAgentesEl = document.getElementById('user-count-agentes');
         if (countAgentesEl) countAgentesEl.innerText = myAgentes.length;
@@ -1575,3 +1575,4 @@
 
 </body>
 </html>
+
