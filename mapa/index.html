@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -115,6 +115,26 @@
     }
   </style>
 
+  <style>
+    /* Marker animations */
+    .custom-brand-marker .marker-wrapper {
+      position: relative; width: 28px; height: 38px; display: flex; align-items: center; justify-content: center;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+      cursor: pointer;
+    }
+    .custom-brand-marker svg path {
+      fill: hsl(var(--primary));
+      transition: fill 0.3s ease;
+    }
+    .custom-brand-marker.active-marker .marker-wrapper {
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+      transform: scale(1.15) translateY(-3px);
+    }
+    .custom-brand-marker.active-marker svg path {
+      fill: #E31C23; /* Bolinha do IFSP */
+    }
+  </style>
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300 pb-24 md:pb-0">
 
@@ -338,10 +358,11 @@
         const transform = isHighlighted ? 'transform: scale(1.15);' : '';
         return L.divIcon({
           className: 'custom-brand-marker',
-          html: `
-            <div style="position: relative; width: 28px; height: 38px; display: flex; align-items: center; justify-content: center; filter: ${dropShadow}; ${transform} cursor: pointer; transition: transform 0.2s ease;">
+          html: ` 
+
+            <div class="marker-wrapper">
               <svg width="28" height="38" viewBox="0 0 28 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 0C6.268 0 0 6.268 0 14C0 24.5 14 38 14 38C14 38 28 24.5 28 14C28 6.268 21.732 0 14 0Z" fill="${color}"/>
+                <path d="M14 0C6.268 0 0 6.268 0 14C0 24.5 14 38 14 38C14 38 28 24.5 28 14C28 6.268 21.732 0 14 0Z"/>
                 <circle cx="14" cy="14" r="5.5" fill="#FFFFFF"/>
               </svg>
             </div>
@@ -352,18 +373,26 @@
         });
       };
 
-      const greenIcon = createBrandIcon('hsl(var(--primary))', false);
-      const highlightedIcon = createBrandIcon('#1E4620', true);
+      const greenIcon = createBrandIcon();
+      const highlightedIcon = createBrandIcon();
 
       let currentActiveMarker = null;
 
       const setActiveMarker = (marker) => {
         if (currentActiveMarker && currentActiveMarker !== marker) {
-          currentActiveMarker.setIcon(greenIcon);
+          if (currentActiveMarker.getElement()) {
+            currentActiveMarker.getElement().classList.remove('active-marker');
+          }
         }
         currentActiveMarker = marker;
         if (marker) {
-          marker.setIcon(highlightedIcon);
+          if (marker.getElement()) {
+            marker.getElement().classList.add('active-marker');
+          } else {
+            setTimeout(() => {
+              if (marker.getElement()) marker.getElement().classList.add('active-marker');
+            }, 50);
+          }
         }
       };
 
@@ -375,7 +404,9 @@
 
       map.on('popupclose', (e) => {
         if (currentActiveMarker && e.popup && e.popup._source === currentActiveMarker) {
-          currentActiveMarker.setIcon(greenIcon);
+          if (currentActiveMarker.getElement()) {
+            currentActiveMarker.getElement().classList.remove('active-marker');
+          }
           currentActiveMarker = null;
         }
       });
@@ -419,7 +450,7 @@
         if (locationGroups[key].marker) {
             locationGroups[key].marker.getPopup().setContent(finalHtml);
             if (locationGroups[key].isTarget) {
-               locationGroups[key].marker.setIcon(highlightedIcon);
+               // setIcon removido para manter a animação
                if (!selectedMarker) {
                   selectedMarker = locationGroups[key].marker;
                   setActiveMarker(locationGroups[key].marker);
