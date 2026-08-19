@@ -203,7 +203,7 @@
           
           <div class="space-y-4">
             <!-- Main Display Image -->
-            <div class="relative overflow-hidden rounded-lg aspect-video bg-muted border border-border group">
+            <div class="relative overflow-hidden rounded-lg aspect-video bg-muted border border-border group" onmouseenter="if(galleryInterval) clearInterval(galleryInterval)" onmouseleave="startGalleryInterval()">
               <img 
                 id="gallery-main-image"
                 src="https://picsum.photos/800/400" 
@@ -323,6 +323,7 @@
     let agente = null;
     let galleryImages = [];
     let currentImgIdx = 0;
+    let galleryInterval = null;
 
     const urlParams = new URLSearchParams(window.location.search);
     const rawSlug = urlParams.get('slug') || urlParams.get('id');
@@ -403,6 +404,7 @@
         document.getElementById('gallery-card').style.display = 'none';
       } else {
         renderGallery();
+        startGalleryInterval();
       }
       
       updateFavIcon();
@@ -610,6 +612,7 @@
           btn.onclick = () => {
             currentImgIdx = idx;
             renderGallery();
+            startGalleryInterval();
           };
           btn.innerHTML = `<img src="${img}" class="w-full h-full object-cover" />`;
           thumbsGrid.appendChild(btn);
@@ -620,11 +623,23 @@
     function prevGalleryImage() {
       currentImgIdx = (currentImgIdx === 0) ? galleryImages.length - 1 : currentImgIdx - 1;
       renderGallery();
+      startGalleryInterval();
     }
 
     function nextGalleryImage() {
       currentImgIdx = (currentImgIdx === galleryImages.length - 1) ? 0 : currentImgIdx + 1;
       renderGallery();
+      startGalleryInterval();
+    }
+
+    function startGalleryInterval() {
+      if (galleryInterval) clearInterval(galleryInterval);
+      if (galleryImages.length > 1) {
+        galleryInterval = setInterval(() => {
+          currentImgIdx = (currentImgIdx === galleryImages.length - 1) ? 0 : currentImgIdx + 1;
+          renderGallery();
+        }, 4000);
+      }
     }
 
     // Scroll Navbar Effect

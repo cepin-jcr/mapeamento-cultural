@@ -336,14 +336,14 @@
         const paragraphs = data.apresentacaoTexto.split(/\n\n+/);
         paragraphs.forEach(para => {
           if (para.trim()) {
-            apresentacaoContainer.innerHTML += `<p>${para.trim().replace(/\n/g, '<br>')}</p>`;
+            apresentacaoContainer.innerHTML += `<p class="text-justify">${para.trim().replace(/\n/g, '<br>')}</p>`;
           }
         });
       } else {
-        if (data.apresentacaoTexto1) apresentacaoContainer.innerHTML += `<p>${data.apresentacaoTexto1}</p>`;
-        if (data.apresentacaoTexto2) apresentacaoContainer.innerHTML += `<p>${data.apresentacaoTexto2}</p>`;
-        if (data.apresentacaoTexto3) apresentacaoContainer.innerHTML += `<p>${data.apresentacaoTexto3}</p>`;
-        if (data.apresentacaoTexto4) apresentacaoContainer.innerHTML += `<p>${data.apresentacaoTexto4}</p>`;
+        if (data.apresentacaoTexto1) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto1}</p>`;
+        if (data.apresentacaoTexto2) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto2}</p>`;
+        if (data.apresentacaoTexto3) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto3}</p>`;
+        if (data.apresentacaoTexto4) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto4}</p>`;
       }
       
       const competenciasGrid = document.getElementById('competencias-grid');
