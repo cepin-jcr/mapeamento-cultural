@@ -97,8 +97,9 @@
       <a href="../eventos/index.html" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
       <a href="../espacos/index.html" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
       <a href="../agentes/index.html" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="../cepin/index.html" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Sobre</a>
       <a href="../mulheres/index.html" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-[#b1336b] transition-colors">Mulheres na Música</a>
-      <a href="../chat/index.html" style="display: none;" class="w-full md:w-auto text-center nav-chat-link hidden px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-primary transition-colors flex items-center gap-1.5">
+      <a href="../chat/index.html" style="display: none;" class="w-full md:w-auto text-center nav-chat-link hidden px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-primary transition-colors flex items-center justify-center gap-1.5">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         Chat
       </a>
@@ -237,6 +238,10 @@
   <!-- Bottom Navigation Mobile -->
   <nav id="bottom-nav" class="fixed bottom-0 left-0 w-full bg-background/95 backdrop-blur-md border-t border-border z-[90] flex md:hidden overflow-x-auto overflow-y-hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)] custom-scrollbar hide-scroll-indicator">
     <div class="flex items-center w-full px-2 py-2 min-w-max" id="bottom-nav-links">
+      <a href="../perfil/index.html" data-path="perfil" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Entrar</span>
+      </a>
       <a href="../index.html" data-path="index.html" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span class="text-[10px] font-semibold mt-1">Home</span>
@@ -261,13 +266,13 @@
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span class="text-[10px] font-semibold mt-1">Agentes</span>
       </a>
+      <a href="../cepin/index.html" data-path="cepin" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Sobre</span>
+      </a>
       <a href="../mulheres/index.html" data-path="mulheres" class="flex flex-col items-center justify-center min-w-[80px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         <span class="text-[10px] font-semibold mt-1 text-center leading-tight">Mulheres</span>
-      </a>
-      <a href="../perfil/index.html" data-path="perfil" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
-        <span class="text-[10px] font-semibold mt-1">Entrar</span>
       </a>
     </div>
     <script>
@@ -276,7 +281,7 @@
         var links = document.querySelectorAll('#bottom-nav-links a');
         links.forEach(function(link) {
           var dataPath = link.getAttribute('data-path');
-          if ((dataPath === 'index.html' && (path.endsWith('/') || path.endsWith('index.html') && !path.includes('/mapa/') && !path.includes('/calendario/') && !path.includes('/eventos/') && !path.includes('/espacos/') && !path.includes('/agentes/') && !path.includes('/mulheres/') && !path.includes('/perfil/'))) || 
+          if ((dataPath === 'index.html' && (path.endsWith('/') || path.endsWith('index.html') && !path.includes('/mapa/') && !path.includes('/calendario/') && !path.includes('/eventos/') && !path.includes('/espacos/') && !path.includes('/agentes/') && !path.includes('/mulheres/') && !path.includes('/perfil/') && !path.includes('/cepin/'))) || 
               (dataPath !== 'index.html' && path.includes('/' + dataPath + '/'))) {
             link.classList.remove('text-muted-foreground', 'hover:text-[#b1336b]', 'hover:text-primary');
             link.classList.add('text-primary', 'bg-primary/10', 'rounded-lg');
