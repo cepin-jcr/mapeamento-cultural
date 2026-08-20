@@ -157,7 +157,7 @@ async function updateAuthNav() {
 
   let userIsApproved = isApproved(session);
 
-  const authLinks = document.querySelectorAll('nav a[href*="perfil/index.html"], nav a[href="./perfil/index.html"], nav a[href="../perfil/index.html"]');
+  const authLinks = document.querySelectorAll('nav a[href*="perfil/"], nav a[href="./perfil/"], nav a[href="../perfil/"]');
   authLinks.forEach(link => {
     if (isLoggedIn) {
       link.innerHTML = `
@@ -168,7 +168,7 @@ async function updateAuthNav() {
   });
 
   const setChatVisibility = (show) => {
-    const chatLinks = document.querySelectorAll('.nav-chat-btn, #nav-chat-btn, .nav-chat-link, a[href*="chat/index.html"], a[href*="/chat/"], a[href*="../chat/"]');
+    const chatLinks = document.querySelectorAll('.nav-chat-btn, #nav-chat-btn, .nav-chat-link, a[href*="chat/"], a[href*="/chat/"], a[href*="../chat/"]');
     chatLinks.forEach(link => {
       if (show) {
         link.classList.remove('hidden');
@@ -221,3 +221,4 @@ async function updateAuthNav() {
     }
   }
 }
+
