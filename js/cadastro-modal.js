@@ -175,15 +175,40 @@
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Área de Atuação *</label>
                 <select id="cad-agente-area" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="Música">Música</option>
+                  <option value="Artes cênicas">Artes cênicas</option>
                   <option value="Teatro">Teatro</option>
                   <option value="Dança">Dança</option>
-                  <option value="Artes Visuais">Artes Visuais</option>
+                  <option value="Ópera">Ópera</option>
+                  <option value="Circo">Circo</option>
+                  <option value="Artes visuais">Artes visuais</option>
+                  <option value="Artes plásticas">Artes plásticas</option>
+                  <option value="Desenho">Desenho</option>
+                  <option value="Pintura">Pintura</option>
+                  <option value="Escultura">Escultura</option>
+                  <option value="Gravura">Gravura</option>
+                  <option value="Performance">Performance</option>
+                  <option value="Fotografia">Fotografia</option>
+                  <option value="Design">Design</option>
+                  <option value="Música">Música</option>
                   <option value="Literatura">Literatura</option>
+                  <option value="Cinema">Cinema</option>
+                  <option value="Vídeo">Vídeo</option>
+                  <option value="Multimídia">Multimídia</option>
+                  <option value="Folclore">Folclore</option>
+                  <option value="Cultura popular">Cultura popular</option>
                   <option value="Artesanato">Artesanato</option>
-                  <option value="Cultura Popular">Cultura Popular</option>
-                  <option value="Cinema & Audiovisual">Cinema & Audiovisual</option>
-                  <option value="Produção Cultural">Produção Cultural</option>
+                  <option value="Arte aplicada">Arte aplicada</option>
+                  <option value="Outras manifestações culturais">Outras manifestações culturais</option>
+                  <option value="Blocos carnavalescos">Blocos carnavalescos</option>
+                  <option value="Escolas de Samba">Escolas de Samba</option>
+                  <option value="Hip Hop">Hip Hop</option>
+                  <option value="Danças urbanas">Danças urbanas</option>
+                  <option value="Grafite">Grafite</option>
+                  <option value="Capoeira">Capoeira</option>
+                  <option value="Outras culturas urbanas">Outras culturas urbanas</option>
+                  <option value="Pesquisador(a) da área cultural">Pesquisador(a) da área cultural</option>
+                  <option value="Gestor(a) cultural">Gestor(a) cultural</option>
+                  <option value="Agente territorial de cultura">Agente territorial de cultura</option>
                   <option value="Outro">Outro</option>
                 </select>
               </div>
