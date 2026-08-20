@@ -389,7 +389,8 @@
 
       // Gallery
       galleryImages = [];
-      if (agente.foto && agente.foto !== '../img/agentes/default.webp') galleryImages.push(agente.foto);
+      const hasRealFoto = agente.foto && !agente.foto.includes('default.webp') && !agente.foto.includes('unsplash.com');
+      if (hasRealFoto) galleryImages.push(agente.foto);
       
       if (agente.galeria && Array.isArray(agente.galeria) && agente.galeria.length > 0) {
         galleryImages = galleryImages.concat(agente.galeria);
@@ -397,11 +398,9 @@
         galleryImages = galleryImages.concat(extraData.fotos_galeria);
       }
       
-      if (galleryImages.length === 0) {
-        galleryImages.push('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800');
-        document.getElementById('gallery-card').style.display = 'none';
-      } else if (galleryImages.length === 1 && galleryImages[0] === agente.foto) {
-        document.getElementById('gallery-card').style.display = 'none';
+      if (galleryImages.length === 0 || (galleryImages.length === 1 && galleryImages[0] === agente.foto)) {
+        const galleryCard = document.getElementById('gallery-card');
+        if (galleryCard) galleryCard.classList.add('hidden');
       } else {
         renderGallery();
         startGalleryInterval();

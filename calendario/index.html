@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -151,16 +151,64 @@
       }
     });
 
+    function parseDateBR(dateStr) {
+      if (!dateStr) return null;
+      const str = dateStr.toLowerCase().trim();
+      const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+      
+      let match = str.match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?/);
+      if (match) {
+        let d = parseInt(match[1]);
+        let m = parseInt(match[2]) - 1;
+        let y = match[3] ? parseInt(match[3]) : new Date().getFullYear();
+        if (y < 100) y += 2000;
+        return new Date(y, m, d);
+      }
+      
+      match = str.match(/(\d{1,2})\s+(?:de\s+)?([a-zç]+)/);
+      if (match) {
+        let d = parseInt(match[1]);
+        let mStr = match[2];
+        let m = months.findIndex(x => mStr.startsWith(x));
+        if (m !== -1) {
+          return new Date(new Date().getFullYear(), m, d);
+        }
+      }
+      return null;
+    }
+
     async function carregarCalendario() {
       const container = document.getElementById('eventsCalendarList');
       try {
         let eventos = [];
         if (window.supabaseClient) {
-          const { data, error } = await supabaseClient.from('eventos').select('*').order('id', {ascending: false});
+          const { data, error } = await supabaseClient.from('eventos').select('*');
           if (!error && data && data.length > 0) {
             eventos = data;
           }
         }
+
+        const hoje = new Date();
+        hoje.setHours(0,0,0,0);
+
+        eventos.forEach(ev => {
+          const dateStr = ev.data || ev.data_hora || '';
+          ev.parsedDate = parseDateBR(dateStr);
+        });
+
+        eventos = eventos.filter(ev => {
+          if (!ev.parsedDate) return true; 
+          return ev.parsedDate >= hoje;
+        });
+
+        eventos.sort((a, b) => {
+          if (a.parsedDate && b.parsedDate) {
+             return a.parsedDate - b.parsedDate;
+          }
+          if (a.parsedDate) return -1;
+          if (b.parsedDate) return 1;
+          return b.id - a.id;
+        });
 
         if (eventos.length === 0) {
           container.innerHTML = `

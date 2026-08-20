@@ -286,15 +286,7 @@
         }
       }
 
-      // Combinar dados do banco com mock sem duplicar
-      const list = [...fetched];
-      MOCK_ESPACOS_DEFAULT.forEach(mock => {
-        if (!list.some(item => String(item.id) === String(mock.id) || (item.nome && mock.nome && item.nome.toLowerCase() === mock.nome.toLowerCase()))) {
-          list.push(mock);
-        }
-      });
-
-      todosEspacos = list;
+      todosEspacos = fetched;
       aplicarFiltros();
     }
 

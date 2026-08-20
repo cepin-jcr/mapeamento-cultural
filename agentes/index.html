@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -337,7 +337,7 @@
       }
 
       if (window.supabaseClient) {
-        const { data, error } = await supabaseClient.from('agentes').select('*').order('id', {ascending: false});
+        const { data, error } = await supabaseClient.from('agentes').select('*').order('nome', {ascending: true});
         if (!error && data) {
           todosAgentes = data;
         } else {

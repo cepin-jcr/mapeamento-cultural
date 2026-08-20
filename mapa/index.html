@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -413,19 +413,14 @@
       });
 
       let selectedMarker = null;
-      let espacosList = [...MOCK_ESPACOS];
+      let espacosList = [];
 
       // Tentar carregar espaços do Supabase para ter os mais atualizados
       if (window.supabaseClient) {
         try {
           const { data: dbEspacos } = await supabaseClient.from('espacos').select('*');
           if (dbEspacos && dbEspacos.length > 0) {
-            // Unir sem duplicar
-            dbEspacos.forEach(dbEsp => {
-              if (!espacosList.some(e => String(e.id) === String(dbEsp.id) || (e.nome && dbEsp.nome && e.nome.toLowerCase() === dbEsp.nome.toLowerCase()))) {
-                espacosList.push(dbEsp);
-              }
-            });
+            espacosList = dbEspacos;
           }
         } catch (e) {
           console.warn("Erro ao buscar espacos do supabase:", e);

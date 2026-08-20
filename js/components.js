@@ -64,14 +64,19 @@ function renderFooter() {
             <p class="text-xs text-muted-foreground max-w-[250px] font-medium leading-normal">
               Conheça nosso Centro de Pesquisa, equipe e linhas de inovação.
             </p>
+            <div class="h-px w-full bg-border my-2 max-w-[200px] mx-auto"></div>
+            <div class="flex flex-col gap-1 items-center">
+              <p class="text-xs text-muted-foreground">Nossa outra iniciativa:</p>
+              <a href="https://cepin-jcr.github.io/carnaval-feminino/" target="_blank" rel="noopener noreferrer" class="text-[#b1336b] hover:underline font-medium text-sm">Bloco de Carnaval Feminista</a>
+            </div>
           </div>
           
-          <!-- Column 3: Diagnóstico Cultural -->
+          <!-- Column 3: Projetos & Diagnóstico -->
           <div class="space-y-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-primary">Diagnóstico Cultural</h3>
-            <div class="text-sm text-muted-foreground leading-relaxed">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-primary">Projetos & Diagnóstico</h3>
+            <div class="text-sm text-muted-foreground leading-relaxed flex flex-col gap-2">
               <p>Conheça o Diagnóstico Cultural que deu origem a essa e outras ações:</p>
-              <a href="https://drive.google.com/drive/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-green-600 dark:text-green-500 hover:underline font-medium inline-block mt-2">Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</a>
+              <a href="https://drive.google.com/drive/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-green-600 dark:text-green-500 hover:underline font-medium inline-block">Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</a>
             </div>
           </div>
           

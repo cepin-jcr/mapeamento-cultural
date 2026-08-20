@@ -137,7 +137,7 @@
         </p>
       </div>
       <div class="relative rounded-xl overflow-hidden shadow-sm border border-border aspect-video bg-muted">
-        <img src="https://picsum.photos/800/450?7" class="w-full h-full object-cover" alt="Mulheres na Música">
+        <img src="../img/foto_Paulo_Amaral_2.jpg" class="w-full h-full object-cover object-top" alt="Mulheres na Música">
         <div class="absolute inset-0 bg-[#b1336b]/20 mix-blend-multiply"></div>
       </div>
     </div>
@@ -187,7 +187,7 @@
 
         let artistas = [];
         if (window.supabaseClient) {
-          const { data, error } = await supabaseClient.from('agentes').select('*').eq('projeto_mulheres', true).order('id', {ascending: false});
+          const { data, error } = await supabaseClient.from('agentes').select('*').eq('projeto_mulheres', true).order('nome', {ascending: true});
           if (!error && data && data.length > 0) {
             artistas = data;
           }
