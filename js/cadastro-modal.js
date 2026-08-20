@@ -566,6 +566,10 @@
         organizador: user ? user.email : 'Não informado',
         descricao: descricaoFinal
       };
+      
+      if (user) {
+        payload.user_id = user.id;
+      }
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
@@ -630,6 +634,11 @@
         contato: contatoFinal,
         projeto_mulheres: mulheres
       };
+
+      if (user) {
+        payload.user_id = user.id;
+        payload.email_sujestao = user.email;
+      }
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
@@ -696,6 +705,10 @@
         lat: -23.3055, // Coordenadas centrais padrão de Jacareí
         lng: -45.9658
       };
+
+      if (user) {
+        payload.user_id = user.id;
+      }
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
