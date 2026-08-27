@@ -242,6 +242,17 @@
               <input type="file" id="cad-agente-foto" accept="image/*" onchange="previewImagemCadastro(event, 'preview-cad-agente')" class="w-full text-xs text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer">
               <img id="preview-cad-agente" class="hidden mt-2 h-36 w-full object-cover rounded-xl border border-border">
             </div>
+              <div class="space-y-3 p-4 bg-muted/30 border border-border rounded-xl">
+                <label class="flex items-start gap-3 cursor-pointer">
+                  <input type="checkbox" id="cad-agente-lgpd" required class="mt-0.5 rounded text-primary focus:ring-primary h-4 w-4 shrink-0">
+                  <span class="text-xs text-muted-foreground leading-snug">Autorizo o tratamento das minhas informações para fins de cadastro e login na plataforma Mapeamento Cultural do Vale do Paraíba, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018). *</span>
+                </label>
+                <label class="flex items-start gap-3 cursor-pointer">
+                  <input type="checkbox" id="cad-agente-idade" required class="mt-0.5 rounded text-primary focus:ring-primary h-4 w-4 shrink-0">
+                  <span class="text-xs text-muted-foreground leading-snug">Declaro ser maior de 18 anos. *</span>
+                </label>
+              </div>
+
 
             <div class="pt-4 border-t border-border flex justify-end gap-3">
               <button type="button" onclick="fecharModalCadastro()" class="px-5 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer">Cancelar</button>
@@ -669,7 +680,9 @@
         area,
         bio,
         contato: contatoFinal,
-        projeto_mulheres: mulheres
+        projeto_mulheres: mulheres,
+        lat: -23.3055,
+        lng: -45.9658
       };
 
       if (user) {

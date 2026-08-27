@@ -532,8 +532,8 @@
         html += createSection('Documentos', docHtml, docIcon);
       }
       
-      let mapLat = agente.lat || (extra.coordenadas ? extra.coordenadas[0] : null);
-      let mapLng = agente.lng || (extra.coordenadas ? extra.coordenadas[1] : null);
+      let mapLat = agente.lat || (extra.coordenadas ? extra.coordenadas[0] : -23.3055);
+      let mapLng = agente.lng || (extra.coordenadas ? extra.coordenadas[1] : -45.9658);
 
       if (mapLat && mapLng) {
         let mapHtml = `<div id="agent-map" class="w-full rounded-lg border border-border" style="height: 350px; z-index: 10;"></div>`;
