@@ -592,9 +592,7 @@
         descricao: descricaoFinal
       };
       
-      if (user) {
-        payload.user_id = user.id;
-      }
+      // user_id was removed due to UUID type mismatch in DB, linkage is handled via organizador email.
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
@@ -731,9 +729,7 @@
         lng: -45.9658
       };
 
-      if (user) {
-        payload.user_id = user.id;
-      }
+      // user_id was removed due to UUID type mismatch in DB, linkage is handled via contatoFinal email.
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
