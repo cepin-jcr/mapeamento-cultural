@@ -174,43 +174,43 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Área de Atuação *</label>
-                <select id="cad-agente-area" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="Artes cênicas">Artes cênicas</option>
-                  <option value="Teatro">Teatro</option>
-                  <option value="Dança">Dança</option>
-                  <option value="Ópera">Ópera</option>
-                  <option value="Circo">Circo</option>
-                  <option value="Artes visuais">Artes visuais</option>
-                  <option value="Artes plásticas">Artes plásticas</option>
-                  <option value="Desenho">Desenho</option>
-                  <option value="Pintura">Pintura</option>
-                  <option value="Escultura">Escultura</option>
-                  <option value="Gravura">Gravura</option>
-                  <option value="Performance">Performance</option>
-                  <option value="Fotografia">Fotografia</option>
-                  <option value="Design">Design</option>
-                  <option value="Música">Música</option>
-                  <option value="Literatura">Literatura</option>
-                  <option value="Cinema">Cinema</option>
-                  <option value="Vídeo">Vídeo</option>
-                  <option value="Multimídia">Multimídia</option>
-                  <option value="Folclore">Folclore</option>
-                  <option value="Cultura popular">Cultura popular</option>
-                  <option value="Artesanato">Artesanato</option>
-                  <option value="Arte aplicada">Arte aplicada</option>
-                  <option value="Outras manifestações culturais">Outras manifestações culturais</option>
-                  <option value="Blocos carnavalescos">Blocos carnavalescos</option>
-                  <option value="Escolas de Samba">Escolas de Samba</option>
-                  <option value="Hip Hop">Hip Hop</option>
-                  <option value="Danças urbanas">Danças urbanas</option>
-                  <option value="Grafite">Grafite</option>
-                  <option value="Capoeira">Capoeira</option>
-                  <option value="Outras culturas urbanas">Outras culturas urbanas</option>
-                  <option value="Pesquisador(a) da área cultural">Pesquisador(a) da área cultural</option>
-                  <option value="Gestor(a) cultural">Gestor(a) cultural</option>
-                  <option value="Agente territorial de cultura">Agente territorial de cultura</option>
-                  <option value="Outro">Outro</option>
-                </select>
+                <div id="cad-agente-area-container" class="w-full h-44 overflow-y-auto px-3 py-2 bg-background border border-input rounded-xl text-sm scrollbar-thin flex flex-col gap-1">
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes cênicas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes cênicas</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Teatro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Teatro</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Dança" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Dança</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ópera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ópera</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Circo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Circo</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes visuais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes visuais</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes plásticas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes plásticas</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Desenho" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Desenho</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Pintura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Pintura</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Escultura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Escultura</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Gravura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Gravura</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Performance" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Performance</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Fotografia" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Fotografia</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Design" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Design</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Música" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Música</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Literatura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Literatura</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Cinema" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Cinema</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Vídeo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Vídeo</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Multimídia" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Multimídia</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Folclore" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Folclore</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Cultura popular" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Cultura popular</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artesanato" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artesanato</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Arte aplicada" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Arte aplicada</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outras manifestações culturais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outras manifestações culturais</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Blocos carnavalescos" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Blocos carnavalescos</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Escolas de Samba" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Escolas de Samba</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Hip Hop" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Hip Hop</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Danças urbanas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Danças urbanas</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Grafite" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Grafite</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Capoeira" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Capoeira</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outras culturas urbanas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outras culturas urbanas</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Pesquisador(a) da área cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Pesquisador(a) da área cultural</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Gestor(a) cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Gestor(a) cultural</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Agente territorial de cultura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Agente territorial de cultura</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outro</span></label>
+                </div>
               </div>
 
               <div class="space-y-1.5 flex flex-col justify-end pb-1">
@@ -379,6 +379,9 @@
     const form = document.getElementById(`form-cadastro-${tipo}`);
     if (form) form.reset();
     const preview = document.getElementById(`preview-cad-${tipo}`);
+    if (tipo === 'agente') {
+      document.querySelectorAll('.cad-agente-area-cb').forEach(cb => cb.checked = false);
+    }
     if (preview) { preview.src = ''; preview.classList.add('hidden'); }
 
     // Atualiza texto do botão
@@ -455,7 +458,11 @@
             }
           } else if (tipo === 'agente') {
             document.getElementById('cad-agente-nome').value = data.nome || '';
-            document.getElementById('cad-agente-area').value = data.area || data.area_de_atuacao || data.categoria || 'Música';
+            const savedArea = data.area || data.area_de_atuacao || data.categoria || 'Música';
+            const selectedAreas = savedArea.split(',').map(s => s.trim());
+            document.querySelectorAll('.cad-agente-area-cb').forEach(cb => {
+              cb.checked = selectedAreas.includes(cb.value);
+            });
             document.getElementById('cad-agente-mulheres').checked = !!(data.projeto_mulheres || data.mulheres_na_musica);
             document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
             document.getElementById('cad-agente-contato').value = data.contato || '';
@@ -640,7 +647,14 @@
 
     try {
       const nome = document.getElementById('cad-agente-nome').value.trim();
-      const area = document.getElementById('cad-agente-area').value.trim();
+      const checkboxes = document.querySelectorAll('.cad-agente-area-cb:checked');
+      const area = Array.from(checkboxes).map(cb => cb.value).join(', ');
+      
+      if (!area) {
+        showModalMsg("Selecione pelo menos uma área de atuação.", true);
+        setBtnLoading(btn, false, isEdit ? 'Salvar Alterações' : 'Cadastrar Agente');
+        return;
+      }
       const mulheres = document.getElementById('cad-agente-mulheres').checked;
       const bio = document.getElementById('cad-agente-bio').value.trim();
       const contato = document.getElementById('cad-agente-contato').value.trim();
