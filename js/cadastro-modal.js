@@ -361,12 +361,17 @@
   };
 
   // Abre modal para NOVO cadastro (focado exclusivamente no tipo solicitado)
-  window.abrirModalCadastro = (tipo = 'evento') => {
+  window.abrirModalCadastro = (tipo = 'evento', isSignup = false) => {
     const user = getLoggedUser();
-    if (!user || !isUserApproved(user)) {
-      alert("Apenas usuários com cadastro aprovado podem publicar novos eventos, agentes e espaços.");
-      return;
+    window._isSignupMode = isSignup;
+    
+    if (!isSignup) {
+      if (!user || !isUserApproved(user)) {
+        alert("Apenas usuários com cadastro aprovado podem publicar novos eventos, agentes e espaços.");
+        return;
+      }
     }
+
 
     window._currentEditing = null;
     createModalDOM();
@@ -394,6 +399,31 @@
       document.querySelectorAll('.cad-agente-area-cb').forEach(cb => cb.checked = false);
     }
     if (preview) { preview.src = ''; preview.classList.add('hidden'); }
+    
+    // Injeta os campos de auth se for modo signup
+    if (isSignup && tipo === 'agente') {
+      const nomeInput = document.getElementById('cad-agente-nome');
+      if (nomeInput && !document.getElementById('cad-agente-email')) {
+        const nomeContainer = nomeInput.closest('div');
+        const authFields = `
+          <div id="signup-auth-fields" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 bg-primary/5 p-4 rounded-xl border border-primary/20">
+            <div class="col-span-1 sm:col-span-2">
+              <p class="text-xs font-bold text-primary uppercase tracking-wider mb-1">Dados de Acesso (Criação de Conta)</p>
+              <p class="text-[11px] text-muted-foreground">Você usará este e-mail e senha para acessar o sistema após aprovação.</p>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">E-mail *</label>
+              <input type="email" id="cad-agente-email" required placeholder="seu@email.com" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Senha *</label>
+              <input type="password" id="cad-agente-senha" required placeholder="Sua senha" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+            </div>
+          </div>
+        `;
+        nomeContainer.insertAdjacentHTML('afterend', authFields);
+      }
+    }
 
     // Atualiza texto do botão
     const btnSubmit = document.getElementById(`btn-submit-${tipo}`);
@@ -600,22 +630,26 @@
 
       const payload = {
         nome,
-        titulo: nome,
         categoria,
         data_hora,
-        data: data_hora,
-        horario: data_hora,
         local,
-        organizador: user ? user.email : 'Não informado',
-        descricao: descricaoFinal
+        descricao: descricaoFinal,
+        lat: -23.3055,
+        lng: -45.9658
       };
-      
-      // user_id was removed due to UUID type mismatch in DB, linkage is handled via organizador email.
+
+      if (user) {
+        payload.user_id = user.id;
+      } else {
+        showModalMsg("Apenas usuários logados podem enviar.", true);
+        setBtnLoading(btn, false, 'Publicar Evento');
+        return;
+      }
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
       } else if (!isEdit) {
-        payload.foto = 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1000';
+        payload.foto = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000';
       }
 
       if (window.supabaseClient) {
@@ -628,16 +662,16 @@
         }
       }
 
-      showModalMsg(isEdit ? "Evento atualizado com sucesso!" : "Evento publicado com sucesso!", false);
+      showModalMsg(isEdit ? "Evento atualizado com sucesso!" : "Evento cultural publicado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'evento' } }));
 
       setTimeout(() => {
         fecharModalCadastro();
         const path = window.location.pathname.toLowerCase();
-        if (path.includes('/eventos/') || path.includes('/calendario/') || path.includes('/perfil/')) {
+        if (path.includes('/eventos/') || path.includes('/mapa/') || path.includes('/perfil/')) {
           window.location.reload();
         } else {
-          const isInSubdir = path.includes('/cepin/') || path.includes('/mapa/') || path.includes('/espacos/') || path.includes('/agentes/') || path.includes('/mulheres/');
+          const isInSubdir = path.includes('/cepin/') || path.includes('/agentes/') || path.includes('/espacos/') || path.includes('/mulheres/');
           window.location.href = isInSubdir ? '../eventos/index.html' : 'eventos/index.html';
         }
       }, 1100);
@@ -654,6 +688,7 @@
     const user = getLoggedUser();
     const btn = document.getElementById('btn-submit-agente');
     const isEdit = window._currentEditing && window._currentEditing.tipo === 'agente';
+    const isSignup = window._isSignupMode;
     setBtnLoading(btn, true);
 
     try {
@@ -666,6 +701,7 @@
         setBtnLoading(btn, false, isEdit ? 'Salvar Alterações' : 'Cadastrar Agente');
         return;
       }
+      
       const mulheres = document.getElementById('cad-agente-mulheres').checked;
       const bio = document.getElementById('cad-agente-bio').value.trim();
       const contato = document.getElementById('cad-agente-contato').value.trim();
@@ -673,7 +709,12 @@
       const fotoInput = document.getElementById('cad-agente-foto');
 
       const contatoFull = instagram ? contato + ' | Redes: ' + instagram : contato;
-      const contatoFinal = user ? contatoFull + ` | Email: ${user.email}` : contatoFull;
+      let contatoFinal = user ? contatoFull + ` | Email: ${user.email}` : contatoFull;
+
+      if (isSignup) {
+        const email = document.getElementById('cad-agente-email').value.trim();
+        contatoFinal = contatoFinal + ` | Email: ${email}`;
+      }
 
       const payload = {
         nome,
@@ -684,10 +725,30 @@
         lat: -23.3055,
         lng: -45.9658
       };
+      
+      if (isSignup) {
+        const email = document.getElementById('cad-agente-email').value.trim();
+        const senha = document.getElementById('cad-agente-senha').value;
+        if (!email || !senha) {
+          showModalMsg("Preencha o e-mail e senha de acesso.", true);
+          setBtnLoading(btn, false, 'Cadastrar Agente');
+          return;
+        }
+        if (window.processarCadastroComAgente) {
+          const success = await window.processarCadastroComAgente(email, senha, payload);
+          if (success) fecharModalCadastro();
+        }
+        setBtnLoading(btn, false, 'Cadastrar Agente');
+        return;
+      }
 
       if (user) {
         payload.user_id = user.id;
         payload.email_sujestao = user.email;
+      } else {
+        showModalMsg("Apenas usuários logados podem enviar.", true);
+        setBtnLoading(btn, false, 'Cadastrar Agente');
+        return;
       }
 
       if (fotoInput.files && fotoInput.files[0]) {
@@ -726,7 +787,6 @@
     }
   };
 
-  // Submit Espaço (Insert ou Update)
   window.submeterCadastroEspaco = async (e) => {
     e.preventDefault();
     const user = getLoggedUser();

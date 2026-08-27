@@ -137,7 +137,7 @@
         <button onclick="sbLogin()" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow shadow-sm transition-all flex justify-center items-center gap-2">
           Entrar
         </button>
-        <button onclick="sbSignup()" class="w-full py-3 bg-background border border-input text-foreground font-semibold rounded-md hover:border-primary hover:text-primary transition-all">
+        <button onclick="iniciarCadastroCompleto()" class="w-full py-3 bg-background border border-input text-foreground font-semibold rounded-md hover:border-primary hover:text-primary transition-all">
           Cadastro
         </button>
         <p id="sbError" class="text-sm text-red-500 text-center min-h-[20px]"></p>
@@ -760,7 +760,10 @@
             <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
               <span class="text-sm font-medium">${u.email}</span>
               <div class="flex gap-2">
-                <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
+                  <button onclick="verDadosAgentePendente('${u.id}')" class="px-2 py-1.5 bg-secondary text-secondary-foreground text-xs font-semibold rounded hover:bg-secondary/80 transition-colors" title="Ver informações do agente">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                  <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
                 <button onclick="deleteUser('${u.id}')" class="px-3 py-1.5 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
               </div>
             </div>
@@ -1191,8 +1194,17 @@
     };
 
     window.approveUser = async (id) => {
+      const { data: user } = await supabaseClient.from('perfis').select('*').eq('id', id).single();
+      if (!user) return;
       const { error } = await supabaseClient.from('perfis').update({ status_aprovacao: 'aprovado' }).eq('id', id);
-      if (!error) loadAdminData();
+      if (!error) {
+        if (user.dados_agente) {
+          const agData = user.dados_agente;
+          agData.user_id = user.id;
+          await supabaseClient.from('agentes').insert(agData);
+        }
+        loadAdminData();
+      }
       else alert('Erro ao aprovar usuário.');
     };
 
@@ -1244,6 +1256,125 @@
           localStorage.setItem('custom_session', JSON.stringify(user));
           window.location.reload();
         }
+      }
+    };
+
+    
+    window.iniciarCadastroCompleto = () => {
+      if (typeof abrirModalCadastro === 'function') {
+        abrirModalCadastro('agente', true);
+      } else {
+        alert("Erro ao carregar o formulário de cadastro.");
+      }
+    };
+
+        window.verDadosAgentePendente = async (id) => {
+      const { data: user } = await supabaseClient.from('perfis').select('*').eq('id', id).single();
+      if (user && user.dados_agente) {
+        if (typeof abrirModalCadastro === 'function') {
+          // Reset internal state so it doesn't think it's editing a real DB item
+          window._currentEditing = null;
+          abrirModalCadastro('agente', false);
+          
+          setTimeout(() => {
+            const data = user.dados_agente;
+            document.getElementById('cad-agente-nome').value = data.nome || '';
+            const savedArea = data.area || data.area_de_atuacao || data.categoria || 'Música';
+            const selectedAreas = savedArea.split(',').map(s => s.trim());
+            document.querySelectorAll('.cad-agente-area-cb').forEach(cb => {
+              cb.checked = selectedAreas.includes(cb.value);
+            });
+            document.getElementById('cad-agente-mulheres').checked = !!(data.projeto_mulheres || data.mulheres_na_musica);
+            document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
+            
+            // We combined email/phone/instagram into contato in the payload
+            document.getElementById('cad-agente-contato').value = data.contato || '';
+            document.getElementById('cad-agente-instagram').value = data.instagram || '';
+            
+            if (data.foto || data.imagem) {
+              const prev = document.getElementById('preview-cad-agente');
+              if (prev) {
+                prev.src = data.foto || data.imagem;
+                prev.classList.remove('hidden');
+              }
+            }
+            
+            const t = document.getElementById('modal-cadastro-title');
+            if (t) t.innerText = "Dados do Agente (Revisão)";
+            const sub = document.getElementById('modal-cadastro-subtitle');
+            if (sub) sub.innerText = "Visualizando dados enviados no cadastro.";
+            
+            const btn = document.getElementById('btn-submit-agente');
+            if (btn) btn.style.display = 'none';
+            
+            document.querySelectorAll('#form-cadastro-agente input, #form-cadastro-agente textarea').forEach(el => el.disabled = true);
+          }, 100);
+        } else {
+          alert("Erro ao carregar o formulário.");
+        }
+      } else {
+        alert("Este usuário não preencheu dados de agente no cadastro.");
+      }
+    };
+
+    window.processarCadastroComAgente = async (email, senha, agentePayload) => {
+      if (!window.supabaseClient) return false;
+      
+      let initialStatus = 'pendente';
+      try {
+        const { data: matchedAgents } = await supabaseClient
+          .from('agentes')
+          .select('id')
+          .ilike('email_sujestao', `%${email}%`);
+        if (matchedAgents && matchedAgents.length > 0) {
+          initialStatus = 'aprovado';
+        }
+      } catch (err) {
+        console.error('Erro ao verificar email do agente', err);
+      }
+
+      const bcrypt = window.bcrypt || window.dcodeIO.bcrypt;
+      const salt = bcrypt.genSaltSync(6);
+      const hash = bcrypt.hashSync(senha, salt);
+
+      const { data, error } = await supabaseClient.from('perfis').insert({ 
+        email: email, 
+        senha: hash, 
+        status_aprovacao: initialStatus,
+        dados_agente: agentePayload
+      }).select().single();
+      
+      if (error) {
+        alert("Erro ao criar conta. E-mail já existe ou inválido.");
+        return false;
+      } else {
+        if (initialStatus === 'aprovado') {
+          alert("Cadastro aprovado automaticamente! Seu e-mail foi reconhecido no sistema.");
+          if (agentePayload) {
+            agentePayload.user_id = data.id;
+            await supabaseClient.from('agentes').insert(agentePayload);
+          }
+        } else {
+          alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
+        }
+        if (initialStatus === 'pendente') {
+          try {
+            await fetch(`https://formsubmit.co/ajax/simone.lisboa@ifsp.edu.br`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({
+                _subject: "Aprovação Pendente no Mapeamento Cultural",
+                email_usuário: email,
+                mensagem: "Um novo usuário (" + email + ") se cadastrou preenchendo o formulário de agente e aguarda aprovação.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. Faça login com suas credenciais de administrador\n3. No 'Painel de Administração', encontre o usuário, clique no olho para ver os dados, e depois clique em 'Aprovar'."
+              })
+            });
+          } catch (err) {
+            console.error("Erro ao enviar email via FormSubmit:", err);
+          }
+        }
+        localStorage.setItem('custom_session', JSON.stringify(data));
+        window.location.reload();
+        return true;
       }
     };
 
