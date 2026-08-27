@@ -1207,11 +1207,19 @@
             const data = user.dados_agente;
             document.getElementById('cad-agente-nome').value = data.nome || '';
             const savedArea = data.area || data.area_de_atuacao || data.categoria || 'Música';
-            const selectedAreas = savedArea.split(',').map(s => s.trim());
-            document.querySelectorAll('.cad-agente-area-cb').forEach(cb => {
-              cb.checked = selectedAreas.includes(cb.value);
-            });
+            const selectedAreas = savedArea.split(',').map(s => s.trim().toLowerCase());
+              document.querySelectorAll('.cad-agente-area-cb').forEach(cb => {
+                const val = cb.value.trim().toLowerCase();
+                cb.checked = selectedAreas.includes(val) || selectedAreas.some(s => s === val || s.replace(/[^a-z]/g,'') === val.replace(/[^a-z]/g,''));
+              });
             document.getElementById('cad-agente-mulheres').checked = !!(data.projeto_mulheres || data.mulheres_na_musica);
+              
+              // Force check LGPD and Idade since they were required to submit the form
+              const lgpd = document.getElementById('cad-agente-lgpd');
+              if(lgpd) lgpd.checked = true;
+              const idade = document.getElementById('cad-agente-idade');
+              if(idade) idade.checked = true;
+
             document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
             
             // We combined email/phone/instagram into contato in the payload
@@ -1234,7 +1242,7 @@
             const btn = document.getElementById('btn-submit-agente');
             if (btn) btn.style.display = 'none';
             
-            document.querySelectorAll('#form-cadastro-agente input, #form-cadastro-agente textarea').forEach(el => el.disabled = true);
+            document.querySelectorAll('#form-cadastro-agente input, #form-cadastro-agente textarea').forEach(el => { el.style.pointerEvents = 'none'; el.classList.add('opacity-80'); el.readOnly = true; });
           }, 100);
         } else {
           alert("Erro ao carregar o formulário.");
