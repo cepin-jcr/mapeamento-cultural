@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -277,7 +277,7 @@
           agente = supaRes.data.find(a => 
             (paramId && String(a.id) === String(paramId)) ||
             (agenteSlug && slugify(a.nome) === slugify(agenteSlug)) ||
-            (agenteSlug && a.nome.toLowerCase() === agenteSlug.toLowerCase()) ||
+            (agenteSlug && String(a.nome || '').toLowerCase() === agenteSlug.toLowerCase()) ||
             (agenteSlug && String(a.id) === String(agenteSlug))
           );
         }
@@ -573,6 +573,7 @@
 
 </body>
 </html>
+
 
 
 
