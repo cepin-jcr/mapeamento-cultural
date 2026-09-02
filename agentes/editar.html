@@ -453,8 +453,41 @@
         }
       }
 
+            btn.innerText = 'Enviando Imagens (Pode demorar)...';
+
+      // 1. Função para converter o Base64 e enviar pro Storage
+      async function uploadToStorage(base64Str, folder) {
+        if (!base64Str || !base64Str.startsWith('data:image')) return base64Str; // Já é URL
+        try {
+          const res = await fetch(base64Str);
+          const blob = await res.blob();
+          const ext = blob.type.split('/')[1] || 'webp';
+          const fileName = `${folder}/${Date.now()}_${Math.floor(Math.random()*1000)}.${ext}`;
+          
+          const { error } = await window.supabaseClient.storage.from('fotos').upload(fileName, blob, { upsert: true, contentType: blob.type });
+          if (error) throw error;
+          
+          return window.supabaseClient.storage.from('fotos').getPublicUrl(fileName).data.publicUrl;
+        } catch (e) {
+          console.error('Erro no upload da imagem:', e);
+          return base64Str; // Em caso de falha, tenta salvar como base64 mesmo
+        }
+      }
+
+      // 2. Faz o upload da Foto e Galeria antes de ir pro banco
+      const folderName = agenteId ? `agentes/${agenteId}` : `agentes/novo_${Date.now()}`;
+      const finalFoto = window.currentFotoData ? await uploadToStorage(window.currentFotoData, folderName) : null;
+      
+      const finalGaleria = [];
+      if (window.currentGaleria) {
+        for (const img of window.currentGaleria) {
+          finalGaleria.push(await uploadToStorage(img, folderName));
+        }
+      }
+
       btn.innerText = 'Salvando no Banco...';
 
+      // 3. Monta o pacote de dados limpo para o Supabase
       const updates = {
         nome: document.getElementById('edit-nome').value,
         area: document.getElementById('edit-area').value,
@@ -462,9 +495,10 @@
         bio: document.getElementById('edit-bio').value,
         contato: document.getElementById('edit-contato').value,
         endereco: enderecoDigitado,
-        foto: window.currentFotoData || null,
-        galeria: window.currentGaleria || [],
+        foto: finalFoto,
+        galeria: finalGaleria,
         videos: videoLines
+      };
       };
 
       if (newLat !== undefined && newLng !== undefined) {
