@@ -151,20 +151,37 @@
 
   <!-- Recovery Modal -->
   <div id="recovery-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-    <div class="bg-card border border-border p-8 rounded-xl shadow-xl max-w-sm w-full transform scale-95 transition-transform duration-300">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-foreground">Recuperação de Conta</h3>
-        <button onclick="hideRecoveryModal()" class="text-muted-foreground hover:text-foreground">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-      </div>
-      <p class="text-sm text-muted-foreground mb-6">Para recuperar seu acesso, entre em contato com a administradora Simone através do WhatsApp.</p>
-      <a id="recovery-whatsapp-link" href="#" target="_blank" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow transition-all flex justify-center items-center gap-2 shadow-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        Falar no WhatsApp
-      </a>
+  <div class="bg-card border border-border p-8 rounded-xl shadow-xl max-w-sm w-full transform scale-95 transition-transform duration-300">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold text-foreground">Recuperação de Senha</h3>
+      <button onclick="hideRecoveryModal()" class="text-muted-foreground hover:text-foreground">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
     </div>
+    
+    <!-- Passo 1: Solicitar Código -->
+    <div id="recovery-step-1">
+      <p class="text-sm text-muted-foreground mb-4">Digite seu e-mail para receber o código de recuperação de acesso.</p>
+      <input type="email" id="recEmail" placeholder="seu@email.com" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary text-sm mb-4">
+      <button onclick="solicitarCodigo()" id="btn-request-code" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow shadow-sm transition-all">
+        Enviar Código
+      </button>
+    </div>
+
+    <!-- Passo 2: Digitar Código e Nova Senha -->
+    <div id="recovery-step-2" class="hidden">
+      <p class="text-sm text-muted-foreground mb-4">Digite o código recebido no e-mail e sua nova senha.</p>
+      <input type="text" id="recCode" placeholder="Código de 6 dígitos" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary text-sm mb-3">
+      <input type="password" id="recNewPassword" placeholder="Sua nova senha" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary text-sm mb-4">
+      <button onclick="confirmarRedefinicao()" id="btn-reset-pass" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow shadow-sm transition-all">
+        Alterar Senha
+      </button>
+    </div>
+
+    <p id="recError" class="text-sm text-red-500 text-center mt-3 min-h-[20px]"></p>
+    <p id="recSuccess" class="text-sm text-green-500 text-center mt-3 min-h-[20px]"></p>
   </div>
+</div>
 
   <section id="profile-section" class="max-w-4xl mx-auto px-6 pt-32 pb-12 hidden">
     <div class="bg-card border border-border p-8 rounded-xl shadow-sm">
@@ -525,19 +542,102 @@
   <script>
     const navbar = document.getElementById('navbar');
 
-    function showRecoveryModal(type) {
-      const modal = document.getElementById('recovery-modal');
-      const link = document.getElementById('recovery-whatsapp-link');
-      const text = type === 'senha' 
-        ? "Olá Simone, esqueci minha senha no Mapeamento Cultural. Pode me ajudar a recuperar?" 
-        : "Olá Simone, esqueci o e-mail da minha conta no Mapeamento Cultural. Pode me ajudar a recuperar?";
-      link.href = `https://wa.me/5512997678111?text=${encodeURIComponent(text)}`;
-      modal.classList.remove('hidden');
-      setTimeout(() => {
-        modal.classList.remove('opacity-0');
-        modal.querySelector('.bg-card').classList.remove('scale-95');
-      }, 10);
-    }
+    // Substitua a função showRecoveryModal antiga por esta
+window.showRecoveryModal = function(type) {
+  if (type === 'email') {
+    // Se a pessoa esqueceu qual é o e-mail dela, não tem como enviar um e-mail de código!
+    // Mantemos a opção do Whatsapp apenas para recuperar e-mail perdido.
+    const link = document.createElement('a');
+    link.href = `https://wa.me/5512997678111?text=${encodeURIComponent("Olá Simone, esqueci o e-mail da minha conta no Mapeamento Cultural. Pode me ajudar a recuperar?")}`;
+    link.target = '_blank';
+    link.click();
+    return;
+  }
+
+  // Se foi 'senha', abre o fluxo de email que adicionamos no HTML
+  document.getElementById('recovery-step-1').classList.remove('hidden');
+  document.getElementById('recovery-step-2').classList.add('hidden');
+  document.getElementById('recEmail').value = '';
+  if (document.getElementById('recCode')) document.getElementById('recCode').value = '';
+  if (document.getElementById('recNewPassword')) document.getElementById('recNewPassword').value = '';
+  document.getElementById('recError').innerText = '';
+  document.getElementById('recSuccess').innerText = '';
+  
+  const modal = document.getElementById('recovery-modal');
+  modal.classList.remove('hidden');
+  setTimeout(() => {
+    modal.classList.remove('opacity-0');
+    modal.querySelector('.bg-card').classList.remove('scale-95');
+  }, 10);
+};
+
+// Envia o código para o banco que dispara o EmailJS internamente
+window.solicitarCodigo = async () => {
+  const email = document.getElementById('recEmail').value.trim();
+  if (!email) {
+    document.getElementById('recError').innerText = 'Por favor, digite seu e-mail.';
+    return;
+  }
+  
+  document.getElementById('btn-request-code').innerText = 'Enviando...';
+  document.getElementById('recError').innerText = '';
+
+  const { data, error } = await window.supabaseClient.rpc('request_password_reset', { p_email: email });
+  
+  document.getElementById('btn-request-code').innerText = 'Enviar Código';
+
+  if (error) {
+    document.getElementById('recError').innerText = 'Erro de conexão ao solicitar código.';
+    console.error(error);
+  } else if (data === true) {
+    document.getElementById('recovery-step-1').classList.add('hidden');
+    document.getElementById('recovery-step-2').classList.remove('hidden');
+    document.getElementById('recSuccess').innerText = 'Código enviado para seu e-mail!';
+    setTimeout(() => document.getElementById('recSuccess').innerText = '', 5000);
+  } else {
+    document.getElementById('recError').innerText = 'Este e-mail não foi encontrado no sistema.';
+  }
+};
+
+// Verifica o código digitado e altera a senha
+window.confirmarRedefinicao = async () => {
+  const email = document.getElementById('recEmail').value.trim();
+  const code = document.getElementById('recCode').value.trim();
+  const newPassword = document.getElementById('recNewPassword').value;
+
+  if (!code || !newPassword) {
+    document.getElementById('recError').innerText = 'Preencha o código e a nova senha.';
+    return;
+  }
+
+  // Gera o hash de proteção da nova senha da mesma forma que o cadastro faz
+  const bcrypt = window.bcrypt || window.dcodeIO.bcrypt;
+  const salt = bcrypt.genSaltSync(6);
+  const hash = bcrypt.hashSync(newPassword, salt);
+
+  document.getElementById('btn-reset-pass').innerText = 'Alterando...';
+  document.getElementById('recError').innerText = '';
+
+  const { data, error } = await window.supabaseClient.rpc('verify_and_reset_password', { 
+    p_email: email, 
+    p_code: code, 
+    p_new_password_hash: hash 
+  });
+
+  document.getElementById('btn-reset-pass').innerText = 'Alterar Senha';
+
+  if (error || !data) {
+    document.getElementById('recError').innerText = 'Código inválido ou expirado.';
+  } else {
+    document.getElementById('recovery-step-2').classList.add('hidden');
+    document.getElementById('recSuccess').innerText = 'Senha alterada com sucesso! Você já pode entrar.';
+    
+    // Oculta modal em 3 segundos para a pessoa realizar o login com a senha nova
+    setTimeout(() => {
+      if(typeof hideRecoveryModal === 'function') hideRecoveryModal();
+    }, 3000);
+  }
+};
 
     function hideRecoveryModal() {
       const modal = document.getElementById('recovery-modal');
