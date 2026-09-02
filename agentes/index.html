@@ -450,7 +450,7 @@
       }
 
       if (window.supabaseClient) {
-        const { data, error } = await supabaseClient.from('agentes').select('*').order('nome', {ascending: true});
+        const { data, error } = await supabaseClient.from('agentes').select('id, nome, area, foto, destaque, projeto_mulheres, mulheres_na_musica, endereco, lat, lng').order('nome', {ascending: true});
         if (!error && data) {
           if (Array.isArray(data)) {
             todosAgentes = data;
