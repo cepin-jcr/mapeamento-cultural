@@ -206,7 +206,7 @@
       const agente = eventos.find(a => 
         (paramId && String(a.id) === String(paramId)) ||
         (agenteSlug && slugify(a.nome) === slugify(agenteSlug)) ||
-        (agenteSlug && a.nome.toLowerCase() === agenteSlug.toLowerCase()) ||
+        (agenteSlug && String(a.nome || '').toLowerCase() === agenteSlug.toLowerCase()) ||
         (agenteSlug && String(a.id) === String(agenteSlug))
       );
       if (!agente) {
