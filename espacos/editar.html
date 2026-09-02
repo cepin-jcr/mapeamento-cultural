@@ -279,31 +279,6 @@
         const preview = document.getElementById('preview-foto');
         preview.src = base64;
         preview.classList.remove('hidden');
-      }
-    });
-
-
-
-    document.getElementById('agent-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('btn-save');
-      btn.innerText = 'Salvando... (Aguarde)';
-      btn.disabled = true;
-
-      const videoLines = document.getElementById('edit-videos').value.split('\n').map(v => v.trim()).filter(v => v.length > 0);
-
-      const enderecoDigitado = document.getElementById('edit-endereco').value.trim();
-      let newLat = undefined;
-      let newLng = undefined;
-
-      if (enderecoDigitado && enderecoDigitado !== window.originalEndereco) {
-        btn.innerText = 'Buscando Coordenadas...';
-        try {
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoDigitado)}`);
-          const data = await res.json();
-          if (data && data.length > 0) {
-            newLat = parseFloat(data[0].lat);
-            newLng = parseFloat(data[0].lon);
           } else {
             console.warn('Geocoding não encontrou resultados para:', enderecoDigitado);
           }
