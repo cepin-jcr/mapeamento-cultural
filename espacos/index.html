@@ -332,7 +332,7 @@
         const card = `
           <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
             <div class="h-48 overflow-hidden bg-muted relative">
-              <img src="${fotoUrl}" alt="${esp.nome || 'Espaço'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="${fotoUrl}" alt="${esp.nome || 'Espaço'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
               <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2.5 py-1 rounded shadow-sm">${esp.categoria || 'Espaço'}</div>
               <div class="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold uppercase px-2.5 py-1 rounded shadow-sm">${esp.tipo || 'Público'}</div>
             </div>
