@@ -134,13 +134,27 @@
                   <label class="text-xs font-bold uppercase tracking-wider text-foreground">Data e Horário *</label>
                   <label id="label-cad-evento-anual" class="inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-muted/60 hover:bg-muted px-2.5 py-1 rounded-lg border border-border text-muted-foreground hover:text-foreground transition-all" title="Assinale se este evento se repete todo ano">
                     <input type="checkbox" id="cad-evento-anual" onchange="window.toggleEventoAnual(this.checked)" class="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5 cursor-pointer">
-                    <span class="font-semibold text-[11px] flex items-center gap-1">🔄 Repete anualmente</span>
+                    <span class="font-semibold text-[11px] flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+                      Repete anualmente
+                    </span>
                   </label>
                 </div>
                 <input type="text" id="cad-evento-data-hora" required placeholder="Ex: 20 de Outubro às 19:00" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
                 <p id="hint-evento-anual" class="text-[11px] text-primary font-medium hidden">✓ Evento anual recorrente: não é necessário especificar o ano.</p>
               </div>
+            </div>
 
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
+              <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Organizado por (Opcional)</label>
+              <input type="text" id="cad-evento-organizador" placeholder="Ex: Coletivo Cultural, IFSP, Secretaria de Cultura..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              <p class="text-[11px] text-muted-foreground">Nome da entidade, artista ou coletivo que aparecerá no card do evento.</p>
+            </div>
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
               <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
@@ -363,8 +377,24 @@
       }
     });
 
-    const msgBox = document.getElementById('modal-cadastro-msg');
+        const msgBox = document.getElementById('modal-cadastro-msg');
     if (msgBox) msgBox.classList.add('hidden');
+  };
+
+  window.toggleEventoAnual = (checked) => {
+    const lbl = document.getElementById('label-cad-evento-anual');
+    const hint = document.getElementById('hint-evento-anual');
+    if (lbl) {
+      if (checked) {
+        lbl.className = "inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-primary/10 px-2.5 py-1 rounded-lg border border-primary/30 text-primary transition-all";
+      } else {
+        lbl.className = "inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-muted/60 hover:bg-muted px-2.5 py-1 rounded-lg border border-border text-muted-foreground hover:text-foreground transition-all";
+      }
+    }
+    if (hint) {
+      if (checked) hint.classList.remove('hidden');
+      else hint.classList.add('hidden');
+    }
   };
 
   // Abre modal para NOVO cadastro (focado exclusivamente no tipo solicitado)
@@ -398,10 +428,21 @@
     const tabsBar = document.getElementById('modal-cadastro-tabs');
     if (tabsBar) tabsBar.classList.add('hidden');
 
-    // Reseta o formulário
+        // Reseta o formulário
     const form = document.getElementById(`form-cadastro-${tipo}`);
     if (form) form.reset();
     const preview = document.getElementById(`preview-cad-${tipo}`);
+    if (tipo === 'evento') {
+      const cbAnual = document.getElementById('cad-evento-anual');
+      if (cbAnual) {
+        cbAnual.checked = false;
+        window.toggleEventoAnual(false);
+      }
+      const orgInput = document.getElementById('cad-evento-organizador');
+      if (orgInput) {
+        orgInput.value = (user && user.nome) ? user.nome : '';
+      }
+    }
     if (tipo === 'agente') {
       document.querySelectorAll('.cad-agente-area-cb').forEach(cb => cb.checked = false);
     }
@@ -492,17 +533,26 @@
         const { data, error } = await supabaseClient.from(cfg.table).select('*').eq('id', id).single();
         if (error) throw error;
         if (data) {
-          if (tipo === 'evento') {
-            document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
-            document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
-            document.getElementById('cad-evento-data-hora').value = data.data_hora || data.data || '';
-            document.getElementById('cad-evento-local').value = data.local || '';
-            document.getElementById('cad-evento-descricao').value = data.descricao || '';
-            document.getElementById('cad-evento-link').value = data.link || '';
-            if (data.foto || data.imagem) {
-              const prev = document.getElementById('preview-cad-evento');
-              prev.src = data.foto || data.imagem;
-              prev.classList.remove('hidden');
+            if (tipo === 'evento') {
+              document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
+              document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
+              const rawDataHora = data.data_hora || data.data || '';
+              const isAnual = rawDataHora.toLowerCase().includes('anual');
+              const cbAnual = document.getElementById('cad-evento-anual');
+              if (cbAnual) {
+                cbAnual.checked = isAnual;
+                window.toggleEventoAnual(isAnual);
+            }
+              document.getElementById('cad-evento-data-hora').value = rawDataHora.replace(/\s*\(anual\)/i, '').trim();
+              document.getElementById('cad-evento-local').value = data.local || '';
+              const orgInput = document.getElementById('cad-evento-organizador');
+              if (orgInput) orgInput.value = data.organizador || '';
+              document.getElementById('cad-evento-descricao').value = data.descricao || '';
+              document.getElementById('cad-evento-link').value = data.link || '';
+              if (data.foto || data.imagem) {
+                const prev = document.getElementById('preview-cad-evento');
+                prev.src = data.foto || data.imagem;
+                prev.classList.remove('hidden');
             }
           } else if (tipo === 'agente') {
             document.getElementById('cad-agente-nome').value = data.nome || '';
@@ -623,25 +673,31 @@
     const isEdit = window._currentEditing && window._currentEditing.tipo === 'evento';
     setBtnLoading(btn, true);
 
-    try {
+        try {
       const nome = document.getElementById('cad-evento-nome').value.trim();
       const categoria = document.getElementById('cad-evento-categoria').value.trim();
       const data_hora_input = document.getElementById('cad-evento-data-hora').value.trim();
       const isAnual = document.getElementById('cad-evento-anual')?.checked;
-      let data_hora = data_hora_input;
-      if (isAnual) {
-        data_hora = data_hora.replace(/,?\s*\b20\d{2}\b/g, '').trim();
-        if (!data_hora.toLowerCase().includes('anual')) data_hora += ' (Anual)';
-      } else {
-        data_hora = data_hora.replace(/\s*\(anual\)/i, '').trim();
-      }
       const local = document.getElementById('cad-evento-local').value.trim();
+      const organizadorInput = document.getElementById('cad-evento-organizador')?.value.trim();
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
       const link = document.getElementById('cad-evento-link').value.trim();
       const fotoInput = document.getElementById('cad-evento-foto');
 
-      const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
-      const descricaoFinal = descricaoFull;
+      let data_hora = data_hora_input;
+      if (isAnual) {
+        data_hora = data_hora.replace(/,?\s*\b20\d{2}\b/g, '').trim();
+        if (!data_hora.toLowerCase().includes('anual')) {
+          data_hora = `${data_hora} (Anual)`;
+        }
+      } else {
+        data_hora = data_hora.replace(/\s*\(anual\)/i, '').trim();
+      }
+
+      let descricaoFinal = link ? descricao + '\nLink: ' + link : descricao;
+      if (user && user.email && !descricaoFinal.toLowerCase().includes(user.email.toLowerCase())) {
+        descricaoFinal += `\nCadastrado por: ${user.email}`;
+      }
 
       if (!user) {
         showModalMsg("Apenas usuários logados podem enviar.", true);
@@ -649,7 +705,7 @@
         return;
       }
 
-      const organizadorFinal = user.email ? (user.nome ? `${user.nome} (${user.email})` : user.email) : (user.nome || 'Não informado');
+      const organizadorFinal = organizadorInput || (user.nome ? user.nome : (user.email || 'Não informado'));
 
       const payload = {
         nome,
