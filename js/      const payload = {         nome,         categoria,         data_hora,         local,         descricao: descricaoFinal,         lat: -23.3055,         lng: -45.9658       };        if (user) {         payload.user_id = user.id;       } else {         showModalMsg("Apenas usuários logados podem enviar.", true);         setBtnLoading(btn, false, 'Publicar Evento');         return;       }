@@ -629,22 +629,29 @@
       const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
       const descricaoFinal = descricaoFull;
 
-      const payload = {
-        nome,
-        categoria,
-        data_hora,
-        local,
-        descricao: descricaoFinal,
-        lat: -23.3055,
-        lng: -45.9658
-      };
-
-      if (user) {
-        payload.user_id = user.id;
-      } else {
+      if (!user) {
         showModalMsg("Apenas usuários logados podem enviar.", true);
         setBtnLoading(btn, false, 'Publicar Evento');
         return;
+      }
+
+      const organizadorFinal = user.email ? (user.nome ? `${user.nome} (${user.email})` : user.email) : (user.nome || 'Não informado');
+
+      const payload = {
+        nome,
+        titulo: nome,
+        categoria,
+        data_hora,
+        data: data_hora,
+        horario: data_hora,
+        local,
+        descricao: descricaoFinal,
+        organizador: organizadorFinal
+      };
+
+      const isUUID = user.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(user.id));
+      if (isUUID) {
+        payload.user_id = user.id;
       }
 
       if (fotoInput.files && fotoInput.files[0]) {
