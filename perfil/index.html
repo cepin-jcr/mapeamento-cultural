@@ -1513,9 +1513,10 @@ window.confirmarRedefinicao = async () => {
       try {
         // 1. Meus Eventos
         const { data: eventos } = await supabaseClient.from('eventos').select('*');
-        const myEventos = (eventos || []).filter(e => 
+                const myEventos = (eventos || []).filter(e => 
           (e.user_id && String(e.user_id) === String(sessionUser.id)) ||
-          (e.organizador && sessionUser.email && e.organizador.toLowerCase().includes(sessionUser.email.toLowerCase()))
+          (e.organizador && sessionUser.email && e.organizador.toLowerCase().includes(sessionUser.email.toLowerCase())) ||
+          (e.descricao && sessionUser.email && e.descricao.toLowerCase().includes(sessionUser.email.toLowerCase()))
         );
         
         const countEventosEl = document.getElementById('user-count-eventos');
