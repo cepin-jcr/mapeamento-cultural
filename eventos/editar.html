@@ -103,12 +103,13 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-2">
             <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Data e Hora</label>
-            <label class="inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-muted/60 px-2.5 py-1 rounded-md border border-border text-foreground hover:bg-muted">
-              <input type="checkbox" id="edit-anual" class="rounded text-primary focus:ring-primary h-3.5 w-3.5 cursor-pointer">
-              <span class="font-semibold text-xs flex items-center gap-1">🔄 Repete anualmente</span>
-            </label>
+            <select id="edit-recorrencia" class="text-xs bg-muted/60 hover:bg-muted border border-border rounded-md px-2.5 py-1 text-foreground font-medium focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer">
+              <option value="padrao">📅 Data única</option>
+              <option value="anual">🔄 Repete anualmente</option>
+              <option value="temporada">🎭 Por temporada</option>
+            </select>
           </div>
-          <input type="text" id="edit-data_hora" placeholder="Ex: 15 Julho, 14:00 - 18:00" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <input type="text" id="edit-data_hora" placeholder="Ex: 15 Julho, 14:00 - 18:00 ou Todo Sábado às 20h" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
 
         <div class="space-y-2">
@@ -232,8 +233,14 @@
       document.getElementById('edit-nome').value = agente.nome || '';
       const rawDataHora = agente.data_hora || '';
       const isAnual = rawDataHora.toLowerCase().includes('anual');
-      if (document.getElementById('edit-anual')) document.getElementById('edit-anual').checked = isAnual;
-      if(document.getElementById('edit-data_hora')) document.getElementById('edit-data_hora').value = rawDataHora.replace(/\s*\(anual\)/i, '').trim();
+      const isTemporada = rawDataHora.toLowerCase().includes('temporada');
+      const recSelect = document.getElementById('edit-recorrencia');
+      if (recSelect) {
+        if (isAnual) recSelect.value = 'anual';
+        else if (isTemporada) recSelect.value = 'temporada';
+        else recSelect.value = 'padrao';
+      }
+      if(document.getElementById('edit-data_hora')) document.getElementById('edit-data_hora').value = rawDataHora.replace(/\s*\((anual|temporada)\)/gi, '').trim();
       if(document.getElementById('edit-categoria')) document.getElementById('edit-categoria').value = agente.categoria || '';
       if(document.getElementById('edit-descricao')) document.getElementById('edit-descricao').value = agente.descricao || '';
       if(document.getElementById('edit-local')) document.getElementById('edit-local').value = agente.local || '';
@@ -293,11 +300,13 @@
       btn.disabled = true;
 
       let dataHoraVal = document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value.trim() : '';
-      if (document.getElementById('edit-anual')?.checked) {
+      const recTipo = document.getElementById('edit-recorrencia')?.value || 'padrao';
+      dataHoraVal = dataHoraVal.replace(/\s*\((anual|temporada)\)/gi, '').trim();
+      if (recTipo === 'anual') {
         dataHoraVal = dataHoraVal.replace(/,?\s*\b20\d{2}\b/g, '').trim();
-        if (!dataHoraVal.toLowerCase().includes('anual')) dataHoraVal += ' (Anual)';
-      } else {
-        dataHoraVal = dataHoraVal.replace(/\s*\(anual\)/i, '').trim();
+        dataHoraVal += ' (Anual)';
+      } else if (recTipo === 'temporada') {
+        dataHoraVal += ' (Temporada)';
       }
 
       const updates = {
