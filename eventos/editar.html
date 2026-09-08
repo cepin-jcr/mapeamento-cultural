@@ -101,10 +101,15 @@
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Data e Hora</label>
+          <div class="flex items-center justify-between gap-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Data e Hora</label>
+            <label class="inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-muted/60 px-2.5 py-1 rounded-md border border-border text-foreground hover:bg-muted">
+              <input type="checkbox" id="edit-anual" class="rounded text-primary focus:ring-primary h-3.5 w-3.5 cursor-pointer">
+              <span class="font-semibold text-xs flex items-center gap-1">🔄 Repete anualmente</span>
+            </label>
+          </div>
           <input type="text" id="edit-data_hora" placeholder="Ex: 15 Julho, 14:00 - 18:00" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
-
         <div class="space-y-2">
           <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Categoria</label>
           <input type="text" id="edit-categoria" placeholder="Ex: Música, Teatro, etc." required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
@@ -218,7 +223,10 @@
       agenteId = agente.id;
 
       document.getElementById('edit-nome').value = agente.nome || '';
-      if(document.getElementById('edit-data_hora')) document.getElementById('edit-data_hora').value = agente.data_hora || '';
+      const rawDataHora = agente.data_hora || '';
+      const isAnual = rawDataHora.toLowerCase().includes('anual');
+      if (document.getElementById('edit-anual')) document.getElementById('edit-anual').checked = isAnual;
+      if(document.getElementById('edit-data_hora')) document.getElementById('edit-data_hora').value = rawDataHora.replace(/\s*\(anual\)/i, '').trim();
       if(document.getElementById('edit-categoria')) document.getElementById('edit-categoria').value = agente.categoria || '';
       if(document.getElementById('edit-descricao')) document.getElementById('edit-descricao').value = agente.descricao || '';
       if(document.getElementById('edit-local')) document.getElementById('edit-local').value = agente.local || '';
@@ -281,9 +289,19 @@
       
       btn.innerText = 'Salvando... (Aguarde)';
 
+      let dataHoraVal = document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value.trim() : '';
+      if (document.getElementById('edit-anual')?.checked) {
+        dataHoraVal = dataHoraVal.replace(/,?\s*\b20\d{2}\b/g, '').trim();
+        if (!dataHoraVal.toLowerCase().includes('anual')) dataHoraVal += ' (Anual)';
+      } else {
+        dataHoraVal = dataHoraVal.replace(/\s*\(anual\)/i, '').trim();
+      }
+
       const updates = {
         nome: document.getElementById('edit-nome').value,
-        data_hora: document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value : '',
+        data_hora: dataHoraVal,
+        data: dataHoraVal,
+        horario: dataHoraVal,
         categoria: document.getElementById('edit-categoria') ? document.getElementById('edit-categoria').value : '',
         descricao: document.getElementById('edit-descricao') ? document.getElementById('edit-descricao').value : '',
         local: document.getElementById('edit-local') ? document.getElementById('edit-local').value : '',
