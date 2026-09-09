@@ -299,7 +299,6 @@
               <span>Agente territorial de cultura</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-               </button>
           </div>
         </div>
 
@@ -318,8 +317,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
-    <!-- Footer Placeholder -->
+  <!-- Footer Placeholder -->
   <div id="footer-placeholder"></div>
 
   <!-- Shared JS Library & Components -->
@@ -361,8 +359,6 @@
 
   <script>
     let isApiOnline = false;
-
-    const MOCK_AGENTES = [];
     let todosAgentes = [];
     let areaAtiva = 'todos';
 
@@ -438,9 +434,14 @@
       else localStorage.removeItem('cultural_api_url');
       
       fecharConfiguradorAPI();
-      APIManager.checkStatus().then(connected => {
+      APIManager.checkStatus().then(() => {
         window.location.reload();
       });
+    }
+
+    function extrairBio(ag) {
+      const possivelBio = ag.sobre || ag.biografia || ag.bio || ag.descricao || ag.apresentacao || ag.linguagens || '';
+      return possivelBio.trim();
     }
 
     async function carregarAgentes() {
@@ -451,13 +452,24 @@
       }
 
       if (window.supabaseClient) {
-        const { data, error } = await supabaseClient.from('agentes').select('id, nome, area, foto, destaque, projeto_mulheres, mulheres_na_musica, endereco, lat, lng').order('nome', {ascending: true});
+        // Seleciona todas as colunas para garantir que 'sobre', 'biografia' ou 'bio' estejam presentes
+        const { data, error } = await supabaseClient.from('agentes').select('*').order('nome', {ascending: true});
         if (!error && data) {
           if (Array.isArray(data)) {
-            todosAgentes = data;
+            todosAgentes = data.map(item => ({
+              ...item,
+              bio: extrairBio(item)
+            }));
           } else if (typeof data === 'object') {
             todosAgentes = Object.keys(data).map(key => {
-              return { id: key, ...data[key], nome: data[key].nome_original || data[key].nome, bio: data[key].linguagens || data[key].bio, area: data[key].linguagens || data[key].area };
+              const item = data[key];
+              return { 
+                id: key, 
+                ...item, 
+                nome: item.nome_original || item.nome, 
+                bio: extrairBio(item), 
+                area: item.linguagens || item.area 
+              };
             });
           } else {
             todosAgentes = [];
@@ -470,6 +482,7 @@
       }
       renderAgentes(todosAgentes);
     }
+
     function renderAgentes(agentes) {
       const grid = document.getElementById('agentsGrid');
       grid.innerHTML = '';
@@ -485,7 +498,7 @@
 
       agentes.forEach(ag => {
         let badgeMulheres = '';
-        if (ag.projeto_mulheres) {
+        if (ag.projeto_mulheres || ag.mulheres_na_musica) {
           badgeMulheres = `
             <div class="absolute top-3 right-3 bg-mulheres text-white text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md shadow-sm border border-white/20 flex items-center gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
@@ -494,6 +507,7 @@
         }
         
         const slug = slugify(ag.nome || 'Agente');
+        const bioExibicao = ag.bio || extrairBio(ag) || 'Nenhuma biografia informada.';
 
         const card = `
           <div class="group bg-card border border-border rounded-xl p-5 shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full relative">
@@ -509,7 +523,7 @@
                 ${ag.area || 'Diversos'}
               </span>
               <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3 break-words w-full mb-4">
-                ${ag.bio || 'Nenhuma biografia informada.'}
+                ${bioExibicao}
               </p>
             </div>
             <a href="agente.html?slug=${encodeURIComponent(slug)}&id=${ag.id}" class="mt-auto w-full py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-sm rounded-lg transition-all text-center block shadow-sm">
@@ -619,7 +633,7 @@
       const q = normalizeStr(rawQ);
       const filtrados = todosAgentes.filter(ag => {
         const nome = normalizeStr(ag.nome);
-        const bio = normalizeStr(ag.bio || ag.biografia || ag.linguagens);
+        const bio = normalizeStr(ag.bio || extrairBio(ag));
         const area = normalizeStr(ag.area || ag.area_de_atuacao || ag.categoria || ag.linguagens);
 
         const matchBusca = !q || nome.includes(q) || bio.includes(q) || area.includes(q);
@@ -655,9 +669,6 @@
       carregarAgentes();
     });
   </script>
-
-  
-
 
   <!-- Bottom Navigation Mobile -->
   <nav id="bottom-nav" class="fixed bottom-0 left-0 w-full bg-background/95 backdrop-blur-md border-t border-border z-[90] flex md:hidden overflow-x-auto overflow-y-hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)] custom-scrollbar hide-scroll-indicator">
@@ -717,7 +728,3 @@
 
 </body>
 </html>
-
-
-
-
