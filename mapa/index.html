@@ -123,15 +123,15 @@
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
       cursor: pointer;
     }
-    .custom-brand-marker svg path {
-      fill: var(--marker-color, hsl(var(--primary)));
-      transition: fill 0.3s ease;
-    }
-    .custom-brand-marker.active-marker .marker-wrapper {
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
-      transform: scale(1.15) translateY(-3px);
-    }
-    .custom-brand-marker.active-marker svg path {
+      .custom-brand-marker svg > path:first-child {
+        fill: var(--marker-color, hsl(var(--primary)));
+        transition: fill 0.3s ease;
+      }
+      .custom-brand-marker.active-marker .marker-wrapper {
+        filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+        transform: scale(1.15) translateY(-3px);
+      }
+      .custom-brand-marker.active-marker svg > path:first-child {
       fill: #E31C23 !important; /* Bolinha do IFSP */
     }
   </style>
@@ -354,17 +354,28 @@
       }).addTo(map);
 
       // Ícones coloridos
-      const createBrandIcon = (color = 'hsl(var(--primary))', isHighlighted = false) => {
+      const createBrandIcon = (color = 'hsl(var(--primary))', isHighlighted = false, iconType = 'espaco') => {
         const dropShadow = isHighlighted ? 'drop-shadow(0 4px 10px rgba(0,0,0,0.5))' : 'drop-shadow(0 3px 6px rgba(0,0,0,0.35))';
         const transform = isHighlighted ? 'transform: scale(1.15);' : '';
+        const strokeAttr = (color === '#ffffff' || color === '#f8fafc') ? 'stroke="#94a3b8" stroke-width="1.5"' : '';
+        
+        let innerSvg = '<circle cx="14" cy="14" r="5.5" fill="#FFFFFF"/>';
+        if (iconType === 'agente') {
+            innerSvg = '<path d="M14 14.5c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm0 1.5c-2.33 0-7 1.17-7 3.5V20h14v-0.5c0-2.33-4.67-3.5-7-3.5z" fill="#FFFFFF"/>';
+        }
+        if (color === '#ffffff' || color === '#f8fafc') {
+            // Se o fundo for branco, pintar o ícone interno de escuro para dar contraste
+            innerSvg = innerSvg.replace('fill="#FFFFFF"', 'fill="#334155"');
+        }
+
         return L.divIcon({
           className: 'custom-brand-marker',
           html: ` 
 
             <div class="marker-wrapper" style="--marker-color: ${color};">
               <svg width="28" height="38" viewBox="0 0 28 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 0C6.268 0 0 6.268 0 14C0 24.5 14 38 14 38C14 38 28 24.5 28 14C28 6.268 21.732 0 14 0Z"/>
-                <circle cx="14" cy="14" r="5.5" fill="#FFFFFF"/>
+                <path d="M14 0C6.268 0 0 6.268 0 14C0 24.5 14 38 14 38C14 38 28 24.5 28 14C28 6.268 21.732 0 14 0Z" ${strokeAttr}/>
+                ${innerSvg}
               </svg>
             </div>
           `,
@@ -430,28 +441,45 @@
       const getCategoryColor = (categoria) => {
         if (!categoria) return 'hsl(var(--primary))';
         const cat = categoria.toLowerCase().trim();
-        if (cat.includes('museu')) return '#eab308'; // amarelo
-        if (cat.includes('teatro')) return '#a855f7'; // roxo
-        if (cat.includes('centro cultural')) return '#14b8a6'; // verde agua
-        if (cat.includes('biblioteca')) return '#f97316'; // laranja
-        if (cat.includes('galeria de arte')) return '#3b82f6'; // azul
-        if (cat.includes('ateliê') || cat.includes('atelie')) return '#8b4513'; // marrom
-        if (cat.includes('estúdio') || cat.includes('estudio')) return '#94a3b8'; // prata
-        if (cat.includes('espaço independente') || cat.includes('espaco independente')) return '#ec4899'; // rosa
-        if (cat.includes('lona de circo')) return '#ef4444'; // vermelho
-        if (cat.includes('praça') || cat.includes('praca')) return '#166534'; // verde escuro
+        if (cat.includes('museu')) return '#eab308';
+        if (cat.includes('teatro')) return '#d4af37';
+        if (cat.includes('centro cultural')) return '#14b8a6';
+        if (cat.includes('biblioteca')) return '#a855f7';
+        if (cat.includes('galeria')) return '#f97316';
+        if (cat.includes('ateliê') || cat.includes('atelie')) return '#8b4513';
+        if (cat.includes('estúdio') || cat.includes('estudio')) return '#94a3b8';
+        if (cat.includes('espaço publico') || cat.includes('espaço público') || cat.includes('publico') || cat.includes('público') || cat.includes('espaço independente') || cat.includes('parque') || cat.includes('praça') || cat.includes('lazer')) return '#22c55e';
+        if (cat.includes('circense') || cat.includes('circo')) return '#ef4444';
+        if (cat.includes('exposição') || cat.includes('exposicao')) return '#4f46e5';
+        if (cat.includes('mercado municipal')) return '#6b7280';
+        if (cat.includes('samba de roda')) return '#ec4899';
+        if (cat.includes('oficina')) return '#06b6d4';
+        if (cat.includes('dança') || cat.includes('danca')) return '#d8b4fe';
+        if (cat.includes('patrimônio') || cat.includes('patrimonio')) return '#38bdf8';
+        if (cat.includes('audiovisual') || cat.includes('cinema')) return '#991b1b';
+        if (cat.includes('viveiro')) return '#86efac';
+        if (cat.includes('templo')) return '#fef08a';
+        if (cat.includes('arte urbana') || cat.includes('mural') || cat.includes('grafite')) return '#171717';
+        if (cat.includes('programa de educação') || cat.includes('educação')) return '#f8fafc';
+        if (cat.includes('associação') || cat.includes('associacao')) return '#581c87';
+        if (cat.includes('santuário') || cat.includes('santuario')) return '#bae6fd';
+        if (cat.includes('igreja')) return '#b45309';
+        if (cat.includes('capela')) return '#d1d5db';
+        if (cat.includes('terreiro')) return '#451a03';
+        if (cat.includes('arqueológico') || cat.includes('arqueologico')) return '#c2410c';
+        if (cat.includes('acervo')) return '#fdba74';
         return 'hsl(var(--primary))';
       };
 
       const locationGroups = {};
-      function addOrUpdateMarker(lat, lng, htmlContent, isTarget, color = 'hsl(var(--primary))') {
+      function addOrUpdateMarker(lat, lng, htmlContent, isTarget, color = 'hsl(var(--primary))', iconType = 'espaco') {
         const numLat = parseFloat(lat);
         const numLng = parseFloat(lng);
         if (isNaN(numLat) || isNaN(numLng)) return;
         
         const key = `${numLat.toFixed(5)},${numLng.toFixed(5)}`;
         if (!locationGroups[key]) {
-            locationGroups[key] = { items: [], isTarget: false, marker: null, color: color };
+            locationGroups[key] = { items: [], isTarget: false, marker: null, color: color, iconType: iconType };
         }
         locationGroups[key].items.push(htmlContent);
         if (isTarget) locationGroups[key].isTarget = true;
@@ -469,7 +497,7 @@
                }
             }
         } else {
-            const icon = createBrandIcon(locationGroups[key].color, locationGroups[key].isTarget);
+            const icon = createBrandIcon(locationGroups[key].color, locationGroups[key].isTarget, locationGroups[key].iconType);
             const marker = L.marker([numLat, numLng], { icon: icon }).bindPopup(finalHtml).addTo(map);
             locationGroups[key].marker = marker;
             
@@ -511,7 +539,7 @@
           </div>
         `;
         
-        addOrUpdateMarker(lat, lng, popupContent, isTarget, getCategoryColor(esp.categoria || esp.tipo));
+        addOrUpdateMarker(lat, lng, popupContent, isTarget, getCategoryColor(esp.categoria || esp.tipo), 'espaco');
       });
 
       // Se passou um espaço alvo via URL com coordenadas mas não estava na lista, adiciona diretamente
@@ -527,7 +555,7 @@
             </a>
           </div>
         `;
-        addOrUpdateMarker(targetLat, targetLng, popupContent, true);
+        addOrUpdateMarker(targetLat, targetLng, popupContent, true, 'hsl(var(--primary))', 'espaco');
       }
       
       // Funções para Agentes
@@ -548,7 +576,7 @@
           </div>
         `;
         
-        addOrUpdateMarker(lat, lng, popupContent, false, getCategoryColor(categoria));
+        addOrUpdateMarker(lat, lng, popupContent, false, getCategoryColor(categoria), 'agente');
       };
 
       // 1. Fetch from Supabase
