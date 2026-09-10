@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Modal Global de Cadastro e Edição de Eventos, Agentes e Espaços Culturais
  * Exclusivo para usuários autenticados e aprovados
  */
@@ -130,31 +130,11 @@
               </div>
 
               <div class="space-y-1.5">
-                <div class="flex items-center justify-between gap-2">
-                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">Data e Horário *</label>
-                  <label id="label-cad-evento-anual" class="inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-muted/60 hover:bg-muted px-2.5 py-1 rounded-lg border border-border text-muted-foreground hover:text-foreground transition-all" title="Assinale se este evento se repete todo ano">
-                    <input type="checkbox" id="cad-evento-anual" onchange="window.toggleEventoAnual(this.checked)" class="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5 cursor-pointer">
-                    <span class="font-semibold text-[11px] flex items-center gap-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
-                      Repete anualmente
-                    </span>
-                  </label>
-                </div>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Data e Horário *</label>
                 <input type="text" id="cad-evento-data-hora" required placeholder="Ex: 20 de Outubro às 19:00" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                <p id="hint-evento-anual" class="text-[11px] text-primary font-medium hidden">✓ Evento anual recorrente: não é necessário especificar o ano.</p>
               </div>
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
-              <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-            </div>
-
-            <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Organizado por (Opcional)</label>
-              <input type="text" id="cad-evento-organizador" placeholder="Ex: Coletivo Cultural, IFSP, Secretaria de Cultura..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-              <p class="text-[11px] text-muted-foreground">Nome da entidade, artista ou coletivo que aparecerá no card do evento.</p>
-            </div>
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
               <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
@@ -303,7 +283,35 @@
 
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Categoria / Vocação *</label>
-                <input type="text" id="cad-espaco-categoria" required placeholder="Ex: Teatro, Centro Cultural, Galeria" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <select id="cad-espaco-categoria" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                    <option value="Acervo Histórico">Acervo Histórico</option>
+                    <option value="Arte Urbana">Arte Urbana</option>
+                    <option value="Associação">Associação</option>
+                    <option value="Ateliê">Ateliê</option>
+                    <option value="Biblioteca">Biblioteca</option>
+                    <option value="Capela Histórica">Capela Histórica</option>
+                    <option value="Centro Cultural">Centro Cultural</option>
+                    <option value="Cinema">Cinema</option>
+                    <option value="Dança">Dança</option>
+                    <option value="Espaço Circense">Espaço Circense</option>
+                    <option value="Espaço Público">Espaço Público</option>
+                    <option value="Estúdio">Estúdio</option>
+                    <option value="Exposição">Exposição</option>
+                    <option value="Galeria">Galeria</option>
+                    <option value="Igreja">Igreja</option>
+                    <option value="Mercado Municipal">Mercado Municipal</option>
+                    <option value="Museu">Museu</option>
+                    <option value="Oficina">Oficina</option>
+                    <option value="Patrimônio Cultural">Patrimônio Cultural</option>
+                    <option value="Programa de Educação">Programa de Educação</option>
+                    <option value="Samba de Roda">Samba de Roda</option>
+                    <option value="Santuário">Santuário</option>
+                    <option value="Sítio Arqueológico">Sítio Arqueológico</option>
+                    <option value="Teatro">Teatro</option>
+                    <option value="Templo">Templo</option>
+                    <option value="Terreiro">Terreiro</option>
+                    <option value="Viveiro">Viveiro</option>
+                  </select>
               </div>
             </div>
 
@@ -377,24 +385,8 @@
       }
     });
 
-        const msgBox = document.getElementById('modal-cadastro-msg');
+    const msgBox = document.getElementById('modal-cadastro-msg');
     if (msgBox) msgBox.classList.add('hidden');
-  };
-
-  window.toggleEventoAnual = (checked) => {
-    const lbl = document.getElementById('label-cad-evento-anual');
-    const hint = document.getElementById('hint-evento-anual');
-    if (lbl) {
-      if (checked) {
-        lbl.className = "inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-primary/10 px-2.5 py-1 rounded-lg border border-primary/30 text-primary transition-all";
-      } else {
-        lbl.className = "inline-flex items-center gap-1.5 cursor-pointer text-xs select-none bg-muted/60 hover:bg-muted px-2.5 py-1 rounded-lg border border-border text-muted-foreground hover:text-foreground transition-all";
-      }
-    }
-    if (hint) {
-      if (checked) hint.classList.remove('hidden');
-      else hint.classList.add('hidden');
-    }
   };
 
   // Abre modal para NOVO cadastro (focado exclusivamente no tipo solicitado)
@@ -428,21 +420,10 @@
     const tabsBar = document.getElementById('modal-cadastro-tabs');
     if (tabsBar) tabsBar.classList.add('hidden');
 
-        // Reseta o formulário
+    // Reseta o formulário
     const form = document.getElementById(`form-cadastro-${tipo}`);
     if (form) form.reset();
     const preview = document.getElementById(`preview-cad-${tipo}`);
-    if (tipo === 'evento') {
-      const cbAnual = document.getElementById('cad-evento-anual');
-      if (cbAnual) {
-        cbAnual.checked = false;
-        window.toggleEventoAnual(false);
-      }
-      const orgInput = document.getElementById('cad-evento-organizador');
-      if (orgInput) {
-        orgInput.value = (user && user.nome) ? user.nome : '';
-      }
-    }
     if (tipo === 'agente') {
       document.querySelectorAll('.cad-agente-area-cb').forEach(cb => cb.checked = false);
     }
@@ -533,26 +514,17 @@
         const { data, error } = await supabaseClient.from(cfg.table).select('*').eq('id', id).single();
         if (error) throw error;
         if (data) {
-            if (tipo === 'evento') {
-              document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
-              document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
-              const rawDataHora = data.data_hora || data.data || '';
-              const isAnual = rawDataHora.toLowerCase().includes('anual');
-              const cbAnual = document.getElementById('cad-evento-anual');
-              if (cbAnual) {
-                cbAnual.checked = isAnual;
-                window.toggleEventoAnual(isAnual);
-            }
-              document.getElementById('cad-evento-data-hora').value = rawDataHora.replace(/\s*\(anual\)/i, '').trim();
-              document.getElementById('cad-evento-local').value = data.local || '';
-              const orgInput = document.getElementById('cad-evento-organizador');
-              if (orgInput) orgInput.value = data.organizador || '';
-              document.getElementById('cad-evento-descricao').value = data.descricao || '';
-              document.getElementById('cad-evento-link').value = data.link || '';
-              if (data.foto || data.imagem) {
-                const prev = document.getElementById('preview-cad-evento');
-                prev.src = data.foto || data.imagem;
-                prev.classList.remove('hidden');
+          if (tipo === 'evento') {
+            document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
+            document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
+            document.getElementById('cad-evento-data-hora').value = data.data_hora || data.data || '';
+            document.getElementById('cad-evento-local').value = data.local || '';
+            document.getElementById('cad-evento-descricao').value = data.descricao || '';
+            document.getElementById('cad-evento-link').value = data.link || '';
+            if (data.foto || data.imagem) {
+              const prev = document.getElementById('preview-cad-evento');
+              prev.src = data.foto || data.imagem;
+              prev.classList.remove('hidden');
             }
           } else if (tipo === 'agente') {
             document.getElementById('cad-agente-nome').value = data.nome || '';
@@ -673,55 +645,34 @@
     const isEdit = window._currentEditing && window._currentEditing.tipo === 'evento';
     setBtnLoading(btn, true);
 
-        try {
+    try {
       const nome = document.getElementById('cad-evento-nome').value.trim();
       const categoria = document.getElementById('cad-evento-categoria').value.trim();
-      const data_hora_input = document.getElementById('cad-evento-data-hora').value.trim();
-      const isAnual = document.getElementById('cad-evento-anual')?.checked;
+      const data_hora = document.getElementById('cad-evento-data-hora').value.trim();
       const local = document.getElementById('cad-evento-local').value.trim();
-      const organizadorInput = document.getElementById('cad-evento-organizador')?.value.trim();
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
       const link = document.getElementById('cad-evento-link').value.trim();
       const fotoInput = document.getElementById('cad-evento-foto');
 
-      let data_hora = data_hora_input;
-      if (isAnual) {
-        data_hora = data_hora.replace(/,?\s*\b20\d{2}\b/g, '').trim();
-        if (!data_hora.toLowerCase().includes('anual')) {
-          data_hora = `${data_hora} (Anual)`;
-        }
-      } else {
-        data_hora = data_hora.replace(/\s*\(anual\)/i, '').trim();
-      }
-
-      let descricaoFinal = link ? descricao + '\nLink: ' + link : descricao;
-      if (user && user.email && !descricaoFinal.toLowerCase().includes(user.email.toLowerCase())) {
-        descricaoFinal += `\nCadastrado por: ${user.email}`;
-      }
-
-      if (!user) {
-        showModalMsg("Apenas usuários logados podem enviar.", true);
-        setBtnLoading(btn, false, 'Publicar Evento');
-        return;
-      }
-
-      const organizadorFinal = organizadorInput || (user.nome ? user.nome : (user.email || 'Não informado'));
+      const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
+      const descricaoFinal = descricaoFull;
 
       const payload = {
         nome,
-        titulo: nome,
         categoria,
         data_hora,
-        data: data_hora,
-        horario: data_hora,
         local,
         descricao: descricaoFinal,
-        organizador: organizadorFinal
+        lat: -23.3055,
+        lng: -45.9658
       };
 
-      const isUUID = user.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(user.id));
-      if (isUUID) {
+      if (user) {
         payload.user_id = user.id;
+      } else {
+        showModalMsg("Apenas usuários logados podem enviar.", true);
+        setBtnLoading(btn, false, 'Publicar Evento');
+        return;
       }
 
       if (fotoInput.files && fotoInput.files[0]) {
@@ -939,3 +890,4 @@
     createModalDOM();
   }
 })();
+
