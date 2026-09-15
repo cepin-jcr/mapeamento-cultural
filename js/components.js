@@ -1,4 +1,4 @@
-function renderFooter() {
+﻿function renderFooter() {
   const path = window.location.pathname.toLowerCase();
   if (
     path.indexOf('admin.html') !== -1 || 
@@ -34,13 +34,13 @@ function renderFooter() {
       <div class="max-w-7xl mx-auto px-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-start mb-12">
           
-          <!-- Column 1: Localização & Contato -->
+          <!-- Column 1: LocalizaÃ§Ã£o & Contato -->
           <div class="space-y-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-primary">Localização e Contato</h3>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-primary">LocalizaÃ§Ã£o e Contato</h3>
             <div class="space-y-3 text-sm text-muted-foreground leading-relaxed">
               <div class="flex items-start gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>${cepinData.endereco || 'Endereço'}</span>
+                <span>${cepinData.endereco || 'EndereÃ§o'}</span>
               </div>
               <div class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
@@ -49,7 +49,7 @@ function renderFooter() {
             </div>
           </div>
           
-          <!-- Column 2: Conheça o CEPIN Button -->
+          <!-- Column 2: ConheÃ§a o CEPIN Button -->
           <div class="flex flex-col items-center justify-center text-center space-y-4">
             <div class="relative group">
               <div class="absolute -inset-1.5 bg-primary/20 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-500"></div>
@@ -57,26 +57,27 @@ function renderFooter() {
                 href="${cepinUrl}" 
                 class="relative bg-primary text-primary-foreground font-semibold shadow-carnival hover:bg-primary-glow hover:-translate-y-0.5 transition-all text-base py-3 px-8 rounded-full flex items-center justify-center gap-2 cursor-pointer border-0"
               >
-                <span>Conheça o CEPIN</span>
+                <span>ConheÃ§a o CEPIN</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
             </div>
             <p class="text-xs text-muted-foreground max-w-[250px] font-medium leading-normal">
-              Conheça nosso Centro de Pesquisa, equipe e linhas de inovação.
+              ConheÃ§a nosso Centro de Pesquisa, equipe e linhas de inovaÃ§Ã£o.
             </p>
             <div class="h-px w-full bg-border my-2 max-w-[200px] mx-auto"></div>
             <div class="flex flex-col gap-1 items-center">
-              <p class="text-xs text-muted-foreground">Nossa outra iniciativa:</p>
+              <p class="text-xs text-muted-foreground">Nossas outras iniciativas:</p>
               <a href="https://cepin-jcr.github.io/carnaval-feminino/" target="_blank" rel="noopener noreferrer" class="text-[#b1336b] hover:underline font-medium text-sm">Bloco de Carnaval Feminista</a>
+              <a href="https://www.instagram.com/ampliandonossavoz/" target="_blank" rel="noopener noreferrer" class="text-[#b1336b] hover:underline font-medium text-sm">Ampliando Nossa Voz</a>
             </div>
           </div>
           
-          <!-- Column 3: Projetos & Diagnóstico -->
+          <!-- Column 3: Projetos & DiagnÃ³stico -->
           <div class="space-y-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-primary">Projetos & Diagnóstico</h3>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-primary">Projetos & DiagnÃ³stico</h3>
             <div class="text-sm text-muted-foreground leading-relaxed flex flex-col gap-2">
-              <p>Conheça o Diagnóstico Cultural que deu origem a essa e outras ações:</p>
-              <a href="https://drive.google.com/drive/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-green-600 dark:text-green-500 hover:underline font-medium inline-block">Resultado do I Diagnóstico do Mercado Cultural de Jacareí.</a>
+              <p>ConheÃ§a o DiagnÃ³stico Cultural que deu origem a essa e outras aÃ§Ãµes:</p>
+              <a href="https://drive.google.com/drive/folders/1xQ86MAA8GTt-6k5hG9jcnAGpYOHqe8iE?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-green-600 dark:text-green-500 hover:underline font-medium inline-block">Resultado do I DiagnÃ³stico do Mercado Cultural de JacareÃ­.</a>
             </div>
           </div>
           
@@ -107,7 +108,7 @@ function renderFooter() {
         
         <!-- Bottom copyright -->
         <div class="border-t border-border pt-8 text-center text-xs text-muted-foreground">
-          <p>© ${currentYear} CEPIN JCR - IFSP Campus Jacareí. Desenvolvido em parceria com a classe cultural de Jacareí.</p>
+          <p>Â© ${currentYear} CEPIN JCR - IFSP Campus JacareÃ­. Desenvolvido em parceria com a classe cultural de JacareÃ­.</p>
         </div>
       </div>
     </footer>
@@ -200,11 +201,11 @@ async function updateAuthNav() {
     }
   };
 
-  // Visibilidade imediata baseada na sessão armazenada (apenas para aprovados)
+  // Visibilidade imediata baseada na sessÃ£o armazenada (apenas para aprovados)
   setChatVisibility(isLoggedIn && userIsApproved);
   setCadastroVisibility(isLoggedIn && userIsApproved);
 
-  // Se logado e houver cliente Supabase disponível, verificar em tempo real o status no banco
+  // Se logado e houver cliente Supabase disponÃ­vel, verificar em tempo real o status no banco
   if (isLoggedIn && session && session.id && window.supabaseClient) {
     try {
       const { data: perfil } = await supabaseClient.from('perfis').select('id, email, is_admin, status_aprovacao').eq('id', session.id).single();
@@ -217,8 +218,155 @@ async function updateAuthNav() {
         setCadastroVisibility(userIsApproved);
       }
     } catch(e) {
-      console.warn("Erro ao checar status de aprovação para chat e cadastro:", e);
+      console.warn("Erro ao checar status de aprovaÃ§Ã£o para chat e cadastro:", e);
     }
   }
 }
+
+function renderNavbar() {
+
+function renderNavbar() {
+  const path = window.location.pathname.toLowerCase();
+  const isInSubdir = path.includes('/cepin/') || path.includes('/mapa/') || path.includes('/eventos/') || path.includes('/espacos/') || path.includes('/agentes/') || path.includes('/calendario/') || path.includes('/mulheres/') || path.includes('/perfil/') || path.includes('/chat/');
+  const rootUrl = isInSubdir ? '../' : './';
+
+  let navbarContainer = document.getElementById('navbar-placeholder');
+  if (!navbarContainer) {
+    const existingNav = document.getElementById('navbar');
+    if (existingNav) {
+      navbarContainer = document.createElement('div');
+      navbarContainer.id = 'navbar-placeholder';
+      existingNav.replaceWith(navbarContainer);
+    }
+  }
+  if (!navbarContainer) return;
+
+  navbarContainer.innerHTML = `
+  <nav id="navbar" class="fixed top-0 w-full px-4 md:px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
+    <div class="w-full md:w-auto flex justify-between items-center">
+      <a href="${rootUrl}" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
+      <div>
+        <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
+        <span class="block text-[13px] text-foreground/80 font-display font-medium">Vale do Paraíba</span>
+      </div>
+      </a>
+      <button class="md:hidden p-2 text-foreground rounded-md hover:bg-muted transition-colors flex items-center justify-center" onclick="document.getElementById('nav-menu').classList.toggle('hidden'); document.getElementById('nav-menu').classList.toggle('flex');" aria-label="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+    
+    <div id="nav-menu" class="hidden md:flex flex-col md:flex-row items-center justify-center gap-2 md:gap-2 text-sm font-medium w-full md:w-auto mt-4 md:mt-0 pb-2 md:pb-0">
+      <a href="${rootUrl}" data-nav="home" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="${rootUrl}mapa/" data-nav="mapa" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="${rootUrl}calendario/" data-nav="calendario" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="${rootUrl}eventos/" data-nav="eventos" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="${rootUrl}espacos/" data-nav="espacos" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
+      <a href="${rootUrl}agentes/" data-nav="agentes" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="${rootUrl}cepin/" data-nav="cepin" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Sobre</a>
+      <a href="${rootUrl}mulheres/" data-nav="mulheres" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-[#b1336b] transition-colors">Mulheres na Música</a>
+      <a href="${rootUrl}chat/" style="display: none;" class="w-full md:w-auto text-center nav-chat-link hidden px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-primary transition-colors flex items-center justify-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+      </a>
+      <a href="${rootUrl}perfil/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Entrar
+      </a>
+    </div>
+  </nav>
+  `;
+
+  // Highlight active link
+  let activeNav = 'home';
+  if (path.includes('/mapa/')) activeNav = 'mapa';
+  else if (path.includes('/calendario/')) activeNav = 'calendario';
+  else if (path.includes('/eventos/')) activeNav = 'eventos';
+  else if (path.includes('/espacos/')) activeNav = 'espacos';
+  else if (path.includes('/agentes/')) activeNav = 'agentes';
+  else if (path.includes('/cepin/')) activeNav = 'cepin';
+  else if (path.includes('/mulheres/')) activeNav = 'mulheres';
+  
+  const activeLink = document.querySelector(`#nav-menu a[data-nav="${activeNav}"]`);
+  if (activeLink) {
+    activeLink.classList.remove('text-muted-foreground', 'hover:bg-muted', 'hover:text-foreground');
+    activeLink.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+  }
+
+  // Add scroll effect for navbar
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('shadow-md', 'bg-background/95');
+      navbar.classList.remove('bg-background/80');
+    } else {
+      navbar.classList.add('bg-background/80');
+      navbar.classList.remove('shadow-md', 'bg-background/95');
+    }
+  });
+}
+
+function renderBottomNav() {
+  const path = window.location.pathname.toLowerCase();
+  if (
+    path.indexOf('admin.html') !== -1 || 
+    path.indexOf('admin-block-form.html') !== -1 || 
+    path.indexOf('admin-event-form.html') !== -1
+  ) {
+    return;
+  }
+
+  const isInSubdir = path.includes('/cepin/') || path.includes('/mapa/') || path.includes('/eventos/') || path.includes('/espacos/') || path.includes('/agentes/') || path.includes('/calendario/') || path.includes('/mulheres/') || path.includes('/perfil/') || path.includes('/chat/');
+  const rootUrl = isInSubdir ? '../' : './';
+
+  let bottomContainer = document.getElementById('bottom-nav-placeholder');
+  if (!bottomContainer) {
+    const existingNav = document.getElementById('bottom-nav');
+    if (existingNav) {
+      bottomContainer = document.createElement('div');
+      bottomContainer.id = 'bottom-nav-placeholder';
+      existingNav.replaceWith(bottomContainer);
+    }
+  }
+  if (!bottomContainer) return;
+
+  bottomContainer.innerHTML = `
+  <nav id="bottom-nav" class="fixed bottom-0 left-0 w-full bg-background/95 backdrop-blur-md border-t border-border z-[90] flex md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+    <div class="grid grid-cols-4 w-full px-2 py-2" id="bottom-nav-links">
+      <a href="${rootUrl}" data-path="index.html" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Home</span>
+      </a>
+      <a href="${rootUrl}mapa/" data-path="mapa" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Mapa</span>
+      </a>
+      <a href="${rootUrl}eventos/" data-path="eventos" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Eventos</span>
+      </a>
+      <a href="${rootUrl}perfil/" data-path="perfil" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Perfil</span>
+      </a>
+    </div>
+  </nav>
+  `;
+
+  var links = document.querySelectorAll('#bottom-nav-links a');
+  links.forEach(function(link) {
+    var dataPath = link.getAttribute('data-path');
+    if ((dataPath === 'index.html' && (path.endsWith('/') || path.endsWith('index.html') && !path.includes('/mapa/') && !path.includes('/calendario/') && !path.includes('/eventos/') && !path.includes('/espacos/') && !path.includes('/agentes/') && !path.includes('/mulheres/') && !path.includes('/perfil/') && !path.includes('/cepin/'))) || 
+        (dataPath !== 'index.html' && path.includes('/' + dataPath + '/'))) {
+      link.classList.remove('text-muted-foreground', 'hover:text-primary');
+      link.classList.add('text-primary', 'bg-primary/10', 'rounded-lg');
+    }
+  });
+}
+
+// Call them immediately when script runs so they render fast
+renderNavbar();
+renderBottomNav();
+
+
 
