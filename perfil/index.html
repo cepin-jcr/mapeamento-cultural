@@ -694,7 +694,6 @@
     }
 
     window.loadAdminData = async () => {
-      try {
         // Load Pendentes
         const { data: users } = await supabaseClient.from('perfis').select('*').order('id', {ascending: false});
         const pendentesList = document.getElementById('admin-users-list');
