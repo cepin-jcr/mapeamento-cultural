@@ -694,13 +694,14 @@
     }
 
     window.loadAdminData = async () => {
-      // Load Pendentes
-      const { data: users } = await supabaseClient.from('perfis').select('*').order('id', {ascending: false});
-      const pendentesList = document.getElementById('admin-users-list');
-      const allUsersList = document.getElementById('admin-all-users-list');
-      
-      if (users) {
-        const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
+      try {
+        // Load Pendentes
+        const { data: users } = await supabaseClient.from('perfis').select('*').order('id', {ascending: false});
+        const pendentesList = document.getElementById('admin-users-list');
+        const allUsersList = document.getElementById('admin-all-users-list');
+        
+        if (users) {
+          const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
         if (pendentes.length > 0) {
           pendentesList.innerHTML = pendentes.map(u => `
             <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
