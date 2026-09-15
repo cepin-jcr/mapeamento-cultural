@@ -643,8 +643,8 @@
                       document.getElementById('user-agent-img').src = myAgent.foto;
                     }
                     const agentSlug = slugify(myAgent.nome);
-                    document.getElementById('user-agent-view-btn').href = `../agentes/agente.html?slug=${agentSlug}`;
-                    document.getElementById('user-agent-edit-btn').href = `../agentes/editar.html?slug=${agentSlug}`;
+                    document.getElementById('user-agent-view-btn').href = `../agentes/agente.html?id=${myAgent.id}`;
+                    document.getElementById('user-agent-edit-btn').href = `../agentes/editar.html?id=${myAgent.id}`;
                   }
                 }
               }
@@ -771,7 +771,7 @@
               </div>
             </div>
             <div class="w-full sm:w-auto flex gap-2">
-              <button onclick="editAgentAdmin('${slugify(ag.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
+              <button onclick="editAgentAdmin('${ag.id}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
               <button onclick="deleteAgentAdmin(${ag.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
             </div>
           </div>
@@ -876,8 +876,8 @@
       abrirModalCadastro('evento');
     };
 
-    window.editAgentAdmin = (slug) => {
-      window.location.href = `../agentes/editar.html?slug=${slug}`;
+    window.editAgentAdmin = (id) => {
+      window.location.href = `../agentes/editar.html?id=${id}`;
     };
 
     window.editSpaceAdmin = (slug) => {
