@@ -202,7 +202,7 @@ function renderFooter() {
             <div class="flex flex-col gap-1 items-center">
               <p class="text-xs text-muted-foreground">Nossas outras iniciativas:</p>
               <a href="https://cepin-jcr.github.io/carnaval-feminino/" target="_blank" rel="noopener noreferrer" class="text-[#b1336b] hover:underline font-medium text-sm">Bloco de Carnaval Feminista</a>
-              <a href="https://www.instagram.com/ampliandonossavoz/" target="_blank" rel="noopener noreferrer" class="text-[#b1336b] hover:underline font-medium text-sm">Ampliando Nossa Voz</a>
+              <a href="https://www.instagram.com/ampliandonossavoz/" target="_blank" rel="noopener noreferrer" class="text-[#7c33b1] hover:underline font-medium text-sm">Ampliando Nossa Voz</a>
             </div>
           </div>
           
