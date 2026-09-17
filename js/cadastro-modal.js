@@ -637,7 +637,7 @@
     }
   }
 
-  // Submit Evento (Insert ou Update)
+    // Submit Evento (Insert ou Update)
   window.submeterCadastroEvento = async (e) => {
     e.preventDefault();
     const user = getLoggedUser();
@@ -665,13 +665,13 @@
         descricao: descricaoFinal
       };
 
-      if (user) {
-        payload.user_id = user.id;
-      } else {
+      if (!user) {
         showModalMsg("Apenas usuários logados podem enviar.", true);
         setBtnLoading(btn, false, 'Publicar Evento');
         return;
       }
+      // user_id não é enviado: perfis.id não é do tipo uuid, mas eventos.user_id
+      // é uuid no banco (mesmo mismatch já resolvido em Espaço).
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
