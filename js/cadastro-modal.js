@@ -662,9 +662,7 @@
         categoria,
         data_hora,
         local,
-        descricao: descricaoFinal,
-        lat: -23.3055,
-        lng: -45.9658
+        descricao: descricaoFinal
       };
 
       if (user) {
