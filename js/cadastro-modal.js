@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Modal Global de Cadastro e Edição de Eventos, Agentes e Espaços Culturais
  * Exclusivo para usuários autenticados e aprovados
  */
@@ -658,7 +658,8 @@
       const descricaoFinal = descricaoFull;
 
       const payload = {
-        titulo: nome,
+        nome,
+        titulo: nome, // coluna "titulo" é NOT NULL no banco; mantém "nome" para compatibilidade com o restante do app
         categoria,
         data_hora,
         local,
@@ -888,4 +889,3 @@
     createModalDOM();
   }
 })();
-
