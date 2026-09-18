@@ -310,8 +310,11 @@
       }
 
       const updates = {
-        nome: document.getElementById('edit-nome').value,
-        data_hora: dataHoraVal,
+  nome: document.getElementById('edit-nome').value,
+  titulo: document.getElementById('edit-nome').value, // coluna "titulo" é NOT NULL no banco
+  data_hora: dataHoraVal,
+  ...
+};
         data: dataHoraVal,
         horario: dataHoraVal,
         categoria: document.getElementById('edit-categoria') ? document.getElementById('edit-categoria').value : '',
