@@ -662,6 +662,8 @@
         titulo: nome, // coluna "titulo" é NOT NULL no banco; mantém "nome" para compatibilidade com o restante do app
         categoria,
         data_hora,
+        data: data_hora, // coluna "data" é NOT NULL no banco (mesmo padrão usado em eventos/editar.html)
+        horario: data_hora, // coluna "horario" é NOT NULL no banco (mesmo padrão usado em eventos/editar.html)
         local,
         descricao: descricaoFinal
       };
