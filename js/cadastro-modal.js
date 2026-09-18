@@ -658,7 +658,7 @@
       const descricaoFinal = descricaoFull;
 
       const payload = {
-        nome,
+        titulo: nome,
         categoria,
         data_hora,
         local,
