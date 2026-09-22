@@ -131,7 +131,7 @@
 
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Data e Horário *</label>
-                <input type="text" id="cad-evento-data-hora" required placeholder="Ex: 20 de Outubro Ã s 19:00" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <input type="text" id="cad-evento-data-hora" required placeholder="Ex: 20 de Outubro às 19:00" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
             </div>
 
