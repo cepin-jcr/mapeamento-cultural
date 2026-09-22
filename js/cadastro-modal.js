@@ -304,7 +304,7 @@
               </div>
 
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Categoria / VocaÃ§Ã£o *</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Categoria / Vocação *</label>
                 <select id="cad-espaco-categoria" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
                     <option value="Acervo Histórico">Acervo Histórico</option>
                     <option value="Arte Urbana">Arte Urbana</option>
