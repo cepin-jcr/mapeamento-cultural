@@ -138,7 +138,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
-                <input type="text" id="cad-evento-local" required placeholder="Ex: Sala MÃ¡rio Lago - PÃ¡tio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Organizador / Realizador</label>
