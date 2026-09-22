@@ -135,14 +135,35 @@
               </div>
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
-              <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
+                <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Organizador / Realizador</label>
+                <input type="text" id="cad-evento-organizador" placeholder="Nome do organizador" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              </div>
             </div>
 
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Descrição do Evento *</label>
               <textarea id="cad-evento-descricao" rows="4" required placeholder="Apresentação artística aberta ao público com repertório de..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5 flex flex-col justify-end pb-1">
+                <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+                  <input type="checkbox" id="cad-evento-anual" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <span class="text-xs font-semibold text-foreground">Evento Anual</span>
+                </label>
+              </div>
+              <div class="space-y-1.5 flex flex-col justify-end pb-1">
+                <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+                  <input type="checkbox" id="cad-evento-temporada" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <span class="text-xs font-semibold text-foreground">Por Temporada</span>
+                </label>
+              </div>
             </div>
 
             <div class="space-y-1.5">
@@ -519,6 +540,9 @@
             document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
             document.getElementById('cad-evento-data-hora').value = data.data_hora || data.data || '';
             document.getElementById('cad-evento-local').value = data.local || '';
+            if (document.getElementById('cad-evento-organizador')) document.getElementById('cad-evento-organizador').value = data.organizador || '';
+            if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = !!data.anual;
+            if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = !!data.temporada;
             document.getElementById('cad-evento-descricao').value = data.descricao || '';
             document.getElementById('cad-evento-link').value = data.link || '';
             if (data.foto || data.imagem) {
@@ -637,7 +661,7 @@
     }
   }
 
-    // Submit Evento (Insert ou Update)
+  // Submit Evento (Insert ou Update)
   window.submeterCadastroEvento = async (e) => {
     e.preventDefault();
     const user = getLoggedUser();
@@ -650,6 +674,9 @@
       const categoria = document.getElementById('cad-evento-categoria').value.trim();
       const data_hora = document.getElementById('cad-evento-data-hora').value.trim();
       const local = document.getElementById('cad-evento-local').value.trim();
+      const organizador = document.getElementById('cad-evento-organizador').value.trim();
+      const anual = document.getElementById('cad-evento-anual').checked;
+      const temporada = document.getElementById('cad-evento-temporada').checked;
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
       const link = document.getElementById('cad-evento-link').value.trim();
       const fotoInput = document.getElementById('cad-evento-foto');
@@ -659,22 +686,24 @@
 
       const payload = {
         nome,
-        titulo: nome, // coluna "titulo" é NOT NULL no banco; mantém "nome" para compatibilidade com o restante do app
         categoria,
         data_hora,
-        data: data_hora, // coluna "data" é NOT NULL no banco (mesmo padrão usado em eventos/editar.html)
-        horario: data_hora, // coluna "horario" é NOT NULL no banco (mesmo padrão usado em eventos/editar.html)
         local,
-        descricao: descricaoFinal
+        organizador,
+        anual,
+        temporada,
+        descricao: descricaoFinal,
+        lat: -23.3055,
+        lng: -45.9658
       };
 
-      if (!user) {
+      if (user) {
+        payload.user_id = user.id;
+      } else {
         showModalMsg("Apenas usuários logados podem enviar.", true);
         setBtnLoading(btn, false, 'Publicar Evento');
         return;
       }
-      // user_id não é enviado: perfis.id não é do tipo uuid, mas eventos.user_id
-      // é uuid no banco (mesmo mismatch já resolvido em Espaço).
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
@@ -891,3 +920,4 @@
     createModalDOM();
   }
 })();
+
