@@ -202,7 +202,7 @@ function renderFooter() {
             <div class="flex flex-col gap-1 items-center">
               <p class="text-xs text-muted-foreground">Nossas outras iniciativas:</p>
               <a href="https://cepin-jcr.github.io/carnaval-feminino/" target="_blank" rel="noopener noreferrer" class="text-[#b1336b] hover:underline font-medium text-sm">Bloco de Carnaval Feminista</a>
-              <a href="https://www.instagram.com/ampliandonossavoz/" target="_blank" rel="noopener noreferrer" class="text-[#7c33b1] hover:underline font-medium text-sm">Ampliando Nossa Voz</a>
+              <a href="https://www.instagram.com/ampliandonossavoz/" target="_blank" rel="noopener noreferrer" class="text-[#b1336b] hover:underline font-medium text-sm">Ampliando Nossa Voz</a>
             </div>
           </div>
           
@@ -252,3 +252,13 @@ try { renderBottomNav(); } catch(e) { console.error("Error in renderBottomNav", 
 try { renderFooter(); } catch(e) { console.error("Error in renderFooter", e); }
 
 
+
+// Garante que o site tenha um favicon
+(function() {
+  if (!document.querySelector("link[rel*='icon']")) {
+    const link = document.createElement('link');
+    link.rel = 'shortcut icon';
+    link.href = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png';
+    document.head.appendChild(link);
+  }
+})();
