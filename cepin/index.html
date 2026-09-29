@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quem Somos | CEPIN JCR</title>
-  <link rel="icon" type="image/webp" href="https://cchrljjdthzpanqwguld.supabase.co/storage/v1/object/public/fotos/ifsp.webp">
+  <title>Quem Somos - CEPIN JCR</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -262,19 +261,7 @@
             <span class="text-2xl"></span>
             <h3 class="font-display font-extrabold text-lg tracking-tight">Desenvolvedores</h3>
           </div>
-          <div class="overflow-x-auto rounded-xl border border-border/40">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-muted/35 border-b border-border/50 text-[10px] font-bold uppercase text-muted-foreground">
-                  <th class="p-3 pl-4">Nome</th>
-                  <th class="p-3">Função</th>
-                  <th class="p-3 pr-4 text-right">Contato</th>
-                </tr>
-              </thead>
-              <tbody id="desenvolvedores-table-body" class="divide-y divide-border/40 text-xs font-medium">
-              </tbody>
-            </table>
-          </div>
+            <div id="desenvolvedores-container" class="space-y-6"></div>
           <div id="desenvolvedores-empty-state" class="hidden text-center text-xs text-muted-foreground py-4">
             Nenhum desenvolvedor cadastrado.
           </div>
@@ -437,25 +424,72 @@
         colabEmpty.classList.remove('hidden');
       }
 
-      const devBody = document.getElementById('desenvolvedores-table-body');
+      const devContainer = document.getElementById('desenvolvedores-container');
       const devEmpty = document.getElementById('desenvolvedores-empty-state');
-      devBody.innerHTML = '';
+      if(devContainer) devContainer.innerHTML = '';
       if (data.equipeDesenvolvedores && data.equipeDesenvolvedores.length > 0) {
-        devEmpty.classList.add('hidden');
+        if(devEmpty) devEmpty.classList.add('hidden');
+        
+        // Agrupar por ano
+        const grouped = {};
         data.equipeDesenvolvedores.forEach(memb => {
-          const tr = document.createElement('tr');
-          tr.className = "hover:bg-muted/10 transition-colors";
-          tr.innerHTML = `
-            <td class="p-3 pl-4 font-bold text-foreground">${memb.nome}</td>
-            <td class="p-3 text-muted-foreground">${memb.funcao || memb.cargo || ''}</td>
-            <td class="p-3 pr-4 text-right text-xs font-mono">
-              ${memb.contato.includes('@') ? `<a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold">${memb.contato}</a>` : `<span class="text-muted-foreground">${memb.contato}</span>`}
-            </td>
-          `;
-          devBody.appendChild(tr);
+          const ano = memb.ano ? String(memb.ano).trim() : 'Ano não especificado';
+          if(!grouped[ano]) grouped[ano] = [];
+          grouped[ano].push(memb);
         });
+        
+        // Ordenar os anos (decrescente), 'Ano não especificado' no final
+        const anos = Object.keys(grouped).sort((a, b) => {
+          if(a === 'Ano não especificado') return 1;
+          if(b === 'Ano não especificado') return -1;
+          return b.localeCompare(a);
+        });
+
+        if(devContainer) {
+          anos.forEach(ano => {
+            const section = document.createElement('div');
+            section.className = 'space-y-3';
+            
+            const title = document.createElement('h4');
+            title.className = 'font-bold text-sm text-muted-foreground uppercase tracking-wider border-b border-border/40 pb-1';
+            title.textContent = ano;
+            section.appendChild(title);
+            
+            const list = document.createElement('div');
+            list.className = 'border border-border/40 rounded-xl overflow-hidden divide-y divide-border/40 bg-card';
+            
+            grouped[ano].forEach(memb => {
+              const item = document.createElement('div');
+              item.className = 'flex flex-col';
+              
+              const coordsHtml = memb.coordenadores ? `<div class="hidden px-4 py-3 bg-muted/30 text-xs text-muted-foreground border-t border-border/20"><strong>Coordenadores responsáveis:</strong> ${memb.coordenadores}</div>` : '';
+              const onClickAttr = memb.coordenadores ? `onclick="this.nextElementSibling.classList.toggle('hidden')" style="cursor: pointer;"` : '';
+              const caret = memb.coordenadores ? `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg>` : '';
+              
+              item.innerHTML = `
+                <div ${onClickAttr} class="flex justify-between items-center p-3 hover:bg-muted/10 transition-colors">
+                  <div class="flex items-center gap-2">
+                    ${caret}
+                    <div>
+                      <div class="font-bold text-foreground text-xs">${memb.nome}</div>
+                      <div class="text-muted-foreground text-[10px]">${memb.funcao || memb.cargo || ''}</div>
+                    </div>
+                  </div>
+                  <div class="text-right text-xs font-mono">
+                    ${memb.contato && memb.contato.includes('@') ? `<a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold" onclick="event.stopPropagation()">${memb.contato}</a>` : `<span class="text-muted-foreground">${memb.contato || ''}</span>`}
+                  </div>
+                </div>
+                ${coordsHtml}
+              `;
+              list.appendChild(item);
+            });
+            
+            section.appendChild(list);
+            devContainer.appendChild(section);
+          });
+        }
       } else {
-        devEmpty.classList.remove('hidden');
+        if(devEmpty) devEmpty.classList.remove('hidden');
       }
     }
 
@@ -539,5 +573,3 @@
 
 </body>
 </html>
-
-
