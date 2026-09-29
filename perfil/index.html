@@ -1,52 +1,93 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil | Mapeamento Cultural</title>
+  <title>Meu Perfil " Mapeamento Cultural</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Poppins', 'sans-serif'] },
-          colors: {
-            border: "hsl(var(--border))", input: "hsl(var(--input))", ring: "hsl(var(--ring))",
-            background: "hsl(var(--background))", foreground: "hsl(var(--foreground))",
-            primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
-            secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
-            destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
-            muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
-            accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
-            popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
-            card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
           },
-          borderRadius: { lg: "var(--radius)", md: "calc(var(--radius) - 2px)", sm: "calc(var(--radius) - 4px)" }
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+              glow: "hsl(var(--primary-glow))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+            mulheres: "hsl(var(--mulheres-pink))"
+          },
+          boxShadow: {
+            'carnival': 'var(--shadow-carnival)',
+            'soft': 'var(--shadow-soft)',
+          },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          }
         }
       }
     }
   </script>
+
   <link rel="stylesheet" href="../css/global.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../js/supabase-integration.js?v=2" defer></script>
+
+  <!-- Supabase Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-integration.js?v=2"></script>
   <script src="../js/db.js"></script>
-  <script src="../js/cadastro-modal.js?v=5" defer></script>
+  <script src="../js/cadastro-modal.js?v=5"></script>
+  <!-- bcryptjs for password hashing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
-  <style>.hide-scroll-indicator::-webkit-scrollbar { display: none; } .hide-scroll-indicator { -ms-overflow-style: none; scrollbar-width: none; }</style>
+
+  <style>
+    .hide-scroll-indicator::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scroll-indicator {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+
 </head>
 <body class="min-h-screen bg-background text-foreground transition-all duration-300 pb-24 md:pb-0">
 
-      <nav id="navbar" class="fixed top-0 w-full px-4 md:px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
+  <nav id="navbar" class="fixed top-0 w-full px-4 md:px-6 py-4 flex flex-col md:flex-row justify-between items-center bg-background/80 backdrop-blur-md border-b border-border z-[99] transition-all duration-300 shadow-sm">
     <div class="w-full md:w-auto flex justify-between items-center">
       <a href="../" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
       <div>
         <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
-        <span class="block text-[13px] text-foreground/80 font-display font-medium">Vale do ParaÃ­ba</span>
+        <span class="block text-[13px] text-foreground/80 font-display font-medium">Vale do Paraíba</span>
       </div>
       </a>
       <button class="md:hidden p-2 text-foreground rounded-md hover:bg-muted transition-colors flex items-center justify-center" onclick="document.getElementById('nav-menu').classList.toggle('hidden'); document.getElementById('nav-menu').classList.toggle('flex');" aria-label="Menu">
@@ -55,42 +96,23 @@
     </div>
     
     <div id="nav-menu" class="hidden md:flex flex-col md:flex-row items-center justify-center gap-2 md:gap-2 text-sm font-medium w-full md:w-auto mt-4 md:mt-0 pb-2 md:pb-0">
-      <a href="../" data-nav="home" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
-      <a href="../mapa/" data-nav="mapa" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
-      <a href="../calendario/" data-nav="calendario" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">CalendÃ¡rio</a>
-      <a href="../eventos/" data-nav="eventos" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
-      <a href="../espacos/" data-nav="espacos" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">EspaÃ§os</a>
-      <a href="../agentes/" data-nav="agentes" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
-      <a href="../cepin/" data-nav="cepin" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Sobre</a>
-      <a href="../mulheres/" data-nav="mulheres" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-[#b1336b] transition-colors">Mulheres na MÃºsica</a>
+      <a href="../" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Home</a>
+      <a href="../mapa/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Mapa</a>
+      <a href="../calendario/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Calendário</a>
+      <a href="../eventos/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Eventos</a>
+      <a href="../espacos/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Espaços</a>
+      <a href="../agentes/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Agentes</a>
+      <a href="../cepin/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">Sobre</a>
+      <a href="../mulheres/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-[#b1336b] transition-colors">Mulheres na Música</a>
       <a href="../chat/" style="display: none;" class="w-full md:w-auto text-center nav-chat-link hidden px-4 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-primary transition-colors flex items-center justify-center gap-1.5">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         Chat
       </a>
-      <a href="../perfil/" class="w-full md:w-auto text-center px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
+      <a href="./" class="w-full md:w-auto text-center px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Entrar
+        Perfil
       </a>
     </div>
-    <script>
-      (function() {
-        var path = window.location.pathname.toLowerCase();
-        var activeNav = 'home';
-        if (path.includes('/mapa/')) activeNav = 'mapa';
-        else if (path.includes('/calendario/')) activeNav = 'calendario';
-        else if (path.includes('/eventos/')) activeNav = 'eventos';
-        else if (path.includes('/espacos/')) activeNav = 'espacos';
-        else if (path.includes('/agentes/')) activeNav = 'agentes';
-        else if (path.includes('/cepin/')) activeNav = 'cepin';
-        else if (path.includes('/mulheres/')) activeNav = 'mulheres';
-        
-        var activeLink = document.querySelector('#nav-menu a[data-nav="' + activeNav + '"]');
-        if (activeLink) {
-          activeLink.classList.remove('text-muted-foreground', 'hover:bg-muted', 'hover:text-foreground');
-          activeLink.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
-        }
-      })();
-    </script>
   </nav>
 
 
@@ -131,12 +153,12 @@
   <div id="recovery-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
     <div class="bg-card border border-border p-8 rounded-xl shadow-xl max-w-sm w-full transform scale-95 transition-transform duration-300">
       <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-foreground">RecuperaÃ§Ã£o de Conta</h3>
+        <h3 class="text-xl font-bold text-foreground">Recuperação de Conta</h3>
         <button onclick="hideRecoveryModal()" class="text-muted-foreground hover:text-foreground">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
-      <p class="text-sm text-muted-foreground mb-6">Para recuperar seu acesso, entre em contato com a administradora Simone atravÃ©s do WhatsApp.</p>
+      <p class="text-sm text-muted-foreground mb-6">Para recuperar seu acesso, entre em contato com a administradora Simone através do WhatsApp.</p>
       <a id="recovery-whatsapp-link" href="#" target="_blank" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow transition-all flex justify-center items-center gap-2 shadow-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Falar no WhatsApp
@@ -151,8 +173,8 @@
           <img src="https://picsum.photos/200" class="w-full h-full object-cover">
         </div>
         <div>
-          <h2 class="text-2xl font-bold text-foreground">UsuÃ¡rio Logado</h2>
-          <p class="text-sm text-muted-foreground" id="userEmailDisplay">usuÃ¡rio@email.com</p>
+          <h2 class="text-2xl font-bold text-foreground">Usuário Logado</h2>
+          <p class="text-sm text-muted-foreground" id="userEmailDisplay">usuário@email.com</p>
           <button onclick="sbLogout()" class="text-xs text-red-500 hover:text-red-700 mt-2 font-semibold">Sair da conta</button>
         </div>
       </div>
@@ -161,8 +183,8 @@
         <div class="flex items-start gap-3">
           <svg class="w-6 h-6 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
           <div>
-            <h4 class="font-bold">Conta Pendente de AprovaÃ§Ã£o</h4>
-            <p class="text-sm mt-1 opacity-90">Seu cadastro foi recebido e aguarda aprovaÃ§Ã£o da administraÃ§Ã£o do CEPIN-JCR. Durante esse perÃ­odo o acesso aos recursos da plataforma estÃ¡ limitado.</p>
+            <h4 class="font-bold">Conta Pendente de Aprovação</h4>
+            <p class="text-sm mt-1 opacity-90">Seu cadastro foi recebido e aguarda aprovação da administração do CEPIN-JCR. Durante esse período o acesso aos recursos da plataforma está limitado.</p>
           </div>
         </div>
       </div>
@@ -184,7 +206,7 @@
                 </span>
               </div>
               <h5 class="font-bold text-base text-foreground mb-1 group-hover:text-primary transition-colors">Novo Evento</h5>
-              <p class="text-xs text-muted-foreground">Divulgue shows, peÃ§as, feiras ou oficinas no calendÃ¡rio cultural.</p>
+              <p class="text-xs text-muted-foreground">Divulgue shows, peças, feiras ou oficinas no calendário cultural.</p>
             </div>
           </button>
 
@@ -199,7 +221,7 @@
                 </span>
               </div>
               <h5 class="font-bold text-base text-foreground mb-1 group-hover:text-primary transition-colors">Novo Agente</h5>
-              <p class="text-xs text-muted-foreground">Cadastre seu perfil artÃ­stico ou de outro agente cultural parceiro.</p>
+              <p class="text-xs text-muted-foreground">Cadastre seu perfil artístico ou de outro agente cultural parceiro.</p>
             </div>
           </button>
 
@@ -213,8 +235,8 @@
                   Cadastrar &rarr;
                 </span>
               </div>
-              <h5 class="font-bold text-base text-foreground mb-1 group-hover:text-primary transition-colors">Novo EspaÃ§o</h5>
-              <p class="text-xs text-muted-foreground">Mapeie teatros, ateliÃªs, centros culturais e galerias da regiÃ£o.</p>
+              <h5 class="font-bold text-base text-foreground mb-1 group-hover:text-primary transition-colors">Novo Espaço</h5>
+              <p class="text-xs text-muted-foreground">Mapeie teatros, ateliês, centros culturais e galerias da região.</p>
             </div>
           </button>
         </div>
@@ -226,7 +248,7 @@
           <h3 class="text-lg font-bold text-foreground">
             Meus Cadastros Culturais
           </h3>
-          <p class="text-xs text-muted-foreground mt-1">Gerencie, edite ou exclua os eventos, agentes e espaÃ§os criados por vocÃª</p>
+          <p class="text-xs text-muted-foreground mt-1">Gerencie, edite ou exclua os eventos, agentes e espaços criados por você</p>
         </div>
         
         <!-- Seletores lado a lado dos cadastros -->
@@ -253,7 +275,7 @@
 
           <button type="button" onclick="switchUserTab('espacos')" id="btn-user-tab-espacos" class="p-4 rounded-xl border border-border bg-background hover:border-primary/50 text-left transition-all cursor-pointer shadow-xs group flex items-center justify-between">
             <div>
-              <span id="tab-label-espacos" class="block text-xs font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground mb-1">EspaÃ§os</span>
+              <span id="tab-label-espacos" class="block text-xs font-bold uppercase tracking-wider text-muted-foreground group-hover:text-foreground mb-1">Espaços</span>
               <span id="user-count-espacos" class="text-2xl font-bold text-foreground">0</span>
             </div>
             <div id="tab-icon-espacos" class="w-10 h-10 rounded-lg bg-muted text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -290,17 +312,17 @@
           </div>
         </div>
 
-        <!-- Tab Panel: Meus EspaÃ§os -->
+        <!-- Tab Panel: Meus Espaços -->
         <div id="user-panel-espacos" class="space-y-4 hidden">
           <div class="flex justify-between items-center">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Seus EspaÃ§os Cadastrados</h4>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Seus Espaços Cadastrados</h4>
             <button type="button" onclick="abrirModalCadastro('espaco')" class="px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-              <span>Novo EspaÃ§o</span>
+              <span>Novo Espaço</span>
             </button>
           </div>
           <div id="user-my-espacos-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <p class="text-xs text-muted-foreground italic col-span-2">Carregando seus espaÃ§os...</p>
+            <p class="text-xs text-muted-foreground italic col-span-2">Carregando seus espaços...</p>
           </div>
         </div>
       </div>
@@ -328,14 +350,14 @@
       <div id="admin-panel" class="hidden mb-8 p-6 rounded-xl bg-muted/30 border border-border shadow-sm">
         <h3 class="text-lg font-bold text-foreground flex items-center gap-2 mb-4">
           <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Painel de AdministraÃ§Ã£o
+          Painel de Administração
         </h3>
         
         <div class="flex gap-2 mb-6 border-b border-border pb-2 overflow-x-auto">
-          <button onclick="switchAdminTab('pendentes')" id="tab-pendentes" class="px-4 py-2 text-sm font-semibold text-primary border-b-2 border-primary whitespace-nowrap">UsuÃ¡rios Pendentes</button>
-          <button onclick="switchAdminTab('usuÃ¡rios')" id="tab-usuÃ¡rios" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar UsuÃ¡rios</button>
+          <button onclick="switchAdminTab('pendentes')" id="tab-pendentes" class="px-4 py-2 text-sm font-semibold text-primary border-b-2 border-primary whitespace-nowrap">Usuários Pendentes</button>
+          <button onclick="switchAdminTab('usuários')" id="tab-usuários" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Usuários</button>
           <button onclick="switchAdminTab('agentes')" id="tab-agentes" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Agentes</button>
-          <button onclick="switchAdminTab('espacos')" id="tab-espacos" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar EspaÃ§os</button>
+          <button onclick="switchAdminTab('espacos')" id="tab-espacos" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Espaços</button>
           <button onclick="switchAdminTab('eventos')" id="tab-eventos" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Gerenciar Eventos</button>
           <button onclick="switchAdminTab('cepin')" id="tab-cepin" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">CEPIN</button>
           <button onclick="switchAdminTab('destaques')" id="tab-destaques" class="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Destaques da Home</button>
@@ -345,7 +367,7 @@
         <!-- Tab: Pendentes -->
         <div id="admin-tab-pendentes" class="space-y-6">
           <div>
-            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">UsuÃ¡rios Pendentes</h4>
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Usuários Pendentes</h4>
             <div id="admin-users-list" class="space-y-2">
               <p class="text-sm text-muted-foreground italic">Carregando...</p>
             </div>
@@ -362,9 +384,9 @@
           </div>
         </div>
 
-        <!-- Tab: UsuÃ¡rios -->
-        <div id="admin-tab-usuÃ¡rios" class="hidden space-y-4">
-          <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Todos os UsuÃ¡rios</h4>
+        <!-- Tab: Usuários -->
+        <div id="admin-tab-usuários" class="hidden space-y-4">
+          <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Todos os Usuários</h4>
           <div id="admin-all-users-list" class="space-y-3">
             <p class="text-sm text-muted-foreground italic">Carregando...</p>
           </div>
@@ -381,11 +403,11 @@
           </div>
         </div>
 
-        <!-- Tab: EspaÃ§os -->
+        <!-- Tab: Espaços -->
         <div id="admin-tab-espacos" class="hidden space-y-4">
           <div class="flex justify-between items-center mb-3 border-b border-border pb-2">
-            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Gerenciar EspaÃ§os</h4>
-            <button onclick="createSpaceAdmin()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Criar Novo EspaÃ§o</button>
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Gerenciar Espaços</h4>
+            <button onclick="createSpaceAdmin()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Criar Novo Espaço</button>
           </div>
           <div id="admin-all-espacos-list" class="space-y-3">
             <p class="text-sm text-muted-foreground italic">Carregando...</p>
@@ -406,33 +428,33 @@
         <!-- Tab: CEPIN -->
         <div id="admin-tab-cepin" class="hidden space-y-6">
           <div class="flex justify-between items-center mb-3 border-b border-border pb-2">
-            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">ConfiguraÃ§Ãµes da PÃ¡gina CEPIN</h4>
-            <button onclick="saveCepinAdminData()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Salvar AlteraÃ§Ãµes</button>
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Configurações da Página CEPIN</h4>
+            <button onclick="saveCepinAdminData()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Salvar Alterações</button>
           </div>
           <div id="cepin-loading" class="text-sm text-muted-foreground italic hidden">Carregando dados...</div>
           
           <div id="cepin-form" class="space-y-6">
-            <!-- ApresentaÃ§Ã£o -->
+            <!-- Apresentação -->
             <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
-              <h5 class="font-bold text-sm uppercase text-foreground">ApresentaÃ§Ã£o</h5>
+              <h5 class="font-bold text-sm uppercase text-foreground">Apresentação</h5>
               <div class="space-y-2">
-                <label class="text-xs font-semibold">TÃ­tulo</label>
+                <label class="text-xs font-semibold">Título</label>
                 <input type="text" id="cepin-apresentacaoTitulo" class="w-full px-3 py-2 bg-background border border-input rounded text-sm">
               </div>
               <div class="space-y-2">
-                <label class="text-xs font-semibold">SubtÃ­tulo</label>
+                <label class="text-xs font-semibold">Subtítulo</label>
                 <input type="text" id="cepin-apresentacaoSubtitulo" class="w-full px-3 py-2 bg-background border border-input rounded text-sm">
               </div>
               <div class="space-y-2">
-                <label class="text-xs font-semibold">Texto Principal (ApresentaÃ§Ã£o)</label>
-                <textarea id="cepin-apresentacaoTexto" rows="6" class="w-full px-3 py-2 bg-background border border-input rounded text-sm" placeholder="Separe os parÃ¡grafos com duas quebras de linha..."></textarea>
+                <label class="text-xs font-semibold">Texto Principal (Apresentação)</label>
+                <textarea id="cepin-apresentacaoTexto" rows="6" class="w-full px-3 py-2 bg-background border border-input rounded text-sm" placeholder="Separe os parágrafos com duas quebras de linha..."></textarea>
               </div>
             </div>
 
-            <!-- CompetÃªncias -->
+            <!-- Competências -->
             <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
               <div class="flex justify-between items-center">
-                <h5 class="font-bold text-sm uppercase text-foreground">CompetÃªncias</h5>
+                <h5 class="font-bold text-sm uppercase text-foreground">Competências</h5>
                 <button type="button" onclick="addCepinCompetencia()" class="text-xs text-primary font-semibold">+ Adicionar</button>
               </div>
               <div id="cepin-competencias-list" class="space-y-2"></div>
@@ -460,7 +482,7 @@
             <div class="space-y-4 border border-border p-4 rounded-lg bg-background">
               <h5 class="font-bold text-sm uppercase text-foreground">Equipe</h5>
               <div class="space-y-2">
-                <label class="text-xs font-semibold">Texto IntrodutÃ³rio</label>
+                <label class="text-xs font-semibold">Texto Introdutório</label>
                 <textarea id="cepin-equipeTexto" rows="3" class="w-full px-3 py-2 bg-background border border-input rounded text-sm"></textarea>
               </div>
               
@@ -507,8 +529,8 @@
       const modal = document.getElementById('recovery-modal');
       const link = document.getElementById('recovery-whatsapp-link');
       const text = type === 'senha' 
-        ? "OlÃ¡ Simone, esqueci minha senha no Mapeamento Cultural. Pode me ajudar a recuperar?" 
-        : "OlÃ¡ Simone, esqueci o e-mail da minha conta no Mapeamento Cultural. Pode me ajudar a recuperar?";
+        ? "Olá Simone, esqueci minha senha no Mapeamento Cultural. Pode me ajudar a recuperar?" 
+        : "Olá Simone, esqueci o e-mail da minha conta no Mapeamento Cultural. Pode me ajudar a recuperar?";
       link.href = `https://wa.me/5512997678111?text=${encodeURIComponent(text)}`;
       modal.classList.remove('hidden');
       setTimeout(() => {
@@ -582,15 +604,14 @@
               if (myContent) myContent.classList.add('hidden');
             }
 
-            // Buscar agente vinculado a este usuÃ¡rio
+            // Buscar agente vinculado a este usuário
             try {
               const { data: agentes } = await supabaseClient.from('agentes').select('*');
               if (agentes) {
                 const myAgent = agentes.find(a => 
                   (a.user_id && String(a.user_id) === String(sessionUser.id)) ||
                   (a.contato_email && a.contato_email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-                  (a.email && a.email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase()) ||
-                  (a.email_sujestao && a.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase())
+                  (a.email && a.email.trim().toLowerCase() === sessionUser.email.trim().toLowerCase())
                 );
                 if (myAgent) {
                   const card = document.getElementById('user-agent-card');
@@ -602,8 +623,8 @@
                       document.getElementById('user-agent-img').src = myAgent.foto;
                     }
                     const agentSlug = slugify(myAgent.nome);
-                    document.getElementById('user-agent-view-btn').href = `../agentes/agente.html?id=${myAgent.id}`;
-                    document.getElementById('user-agent-edit-btn').href = `../agentes/editar.html?id=${myAgent.id}`;
+                    document.getElementById('user-agent-view-btn').href = `../agentes/agente.html?slug=${agentSlug}`;
+                    document.getElementById('user-agent-edit-btn').href = `../agentes/editar.html?slug=${agentSlug}`;
                   }
                 }
               }
@@ -619,7 +640,7 @@
     });
 
     window.switchAdminTab = (tabId) => {
-      const tabs = ['pendentes', 'usuÃ¡rios', 'agentes', 'espacos', 'eventos', 'cepin', 'destaques', 'perfil'];
+      const tabs = ['pendentes', 'usuários', 'agentes', 'espacos', 'eventos', 'cepin', 'destaques', 'perfil'];
       
       tabs.forEach(t => {
         const tabContent = document.getElementById(`admin-tab-${t}`);
@@ -653,19 +674,19 @@
     }
 
     window.loadAdminData = async () => {
-        // Load Pendentes
-        const { data: users } = await supabaseClient.from('perfis').select('*').order('id', {ascending: false});
-        const pendentesList = document.getElementById('admin-users-list');
-        const allUsersList = document.getElementById('admin-all-users-list');
-        
-        if (users) {
-          const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
+      // Load Pendentes
+      const { data: users } = await supabaseClient.from('perfis').select('*').order('id', {ascending: false});
+      const pendentesList = document.getElementById('admin-users-list');
+      const allUsersList = document.getElementById('admin-all-users-list');
+      
+      if (users) {
+        const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
         if (pendentes.length > 0) {
           pendentesList.innerHTML = pendentes.map(u => `
             <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
               <span class="text-sm font-medium">${u.email}</span>
               <div class="flex gap-2">
-                  <button onclick="verDadosAgentePendente('${u.id}')" class="px-2 py-1.5 bg-secondary text-secondary-foreground text-xs font-semibold rounded hover:bg-secondary/80 transition-colors" title="Ver informaÃ§Ãµes do agente">
+                  <button onclick="verDadosAgentePendente('${u.id}')" class="px-2 py-1.5 bg-secondary text-secondary-foreground text-xs font-semibold rounded hover:bg-secondary/80 transition-colors" title="Ver informações do agente">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                   </button>
                   <button onclick="approveUser('${u.id}')" class="px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Aprovar</button>
@@ -674,7 +695,7 @@
             </div>
           `).join('');
         } else {
-          pendentesList.innerHTML = '<p class="text-sm text-muted-foreground">Nenhum usuÃ¡rio pendente.</p>';
+          pendentesList.innerHTML = '<p class="text-sm text-muted-foreground">Nenhum usuário pendente.</p>';
         }
 
         // All Users
@@ -682,7 +703,7 @@
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-card border border-border rounded-lg shadow-sm gap-3">
             <div>
               <span class="text-sm font-medium block">${u.email}</span>
-              <span class="text-xs text-muted-foreground">Status: ${u.status_aprovacao} | Admin: ${u.is_admin ? 'Sim' : 'NÃ£o'}</span>
+              <span class="text-xs text-muted-foreground">Status: ${u.status_aprovacao} | Admin: ${u.is_admin ? 'Sim' : 'Não'}</span>
             </div>
             <div class="flex gap-2">
               <button onclick="changeUserEmail('${u.id}', '${u.email}')" class="px-3 py-1.5 bg-secondary text-secondary-foreground text-xs font-semibold rounded hover:bg-secondary/80 transition-colors">Editar E-mail</button>
@@ -698,7 +719,7 @@
       const destaquesList = document.getElementById('admin-destaques-list');
       const allAgentesList = document.getElementById('admin-all-agentes-list');
       
-      const userOptions = `<option value="">Nenhum usuÃ¡rio vinculado</option>` + (users ? users.map(u => `<option value="${u.id}">${u.email}</option>`).join('') : '');
+      const userOptions = `<option value="">Nenhum usuário vinculado</option>` + (users ? users.map(u => `<option value="${u.id}">${u.email}</option>`).join('') : '');
 
       if (agentes) {
         destaquesList.innerHTML = agentes.map(ag => {
@@ -730,7 +751,7 @@
               </div>
             </div>
             <div class="w-full sm:w-auto flex gap-2">
-              <button onclick="editAgentAdmin('${ag.id}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
+              <button onclick="editAgentAdmin('${slugify(ag.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
               <button onclick="deleteAgentAdmin(${ag.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
             </div>
           </div>
@@ -739,7 +760,7 @@
         allAgentesList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum agente encontrado.</p>';
       }
 
-      // Load EspaÃ§os
+      // Load Espaços
       const { data: espacos } = await supabaseClient.from('espacos').select('id, nome, foto').order('id', {ascending: false});
       const allEspacosList = document.getElementById('admin-all-espacos-list');
       
@@ -761,7 +782,7 @@
           </div>
         `}).join('');
       } else {
-        allEspacosList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum espaÃ§o encontrado.</p>';
+        allEspacosList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum espaço encontrado.</p>';
       }
 
       // Load Eventos
@@ -791,23 +812,23 @@
     };
 
     window.changeUserEmail = async (id, currentEmail) => {
-      const newEmail = prompt('Novo e-mail para o usuÃ¡rio:', currentEmail);
+      const newEmail = prompt('Novo e-mail para o usuário:', currentEmail);
       if (newEmail && newEmail !== currentEmail) {
         const { error } = await supabaseClient.from('perfis').update({ email: newEmail }).eq('id', id);
         if (!error) {
           alert('E-mail alterado com sucesso!');
           loadAdminData();
         } else {
-          alert('Erro ao alterar e-mail. Talvez jÃ¡ esteja em uso.');
+          alert('Erro ao alterar e-mail. Talvez já esteja em uso.');
         }
       }
     };
 
     window.changeUserPassword = async (id) => {
-      const newPass = prompt('Digite a nova senha para o usuÃ¡rio:');
+      const newPass = prompt('Digite a nova senha para o usuário:');
       if (newPass) {
         if (!window.dcodeIO && !window.bcrypt) {
-          alert('Biblioteca bcrypt nÃ£o carregada. Tente recarregar a pÃ¡gina.');
+          alert('Biblioteca bcrypt não carregada. Tente recarregar a página.');
           return;
         }
         const bcrypt = window.bcrypt || window.dcodeIO.bcrypt;
@@ -835,8 +856,8 @@
       abrirModalCadastro('evento');
     };
 
-    window.editAgentAdmin = (id) => {
-      window.location.href = `../agentes/editar.html?id=${id}`;
+    window.editAgentAdmin = (slug) => {
+      window.location.href = `../agentes/editar.html?slug=${slug}`;
     };
 
     window.editSpaceAdmin = (slug) => {
@@ -859,10 +880,10 @@
     };
 
     window.deleteAgentAdmin = async (id) => {
-      if (confirm('Tem certeza que deseja excluir este agente definitivamente? Esta aÃ§Ã£o nÃ£o pode ser desfeita.')) {
+      if (confirm('Tem certeza que deseja excluir este agente definitivamente? Esta ação não pode ser desfeita.')) {
         const { error } = await supabaseClient.from('agentes').delete().eq('id', id);
         if (!error) {
-          alert('Agente excluÃ­do com sucesso.');
+          alert('Agente excluído com sucesso.');
           loadAdminData();
         } else {
           alert('Erro ao excluir agente: ' + error.message);
@@ -871,22 +892,22 @@
     };
 
     window.deleteSpaceAdmin = async (id) => {
-      if (confirm('Tem certeza que deseja excluir este espaÃ§o definitivamente? Esta aÃ§Ã£o nÃ£o pode ser desfeita.')) {
+      if (confirm('Tem certeza que deseja excluir este espaço definitivamente? Esta ação não pode ser desfeita.')) {
         const { error } = await supabaseClient.from('espacos').delete().eq('id', id);
         if (!error) {
-          alert('EspaÃ§o excluÃ­do com sucesso.');
+          alert('Espaço excluído com sucesso.');
           loadAdminData();
         } else {
-          alert('Erro ao excluir espaÃ§o: ' + error.message);
+          alert('Erro ao excluir espaço: ' + error.message);
         }
       }
     };
 
     window.deleteEventAdmin = async (id) => {
-      if (confirm('Tem certeza que deseja excluir este evento definitivamente? Esta aÃ§Ã£o nÃ£o pode ser desfeita.')) {
+      if (confirm('Tem certeza que deseja excluir este evento definitivamente? Esta ação não pode ser desfeita.')) {
         const { error } = await supabaseClient.from('eventos').delete().eq('id', id);
         if (!error) {
-          alert('Evento excluÃ­do com sucesso.');
+          alert('Evento excluído com sucesso.');
           loadAdminData();
         } else {
           alert('Erro ao excluir evento: ' + error.message);
@@ -914,7 +935,7 @@
           if (typeof getCepinData === 'function') {
             cepinCurrentData = getCepinData();
           } else {
-            console.error("getCepinData nÃ£o encontrado.");
+            console.error("getCepinData não encontrado.");
           }
         } catch (e) {
           console.error("Erro ao carregar getCepinData fallback", e);
@@ -978,10 +999,10 @@
         <div class="border border-border p-3 rounded bg-muted/20 space-y-2 relative">
           <button type="button" onclick="removeCepinProjeto(${i})" class="absolute top-2 right-2 text-red-500 font-bold hover:bg-red-500/10 px-2 py-1 rounded text-xs">Remover</button>
           <div class="grid grid-cols-2 gap-2 pr-16">
-            <input type="text" placeholder="TÃ­tulo" class="px-2 py-1 bg-background border border-input rounded text-xs cepin-proj-titulo" value="${p.titulo || ''}">
+            <input type="text" placeholder="Título" class="px-2 py-1 bg-background border border-input rounded text-xs cepin-proj-titulo" value="${p.titulo || ''}">
             <input type="text" placeholder="Link" class="px-2 py-1 bg-background border border-input rounded text-xs cepin-proj-link" value="${p.link || ''}">
           </div>
-          <textarea placeholder="DescriÃ§Ã£o" class="w-full px-2 py-1 bg-background border border-input rounded text-xs resize-none cepin-proj-desc" rows="2">${p.descricao || ''}</textarea>
+          <textarea placeholder="Descrição" class="w-full px-2 py-1 bg-background border border-input rounded text-xs resize-none cepin-proj-desc" rows="2">${p.descricao || ''}</textarea>
         </div>
       `).join('');
     };
@@ -1005,8 +1026,10 @@
         list.innerHTML = (arr || []).map((m, i) => `
           <div class="flex gap-2 items-center flex-wrap sm:flex-nowrap">
             <input type="text" placeholder="Nome" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${m.nome || ''}">
-            ${type === 'membro' ? `<input type="text" placeholder="CÃ¢mpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${m.campus || ''}">` : ''}
-            <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'FunÃ§Ã£o'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${m.cargo || m.funcao || ''}">
+            ${type === 'membro' ? `<input type="text" placeholder="C�mpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${m.campus || ''}">` : ''}
+            ${type === 'dev' ? `<input type="text" placeholder="Ano" class="w-16 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-ano" value="${m.ano || ''}">` : ''}
+            <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'Fun��o'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${m.cargo || m.funcao || ''}">
+            ${type === 'dev' ? `<input type="text" placeholder="Coordenador(es)" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-coord" value="${m.coordenadores || ''}">` : ''}
             <input type="text" placeholder="Contato" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${m.contato || ''}">
             <button type="button" onclick="removeCepinEquipeMembro('${type}', ${i})" class="text-red-500 font-bold p-1 hover:bg-red-500/10 rounded">X</button>
           </div>
@@ -1060,19 +1083,18 @@
             contato: c.querySelector(`.cepin-${type}-contato`).value
           };
           if (type === 'membro') {
-              obj.campus = c.querySelector(`.cepin-${type}-campus`).value;
-              obj.cargo = c.querySelector(`.cepin-${type}-cargo`).value;
-            } else if (type === 'dev') {
-              obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
-              obj.ano = c.querySelector(`.cepin-${type}-ano`).value;
-              obj.coordenadores = c.querySelector(`.cepin-${type}-coord`).value;
-            } else {
-              obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
-            }
+            obj.campus = c.querySelector(`.cepin-${type}-campus`).value;
+            obj.cargo = c.querySelector(`.cepin-${type}-cargo`).value;
+          } else if (type === 'dev') {
+            obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
+            obj.ano = c.querySelector(`.cepin-${type}-ano`) ? c.querySelector(`.cepin-${type}-ano`).value : '';
+            obj.coordenadores = c.querySelector(`.cepin-${type}-coord`) ? c.querySelector(`.cepin-${type}-coord`).value : '';
+          } else {
+            obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
+          }
           return obj;
         });
       };
-
       cepinCurrentData.equipeMembros = getList('membro');
       cepinCurrentData.equipeColaboradores = getList('colab');
       cepinCurrentData.equipeDesenvolvedores = getList('dev');
@@ -1097,9 +1119,9 @@
       const { error } = await supabaseClient.from('configuracoes_cepin').upsert({ id: 1, dados: payload });
       
       if (!error) {
-        alert('ConfiguraÃ§Ãµes da aba CEPIN salvas com sucesso!');
+        alert('Configurações da aba CEPIN salvas com sucesso!');
       } else {
-        alert('Erro ao salvar. Verifique se vocÃª criou a tabela "configuracoes_cepin" no Supabase como indicado. Erro: ' + error.message);
+        alert('Erro ao salvar. Verifique se você criou a tabela "configuracoes_cepin" no Supabase como indicado. Erro: ' + error.message);
       }
     };
 
@@ -1115,14 +1137,14 @@
         }
         loadAdminData();
       }
-      else alert('Erro ao aprovar usuÃ¡rio.');
+      else alert('Erro ao aprovar usuário.');
     };
 
     window.deleteUser = async (id) => {
-      if (confirm('Tem certeza que deseja excluir este usuÃ¡rio definitivamente?')) {
+      if (confirm('Tem certeza que deseja excluir este usuário definitivamente?')) {
         const { error } = await supabaseClient.from('perfis').delete().eq('id', id);
         if (!error) loadAdminData();
-        else alert('Erro ao excluir usuÃ¡rio.');
+        else alert('Erro ao excluir usuário.');
       }
     };
 
@@ -1142,7 +1164,7 @@
 
     window.sbLogin = async () => {
       if (!window.supabaseClient) {
-        document.getElementById('sbError').innerText = "ConexÃ£o com o banco indisponÃ­vel.";
+        document.getElementById('sbError').innerText = "Conexão com o banco indisponível.";
         return;
       }
       const e = document.getElementById('sbEmail').value.trim();
@@ -1161,7 +1183,7 @@
       } else {
         const user = Array.isArray(data) ? data[0] : data;
         if (!user || !user.id) {
-          document.getElementById('sbError').innerText = "Credenciais invÃ¡lidas ou conta inexistente.";
+          document.getElementById('sbError').innerText = "Credenciais inválidas ou conta inexistente.";
         } else {
           localStorage.setItem('custom_session', JSON.stringify(user));
           window.location.reload();
@@ -1174,7 +1196,7 @@
       if (typeof abrirModalCadastro === 'function') {
         abrirModalCadastro('agente', true);
       } else {
-        alert("Erro ao carregar o formulÃ¡rio de cadastro.");
+        alert("Erro ao carregar o formulário de cadastro.");
       }
     };
 
@@ -1189,7 +1211,7 @@
           setTimeout(() => {
             const data = user.dados_agente;
             document.getElementById('cad-agente-nome').value = data.nome || '';
-            const savedArea = data.area || data.area_de_atuacao || data.categoria || 'MÃºsica';
+            const savedArea = data.area || data.area_de_atuacao || data.categoria || 'Música';
             const selectedAreas = savedArea.split(',').map(s => s.trim().toLowerCase());
               document.querySelectorAll('.cad-agente-area-cb').forEach(cb => {
                 const val = cb.value.trim().toLowerCase();
@@ -1218,7 +1240,7 @@
             }
             
             const t = document.getElementById('modal-cadastro-title');
-            if (t) t.innerText = "Dados do Agente (RevisÃ£o)";
+            if (t) t.innerText = "Dados do Agente (Revisão)";
             const sub = document.getElementById('modal-cadastro-subtitle');
             if (sub) sub.innerText = "Visualizando dados enviados no cadastro.";
             
@@ -1228,10 +1250,10 @@
             document.querySelectorAll('#form-cadastro-agente input, #form-cadastro-agente textarea').forEach(el => { el.style.pointerEvents = 'none'; el.classList.add('opacity-80'); el.readOnly = true; });
           }, 100);
         } else {
-          alert("Erro ao carregar o formulÃ¡rio.");
+          alert("Erro ao carregar o formulário.");
         }
       } else {
-        alert("Este usuÃ¡rio nÃ£o preencheu dados de agente no cadastro.");
+        alert("Este usuário não preencheu dados de agente no cadastro.");
       }
     };
 
@@ -1263,7 +1285,7 @@
       }).select().single();
       
       if (error) {
-        alert("Erro ao criar conta. E-mail jÃ¡ existe ou invÃ¡lido.");
+        alert("Erro ao criar conta. E-mail já existe ou inválido.");
         return false;
       } else {
         if (initialStatus === 'aprovado') {
@@ -1273,7 +1295,7 @@
             await supabaseClient.from('agentes').insert(agentePayload);
           }
         } else {
-          alert("Cadastro recebido! Seu acesso aguarda aprovaÃ§Ã£o do administrador.");
+          alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
         }
         if (initialStatus === 'pendente') {
           try {
@@ -1281,9 +1303,9 @@
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
               body: JSON.stringify({
-                _subject: "AprovaÃ§Ã£o Pendente no Mapeamento Cultural",
-                email_usuÃ¡rio: email,
-                mensagem: "Um novo usuÃ¡rio (" + email + ") se cadastrou preenchendo o formulÃ¡rio de agente e aguarda aprovaÃ§Ã£o.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. FaÃ§a login com suas credenciais de administrador\n3. No 'Painel de AdministraÃ§Ã£o', encontre o usuÃ¡rio, clique no olho para ver os dados, e depois clique em 'Aprovar'."
+                _subject: "Aprovação Pendente no Mapeamento Cultural",
+                email_usuário: email,
+                mensagem: "Um novo usuário (" + email + ") se cadastrou preenchendo o formulário de agente e aguarda aprovação.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. Faça login com suas credenciais de administrador\n3. No 'Painel de Administração', encontre o usuário, clique no olho para ver os dados, e depois clique em 'Aprovar'."
               })
             });
           } catch (err) {
@@ -1322,12 +1344,12 @@
       const { data, error } = await supabaseClient.from('perfis').insert({ email: e, senha: p, status_aprovacao: initialStatus }).select().single();
       
       if (error) {
-        document.getElementById('sbError').innerText = "Erro ao criar conta. E-mail jÃ¡ existe ou invÃ¡lido.";
+        document.getElementById('sbError').innerText = "Erro ao criar conta. E-mail já existe ou inválido.";
       } else {
         if (initialStatus === 'aprovado') {
           alert("Cadastro aprovado automaticamente! Seu e-mail foi reconhecido no sistema.");
         } else {
-          alert("Cadastro recebido! Seu acesso aguarda aprovaÃ§Ã£o do administrador.");
+          alert("Cadastro recebido! Seu acesso aguarda aprovação do administrador.");
         }
         if (initialStatus === 'pendente') {
           try {
@@ -1335,9 +1357,9 @@
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
               body: JSON.stringify({
-                _subject: "AprovaÃ§Ã£o Pendente no Mapeamento Cultural",
-                email_usuÃ¡rio: e,
-                mensagem: "Um novo usuÃ¡rio (" + e + ") se cadastrou e aguarda aprovaÃ§Ã£o.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. FaÃ§a login com suas credenciais de administrador\n3. No 'Painel de AdministraÃ§Ã£o', encontre o usuÃ¡rio e clique em 'Aprovar'."
+                _subject: "Aprovação Pendente no Mapeamento Cultural",
+                email_usuário: e,
+                mensagem: "Um novo usuário (" + e + ") se cadastrou e aguarda aprovação.\n\nCOMO APROVAR:\n1. Acesse o site em: https://cepin-jcr.github.io/mapeamento-cultural/perfil/\n2. Faça login com suas credenciais de administrador\n3. No 'Painel de Administração', encontre o usuário e clique em 'Aprovar'."
               })
             });
           } catch (err) {
@@ -1411,8 +1433,8 @@
                 <div class="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground mb-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                 </div>
-                <p class="text-sm font-semibold text-foreground">Nenhum evento cadastrado por vocÃª ainda</p>
-                <p class="text-xs text-muted-foreground mt-1 mb-4">Divulgue seus espetÃ¡culos, shows, festivais e oficinas culturais.</p>
+                <p class="text-sm font-semibold text-foreground">Nenhum evento cadastrado por você ainda</p>
+                <p class="text-xs text-muted-foreground mt-1 mb-4">Divulgue seus espetáculos, shows, festivais e oficinas culturais.</p>
                 <button type="button" onclick="abrirModalCadastro('evento')" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg hover:bg-primary-glow transition-all">
                   + Cadastrar Primeiro Evento
                 </button>
@@ -1425,14 +1447,14 @@
                   <img src="${ev.foto || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600'}" class="w-16 h-16 rounded-lg object-cover border border-border shrink-0" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600';">
                   <div class="min-w-0 flex-1">
                     <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary mb-1">${ev.categoria || 'Evento'}</span>
-                    <h5 class="text-sm font-bold text-foreground truncate" title="${ev.nome || ''}">${ev.nome || 'Sem tÃ­tulo'}</h5>
+                    <h5 class="text-sm font-bold text-foreground truncate" title="${ev.nome || ''}">${ev.nome || 'Sem título'}</h5>
                     <p class="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                      <span>${ev.data_hora || 'Data nÃ£o definida'}</span>
+                      <span>${ev.data_hora || 'Data não definida'}</span>
                     </p>
                     <p class="text-xs text-muted-foreground truncate flex items-center gap-1 mt-0.5">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      <span>${ev.local || 'Local nÃ£o definido'}</span>
+                      <span>${ev.local || 'Local não definido'}</span>
                     </p>
                   </div>
                 </div>
@@ -1469,7 +1491,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground mb-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
-                <p class="text-sm font-semibold text-foreground">Nenhum agente cultural cadastrado por vocÃª ainda</p>
+                <p class="text-sm font-semibold text-foreground">Nenhum agente cultural cadastrado por você ainda</p>
                 <p class="text-xs text-muted-foreground mt-1 mb-4">Crie seu perfil de artista, produtor, instrutor ou coletivo cultural.</p>
                 <button type="button" onclick="abrirModalCadastro('agente')" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg hover:bg-primary-glow transition-all">
                   + Cadastrar Perfil de Agente
@@ -1484,7 +1506,7 @@
                   <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5 flex-wrap mb-1">
                       <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">${ag.area || ag.area_de_atuacao || ag.categoria || 'Agente'}</span>
-                      ${(ag.projeto_mulheres || ag.mulheres_na_musica) ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500/10 text-pink-600 border border-pink-500/20">Mulheres na MÃºsica</span>' : ''}
+                      ${(ag.projeto_mulheres || ag.mulheres_na_musica) ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500/10 text-pink-600 border border-pink-500/20">Mulheres na Música</span>' : ''}
                     </div>
                     <h5 class="text-sm font-bold text-foreground truncate" title="${ag.nome || ''}">${ag.nome || 'Sem nome'}</h5>
                     <p class="text-xs text-muted-foreground line-clamp-2 mt-0.5">${ag.bio || ag.biografia || 'Sem biografia informada.'}</p>
@@ -1505,7 +1527,7 @@
           }
         }
 
-        // 3. Meus EspaÃ§os
+        // 3. Meus Espaços
         const { data: espacos } = await supabaseClient.from('espacos').select('*');
         const myEspacos = (espacos || []).filter(s => 
           (s.user_id && String(s.user_id) === String(sessionUser.id)) ||
@@ -1523,10 +1545,10 @@
                 <div class="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground mb-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
                 </div>
-                <p class="text-sm font-semibold text-foreground">Nenhum espaÃ§o cultural cadastrado por vocÃª ainda</p>
-                <p class="text-xs text-muted-foreground mt-1 mb-4">Cadastre ateliÃªs, centros culturais, teatros ou galerias.</p>
+                <p class="text-sm font-semibold text-foreground">Nenhum espaço cultural cadastrado por você ainda</p>
+                <p class="text-xs text-muted-foreground mt-1 mb-4">Cadastre ateliês, centros culturais, teatros ou galerias.</p>
                 <button type="button" onclick="abrirModalCadastro('espaco')" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg hover:bg-primary-glow transition-all">
-                  + Cadastrar Primeiro EspaÃ§o
+                  + Cadastrar Primeiro Espaço
                 </button>
               </div>
             `;
@@ -1537,13 +1559,13 @@
                   <img src="${sp.foto || 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=600'}" class="w-16 h-16 rounded-lg object-cover border border-border shrink-0" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=600';">
                   <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5 flex-wrap mb-1">
-                      <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">${sp.tipo || 'EspaÃ§o'}</span>
+                      <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">${sp.tipo || 'Espaço'}</span>
                       <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-muted text-muted-foreground">${sp.categoria || 'Cultural'}</span>
                     </div>
                     <h5 class="text-sm font-bold text-foreground truncate" title="${sp.nome || ''}">${sp.nome || 'Sem nome'}</h5>
                     <p class="text-xs text-muted-foreground truncate flex items-center gap-1 mt-0.5">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      <span>${sp.endereco || 'EndereÃ§o nÃ£o informado'}</span>
+                      <span>${sp.endereco || 'Endereço não informado'}</span>
                     </p>
                   </div>
                 </div>
@@ -1562,7 +1584,7 @@
           }
         }
       } catch (err) {
-        console.error("Erro ao carregar conteÃºdos do usuÃ¡rio:", err);
+        console.error("Erro ao carregar conteúdos do usuário:", err);
       }
     };
 
@@ -1589,23 +1611,43 @@
 
 
   <!-- Bottom Navigation Mobile -->
-    <nav id="bottom-nav" class="fixed bottom-0 left-0 w-full bg-background/95 backdrop-blur-md border-t border-border z-[90] flex md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-    <div class="grid grid-cols-4 w-full px-2 py-2" id="bottom-nav-links">
-      <a href="../" data-path="index.html" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
+  <nav id="bottom-nav" class="fixed bottom-0 left-0 w-full bg-background/95 backdrop-blur-md border-t border-border z-[90] flex md:hidden overflow-x-auto overflow-y-hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)] custom-scrollbar hide-scroll-indicator">
+    <div class="flex items-center w-full px-2 py-2 min-w-max" id="bottom-nav-links">
+      <a href="../perfil/" data-path="perfil" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Entrar</span>
+      </a>
+      <a href="../" data-path="index.html" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span class="text-[10px] font-semibold mt-1">Home</span>
       </a>
-      <a href="../mapa/" data-path="mapa" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
+      <a href="../mapa/" data-path="mapa" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
         <span class="text-[10px] font-semibold mt-1">Mapa</span>
       </a>
-      <a href="../eventos/" data-path="eventos" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
+      <a href="../calendario/" data-path="calendario" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Calendário</span>
+      </a>
+      <a href="../eventos/" data-path="eventos" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
         <span class="text-[10px] font-semibold mt-1">Eventos</span>
       </a>
-      <a href="../perfil/" data-path="perfil" class="flex flex-col items-center justify-center py-1 text-muted-foreground hover:text-primary transition-colors">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
-        <span class="text-[10px] font-semibold mt-1">Perfil</span>
+      <a href="../espacos/" data-path="espacos" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M9 8h1"/><path d="M9 12h1"/><path d="M9 16h1"/><path d="M14 8h1"/><path d="M14 12h1"/><path d="M14 16h1"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Espaços</span>
+      </a>
+      <a href="../agentes/" data-path="agentes" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Agentes</span>
+      </a>
+      <a href="../cepin/" data-path="cepin" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span class="text-[10px] font-semibold mt-1">Sobre</span>
+      </a>
+      <a href="../mulheres/" data-path="mulheres" class="flex flex-col items-center justify-center min-w-[80px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span class="text-[10px] font-semibold mt-1 text-center leading-tight">Mulheres</span>
       </a>
     </div>
     <script>
@@ -1616,7 +1658,7 @@
           var dataPath = link.getAttribute('data-path');
           if ((dataPath === 'index.html' && (path.endsWith('/') || path.endsWith('index.html') && !path.includes('/mapa/') && !path.includes('/calendario/') && !path.includes('/eventos/') && !path.includes('/espacos/') && !path.includes('/agentes/') && !path.includes('/mulheres/') && !path.includes('/perfil/') && !path.includes('/cepin/'))) || 
               (dataPath !== 'index.html' && path.includes('/' + dataPath + '/'))) {
-            link.classList.remove('text-muted-foreground', 'hover:text-primary');
+            link.classList.remove('text-muted-foreground', 'hover:text-[#b1336b]', 'hover:text-primary');
             link.classList.add('text-primary', 'bg-primary/10', 'rounded-lg');
           }
         });
@@ -1626,9 +1668,6 @@
 
 </body>
 </html>
-
-
-
 
 
 

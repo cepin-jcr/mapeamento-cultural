@@ -1,4 +1,4 @@
-Ôªø<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -433,15 +433,15 @@
         // Agrupar por ano
         const grouped = {};
         data.equipeDesenvolvedores.forEach(memb => {
-          const ano = memb.ano ? String(memb.ano).trim() : 'Ano n√£o especificado';
+          const ano = memb.ano ? String(memb.ano).trim() : 'Ano n„o especificado';
           if(!grouped[ano]) grouped[ano] = [];
           grouped[ano].push(memb);
         });
         
-        // Ordenar os anos (decrescente), 'Ano n√£o especificado' no final
+        // Ordenar os anos (decrescente), 'Ano n„o especificado' no final
         const anos = Object.keys(grouped).sort((a, b) => {
-          if(a === 'Ano n√£o especificado') return 1;
-          if(b === 'Ano n√£o especificado') return -1;
+          if(a === 'Ano n„o especificado') return 1;
+          if(b === 'Ano n„o especificado') return -1;
           return b.localeCompare(a);
         });
 
@@ -462,7 +462,7 @@
               const item = document.createElement('div');
               item.className = 'flex flex-col';
               
-              const coordsHtml = memb.coordenadores ? `<div class="hidden px-4 py-3 bg-muted/30 text-xs text-muted-foreground border-t border-border/20"><strong>Coordenadores respons√°veis:</strong> ${memb.coordenadores}</div>` : '';
+              const coordsHtml = memb.coordenadores ? `<div class="hidden px-4 py-3 bg-muted/30 text-xs text-muted-foreground border-t border-border/20"><strong>Coordenadores respons·veis:</strong> ${memb.coordenadores}</div>` : '';
               const onClickAttr = memb.coordenadores ? `onclick="this.nextElementSibling.classList.toggle('hidden')" style="cursor: pointer;"` : '';
               const caret = memb.coordenadores ? `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg>` : '';
               
@@ -573,3 +573,4 @@
 
 </body>
 </html>
+
