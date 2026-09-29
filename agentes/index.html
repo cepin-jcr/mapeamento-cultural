@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Agentes Culturais | Vale do Paraíba </title>
+  <title>Agentes <span class="text-primary">Culturais</span> • Vale do Paraíba</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -148,8 +148,69 @@
           </button>
 
           <div id="filterDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-60 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200 max-h-96 overflow-y-auto">
-            <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
-              Áreas e Projetos
+            <button onclick="selecionarFiltro('todos')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-primary transition-colors flex items-center justify-between" data-value="todos">
+              <span>Todos</span>
+              <svg class="check-icon text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Mulheres na Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-pink-500/10 font-medium text-pink-600 dark:text-pink-400 transition-colors flex items-center justify-between" data-value="Mulheres na Música">
+              <span class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                Mulheres na Música
+              </span>
+              <svg class="check-icon hidden text-[#b1336b]" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Artes Visuais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes Visuais">
+              <span>Artes Visuais</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Audiovisual')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Audiovisual">
+              <span>Audiovisual</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Cultura Digital e Games')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Cultura Digital e Games">
+              <span>Cultura Digital e Games</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Cultura Popular')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Cultura Popular">
+              <span>Cultura Popular</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Dança')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Dança">
+              <span>Dança</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Educação e Pesquisa')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Educação e Pesquisa">
+              <span>Educação e Pesquisa</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Literatura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Literatura">
+              <span>Literatura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Mestre(a) de Cultura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Mestre(a) de Cultura">
+              <span>Mestre(a) de Cultura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Música">
+              <span>Música</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Patrimônio e Memória')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Patrimônio e Memória">
+              <span>Patrimônio e Memória</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Produção e Gestão Cultural')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Produção e Gestão Cultural">
+              <span>Produção e Gestão Cultural</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Teatro e Circo')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Teatro e Circo">
+              <span>Teatro e Circo</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Outros')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Outros">
+              <span>Outros</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
             </div>
             <button onclick="selecionarFiltro('Mulheres na Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-pink-500/10 font-medium text-pink-600 dark:text-pink-400 transition-colors flex items-center justify-between" data-value="Mulheres na Música">
               <span class="flex items-center gap-2">
@@ -158,59 +219,147 @@
               </span>
               <svg class="check-icon hidden text-[#b1336b]" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-            <button onclick="selecionarFiltro('Artes Cênicas')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes Cênicas">
-              <span>Artes Cênicas</span>
+            <button onclick="selecionarFiltro('Artes cênicas')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes cênicas">
+              <span>Artes cênicas</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-            <button onclick="selecionarFiltro('Artes Visuais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes Visuais">
-              <span>Artes Visuais</span>
-              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </button>
-            <button onclick="selecionarFiltro('Artesanato')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artesanato">
-              <span>Artesanato</span>
-              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </button>
-            <button onclick="selecionarFiltro('Audiovisual')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Audiovisual">
-              <span>Audiovisual</span>
-              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </button>
-            <button onclick="selecionarFiltro('Cultura Popular')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Cultura Popular">
-              <span>Cultura Popular</span>
-              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </button>
-            <button onclick="selecionarFiltro('Cultura Urbana')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Cultura Urbana">
-              <span>Cultura Urbana</span>
+            <button onclick="selecionarFiltro('Teatro')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Teatro">
+              <span>Teatro</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
             <button onclick="selecionarFiltro('Dança')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Dança">
               <span>Dança</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
+            <button onclick="selecionarFiltro('Ópera')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Ópera">
+              <span>Ópera</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Circo')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Circo">
+              <span>Circo</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Artes visuais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes visuais">
+              <span>Artes visuais</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Artes plásticas')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes plásticas">
+              <span>Artes plásticas</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Desenho')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Desenho">
+              <span>Desenho</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Pintura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Pintura">
+              <span>Pintura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Escultura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Escultura">
+              <span>Escultura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Gravura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Gravura">
+              <span>Gravura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Performance')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Performance">
+              <span>Performance</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Fotografia')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Fotografia">
+              <span>Fotografia</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
             <button onclick="selecionarFiltro('Design')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Design">
               <span>Design</span>
-              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </button>
-            <button onclick="selecionarFiltro('Gestão, Produção e Pesquisa')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Gestão, Produção e Pesquisa">
-              <span>Gestão, Produção e Pesquisa</span>
-              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </button>
-            <button onclick="selecionarFiltro('Literatura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Literatura">
-              <span>Literatura</span>
-              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </button>
-            <button onclick="selecionarFiltro('Mestre(a) de cultura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Mestre(a) de cultura">
-              <span>Mestre(a) de cultura</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
             <button onclick="selecionarFiltro('Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Música">
               <span>Música</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-            <button onclick="selecionarFiltro('Outros')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Outros">
-              <span>Outros</span>
+            <button onclick="selecionarFiltro('Literatura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Literatura">
+              <span>Literatura</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-
+            <button onclick="selecionarFiltro('Cinema')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Cinema">
+              <span>Cinema</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Vídeo')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Vídeo">
+              <span>Vídeo</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Multimídia')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Multimídia">
+              <span>Multimídia</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Folclore')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Folclore">
+              <span>Folclore</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Cultura popular')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Cultura popular">
+              <span>Cultura popular</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Mestre(a) de cultura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Mestre(a) de cultura">
+              <span>Mestre(a) de cultura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Artesanato')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artesanato">
+              <span>Artesanato</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Arte aplicada')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Arte aplicada">
+              <span>Arte aplicada</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Outras manifestações culturais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Outras manifestações culturais">
+              <span>Outras manifestações culturais</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Blocos carnavalescos')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Blocos carnavalescos">
+              <span>Blocos carnavalescos</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Escolas de Samba')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Escolas de Samba">
+              <span>Escolas de Samba</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Hip Hop')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Hip Hop">
+              <span>Hip Hop</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Danças urbanas')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Danças urbanas">
+              <span>Danças urbanas</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Grafite')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Grafite">
+              <span>Grafite</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Capoeira')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Capoeira">
+              <span>Capoeira</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Outras culturas urbanas')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Outras culturas urbanas">
+              <span>Outras culturas urbanas</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Pesquisador(a) da área cultural')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Pesquisador(a) da área cultural">
+              <span>Pesquisador(a) da área cultural</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Gestor(a) cultural')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Gestor(a) cultural">
+              <span>Gestor(a) cultural</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('Agente territorial de cultura')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Agente territorial de cultura">
+              <span>Agente territorial de cultura</span>
+              <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+               </button>
           </div>
         </div>
 
@@ -362,7 +511,7 @@
       }
 
       if (window.supabaseClient) {
-        const { data, error } = await supabaseClient.from('agentes').select('*').order('nome', {ascending: true});
+        const { data, error } = await supabaseClient.from('agentes').select('id, nome, area, foto, destaque, projeto_mulheres, mulheres_na_musica, endereco, lat, lng').order('nome', {ascending: true});
         if (!error && data) {
           if (Array.isArray(data)) {
             todosAgentes = data;
@@ -525,55 +674,43 @@
       return String(str).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
     }
 
-    function aplicarFiltros() {
-      const rawQ = document.getElementById('searchInput').value || '';
-      const q = normalizeStr(rawQ);
-      const filtrados = todosAgentes.filter(ag => {
-        const nome = normalizeStr(ag.nome);
-        const bio = normalizeStr(ag.bio || ag.biografia || ag.linguagens);
-        const area = normalizeStr(ag.area || ag.area_de_atuacao || ag.categoria || ag.linguagens);
-
-        const matchBusca = !q || nome.includes(q) || bio.includes(q) || area.includes(q);
-        
-        let matchArea = false;
-        if (areaAtiva === 'todos') {
-          matchArea = true;
-        } else if (areaAtiva === 'Mulheres na Música') {
-          matchArea = Boolean(ag.projeto_mulheres || ag.mulheres_na_musica);
-        } else if (areaAtiva === 'Outros') {
-          const knownFilters = [
-            'Agente territorial de cultura', 'Arte aplicada', 'Artes cênicas', 'Artes plásticas', 'Artes visuais',
-            'Artesanato', 'Blocos carnavalescos', 'Capoeira', 'Cinema', 'Circo', 'Cultura popular', 'Dança',
-            'Danças urbanas', 'Desenho', 'Design', 'Escolas de Samba', 'Escultura', 'Folclore', 'Fotografia',
-            'Gestor(a) cultural', 'Grafite', 'Gravura', 'Hip Hop', 'Literatura', 'Mestre(a) de cultura',
-            'Multimídia', 'Música', 'Ópera', 'Outras culturas urbanas', 'Outras manifestações culturais',
-            'Performance', 'Pesquisador(a) da área cultural', 'Pintura', 'Teatro', 'Vídeo'
-          ];
-          const hasKnownArea = knownFilters.some(f => area.includes(normalizeStr(f)));
-          const hasMulheres = Boolean(ag.projeto_mulheres || ag.mulheres_na_musica);
-          matchArea = !hasKnownArea && !hasMulheres;
-        } else {
+      function aplicarFiltros() {
+        let filtrados = allAgentes;
+        if (currentFilter !== 'todos') {
           const filterMapping = {
-            'Artes Cênicas': ['artes cênicas', 'teatro', 'circo', 'ópera', 'performance'],
-            'Artes Visuais': ['artes visuais', 'artes plásticas', 'desenho', 'pintura', 'escultura', 'gravura', 'fotografia'],
-            'Artesanato': ['artesanato', 'arte aplicada'],
-            'Audiovisual': ['audiovisual', 'cinema', 'vídeo', 'multimídia'],
-            'Cultura Popular': ['cultura popular', 'folclore', 'blocos carnavalescos', 'escolas de samba', 'capoeira'],
-            'Cultura Urbana': ['cultura urbana', 'hip hop', 'grafite', 'outras culturas urbanas', 'danças urbanas'],
-            'Dança': ['dança'],
-            'Design': ['design'],
-            'Gestão, Produção e Pesquisa': ['gestor(a) cultural', 'pesquisador(a) da área cultural', 'agente territorial de cultura'],
-            'Literatura': ['literatura'],
-            'Mestre(a) de cultura': ['mestre(a) de cultura'],
-            'Música': ['música']
+            'Mulheres na Música': ['mulheres na musica', 'mulheres na música'],
+            'Artes Visuais': ['artes visuais', 'pintura', 'escultura', 'fotografia', 'design', 'artesanato', 'grafite', 'ilustração', 'artes plásticas', 'moda', 'hq', 'quadrinhos'],
+            'Audiovisual': ['audiovisual', 'cinema', 'vídeo', 'tv', 'rádio', 'podcast', 'animação'],
+            'Cultura Digital e Games': ['cultura digital', 'games', 'jogos', 'realidade virtual', 'tecnologia', 'arte digital'],
+            'Cultura Popular': ['cultura popular', 'folclore', 'capoeira', 'maracatu', 'carnaval', 'samba', 'cultura indígena', 'cultura afro', 'jongo', 'congada', 'moçambique'],
+            'Dança': ['dança', 'ballet', 'dança contemporânea', 'danças urbanas', 'hip hop'],
+            'Educação e Pesquisa': ['educação', 'pesquisa', 'formação', 'palestra', 'workshop', 'oficina'],
+            'Literatura': ['literatura', 'poesia', 'escrita', 'cordel', 'saraus', 'contação de histórias', 'slam'],
+            'Mestre(a) de Cultura': ['mestre(a) de cultura', 'mestre de cultura', 'mestra de cultura'],
+            'Música': ['música', 'canto', 'instrumental', 'banda', 'coral', 'dj', 'produção musical'],
+            'Patrimônio e Memória': ['patrimônio', 'memória', 'museu', 'história', 'arquitetura', 'restauro'],
+            'Produção e Gestão Cultural': ['produção cultural', 'gestão', 'curadoria', 'eventos', 'políticas culturais'],
+            'Teatro e Circo': ['teatro', 'circo', 'atuação', 'direção', 'cenografia', 'iluminação', 'palhaçaria']
           };
-          const targetValues = filterMapping[areaAtiva] || [normalizeStr(areaAtiva)];
-          matchArea = targetValues.some(val => area.includes(normalizeStr(val)));
+          filtrados = filtrados.filter(a => {
+            if (currentFilter === 'Outros') {
+               const allMapped = Object.values(filterMapping).flat();
+               return !allMapped.some(m => (a.area && a.area.toLowerCase().includes(m)) || (a.categoria && a.categoria.toLowerCase().includes(m)) || (a.linguagens && a.linguagens.some(l => l.toLowerCase().includes(m))));
+            }
+            const matchWords = filterMapping[currentFilter] || [currentFilter.toLowerCase()];
+            const matchStr = (str) => str && matchWords.some(w => str.toLowerCase().includes(w));
+            return matchStr(a.area) || matchStr(a.categoria) || (a.linguagens && a.linguagens.some(l => matchStr(l)));
+          });
         }
-
-        return matchBusca && matchArea;
-      });
-      renderAgentes(filtrados);
+        if (currentSearch) {
+          const s = currentSearch.toLowerCase();
+          filtrados = filtrados.filter(a => 
+            (a.nome && a.nome.toLowerCase().includes(s)) ||
+            (a.descricao_curta && a.descricao_curta.toLowerCase().includes(s)) ||
+            (a.cidade && a.cidade.toLowerCase().includes(s))
+          );
+        }
+        renderAgentes(filtrados);
     }
 
     // Scroll Navbar Effect

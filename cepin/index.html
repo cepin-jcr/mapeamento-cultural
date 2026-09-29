@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quem Somos | CEPIN JCR</title>
+  <title>Quem Somos - CEPIN JCR</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,7 +126,7 @@
         Apresentação do <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-glow">CEPIN JCR</span>
       </h1>
       <p id="page-subtitle" class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
-        Centro de Pesquisa e Inovação em Consumo, Mercados e Negócios do câmpus de Jacareí­
+        Centro de Pesquisa e Inovação em Consumo, Mercados e Negócios do câmpus de Jacareí
       </p>
     </div>
   </section>
@@ -220,7 +220,7 @@
             <thead>
               <tr class="bg-muted/40 border-b border-border/60 text-xs font-bold uppercase text-muted-foreground">
                 <th class="p-4 pl-6">Nome</th>
-                <th class="p-4">CÃ¢mpus</th>
+                <th class="p-4">Câmpus</th>
                 <th class="p-4">Cargo / Representação</th>
                 <th class="p-4 pr-6 text-right">Contato</th>
               </tr>
@@ -261,7 +261,7 @@
             <span class="text-2xl"></span>
             <h3 class="font-display font-extrabold text-lg tracking-tight">Desenvolvedores</h3>
           </div>
-            <div id="desenvolvedores-container" class="space-y-6"></div>
+          <div id="desenvolvedores-container" class="space-y-6"></div>
           <div id="desenvolvedores-empty-state" class="hidden text-center text-xs text-muted-foreground py-4">
             Nenhum desenvolvedor cadastrado.
           </div>
@@ -426,11 +426,10 @@
 
       const devContainer = document.getElementById('desenvolvedores-container');
       const devEmpty = document.getElementById('desenvolvedores-empty-state');
-      if(devContainer) devContainer.innerHTML = '';
+      if (devContainer) devContainer.innerHTML = '';
       if (data.equipeDesenvolvedores && data.equipeDesenvolvedores.length > 0) {
-        if(devEmpty) devEmpty.classList.add('hidden');
+        devEmpty.classList.add('hidden');
         
-        // Agrupar por ano
         const grouped = {};
         data.equipeDesenvolvedores.forEach(memb => {
           const ano = memb.ano ? String(memb.ano).trim() : 'Ano não especificado';
@@ -438,14 +437,13 @@
           grouped[ano].push(memb);
         });
         
-        // Ordenar os anos (decrescente), 'Ano não especificado' no final
         const anos = Object.keys(grouped).sort((a, b) => {
           if(a === 'Ano não especificado') return 1;
           if(b === 'Ano não especificado') return -1;
           return b.localeCompare(a);
         });
 
-        if(devContainer) {
+        if (devContainer) {
           anos.forEach(ano => {
             const section = document.createElement('div');
             section.className = 'space-y-3';
@@ -489,7 +487,7 @@
           });
         }
       } else {
-        if(devEmpty) devEmpty.classList.remove('hidden');
+        devEmpty.classList.remove('hidden');
       }
     }
 
@@ -573,4 +571,5 @@
 
 </body>
 </html>
+
 

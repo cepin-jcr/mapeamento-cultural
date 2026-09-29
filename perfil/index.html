@@ -1026,10 +1026,10 @@
         list.innerHTML = (arr || []).map((m, i) => `
           <div class="flex gap-2 items-center flex-wrap sm:flex-nowrap">
             <input type="text" placeholder="Nome" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${m.nome || ''}">
-            ${type === 'membro' ? <input type="text" placeholder="Câmpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${m.campus || ''}"> : ''}
-            ${type === 'dev' ? <input type="text" placeholder="Ano" class="w-16 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-ano" value="${m.ano || ''}"> : ''}
+            ${type === 'membro' ? `<input type="text" placeholder="Câmpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${m.campus || ''}">` : ''}
+            ${type === 'dev' ? `<input type="text" placeholder="Ano" class="w-16 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-ano" value="${m.ano || ''}">` : ''}
             <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'Função'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${m.cargo || m.funcao || ''}">
-            ${type === 'dev' ? <input type="text" placeholder="Coordenador(es)" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-coord" value="${m.coordenadores || ''}"> : ''}
+            ${type === 'dev' ? `<input type="text" placeholder="Coordenador(es)" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-coord" value="${m.coordenadores || ''}">` : ''}
             <input type="text" placeholder="Contato" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${m.contato || ''}">
             <button type="button" onclick="removeCepinEquipeMembro('${type}', ${i})" class="text-red-500 font-bold p-1 hover:bg-red-500/10 rounded">X</button>
           </div>
@@ -1042,7 +1042,7 @@
 
     window.addCepinEquipeMembro = (type) => {
       updateLocalCepinData();
-      const obj = type === 'membro' ? {nome:"", campus:"", cargo:"", contato:""} : (type === 'dev' ? {nome:"", funcao:"", contato:"", ano:"", coordenadores:""} : {nome:"", funcao:"", contato:""});
+      const obj = type === 'membro' ? {nome:"", campus:"", cargo:"", contato:""} : {nome:"", funcao:"", contato:""};
       if (type === 'membro') { if(!cepinCurrentData.equipeMembros) cepinCurrentData.equipeMembros=[]; cepinCurrentData.equipeMembros.push(obj); }
       if (type === 'colab') { if(!cepinCurrentData.equipeColaboradores) cepinCurrentData.equipeColaboradores=[]; cepinCurrentData.equipeColaboradores.push(obj); }
       if (type === 'dev') { if(!cepinCurrentData.equipeDesenvolvedores) cepinCurrentData.equipeDesenvolvedores=[]; cepinCurrentData.equipeDesenvolvedores.push(obj); }
@@ -1097,6 +1097,7 @@
           return obj;
         });
       };
+
       cepinCurrentData.equipeMembros = getList('membro');
       cepinCurrentData.equipeColaboradores = getList('colab');
       cepinCurrentData.equipeDesenvolvedores = getList('dev');
