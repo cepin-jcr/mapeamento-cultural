@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Modal Global de Cadastro e EdiÃ§Ã£o de Eventos, Agentes e EspaÃ§os Culturais
  * Exclusivo para usuÃ¡rios autenticados e aprovados
  */
@@ -154,13 +154,13 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5 flex flex-col justify-end pb-1">
                 <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
-                  <input type="checkbox" id="cad-evento-anual" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <input type="checkbox" id="cad-evento-anual" onchange="if(this.checked){const t=document.getElementById('cad-evento-temporada');if(t)t.checked=false;}" class="rounded text-primary focus:ring-primary h-4 w-4">
                   <span class="text-xs font-semibold text-foreground">Evento Anual</span>
                 </label>
               </div>
               <div class="space-y-1.5 flex flex-col justify-end pb-1">
                 <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
-                  <input type="checkbox" id="cad-evento-temporada" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <input type="checkbox" id="cad-evento-temporada" onchange="if(this.checked){const a=document.getElementById('cad-evento-anual');if(a)a.checked=false;}" class="rounded text-primary focus:ring-primary h-4 w-4">
                   <span class="text-xs font-semibold text-foreground">Por Temporada</span>
                 </label>
               </div>
@@ -539,11 +539,14 @@
           if (tipo === 'evento') {
             document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
             document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
-            document.getElementById('cad-evento-data-hora').value = data.data_hora || data.data || '';
+            const rawDataHora = data.data_hora || data.data || '';
+            const isAnual = (data.anual !== undefined && data.anual !== null ? !!data.anual : false) || rawDataHora.toLowerCase().includes('anual');
+            const isTemporada = (data.temporada !== undefined && data.temporada !== null ? !!data.temporada : false) || rawDataHora.toLowerCase().includes('temporada');
+            document.getElementById('cad-evento-data-hora').value = rawDataHora.replace(/\s*\((anual|temporada)\)/gi, '').trim();
             document.getElementById('cad-evento-local').value = data.local || '';
             if (document.getElementById('cad-evento-organizador')) document.getElementById('cad-evento-organizador').value = data.organizador || '';
-            if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = !!data.anual;
-            if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = !!data.temporada;
+            if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = isAnual;
+            if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = isTemporada;
             document.getElementById('cad-evento-descricao').value = data.descricao || '';
             document.getElementById('cad-evento-link').value = data.link || '';
             if (data.foto || data.imagem) {
@@ -683,26 +686,35 @@
     try {
       const nome = document.getElementById('cad-evento-nome').value.trim();
       const categoria = document.getElementById('cad-evento-categoria').value.trim();
-      const data_hora = document.getElementById('cad-evento-data-hora').value.trim();
+      const data_hora_input = document.getElementById('cad-evento-data-hora').value.trim();
       const local = document.getElementById('cad-evento-local').value.trim();
-      const organizador = document.getElementById('cad-evento-organizador').value.trim();
-      const anual = document.getElementById('cad-evento-anual').checked;
-      const temporada = document.getElementById('cad-evento-temporada').checked;
+      const organizador = document.getElementById('cad-evento-organizador') ? document.getElementById('cad-evento-organizador').value.trim() : '';
+      const anual = document.getElementById('cad-evento-anual') ? document.getElementById('cad-evento-anual').checked : false;
+      const temporada = document.getElementById('cad-evento-temporada') ? document.getElementById('cad-evento-temporada').checked : false;
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
-      const link = document.getElementById('cad-evento-link').value.trim();
+      const link = document.getElementById('cad-evento-link') ? document.getElementById('cad-evento-link').value.trim() : '';
       const fotoInput = document.getElementById('cad-evento-foto');
+
+      let data_hora = data_hora_input.replace(/\s*\((anual|temporada)\)/gi, '').trim();
+      if (anual) {
+        data_hora = data_hora.replace(/,?\s*\b20\d{2}\b/g, '').trim();
+        data_hora += ' (Anual)';
+      } else if (temporada) {
+        data_hora += ' (Temporada)';
+      }
 
       const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
       const descricaoFinal = descricaoFull;
 
       const payload = {
         nome,
+        titulo: nome,
         categoria,
         data_hora,
+        data: data_hora,
+        horario: data_hora,
         local,
         organizador,
-        anual,
-        temporada,
         descricao: descricaoFinal,
         lat: -23.3055,
         lng: -45.9658
