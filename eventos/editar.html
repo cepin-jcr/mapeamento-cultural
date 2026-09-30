@@ -323,13 +323,30 @@
       };
 
       let error;
-      if (agenteId) {
-        const res = await supabaseClient.from('eventos').update(updates).eq('id', agenteId);
-        error = res.error;
-      } else {
-        const res = await supabaseClient.from('eventos').insert(updates);
-        error = res.error;
+      let attemptUpdates = { ...updates };
+      const trySave = async (data) => {
+        if (agenteId) {
+          return await supabaseClient.from('eventos').update(data).eq('id', agenteId);
+        } else {
+          return await supabaseClient.from('eventos').insert(data);
+        }
+      };
+
+      let res = await trySave(attemptUpdates);
+      let retries = 0;
+      while (res && res.error && res.error.message && retries < 10) {
+        const match = res.error.message.match(/(?:Could not find the ['"]([^'"]+)['"] column|column ['"]([^'"]+)['"] of relation)/i);
+        const missingCol = match ? (match[1] || match[2]) : null;
+        if (missingCol && attemptUpdates.hasOwnProperty(missingCol)) {
+          console.warn(`[AutoRecovery] Removendo coluna '${missingCol}' inexistente e tentando novamente...`);
+          delete attemptUpdates[missingCol];
+          retries++;
+          res = await trySave(attemptUpdates);
+          continue;
+        }
+        break;
       }
+      error = res ? res.error : null;
       
       if (error) {
         alert('Erro ao salvar evento. Erro: ' + error.message);

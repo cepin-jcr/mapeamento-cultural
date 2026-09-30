@@ -547,8 +547,15 @@
             if (document.getElementById('cad-evento-organizador')) document.getElementById('cad-evento-organizador').value = data.organizador || '';
             if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = isAnual;
             if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = isTemporada;
-            document.getElementById('cad-evento-descricao').value = data.descricao || '';
-            document.getElementById('cad-evento-link').value = data.link || '';
+            let desc = data.descricao || '';
+            let extractedLink = data.link || '';
+            const linkMatch = desc.match(/(?:\r?\n)?Link:\s*(https?:\/\/[^\s]+)/i);
+            if (linkMatch) {
+              if (!extractedLink) extractedLink = linkMatch[1];
+              desc = desc.replace(/(?:\r?\n)?Link:\s*https?:\/\/[^\s]+/i, '').trim();
+            }
+            document.getElementById('cad-evento-descricao').value = desc;
+            if (document.getElementById('cad-evento-link')) document.getElementById('cad-evento-link').value = extractedLink;
             if (data.foto || data.imagem) {
               const prev = document.getElementById('preview-cad-evento');
               prev.src = data.foto || data.imagem;
@@ -675,6 +682,49 @@
     }
   }
 
+  // Função utilitária para envio ao Supabase com auto-recuperação de cache de esquema
+  async function executarSupabaseComAutoRecuperacao(tabela, payload, isEdit, id) {
+    if (!window.supabaseClient) return;
+
+    let attemptPayload = { ...payload };
+    const trySave = async (data) => {
+      if (isEdit) {
+        return await supabaseClient.from(tabela).update(data).eq('id', id);
+      } else {
+        return await supabaseClient.from(tabela).insert([data]);
+      }
+    };
+
+    let res = await trySave(attemptPayload);
+    let retries = 0;
+    while (res && res.error && res.error.message && retries < 10) {
+      // 1. Detecta erro de coluna inexistente no schema cache ou banco (PostgREST)
+      const match = res.error.message.match(/(?:Could not find the ['"]([^'"]+)['"] column|column ['"]([^'"]+)['"] of relation)/i);
+      const missingCol = match ? (match[1] || match[2]) : null;
+      if (missingCol && attemptPayload.hasOwnProperty(missingCol)) {
+        console.warn(`[AutoRecovery] Removendo coluna '${missingCol}' inexistente na tabela '${tabela}' e tentando novamente...`);
+        delete attemptPayload[missingCol];
+        retries++;
+        res = await trySave(attemptPayload);
+        continue;
+      }
+
+      // 2. Detecta incompatibilidade de user_id (UUID / FK)
+      if (attemptPayload.user_id && (res.error.message.includes('user_id') || res.error.message.includes('uuid'))) {
+        console.warn(`[AutoRecovery] Removendo user_id incompatível na tabela '${tabela}' e tentando novamente...`, res.error);
+        delete attemptPayload.user_id;
+        retries++;
+        res = await trySave(attemptPayload);
+        continue;
+      }
+
+      break;
+    }
+
+    if (res && res.error) throw res.error;
+    return res;
+  }
+
   // Submit Evento (Insert ou Update)
   window.submeterCadastroEvento = async (e) => {
     e.preventDefault();
@@ -703,8 +753,8 @@
         data_hora += ' (Temporada)';
       }
 
-      const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
-      const descricaoFinal = descricaoFull;
+      let descLimpa = descricao.replace(/(?:\r?\n)?Link:\s*https?:\/\/[^\s]+/i, '').trim();
+      const descricaoFinal = link ? (descLimpa ? descLimpa + '\nLink: ' + link : link) : descLimpa;
 
       const payload = {
         nome,
@@ -715,10 +765,9 @@
         horario: data_hora,
         local,
         organizador,
-        descricao: descricaoFinal,
-        lat: -23.3055,
-        lng: -45.9658
+        descricao: descricaoFinal
       };
+      if (link) payload.link = link;
 
       if (user) {
         payload.user_id = user.id;
@@ -734,15 +783,7 @@
         payload.foto = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000';
       }
 
-      if (window.supabaseClient) {
-        if (isEdit) {
-          const { error } = await supabaseClient.from('eventos').update(payload).eq('id', window._currentEditing.id);
-          if (error) throw error;
-        } else {
-          const { error } = await supabaseClient.from('eventos').insert([payload]);
-          if (error) throw error;
-        }
-      }
+      await executarSupabaseComAutoRecuperacao('eventos', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
 
       showModalMsg(isEdit ? "Evento atualizado com sucesso!" : "Evento cultural publicado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'evento' } }));
@@ -844,15 +885,7 @@
         payload.foto = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
       }
 
-      if (window.supabaseClient) {
-        if (isEdit) {
-          const { error } = await supabaseClient.from('agentes').update(payload).eq('id', window._currentEditing.id);
-          if (error) throw error;
-        } else {
-          const { error } = await supabaseClient.from('agentes').insert([payload]);
-          if (error) throw error;
-        }
-      }
+      await executarSupabaseComAutoRecuperacao('agentes', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
 
       showModalMsg(isEdit ? "Perfil de agente atualizado com sucesso!" : "Agente cultural cadastrado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'agente' } }));
@@ -911,15 +944,7 @@
         payload.foto = 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=1000';
       }
 
-      if (window.supabaseClient) {
-        if (isEdit) {
-          const { error } = await supabaseClient.from('espacos').update(payload).eq('id', window._currentEditing.id);
-          if (error) throw error;
-        } else {
-          const { error } = await supabaseClient.from('espacos').insert([payload]);
-          if (error) throw error;
-        }
-      }
+      await executarSupabaseComAutoRecuperacao('espacos', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
 
       showModalMsg(isEdit ? "Espaço atualizado com sucesso!" : "Espaço cultural cadastrado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'espaco' } }));
