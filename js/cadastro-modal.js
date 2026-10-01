@@ -75,7 +75,7 @@
             </div>
             <div>
               <h2 id="modal-cadastro-title" class="text-xl font-bold font-display text-foreground">Novo Cadastro Cultural</h2>
-              <p id="modal-cadastro-subtitle" class="text-xs text-muted-foreground">Publique no Mapeamento Cultural do Vale do Paraí­ba</p>
+              <p id="modal-cadastro-subtitle" class="text-xs text-muted-foreground">Publique no Mapeamento Cultural do Vale do ParaÃ­ba</p>
             </div>
           </div>
           <button type="button" onclick="fecharModalCadastro()" class="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors cursor-pointer" aria-label="Fechar">
@@ -83,7 +83,7 @@
           </button>
         </div>
 
-        <!-- Type Selector Tabs (oculto por padrão para foco específico) -->
+        <!-- Type Selector Tabs (oculto por padrÃ£o para foco especÃ­fico) -->
         <div class="hidden px-6 pt-4 pb-2 border-b border-border bg-background/50 flex gap-2 overflow-x-auto" id="modal-cadastro-tabs">
           <button type="button" onclick="trocarAbaCadastro('evento')" id="tab-btn-evento" class="px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer bg-primary text-primary-foreground shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
@@ -95,21 +95,21 @@
           </button>
           <button type="button" onclick="trocarAbaCadastro('espaco')" id="tab-btn-espaco" class="px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer text-muted-foreground hover:bg-muted hover:text-foreground">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
-            <span>Espaço Cultural</span>
+            <span>EspaÃ§o Cultural</span>
           </button>
         </div>
 
         <!-- Modal Body (Forms Container) -->
         <div class="p-6 overflow-y-auto flex-1 space-y-6">
 
-          <!-- Alerta / Notificação -->
+          <!-- Alerta / NotificaÃ§Ã£o -->
           <div id="modal-cadastro-msg" class="hidden p-4 rounded-xl text-sm font-medium border transition-all"></div>
 
           <!-- ================= FORM EVENTO ================= -->
           <form id="form-cadastro-evento" onsubmit="submeterCadastroEvento(event)" class="space-y-4">
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome do Evento *</label>
-              <input type="text" id="cad-evento-nome" required placeholder="Ex: Festival de Inverno de Jacareí­" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              <input type="text" id="cad-evento-nome" required placeholder="Ex: Festival de Inverno de JacareÃ­" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -118,7 +118,7 @@
                 <select id="cad-evento-categoria" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
                   <option value="Música">Música</option>
                   <option value="Teatro">Teatro</option>
-                  <option value="Dança">Dança</option>
+                  <option value="DanÃ§a">DanÃ§a</option>
                   <option value="Artes Visuais">Artes Visuais</option>
                   <option value="Literatura">Literatura</option>
                   <option value="Cultura Popular">Cultura Popular</option>
@@ -130,15 +130,15 @@
               </div>
 
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Data e Horário *</label>
-                <input type="text" id="cad-evento-data-hora" required placeholder="Ex: 20 de Outubro às 19:00" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Data e HorÃ¡rio *</label>
+                <input type="text" id="cad-evento-data-hora" required placeholder="Ex: 20 de Outubro Ã s 19:00" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
-                <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <input type="text" id="cad-evento-local" required placeholder="Ex: Sala MÃ¡rio Lago - PÃ¡tio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
               <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Organizador / Realizador</label>
@@ -147,27 +147,27 @@
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Descrição do Evento *</label>
-              <textarea id="cad-evento-descricao" rows="4" required placeholder="Apresentação artí­stica aberta ao público com repertório de..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">DescriÃ§Ã£o do Evento *</label>
+              <textarea id="cad-evento-descricao" rows="4" required placeholder="ApresentaÃ§Ã£o artÃ­stica aberta ao pÃºblico com repertÃ³rio de..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5 flex flex-col justify-end pb-1">
                 <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
-                  <input type="checkbox" id="cad-evento-anual" onchange="if(this.checked){const t=document.getElementById('cad-evento-temporada');if(t)t.checked=false;}" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <input type="checkbox" id="cad-evento-anual" class="rounded text-primary focus:ring-primary h-4 w-4">
                   <span class="text-xs font-semibold text-foreground">Evento Anual</span>
                 </label>
               </div>
               <div class="space-y-1.5 flex flex-col justify-end pb-1">
                 <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
-                  <input type="checkbox" id="cad-evento-temporada" onchange="if(this.checked){const a=document.getElementById('cad-evento-anual');if(a)a.checked=false;}" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <input type="checkbox" id="cad-evento-temporada" class="rounded text-primary focus:ring-primary h-4 w-4">
                   <span class="text-xs font-semibold text-foreground">Por Temporada</span>
                 </label>
               </div>
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Link de Informações / Ingressos (Opcional)</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Link de InformaÃ§Ãµes / Ingressos (Opcional)</label>
               <input type="url" id="cad-evento-link" placeholder="https://..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
@@ -188,21 +188,21 @@
           <!-- ================= FORM AGENTE ================= -->
           <form id="form-cadastro-agente" onsubmit="submeterCadastroAgente(event)" class="space-y-4 hidden">
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome Artístico / Coletivo *</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome ArtÃ­stico / Coletivo *</label>
               <input type="text" id="cad-agente-nome" required placeholder="Ex: Grupo Teatral Vanguarda" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Área de atuação *</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Ãrea de AtuaÃ§Ã£o *</label>
                 <div id="cad-agente-area-container" class="w-full h-44 overflow-y-auto px-3 py-2 bg-background border border-input rounded-xl text-sm scrollbar-thin flex flex-col gap-1">
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes cênicas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes cênicas</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes cÃªnicas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes cÃªnicas</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Teatro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Teatro</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Dança" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Dança</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ópera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ópera</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="DanÃ§a" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">DanÃ§a</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ã“pera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ã“pera</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Circo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Circo</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes visuais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes visuais</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes plásticas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes plásticas</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes plÃ¡sticas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes plÃ¡sticas</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Desenho" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Desenho</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Pintura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Pintura</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Escultura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Escultura</span></label>
@@ -213,22 +213,22 @@
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Música" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Música</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Literatura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Literatura</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Cinema" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Cinema</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Vídeo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ví­deo</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Multimídia" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Multimídia</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="VÃ­deo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">VÃ­deo</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="MultimÃ­dia" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">MultimÃ­dia</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Folclore" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Folclore</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Cultura popular" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Cultura popular</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Mestre(a) de cultura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Mestre(a) de cultura</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artesanato" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artesanato</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Arte aplicada" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Arte aplicada</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outras manifestações culturais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outras manifestações culturais</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outras manifestaÃ§Ãµes culturais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outras manifestaÃ§Ãµes culturais</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Blocos carnavalescos" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Blocos carnavalescos</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Escolas de Samba" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Escolas de Samba</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Hip Hop" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Hip Hop</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Danças urbanas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Danças urbanas</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="DanÃ§as urbanas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">DanÃ§as urbanas</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Grafite" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Grafite</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Capoeira" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Capoeira</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outras culturas urbanas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outras culturas urbanas</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Pesquisador(a) da Área cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Pesquisador(a) da Área cultural</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Pesquisador(a) da Ã¡rea cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Pesquisador(a) da Ã¡rea cultural</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Gestor(a) cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Gestor(a) cultural</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Agente territorial de cultura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Agente territorial de cultura</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outro</span></label>
@@ -245,8 +245,8 @@
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Biografia / Histórico *</label>
-              <textarea id="cad-agente-bio" rows="4" required placeholder="Conte sua trajetória, projetos realizados, influências e atuação na cidade..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Biografia / HistÃ³rico *</label>
+              <textarea id="cad-agente-bio" rows="4" required placeholder="Conte sua trajetÃ³ria, projetos realizados, influÃªncias e atuaÃ§Ã£o na cidade..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -255,7 +255,7 @@
                 <input type="text" id="cad-agente-contato" placeholder="(12) 99999-9999" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Instagram / Portifólio</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Instagram / PortfÃ³lio</label>
                 <input type="text" id="cad-agente-instagram" placeholder="@artista" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
             </div>
@@ -268,7 +268,7 @@
               <div class="space-y-3 p-4 bg-muted/30 border border-border rounded-xl">
                 <label class="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" id="cad-agente-lgpd" required class="mt-0.5 rounded text-primary focus:ring-primary h-4 w-4 shrink-0">
-                  <span class="text-xs text-muted-foreground leading-snug">Autorizo o tratamento das minhas informações para fins de cadastro e login na plataforma Mapeamento Cultural do Vale do Paraí­ba, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018). *</span>
+                  <span class="text-xs text-muted-foreground leading-snug">Autorizo o tratamento das minhas informaÃ§Ãµes para fins de cadastro e login na plataforma Mapeamento Cultural do Vale do ParaÃ­ba, em conformidade com a Lei Geral de ProteÃ§Ã£o de Dados (LGPD - Lei nÂº 13.709/2018). *</span>
                 </label>
                 <label class="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" id="cad-agente-idade" required class="mt-0.5 rounded text-primary focus:ring-primary h-4 w-4 shrink-0">
@@ -288,37 +288,37 @@
           <!-- ================= FORM ESPAÃ‡O ================= -->
           <form id="form-cadastro-espaco" onsubmit="submeterCadastroEspaco(event)" class="space-y-4 hidden">
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome do Espaço *</label>
-              <input type="text" id="cad-espaco-nome" required placeholder="Ex: Centro Cultural Pátio das Artes" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome do EspaÃ§o *</label>
+              <input type="text" id="cad-espaco-nome" required placeholder="Ex: Centro Cultural PÃ¡tio das Artes" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Tipo de Espaço *</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Tipo de EspaÃ§o *</label>
                 <select id="cad-espaco-tipo" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="Espaço Público">Espaço Público</option>
-                  <option value="Espaço Privado">Espaço Privado</option>
+                  <option value="EspaÃ§o PÃºblico">EspaÃ§o PÃºblico</option>
+                  <option value="EspaÃ§o Privado">EspaÃ§o Privado</option>
                   <option value="Coletivo / Independente">Coletivo / Independente</option>
                   <option value="Ponto de Cultura">Ponto de Cultura</option>
                 </select>
               </div>
 
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Categoria / Vocação *</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Categoria / VocaÃ§Ã£o *</label>
                 <select id="cad-espaco-categoria" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                    <option value="Acervo Histórico">Acervo Histórico</option>
+                    <option value="Acervo HistÃ³rico">Acervo HistÃ³rico</option>
                     <option value="Arte Urbana">Arte Urbana</option>
-                    <option value="Associação">Associação</option>
-                    <option value="Ateliê">Ateliê</option>
+                    <option value="AssociaÃ§Ã£o">AssociaÃ§Ã£o</option>
+                    <option value="AteliÃª">AteliÃª</option>
                     <option value="Biblioteca">Biblioteca</option>
-                    <option value="Capela Histórica">Capela Histórica</option>
+                    <option value="Capela HistÃ³rica">Capela HistÃ³rica</option>
                     <option value="Centro Cultural">Centro Cultural</option>
                     <option value="Cinema">Cinema</option>
-                    <option value="Dança">Dança</option>
-                    <option value="Espaço Circense">EspaÃ§o Circense</option>
-                    <option value="Espaço Público">Espaço Público</option>
-                    <option value="Estádio">Estádio</option>
-                    <option value="Exposição">Exposição</option>
+                    <option value="DanÃ§a">DanÃ§a</option>
+                    <option value="EspaÃ§o Circense">EspaÃ§o Circense</option>
+                    <option value="EspaÃ§o PÃºblico">EspaÃ§o PÃºblico</option>
+                    <option value="EstÃºdio">EstÃºdio</option>
+                    <option value="ExposiÃ§Ã£o">ExposiÃ§Ã£o</option>
                     <option value="Galeria">Galeria</option>
                     <option value="Igreja">Igreja</option>
                     <option value="Mercado Municipal">Mercado Municipal</option>
@@ -327,8 +327,8 @@
                     <option value="PatrimÃ´nio Cultural">PatrimÃ´nio Cultural</option>
                     <option value="Programa de EducaÃ§Ã£o">Programa de EducaÃ§Ã£o</option>
                     <option value="Samba de Roda">Samba de Roda</option>
-                    <option value="Santuário">Santuário</option>
-                    <option value="Sítio Arqueológico">Sí­tio Arqueológico</option>
+                    <option value="SantuÃ¡rio">SantuÃ¡rio</option>
+                    <option value="SÃ­tio ArqueolÃ³gico">SÃ­tio ArqueolÃ³gico</option>
                     <option value="Teatro">Teatro</option>
                     <option value="Templo">Templo</option>
                     <option value="Terreiro">Terreiro</option>
@@ -338,13 +338,13 @@
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo em Jacareí­ *</label>
-              <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">EndereÃ§o Completo em JacareÃ­ *</label>
+              <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua BarÃ£o de JacareÃ­, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Descrição do Local e Atividades *</label>
-              <textarea id="cad-espaco-descricao" rows="4" required placeholder="Espaço destinado a oficinas, apresentações teatrais e exposições..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">DescriÃ§Ã£o do Local e Atividades *</label>
+              <textarea id="cad-espaco-descricao" rows="4" required placeholder="EspaÃ§o destinado a oficinas, apresentaÃ§Ãµes teatrais e exposiÃ§Ãµes..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
             </div>
 
             <div class="space-y-1.5">
@@ -353,7 +353,7 @@
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Foto do Espaço</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Foto do EspaÃ§o</label>
               <input type="file" id="cad-espaco-foto" accept="image/*" onchange="previewImagemCadastro(event, 'preview-cad-espaco')" class="w-full text-xs text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer">
               <img id="preview-cad-espaco" class="hidden mt-2 h-36 w-full object-cover rounded-xl border border-border">
             </div>
@@ -361,7 +361,7 @@
             <div class="pt-4 border-t border-border flex justify-end gap-3">
               <button type="button" onclick="fecharModalCadastro()" class="px-5 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer">Cancelar</button>
               <button type="submit" id="btn-submit-espaco" class="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-glow shadow-sm transition-all flex items-center gap-2 cursor-pointer">
-                <span>Cadastrar Espaço</span>
+                <span>Cadastrar EspaÃ§o</span>
               </button>
             </div>
           </form>
@@ -418,7 +418,7 @@
     
     if (!isSignup) {
       if (!user || !isUserApproved(user)) {
-        alert("Apenas usuários com cadastro aprovado podem publicar novos eventos, agentes e espaços.");
+        alert("Apenas usuÃ¡rios com cadastro aprovado podem publicar novos eventos, agentes e espaÃ§os.");
         return;
       }
     }
@@ -427,11 +427,11 @@
     window._currentEditing = null;
     createModalDOM();
 
-    // Configura título e subtí­tulo dinâmico
+    // Configura tÃ­tulo e subtÃ­tulo dinÃ¢mico
     const titles = {
-      evento: { title: "Novo Evento", sub: "Cadastre um novo evento no calendário cultural de Jacareí", btn: "Publicar Evento" },
+      evento: { title: "Novo Evento", sub: "Cadastre um novo evento no calendÃ¡rio cultural de JacareÃ­", btn: "Publicar Evento" },
       agente: { title: "Novo Agente Cultural", sub: "Cadastre um artista, grupo ou produtor cultural", btn: "Cadastrar Agente" },
-      espaco: { title: "Novo Espaço Cultural", sub: "Cadastre um novo espaço, centro ou ateliê cultural", btn: "Cadastrar Espaço" }
+      espaco: { title: "Novo EspaÃ§o Cultural", sub: "Cadastre um novo espaÃ§o, centro ou ateliÃª cultural", btn: "Cadastrar EspaÃ§o" }
     };
 
     const cfg = titles[tipo] || titles.evento;
@@ -459,8 +459,8 @@
         const authFields = `
           <div id="signup-auth-fields" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 bg-primary/5 p-4 rounded-xl border border-primary/20">
             <div class="col-span-1 sm:col-span-2">
-              <p class="text-xs font-bold text-primary uppercase tracking-wider mb-1">Dados de Acesso (Criação de Conta)</p>
-              <p class="text-[11px] text-muted-foreground">Você usará este e-mail e senha para acessar o sistema após aprovação.</p>
+              <p class="text-xs font-bold text-primary uppercase tracking-wider mb-1">Dados de Acesso (CriaÃ§Ã£o de Conta)</p>
+              <p class="text-[11px] text-muted-foreground">VocÃª usarÃ¡ este e-mail e senha para acessar o sistema apÃ³s aprovaÃ§Ã£o.</p>
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">E-mail *</label>
@@ -495,7 +495,7 @@
   window.abrirModalEdicao = async (tipo, id) => {
     const user = getLoggedUser();
     if (!user || !isUserApproved(user)) {
-      alert("Apenas usuários aprovados podem editar seus cadastros.");
+      alert("Apenas usuÃ¡rios aprovados podem editar seus cadastros.");
       return;
     }
 
@@ -503,9 +503,9 @@
     window._currentEditing = { tipo, id };
 
     const titles = {
-      evento: { title: "Editar Evento", sub: "Atualize as informações do seu evento", table: 'eventos' },
-      agente: { title: "Editar Agente Cultural", sub: "Atualize as informações do perfil artístico", table: 'agentes' },
-      espaco: { title: "Editar Espaço Cultural", sub: "Atualize as informações do espaço cultural", table: 'espacos' }
+      evento: { title: "Editar Evento", sub: "Atualize as informaÃ§Ãµes do seu evento", table: 'eventos' },
+      agente: { title: "Editar Agente Cultural", sub: "Atualize as informaÃ§Ãµes do perfil artÃ­stico", table: 'agentes' },
+      espaco: { title: "Editar EspaÃ§o Cultural", sub: "Atualize as informaÃ§Ãµes do espaÃ§o cultural", table: 'espacos' }
     };
 
     const cfg = titles[tipo];
@@ -539,23 +539,13 @@
           if (tipo === 'evento') {
             document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
             document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
-            const rawDataHora = data.data_hora || data.data || '';
-            const isAnual = (data.anual !== undefined && data.anual !== null ? !!data.anual : false) || rawDataHora.toLowerCase().includes('anual');
-            const isTemporada = (data.temporada !== undefined && data.temporada !== null ? !!data.temporada : false) || rawDataHora.toLowerCase().includes('temporada');
-            document.getElementById('cad-evento-data-hora').value = rawDataHora.replace(/\s*\((anual|temporada)\)/gi, '').trim();
+            document.getElementById('cad-evento-data-hora').value = data.data_hora || data.data || '';
             document.getElementById('cad-evento-local').value = data.local || '';
             if (document.getElementById('cad-evento-organizador')) document.getElementById('cad-evento-organizador').value = data.organizador || '';
-            if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = isAnual;
-            if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = isTemporada;
-            let desc = data.descricao || '';
-            let extractedLink = data.link || '';
-            const linkMatch = desc.match(/(?:\r?\n)?Link:\s*(https?:\/\/[^\s]+)/i);
-            if (linkMatch) {
-              if (!extractedLink) extractedLink = linkMatch[1];
-              desc = desc.replace(/(?:\r?\n)?Link:\s*https?:\/\/[^\s]+/i, '').trim();
-            }
-            document.getElementById('cad-evento-descricao').value = desc;
-            if (document.getElementById('cad-evento-link')) document.getElementById('cad-evento-link').value = extractedLink;
+            if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = !!data.anual;
+            if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = !!data.temporada;
+            document.getElementById('cad-evento-descricao').value = data.descricao || '';
+            document.getElementById('cad-evento-link').value = data.link || '';
             if (data.foto || data.imagem) {
               const prev = document.getElementById('preview-cad-evento');
               prev.src = data.foto || data.imagem;
@@ -603,7 +593,7 @@
         }
       }
     } catch (err) {
-      console.error("Erro ao carregar dados para edição:", err);
+      console.error("Erro ao carregar dados para ediÃ§Ã£o:", err);
       showModalMsg("Erro ao carregar dados do item: " + err.message, true);
     }
   };
@@ -612,11 +602,11 @@
   window.excluirItemUsuario = async (tipo, id, onSuccess) => {
     const user = getLoggedUser();
     if (!user || !isUserApproved(user)) {
-      alert("Apenas usuários aprovados podem excluir seus cadastros.");
+      alert("Apenas usuÃ¡rios aprovados podem excluir seus cadastros.");
       return;
     }
 
-    const confirmMsg = "Tem certeza de que deseja excluir este cadastro? Esta ação não pode ser desfeita.";
+    const confirmMsg = "Tem certeza de que deseja excluir este cadastro? Esta aÃ§Ã£o nÃ£o pode ser desfeita.";
     if (!confirm(confirmMsg)) return;
 
     const tables = {
@@ -633,7 +623,7 @@
         const { error } = await supabaseClient.from(table).delete().eq('id', id);
         if (error) throw error;
       }
-      alert("Cadastro excluí­do com sucesso!");
+      alert("Cadastro excluÃ­do com sucesso!");
       window.dispatchEvent(new CustomEvent('item-cultural-excluido', { detail: { tipo, id } }));
       if (typeof onSuccess === 'function') onSuccess();
     } catch (err) {
@@ -682,49 +672,6 @@
     }
   }
 
-  // Função utilitária para envio ao Supabase com auto-recuperação de cache de esquema
-  async function executarSupabaseComAutoRecuperacao(tabela, payload, isEdit, id) {
-    if (!window.supabaseClient) return;
-
-    let attemptPayload = { ...payload };
-    const trySave = async (data) => {
-      if (isEdit) {
-        return await supabaseClient.from(tabela).update(data).eq('id', id);
-      } else {
-        return await supabaseClient.from(tabela).insert([data]);
-      }
-    };
-
-    let res = await trySave(attemptPayload);
-    let retries = 0;
-    while (res && res.error && res.error.message && retries < 10) {
-      // 1. Detecta erro de coluna inexistente no schema cache ou banco (PostgREST)
-      const match = res.error.message.match(/(?:Could not find the ['"]([^'"]+)['"] column|column ['"]([^'"]+)['"] of relation)/i);
-      const missingCol = match ? (match[1] || match[2]) : null;
-      if (missingCol && attemptPayload.hasOwnProperty(missingCol)) {
-        console.warn(`[AutoRecovery] Removendo coluna '${missingCol}' inexistente na tabela '${tabela}' e tentando novamente...`);
-        delete attemptPayload[missingCol];
-        retries++;
-        res = await trySave(attemptPayload);
-        continue;
-      }
-
-      // 2. Detecta incompatibilidade de user_id (UUID / FK)
-      if (attemptPayload.user_id && (res.error.message.includes('user_id') || res.error.message.includes('uuid'))) {
-        console.warn(`[AutoRecovery] Removendo user_id incompatível na tabela '${tabela}' e tentando novamente...`, res.error);
-        delete attemptPayload.user_id;
-        retries++;
-        res = await trySave(attemptPayload);
-        continue;
-      }
-
-      break;
-    }
-
-    if (res && res.error) throw res.error;
-    return res;
-  }
-
   // Submit Evento (Insert ou Update)
   window.submeterCadastroEvento = async (e) => {
     e.preventDefault();
@@ -736,43 +683,53 @@
     try {
       const nome = document.getElementById('cad-evento-nome').value.trim();
       const categoria = document.getElementById('cad-evento-categoria').value.trim();
-      const data_hora_input = document.getElementById('cad-evento-data-hora').value.trim();
+      const data_hora = document.getElementById('cad-evento-data-hora').value.trim();
       const local = document.getElementById('cad-evento-local').value.trim();
-      const organizador = document.getElementById('cad-evento-organizador') ? document.getElementById('cad-evento-organizador').value.trim() : '';
-      const anual = document.getElementById('cad-evento-anual') ? document.getElementById('cad-evento-anual').checked : false;
-      const temporada = document.getElementById('cad-evento-temporada') ? document.getElementById('cad-evento-temporada').checked : false;
+      const organizador = document.getElementById('cad-evento-organizador').value.trim();
+      const anual = document.getElementById('cad-evento-anual').checked;
+      const temporada = document.getElementById('cad-evento-temporada').checked;
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
-      const link = document.getElementById('cad-evento-link') ? document.getElementById('cad-evento-link').value.trim() : '';
+      const link = document.getElementById('cad-evento-link').value.trim();
       const fotoInput = document.getElementById('cad-evento-foto');
 
-      let data_hora = data_hora_input.replace(/\s*\((anual|temporada)\)/gi, '').trim();
-      if (anual) {
-        data_hora = data_hora.replace(/,?\s*\b20\d{2}\b/g, '').trim();
-        data_hora += ' (Anual)';
-      } else if (temporada) {
-        data_hora += ' (Temporada)';
-      }
+      const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
+      const descricaoFinal = descricaoFull;
 
-      let descLimpa = descricao.replace(/(?:\r?\n)?Link:\s*https?:\/\/[^\s]+/i, '').trim();
-      const descricaoFinal = link ? (descLimpa ? descLimpa + '\nLink: ' + link : link) : descLimpa;
+      let lat = -23.3055;
+      let lng = -45.9658;
+      if (local) {
+        try {
+          const q = encodeURIComponent(local);
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.length > 0) {
+              lat = parseFloat(data[0].lat);
+              lng = parseFloat(data[0].lon);
+            }
+          }
+        } catch (e) {
+          console.warn("Geocoding falhou:", e);
+        }
+      }
 
       const payload = {
         nome,
-        titulo: nome,
         categoria,
         data_hora,
-        data: data_hora,
-        horario: data_hora,
         local,
         organizador,
-        descricao: descricaoFinal
+        anual,
+        temporada,
+        descricao: descricaoFinal,
+        lat: lat,
+        lng: lng
       };
-      if (link) payload.link = link;
 
       if (user) {
         payload.user_id = user.id;
       } else {
-        showModalMsg("Apenas usuários logados podem enviar.", true);
+        showModalMsg("Apenas usuÃ¡rios logados podem enviar.", true);
         setBtnLoading(btn, false, 'Publicar Evento');
         return;
       }
@@ -783,7 +740,15 @@
         payload.foto = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000';
       }
 
-      await executarSupabaseComAutoRecuperacao('eventos', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
+      if (window.supabaseClient) {
+        if (isEdit) {
+          const { error } = await supabaseClient.from('eventos').update(payload).eq('id', window._currentEditing.id);
+          if (error) throw error;
+        } else {
+          const { error } = await supabaseClient.from('eventos').insert([payload]);
+          if (error) throw error;
+        }
+      }
 
       showModalMsg(isEdit ? "Evento atualizado com sucesso!" : "Evento cultural publicado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'evento' } }));
@@ -874,7 +839,7 @@
         payload.user_id = user.id;
         payload.email_sujestao = user.email;
       } else {
-        showModalMsg("Apenas usuários logados podem enviar.", true);
+        showModalMsg("Apenas usuÃ¡rios logados podem enviar.", true);
         setBtnLoading(btn, false, 'Cadastrar Agente');
         return;
       }
@@ -885,7 +850,15 @@
         payload.foto = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
       }
 
-      await executarSupabaseComAutoRecuperacao('agentes', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
+      if (window.supabaseClient) {
+        if (isEdit) {
+          const { error } = await supabaseClient.from('agentes').update(payload).eq('id', window._currentEditing.id);
+          if (error) throw error;
+        } else {
+          const { error } = await supabaseClient.from('agentes').insert([payload]);
+          if (error) throw error;
+        }
+      }
 
       showModalMsg(isEdit ? "Perfil de agente atualizado com sucesso!" : "Agente cultural cadastrado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'agente' } }));
@@ -925,6 +898,24 @@
 
       const contatoFinal = user ? contato + ` | Email: ${user.email}` : contato;
 
+      let lat = -23.3055;
+      let lng = -45.9658;
+      if (endereco) {
+        try {
+          const q = encodeURIComponent(endereco);
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.length > 0) {
+              lat = parseFloat(data[0].lat);
+              lng = parseFloat(data[0].lon);
+            }
+          }
+        } catch (e) {
+          console.warn("Geocoding falhou:", e);
+        }
+      }
+
       const payload = {
         nome,
         tipo,
@@ -932,8 +923,8 @@
         endereco,
         descricao,
         contato: contatoFinal,
-        lat: -23.3055, // Coordenadas centrais padrÃ£o de JacareÃ­
-        lng: -45.9658
+        lat: lat,
+        lng: lng
       };
 
       // user_id was removed due to UUID type mismatch in DB, linkage is handled via contatoFinal email.
@@ -944,9 +935,17 @@
         payload.foto = 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=1000';
       }
 
-      await executarSupabaseComAutoRecuperacao('espacos', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
+      if (window.supabaseClient) {
+        if (isEdit) {
+          const { error } = await supabaseClient.from('espacos').update(payload).eq('id', window._currentEditing.id);
+          if (error) throw error;
+        } else {
+          const { error } = await supabaseClient.from('espacos').insert([payload]);
+          if (error) throw error;
+        }
+      }
 
-      showModalMsg(isEdit ? "Espaço atualizado com sucesso!" : "Espaço cultural cadastrado com sucesso!", false);
+      showModalMsg(isEdit ? "EspaÃ§o atualizado com sucesso!" : "EspaÃ§o cultural cadastrado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'espaco' } }));
 
       setTimeout(() => {
@@ -961,8 +960,8 @@
       }, 1100);
     } catch (err) {
       console.error(err);
-      showModalMsg("Erro ao salvar espaço: " + (err.message || 'Tente novamente.'), true);
-      setBtnLoading(btn, false, isEdit ? 'Salvar Alterações' : 'Cadastrar Espaço');
+      showModalMsg("Erro ao salvar espaÃ§o: " + (err.message || 'Tente novamente.'), true);
+      setBtnLoading(btn, false, isEdit ? 'Salvar Alterações' : 'Cadastrar EspaÃ§o');
     }
   };
 
