@@ -222,7 +222,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
               <div>
-                <span class="block text-[11px] uppercase font-bold text-muted-foreground">Data & HorÃ¡rio</span>
+                <span class="block text-[11px] uppercase font-bold text-muted-foreground">Data & Horário</span>
                 <span id="modalEventoDataHora" class="font-semibold text-xs md:text-sm"></span>
               </div>
             </div>
@@ -246,7 +246,7 @@
         <div class="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-border">
           <a href="../calendario/" class="px-4 py-2.5 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-            Ver CalendÃ¡rio
+            Ver Calendário
           </a>
           <button onclick="fecharModalEvento()" class="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary-glow transition-all shadow-sm">
             Fechar
@@ -292,30 +292,30 @@
         todosEventos = [
           {
             id: 1,
-            nome: "Festival de MÃºsica da Mantiqueira",
-            categoria: "MÃºsica",
+            nome: "Festival de Música da Mantiqueira",
+            categoria: "Música",
             data_hora: "20/09/2026 Ã s 19:00",
-            local: "Parque dos EspanhÃ³is, JacareÃ­",
+            local: "Parque dos Espanhóis, Jacareí­",
             foto: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
-            descricao: "Um grande encontro musical celebrando a diversidade sonora do Vale do ParaÃ­ba e da Serra da Mantiqueira com artistas autorais e atraÃ§Ãµes convidadas."
+            descricao: "Um grande encontro musical celebrando a diversidade sonora do Vale do Paraíba e da Serra da Mantiqueira com artistas autorais e atrações convidadas."
           },
           {
             id: 2,
-            nome: "ExposiÃ§Ã£o Olhares do Vale",
+            nome: "Exposição Olhares do Vale",
             categoria: "Artes Visuais",
             data_hora: "15/10/2026 Ã s 14:00",
             local: "MAB - Museu de Antropologia",
             foto: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800",
-            descricao: "Mostra fotogrÃ¡fica e artÃ­stica retratando as tradiÃ§Ãµes, o patrimÃ´nio histÃ³rico e as manifestaÃ§Ãµes culturais populares do Vale do ParaÃ­ba."
+            descricao: "Mostra fotográfica e artística retratando as tradições, o patrimônio histórico e as manifestações culturais populares do Vale do Paraíba."
           },
           {
             id: 3,
-            nome: "Teatro na PraÃ§a: HistÃ³rias do Rio",
+            nome: "Teatro na Praça: Histórias do Rio",
             categoria: "Teatro",
             data_hora: "05/11/2026 Ã s 16:30",
-            local: "Sala MÃ¡rio Lago",
+            local: "Sala Mário Lago",
             foto: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800",
-            descricao: "EspetÃ¡culo cÃªnico gratuito e ao ar livre baseado nas lendas e contos ribeirinhos que marcaram as geraÃ§Ãµes da nossa regiÃ£o."
+            descricao: "Espetáculo cênico gratuito e ao ar livre baseado nas lendas e contos ribeirinhos que marcaram as gerações da nossa região."
           }
         ];
       }
@@ -334,7 +334,7 @@
 
       eventos.forEach(ev => {
         const fotoUrl = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
-        const descLimpa = (ev.descricao || 'Nenhuma descriÃ§Ã£o informada.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
+        const descLimpa = (ev.descricao || 'Nenhuma descrição informada.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
         const card = `
           <div id="evento-card-${ev.id}" data-id="${ev.id}" data-nome="${(ev.nome || '').toLowerCase()}" class="evento-card group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
             <div class="h-48 overflow-hidden bg-muted relative">
@@ -353,11 +353,11 @@
                 </div>
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                  ${ev.local || 'Local nÃ£o informado'}
+                  ${ev.local || 'Local não informado'}
                 </div>
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium mt-1">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                  Organizado por: ${ev.organizador || 'NÃ£o informado'}
+                  Organizado por: ${ev.organizador || 'Não informado'}
                 </div>
                 <button onclick="abrirDetalhesEventoId('${ev.id}')" class="mt-4 w-full py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-sm rounded-lg transition-all text-center block shadow-sm">
                   Ver Detalhes
@@ -480,8 +480,8 @@
       document.getElementById('modalEventoNome').innerText = ev.nome || 'Evento Cultural';
       document.getElementById('modalEventoCategoria').innerText = ev.categoria || 'Evento';
       document.getElementById('modalEventoDataHora').innerText = ev.data_hora || ev.data || 'Data a confirmar';
-      document.getElementById('modalEventoLocal').innerText = ev.local || 'Local nÃ£o informado';
-      const descModal = (ev.descricao || 'Nenhuma descriÃ§Ã£o adicional informada para este evento.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
+      document.getElementById('modalEventoLocal').innerText = ev.local || 'Local não informado';
+      const descModal = (ev.descricao || 'Nenhuma descrição adicional informada para este evento.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
       document.getElementById('modalEventoDescricao').innerText = descModal;
       document.getElementById('modalEventoFoto').src = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
       
@@ -567,7 +567,7 @@
       </a>
       <a href="../calendario/" data-path="calendario" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-        <span class="text-[10px] font-semibold mt-1">CalendÃ¡rio</span>
+        <span class="text-[10px] font-semibold mt-1">Calendário</span>
       </a>
       <a href="../eventos/" data-path="eventos" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
@@ -575,7 +575,7 @@
       </a>
       <a href="../espacos/" data-path="espacos" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M9 8h1"/><path d="M9 12h1"/><path d="M9 16h1"/><path d="M14 8h1"/><path d="M14 12h1"/><path d="M14 16h1"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
-        <span class="text-[10px] font-semibold mt-1">EspaÃ§os</span>
+        <span class="text-[10px] font-semibold mt-1">Espaços</span>
       </a>
       <a href="../agentes/" data-path="agentes" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
