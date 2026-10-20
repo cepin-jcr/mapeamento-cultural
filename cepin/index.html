@@ -73,6 +73,19 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* Projetos: corta a descrição em 7 linhas até clicar em "Ler mais" */
+    .proj-desc.is-clamped {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 7;
+      line-clamp: 7;
+      overflow: hidden;
+    }
+
+    /* Desenvolvedores: setinha gira ao abrir */
+    .dev-caret svg { transition: transform .2s ease; }
+    .dev-item.is-open .dev-caret svg { transform: rotate(90deg); }
   </style>
 
 </head>
@@ -136,19 +149,19 @@
     
     <!-- Section: Apresentação -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-      <div class="md:col-span-2 space-y-6">
+      <div class="md:col-span-2 space-y-8">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-xl shadow-sm text-primary"></div>
           <h2 class="text-2xl font-display font-extrabold tracking-tight">O que é o CEPIN?</h2>
         </div>
-        <div id="apresentacao-textos" class="space-y-4 text-muted-foreground leading-relaxed text-base font-medium text-justify">
+        <div id="apresentacao-textos" class="space-y-4 text-muted-foreground leading-relaxed text-base font-medium">
           <!-- Populated dynamically -->
         </div>
       </div>
       <div class="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4">
         <div class="text-3xl"></div>
         <h3 class="font-display font-extrabold text-lg tracking-tight">Finalidade</h3>
-        <p class="text-sm text-muted-foreground leading-relaxed font-medium text-justify">
+        <p class="text-sm text-muted-foreground leading-relaxed font-medium">
           Desenvolver investigação fundamental ou aplicada, realizar transferência de tecnologia e oferecer atividades de extensão voltadas para o público em geral.
         </p>
         <div class="pt-4 border-t border-border/40 space-y-2">
@@ -174,15 +187,15 @@
       </div>
     </section>
 
-    <!-- Section: Potenciais Parceiros -->
-    <section class="relative overflow-hidden bg-primary/5 border border-border/40 rounded-2xl p-8 shadow-sm">
-      <div class="absolute top-0 right-0 p-8 text-5xl opacity-10"></div>
-      <div class="max-w-3xl space-y-4 relative z-10">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-xl shadow-sm"></div>
-          <h2 class="text-2xl font-display font-extrabold tracking-tight">Potenciais Parceiros</h2>
-        </div>
-        <p id="parceiros-texto" class="text-muted-foreground leading-relaxed text-base font-medium text-justify">
+    <!-- Section: Potenciais Parceiros (título fora do card, igual às outras seções) -->
+    <section class="space-y-8">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-xl shadow-sm"></div>
+        <h2 class="text-2xl font-display font-extrabold tracking-tight">Potenciais Parceiros</h2>
+      </div>
+      <div class="relative overflow-hidden bg-primary/5 border border-border/40 rounded-2xl p-6 md:p-8 shadow-sm">
+        <div class="absolute top-0 right-0 p-8 text-5xl opacity-10"></div>
+        <p id="parceiros-texto" class="relative z-10 text-foreground/75 leading-relaxed text-base font-medium">
           <!-- Populated dynamically -->
         </p>
       </div>
@@ -210,7 +223,7 @@
       <div class="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-6">
         <div class="flex gap-4 items-start bg-muted/30 p-4 rounded-xl border border-border/40">
           <span class="text-2xl"></span>
-          <div id="equipe-intro-text" class="text-sm text-muted-foreground leading-relaxed font-medium text-justify">
+          <div id="equipe-intro-text" class="text-sm text-muted-foreground leading-relaxed font-medium">
             <!-- Populated dynamically -->
           </div>
         </div>
@@ -232,25 +245,15 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+      <!-- items-start: cada card tem a própria altura -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 items-start">
         <div class="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4">
           <div class="flex items-center gap-3 border-b border-border/40 pb-3">
             <span class="text-2xl"></span>
             <h3 class="font-display font-extrabold text-lg tracking-tight">Colaboradores</h3>
           </div>
-          <div class="overflow-x-auto rounded-xl border border-border/40">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-muted/35 border-b border-border/50 text-[10px] font-bold uppercase text-muted-foreground">
-                  <th class="p-3 pl-4">Nome</th>
-                  <th class="p-3">Função</th>
-                  <th class="p-3 pr-4 text-right">Contato</th>
-                </tr>
-              </thead>
-              <tbody id="colaboradores-table-body" class="divide-y divide-border/40 text-xs font-medium">
-              </tbody>
-            </table>
-          </div>
+          <!-- Lista (antes era tabela): nome + função na mesma linha, e-mail embaixo -->
+          <ul id="colaboradores-list" class="rounded-xl border border-border/40 divide-y divide-border/40 overflow-hidden"></ul>
           <div id="colaboradores-empty-state" class="hidden text-center text-xs text-muted-foreground py-4">
             Nenhum colaborador cadastrado.
           </div>
@@ -281,6 +284,136 @@
   <script src="../js/components.js"></script>
   
   <script>
+    /* ================= Utilitários da página CEPIN ================= */
+
+    // Escapa texto vindo do banco antes de ir para o innerHTML (evita quebrar o layout e XSS)
+    function esc(value) {
+      return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Aceita só http(s)/mailto. "www.site.com" vira "https://www.site.com". "#" ou vazio = sem link.
+    function safeUrl(url) {
+      const u = String(url ?? '').trim();
+      if (!u || u === '#') return '';
+      if (/^(https?:|mailto:)/i.test(u)) return u;
+      if (/^[a-z][a-z0-9+.-]*:/i.test(u)) return ''; // bloqueia javascript:, data: etc.
+      return 'https://' + u.replace(/^\/+/, '');
+    }
+
+    // E-mail vira link mailto; qualquer outro contato vira texto simples (sem fonte monoespaçada)
+    function contatoHtml(contato) {
+      const c = String(contato ?? '').trim();
+      if (!c) return '';
+      if (c.includes('@')) {
+        return `<a href="mailto:${esc(c)}" class="text-primary hover:underline font-semibold break-all">${esc(c)}</a>`;
+      }
+      return `<span class="text-muted-foreground break-all">${esc(c)}</span>`;
+    }
+
+    // Ícones inline (mesmo estilo dos ícones do menu, sem biblioteca externa)
+    const ICON_PATHS = {
+      youtube: '<path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/>',
+      instagram: '<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>',
+      spotify: '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',
+      linkedin: '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>',
+      link: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+      chevron: '<path d="m9 18 6-6-6-6"/>'
+    };
+    function svgIcon(name, size = 16) {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name]}</svg>`;
+    }
+    function linkIcon(label, url) {
+      const s = `${label} ${url}`.toLowerCase();
+      if (s.includes('youtu')) return svgIcon('youtube');
+      if (s.includes('instagram')) return svgIcon('instagram');
+      if (s.includes('spotify') || s.includes('podcast')) return svgIcon('spotify');
+      if (s.includes('linkedin')) return svgIcon('linkedin');
+      return svgIcon('link');
+    }
+
+    // Projetos: rótulos que já existem no texto ("Coordenadora:", "Participantes:", "Sobre o ...:")
+    // ganham destaque e começam em linha nova. Só muda a exibição; o texto salvo no banco é o mesmo.
+    const PROJ_LABEL_RE = /(^|[.;!?]\s+|\n+)(T[íi]tulo|Vice-coordenador(?:a)?|Coordenador(?:a|es|as)?|Coordena[çc][ãa]o|Discentes participantes|Docentes participantes|Participantes|Bolsistas?|Volunt[áa]ri[oa]s?|Orientador(?:a|es)?|Per[íi]odo|Vig[êe]ncia|Parceiros?|Objetivos?|Resumo|Resultados|Sobre (?:o|a|os|as) [^:.\n]{1,60})\s*:/g;
+    function formatDescricao(texto) {
+      return esc(texto)
+        .replace(PROJ_LABEL_RE, (m, sep, label) => {
+          const quebra = sep ? sep.replace(/\s+$/, '') + '<br>' : '';
+          return `${quebra}<strong class="font-semibold text-primary">${label}:</strong>`;
+        })
+        .replace(/\n/g, '<br>');
+    }
+
+    // Mostra "Ler mais" só nos cards cujo texto realmente passa de 7 linhas
+    function updateClampButtons() {
+      document.querySelectorAll('.proj-card').forEach(card => {
+        const desc = card.querySelector('.proj-desc');
+        const btn = card.querySelector('.proj-toggle');
+        if (!desc || !btn) return;
+        if (card.classList.contains('is-expanded')) { btn.classList.remove('hidden'); return; }
+        btn.classList.toggle('hidden', desc.scrollHeight <= desc.clientHeight + 1);
+      });
+    }
+    let clampTimer;
+    window.addEventListener('resize', () => { clearTimeout(clampTimer); clampTimer = setTimeout(updateClampButtons, 150); });
+
+    // Desenvolvedores: usa o campo "periodo". Para registros antigos sem esse campo,
+    // extrai o trecho final entre parênteses do nome, ex.: "Fulano (Setembro - Atual)".
+    const MESES_RE = /\b(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/i;
+    function splitNomePeriodo(memb) {
+      let nome = String(memb.nome ?? '').trim();
+      let periodo = String(memb.periodo ?? '').trim();
+      const m = nome.match(/\s*\(([^()]+)\)\s*$/);
+      if (m && (/\d|atual/i.test(m[1]) || MESES_RE.test(m[1]))) {
+        nome = nome.slice(0, m.index).trim();
+        if (!periodo) periodo = m[1].trim();
+      }
+      return { nome, periodo };
+    }
+
+    let devUid = 0;
+    function renderDev(memb, reservarSeta) {
+      const { nome, periodo } = splitNomePeriodo(memb);
+      const funcao = String(memb.funcao || memb.cargo || '').trim();
+      const bolsa = String(memb.bolsa ?? '').trim();
+      const contato = String(memb.contato ?? '').trim();
+      const coords = String(memb.coordenadores ?? '').trim();
+      const ativo = /atual/i.test(periodo);
+      const panelId = `dev-coords-${++devUid}`;
+
+      const seta = coords
+        ? `<button type="button" class="dev-caret shrink-0 w-7 h-7 -ml-1 rounded-md flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors" aria-expanded="false" aria-controls="${panelId}" aria-label="Mostrar coordenadores responsáveis">${svgIcon('chevron', 18)}</button>`
+        : (reservarSeta ? '<span class="shrink-0 w-7 -ml-1" aria-hidden="true"></span>' : '');
+
+      const periodoPill = periodo
+        ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap ${ativo ? 'bg-primary/15 text-primary' : 'bg-muted text-muted-foreground'}">${ativo ? '<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>' : ''}${esc(periodo.replace(/\s+-\s+/g, ' – '))}</span>`
+        : '';
+
+      const bolsaPill = bolsa
+        ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[hsl(var(--accent)/0.25)] text-[hsl(var(--accent-foreground))] border border-[hsl(var(--accent)/0.6)]">${esc(bolsa)}</span>`
+        : '';
+
+      const item = document.createElement('div');
+      item.className = 'dev-item';
+      item.innerHTML = `
+        <div class="dev-head flex items-start gap-2 p-3 hover:bg-muted/10 transition-colors ${coords ? 'cursor-pointer' : ''}">
+          ${seta}
+          <div class="min-w-0 flex-1">
+            <!-- Linha 1: nome + período -->
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span class="font-bold text-sm text-foreground leading-snug">${esc(nome)}</span>
+              ${periodoPill}
+            </div>
+            <!-- Linha 2: papel de atuação (logo abaixo do nome, sem nada no meio) -->
+            ${funcao ? `<div class="text-xs text-muted-foreground mt-0.5">${esc(funcao)}</div>` : ''}
+            <!-- Linha 3: bolsa + e-mail -->
+            ${(bolsaPill || contato) ? `<div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">${bolsaPill}${contato ? `<span class="text-xs">${contatoHtml(contato)}</span>` : ''}</div>` : ''}
+          </div>
+        </div>
+        ${coords ? `<div id="${panelId}" class="hidden pl-11 pr-4 py-3 bg-muted/30 text-xs text-muted-foreground border-t border-border/20"><strong>Coordenadores responsáveis:</strong> ${esc(coords)}</div>` : ''}
+      `;
+      return item;
+    }
+
     async function loadCepinPage() {
       let data = null;
       if (window.supabaseClient) {
@@ -315,25 +448,20 @@
 
       if (!data) data = getCepinData(); // Final fallback
       
-      if (data.apresentacaoTitulo) document.getElementById('page-title').innerHTML = data.apresentacaoTitulo.replace("CEPIN JCR", "<span class='text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-glow'>CEPIN JCR</span>");
+      if (data.apresentacaoTitulo) document.getElementById('page-title').innerHTML = esc(data.apresentacaoTitulo).replace("CEPIN JCR", "<span class='text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-glow'>CEPIN JCR</span>");
       if (data.apresentacaoSubtitulo) document.getElementById('page-subtitle').innerText = data.apresentacaoSubtitulo;
       
+      // Apresentação (sem text-justify: evita espaços irregulares entre palavras)
       const apresentacaoContainer = document.getElementById('apresentacao-textos');
-      apresentacaoContainer.innerHTML = '';
+      const paragrafo = (t) => `<p>${esc(t).replace(/\n/g, '<br>')}</p>`;
       if (data.apresentacaoTexto) {
-        const paragraphs = data.apresentacaoTexto.split(/\n\n+/);
-        paragraphs.forEach(para => {
-          if (para.trim()) {
-            apresentacaoContainer.innerHTML += `<p class="text-justify">${para.trim().replace(/\n/g, '<br>')}</p>`;
-          }
-        });
+        apresentacaoContainer.innerHTML = data.apresentacaoTexto.split(/\n\n+/).map(p => p.trim()).filter(Boolean).map(paragrafo).join('');
       } else {
-        if (data.apresentacaoTexto1) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto1}</p>`;
-        if (data.apresentacaoTexto2) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto2}</p>`;
-        if (data.apresentacaoTexto3) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto3}</p>`;
-        if (data.apresentacaoTexto4) apresentacaoContainer.innerHTML += `<p class="text-justify">${data.apresentacaoTexto4}</p>`;
+        apresentacaoContainer.innerHTML = [data.apresentacaoTexto1, data.apresentacaoTexto2, data.apresentacaoTexto3, data.apresentacaoTexto4]
+          .filter(Boolean).map(paragrafo).join('');
       }
       
+      // Competências
       const competenciasGrid = document.getElementById('competencias-grid');
       competenciasGrid.innerHTML = '';
       const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII"];
@@ -349,40 +477,65 @@
               <span class="w-8 h-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center border border-primary/20">${roman}</span>
             </div>
             <div class="space-y-1">
-              <p class="text-sm text-foreground/90 font-medium leading-relaxed">${comp}</p>
+              <p class="text-sm text-foreground/90 font-medium leading-relaxed">${esc(comp)}</p>
             </div>
           `;
           competenciasGrid.appendChild(card);
         });
       }
       
+      // Parceiros
       if (data.parceirosTexto) {
         document.getElementById('parceiros-texto').innerText = data.parceirosTexto;
       }
       
+      // Projetos (sugestão 2)
       const projetosGrid = document.getElementById('projetos-grid');
       projetosGrid.innerHTML = '';
-      if (data.projetos && Array.isArray(data.projetos)) {
-        data.projetos.forEach(proj => {
-          const card = document.createElement('div');
-          card.className = "bg-card border border-border rounded-xl p-6 shadow-sm space-y-4 flex flex-col justify-between";
-          card.innerHTML = `
-            <div class="space-y-2">
-              <h3 class="font-display font-bold text-lg text-primary tracking-tight">${proj.titulo}</h3>
-              <p class="text-sm text-muted-foreground leading-relaxed font-medium text-justify">${proj.descricao}</p>
-            </div>
-            <div class="pt-2 flex flex-wrap gap-4">
-              ${Array.isArray(proj.links) 
-                ? proj.links.map(l => `<a href="${l.url}" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-primary font-bold uppercase tracking-wider hover:underline"><span>${l.label}</span></a>`).join('')
-                : (proj.link && proj.link !== '#' ? `<a href="${proj.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-primary font-bold uppercase tracking-wider hover:underline"><span>Acessar Projeto</span></a>` : '')}
-            </div>
-          `;
-          projetosGrid.appendChild(card);
-        });
-      }
+      (Array.isArray(data.projetos) ? data.projetos : []).forEach(proj => {
+        const rawLinks = Array.isArray(proj.links) && proj.links.length
+          ? proj.links
+          : (proj.link ? [{ label: 'Acessar Projeto', url: proj.link }] : []);
+        const links = rawLinks
+          .map(l => ({ label: (l && l.label) || 'Acessar', url: safeUrl(l && l.url) }))
+          .filter(l => l.url);
+
+        const card = document.createElement('article');
+        card.className = "proj-card bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col gap-4";
+        card.innerHTML = `
+          <h3 class="font-display font-bold text-lg text-primary tracking-tight">${esc(proj.titulo)}</h3>
+          <div>
+            <p class="proj-desc is-clamped text-[15px] text-foreground/75 leading-relaxed font-medium text-left">${formatDescricao(proj.descricao)}</p>
+            <button type="button" class="proj-toggle hidden mt-2 text-sm font-semibold text-primary hover:underline" aria-expanded="false">Ler mais</button>
+          </div>
+          ${links.length ? `
+          <div class="mt-auto pt-2 flex flex-wrap gap-2">
+            ${links.map(l => `
+              <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors">
+                ${linkIcon(l.label, l.url)}<span>${esc(l.label)}</span>
+              </a>`).join('')}
+          </div>` : ''}
+        `;
+        projetosGrid.appendChild(card);
+      });
+
+      // "Ler mais / Ler menos"
+      projetosGrid.onclick = (e) => {
+        const btn = e.target.closest('.proj-toggle');
+        if (!btn) return;
+        const card = btn.closest('.proj-card');
+        const expanded = !card.classList.contains('is-expanded');
+        card.classList.toggle('is-expanded', expanded);
+        card.querySelector('.proj-desc').classList.toggle('is-clamped', !expanded);
+        btn.textContent = expanded ? 'Ler menos' : 'Ler mais';
+        btn.setAttribute('aria-expanded', String(expanded));
+      };
+      requestAnimationFrame(updateClampButtons);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateClampButtons);
       
+      // Equipe
       if (data.equipeTexto) {
-        document.getElementById('equipe-intro-text').innerHTML = data.equipeTexto.replace(/\n/g, "<br>");
+        document.getElementById('equipe-intro-text').innerHTML = esc(data.equipeTexto).replace(/\n/g, "<br>");
       }
       
       const tableBody = document.getElementById('equipe-table-body');
@@ -392,102 +545,89 @@
           const tr = document.createElement('tr');
           tr.className = "hover:bg-muted/10 transition-colors";
           tr.innerHTML = `
-            <td class="p-4 pl-6 font-bold text-foreground">${memb.nome}</td>
-            <td class="p-4 text-muted-foreground">${memb.campus}</td>
-            <td class="p-4 text-muted-foreground">${memb.cargo || memb.funcao || ''}</td>
-            <td class="p-4 pr-6 text-right text-xs font-mono">
-              <a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold">${memb.contato}</a>
-            </td>
+            <td class="p-4 pl-6 font-bold text-foreground">${esc(memb.nome)}</td>
+            <td class="p-4 text-muted-foreground">${esc(memb.campus)}</td>
+            <td class="p-4 text-muted-foreground">${esc(memb.cargo || memb.funcao || '')}</td>
+            <td class="p-4 pr-6 text-right text-xs">${contatoHtml(memb.contato)}</td>
           `;
           tableBody.appendChild(tr);
         });
       }
 
-      const colabBody = document.getElementById('colaboradores-table-body');
+      // Colaboradores (sugestão 3): lista em vez de tabela, mesmo tamanho de card
+      const colabList = document.getElementById('colaboradores-list');
       const colabEmpty = document.getElementById('colaboradores-empty-state');
-      colabBody.innerHTML = '';
-      if (data.equipeColaboradores && data.equipeColaboradores.length > 0) {
-        colabEmpty.classList.add('hidden');
-        data.equipeColaboradores.forEach(memb => {
-          const tr = document.createElement('tr');
-          tr.className = "hover:bg-muted/10 transition-colors";
-          tr.innerHTML = `
-            <td class="p-3 pl-4 font-bold text-foreground">${memb.nome}</td>
-            <td class="p-3 text-muted-foreground">${memb.funcao || memb.cargo || ''}</td>
-            <td class="p-3 pr-4 text-right text-xs font-mono">
-              ${memb.contato.includes('@') ? `<a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold">${memb.contato}</a>` : `<span class="text-muted-foreground">${memb.contato}</span>`}
-            </td>
-          `;
-          colabBody.appendChild(tr);
-        });
-      } else {
-        colabEmpty.classList.remove('hidden');
-      }
+      const colabs = Array.isArray(data.equipeColaboradores) ? data.equipeColaboradores : [];
+      colabList.innerHTML = colabs.map(memb => {
+        const funcao = String(memb.funcao || memb.cargo || '').trim();
+        const contato = String(memb.contato ?? '').trim();
+        return `
+          <li class="px-4 py-3 hover:bg-muted/10 transition-colors">
+            <div class="flex items-start justify-between gap-3">
+              <span class="font-bold text-sm text-foreground leading-snug">${esc(memb.nome)}</span>
+              ${funcao ? `<span class="shrink-0 max-w-[50%] text-right px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[11px] font-semibold leading-tight">${esc(funcao)}</span>` : ''}
+            </div>
+            ${contato ? `<div class="mt-1 text-xs">${contatoHtml(contato)}</div>` : ''}
+          </li>`;
+      }).join('');
+      colabList.classList.toggle('hidden', colabs.length === 0);
+      colabEmpty.classList.toggle('hidden', colabs.length > 0);
 
+      // Desenvolvedores (sugestão 4)
       const devContainer = document.getElementById('desenvolvedores-container');
       const devEmpty = document.getElementById('desenvolvedores-empty-state');
-      if (devContainer) devContainer.innerHTML = '';
-      if (data.equipeDesenvolvedores && data.equipeDesenvolvedores.length > 0) {
-        devEmpty.classList.add('hidden');
-        
+      const devs = Array.isArray(data.equipeDesenvolvedores) ? data.equipeDesenvolvedores : [];
+      devContainer.innerHTML = '';
+      devEmpty.classList.toggle('hidden', devs.length > 0);
+
+      if (devs.length > 0) {
         const grouped = {};
-        data.equipeDesenvolvedores.forEach(memb => {
+        devs.forEach(memb => {
           const ano = memb.ano ? String(memb.ano).trim() : 'Ano não especificado';
-          if(!grouped[ano]) grouped[ano] = [];
+          if (!grouped[ano]) grouped[ano] = [];
           grouped[ano].push(memb);
         });
         
         const anos = Object.keys(grouped).sort((a, b) => {
-          if(a === 'Ano não especificado') return 1;
-          if(b === 'Ano não especificado') return -1;
+          if (a === 'Ano não especificado') return 1;
+          if (b === 'Ano não especificado') return -1;
           return b.localeCompare(a);
         });
 
-        if (devContainer) {
-          anos.forEach(ano => {
-            const section = document.createElement('div');
-            section.className = 'space-y-3';
-            
-            const title = document.createElement('h4');
-            title.className = 'font-bold text-sm text-muted-foreground uppercase tracking-wider border-b border-border/40 pb-1';
-            title.textContent = ano;
-            section.appendChild(title);
-            
-            const list = document.createElement('div');
-            list.className = 'border border-border/40 rounded-xl overflow-hidden divide-y divide-border/40 bg-card';
-            
-            grouped[ano].forEach(memb => {
-              const item = document.createElement('div');
-              item.className = 'flex flex-col';
-              
-              const coordsHtml = memb.coordenadores ? `<div class="hidden px-4 py-3 bg-muted/30 text-xs text-muted-foreground border-t border-border/20"><strong>Coordenadores responsáveis:</strong> ${memb.coordenadores}</div>` : '';
-              const onClickAttr = memb.coordenadores ? `onclick="this.nextElementSibling.classList.toggle('hidden')" style="cursor: pointer;"` : '';
-              const caret = memb.coordenadores ? `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50"><path d="m6 9 6 6 6-6"/></svg>` : '';
-              
-              item.innerHTML = `
-                <div ${onClickAttr} class="flex justify-between items-center p-3 hover:bg-muted/10 transition-colors">
-                  <div class="flex items-center gap-2">
-                    ${caret}
-                    <div>
-                      <div class="font-bold text-foreground text-xs">${memb.nome}</div>
-                      <div class="text-muted-foreground text-[10px]">${memb.funcao || memb.cargo || ''}</div>
-                    </div>
-                  </div>
-                  <div class="text-right text-xs font-mono">
-                    ${memb.contato && memb.contato.includes('@') ? `<a href="mailto:${memb.contato}" class="text-primary hover:underline font-bold" onclick="event.stopPropagation()">${memb.contato}</a>` : `<span class="text-muted-foreground">${memb.contato || ''}</span>`}
-                  </div>
-                </div>
-                ${coordsHtml}
-              `;
-              list.appendChild(item);
-            });
-            
-            section.appendChild(list);
-            devContainer.appendChild(section);
-          });
-        }
-      } else {
-        devEmpty.classList.remove('hidden');
+        anos.forEach(ano => {
+          const section = document.createElement('div');
+          section.className = 'space-y-3';
+          
+          const title = document.createElement('h4');
+          title.className = 'font-bold text-sm text-muted-foreground uppercase tracking-wider border-b border-border/40 pb-1';
+          title.textContent = ano;
+          section.appendChild(title);
+          
+          const list = document.createElement('div');
+          list.className = 'border border-border/40 rounded-xl overflow-hidden divide-y divide-border/40 bg-card';
+
+          // Se alguém do ano tem setinha, reserva o espaço nos outros para os nomes ficarem alinhados
+          const reservarSeta = grouped[ano].some(m => String(m.coordenadores ?? '').trim());
+          grouped[ano].forEach(memb => list.appendChild(renderDev(memb, reservarSeta)));
+          
+          section.appendChild(list);
+          devContainer.appendChild(section);
+        });
+
+        // Abre/fecha "Coordenadores responsáveis" (clique na linha ou na setinha; links de e-mail não disparam)
+        devContainer.onclick = (e) => {
+          if (e.target.closest('a')) return;
+          const head = e.target.closest('.dev-head');
+          if (!head) return;
+          const item = head.closest('.dev-item');
+          const btn = item.querySelector('.dev-caret');
+          if (!btn) return;
+          const panel = document.getElementById(btn.getAttribute('aria-controls'));
+          const open = !item.classList.contains('is-open');
+          item.classList.toggle('is-open', open);
+          if (panel) panel.classList.toggle('hidden', !open);
+          btn.setAttribute('aria-expanded', String(open));
+        };
       }
     }
 
