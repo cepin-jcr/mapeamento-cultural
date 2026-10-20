@@ -389,7 +389,7 @@
         : '';
 
       const bolsaPill = bolsa
-        ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[hsl(var(--accent)/0.25)] text-[hsl(var(--accent-foreground))] border border-[hsl(var(--accent)/0.6)]">${esc(bolsa)}</span>`
+        ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[hsl(var(--accent)/0.25)] text-[hsl(var(--accent-foreground))] border border-[hsl(var(--accent)/0.6)]">${esc(bolsa)}</span>`
         : '';
 
       const item = document.createElement('div');
@@ -565,7 +565,7 @@
           <li class="px-4 py-3 hover:bg-muted/10 transition-colors">
             <div class="flex items-start justify-between gap-3">
               <span class="font-bold text-sm text-foreground leading-snug">${esc(memb.nome)}</span>
-              ${funcao ? `<span class="shrink-0 max-w-[50%] text-right px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[11px] font-semibold leading-tight">${esc(funcao)}</span>` : ''}
+              ${funcao ? `<span class="shrink-0 max-w-[50%] text-right px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[hsl(var(--accent)/0.25)] text-[hsl(var(--accent-foreground))] border border-[hsl(var(--accent)/0.6)] leading-tight">${esc(funcao)}</span>` : ''}
             </div>
             ${contato ? `<div class="mt-1 text-xs">${contatoHtml(contato)}</div>` : ''}
           </li>`;
