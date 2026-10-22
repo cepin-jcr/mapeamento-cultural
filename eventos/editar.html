@@ -101,15 +101,8 @@
         </div>
 
         <div class="space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Data e Hora</label>
-            <select id="edit-recorrencia" class="text-xs bg-muted/60 hover:bg-muted border border-border rounded-md px-2.5 py-1 text-foreground font-medium focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer">
-              <option value="padrao">📅 Data única</option>
-              <option value="anual">🔄 Repete anualmente</option>
-              <option value="temporada">🎭 Por temporada</option>
-            </select>
-          </div>
-          <input type="text" id="edit-data_hora" placeholder="Ex: 15 Julho, 14:00 - 18:00 ou Todo Sábado às 20h" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Data e Hora</label>
+          <input type="text" id="edit-data_hora" placeholder="Ex: 15 Julho, 14:00 - 18:00" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
 
         <div class="space-y-2">
@@ -122,15 +115,31 @@
           <textarea id="edit-descricao" rows="6" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y"></textarea>
         </div>
 
-        <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Local do Evento</label>
-          <input type="text" id="edit-local" required placeholder="Ex: MAB - Museu de Antropologia" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Local do Evento</label>
+            <input type="text" id="edit-local" required placeholder="Ex: MAB - Museu de Antropologia" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Organizador / Realizador</label>
+            <input type="text" id="edit-organizador" placeholder="Nome do organizador" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          </div>
         </div>
 
-        <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Organizado por (Opcional)</label>
-          <input type="text" id="edit-organizador" placeholder="Ex: IFSP, Secretaria de Cultura, Coletivo XYZ..." class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
-          <p class="text-xs text-muted-foreground">Nome da entidade, artista ou coletivo que aparecerá no card do evento.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5 flex flex-col justify-end pb-1">
+            <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+              <input type="checkbox" id="edit-anual" class="rounded text-primary focus:ring-primary h-4 w-4">
+              <span class="text-xs font-semibold text-foreground">Evento Anual</span>
+            </label>
+          </div>
+          <div class="space-y-1.5 flex flex-col justify-end pb-1">
+            <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+              <input type="checkbox" id="edit-temporada" class="rounded text-primary focus:ring-primary h-4 w-4">
+              <span class="text-xs font-semibold text-foreground">Por Temporada</span>
+            </label>
+          </div>
         </div>
 
         <div class="space-y-2">
@@ -231,20 +240,13 @@
       agenteId = agente.id;
 
       document.getElementById('edit-nome').value = agente.nome || '';
-      const rawDataHora = agente.data_hora || '';
-      const isAnual = rawDataHora.toLowerCase().includes('anual');
-      const isTemporada = rawDataHora.toLowerCase().includes('temporada');
-      const recSelect = document.getElementById('edit-recorrencia');
-      if (recSelect) {
-        if (isAnual) recSelect.value = 'anual';
-        else if (isTemporada) recSelect.value = 'temporada';
-        else recSelect.value = 'padrao';
-      }
-      if(document.getElementById('edit-data_hora')) document.getElementById('edit-data_hora').value = rawDataHora.replace(/\s*\((anual|temporada)\)/gi, '').trim();
+      if(document.getElementById('edit-data_hora')) document.getElementById('edit-data_hora').value = agente.data_hora || '';
       if(document.getElementById('edit-categoria')) document.getElementById('edit-categoria').value = agente.categoria || '';
       if(document.getElementById('edit-descricao')) document.getElementById('edit-descricao').value = agente.descricao || '';
       if(document.getElementById('edit-local')) document.getElementById('edit-local').value = agente.local || '';
       if(document.getElementById('edit-organizador')) document.getElementById('edit-organizador').value = agente.organizador || '';
+      if(document.getElementById('edit-anual')) document.getElementById('edit-anual').checked = !!agente.anual;
+      if(document.getElementById('edit-temporada')) document.getElementById('edit-temporada').checked = !!agente.temporada;
       
       if (agente.foto) {
         const preview = document.getElementById('preview-foto');
@@ -293,60 +295,44 @@
       }
     });
 
+
+
     document.getElementById('agent-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('btn-save');
       btn.innerText = 'Salvando... (Aguarde)';
       btn.disabled = true;
 
-      let dataHoraVal = document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value.trim() : '';
-      const recTipo = document.getElementById('edit-recorrencia')?.value || 'padrao';
-      dataHoraVal = dataHoraVal.replace(/\s*\((anual|temporada)\)/gi, '').trim();
-      if (recTipo === 'anual') {
-        dataHoraVal = dataHoraVal.replace(/,?\s*\b20\d{2}\b/g, '').trim();
-        dataHoraVal += ' (Anual)';
-      } else if (recTipo === 'temporada') {
-        dataHoraVal += ' (Temporada)';
-      }
+      
+      btn.innerText = 'Salvando... (Aguarde)';
 
       const updates = {
         nome: document.getElementById('edit-nome').value,
-        titulo: document.getElementById('edit-nome').value, // coluna "titulo" é NOT NULL no banco
-        data_hora: dataHoraVal,
-        data: dataHoraVal,
-        horario: dataHoraVal,
+        titulo: document.getElementById('edit-nome').value,
+        data_hora: document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value : '',
+        data: document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value : '',
+        horario: document.getElementById('edit-data_hora') ? document.getElementById('edit-data_hora').value : '',
         categoria: document.getElementById('edit-categoria') ? document.getElementById('edit-categoria').value : '',
         descricao: document.getElementById('edit-descricao') ? document.getElementById('edit-descricao').value : '',
         local: document.getElementById('edit-local') ? document.getElementById('edit-local').value : '',
-        organizador: document.getElementById('edit-organizador') ? document.getElementById('edit-organizador').value.trim() : '',
+        organizador: document.getElementById('edit-organizador') ? document.getElementById('edit-organizador').value : '',
+        anual: document.getElementById('edit-anual') ? document.getElementById('edit-anual').checked : false,
+        temporada: document.getElementById('edit-temporada') ? document.getElementById('edit-temporada').checked : false,
         foto: window.currentFotoData || null
       };
 
-      let error;
-      let attemptUpdates = { ...updates };
-      const trySave = async (data) => {
-        if (agenteId) {
-          return await supabaseClient.from('eventos').update(data).eq('id', agenteId);
-        } else {
-          return await supabaseClient.from('eventos').insert(data);
-        }
-      };
+      
 
-      let res = await trySave(attemptUpdates);
-      let retries = 0;
-      while (res && res.error && res.error.message && retries < 10) {
-        const match = res.error.message.match(/(?:Could not find the ['"]([^'"]+)['"] column|column ['"]([^'"]+)['"] of relation)/i);
-        const missingCol = match ? (match[1] || match[2]) : null;
-        if (missingCol && attemptUpdates.hasOwnProperty(missingCol)) {
-          console.warn(`[AutoRecovery] Removendo coluna '${missingCol}' inexistente e tentando novamente...`);
-          delete attemptUpdates[missingCol];
-          retries++;
-          res = await trySave(attemptUpdates);
-          continue;
-        }
-        break;
+      let error;
+      if (agenteId) {
+        // Atualizar
+        const res = await supabaseClient.from('eventos').update(updates).eq('id', agenteId);
+        error = res.error;
+      } else {
+        // Criar
+        const res = await supabaseClient.from('eventos').insert(updates);
+        error = res.error;
       }
-      error = res ? res.error : null;
       
       if (error) {
         alert('Erro ao salvar evento. Erro: ' + error.message);
@@ -373,6 +359,9 @@
 
     window.onload = checkAuthAndLoad;
   </script>
+
+  
+
 
   <!-- Bottom Navigation Mobile -->
   <nav id="bottom-nav" class="fixed bottom-0 left-0 w-full bg-background/95 backdrop-blur-md border-t border-border z-[90] flex md:hidden overflow-x-auto overflow-y-hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)] custom-scrollbar hide-scroll-indicator">
@@ -428,3 +417,6 @@
 
 </body>
 </html>
+
+
+

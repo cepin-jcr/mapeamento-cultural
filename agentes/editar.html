@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Agente | Mapeamento Cultural</title>
+  <title>Editar Agente â€¢ Mapeamento Cultural</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,7 +72,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
       <div>
         <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
-        <span class="block text-[13px] text-foreground/80 font-display font-medium">Vale do Paraí­ba</span>
+        <span class="block text-[13px] text-foreground/80 font-display font-medium">Vale do Paraíba</span>
       </div>
       </a>
       <button class="md:hidden p-2 text-foreground rounded-md hover:bg-muted transition-colors flex items-center justify-center" onclick="document.getElementById('nav-menu').classList.toggle('hidden'); document.getElementById('nav-menu').classList.toggle('flex');" aria-label="Menu">
@@ -156,7 +156,7 @@
 
         <div class="space-y-2">
           <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Endereço Físico</label>
-          <input type="text" id="edit-endereco" placeholder="Ex: Rua XV de Novembro, 143 - Centro, Jacareí­ - SP" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+          <input type="text" id="edit-endereco" placeholder="Ex: Rua XV de Novembro, 143 - Centro, Jacareí - SP" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
           <div class="grid grid-cols-2 gap-4 mt-4">
             <div class="space-y-2">
@@ -186,7 +186,7 @@
 
         <div class="space-y-2 border-t border-border pt-4">
           <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Links de Vídeos (YouTube / Vimeo)</label>
-          <textarea id="edit-videos" rows="4" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y" placeholder="Cole os links de vÃ­deo aqui, um por linha..."></textarea>
+          <textarea id="edit-videos" rows="4" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm resize-y" placeholder="Cole os links de vídeo aqui, um por linha..."></textarea>
           <p class="text-xs text-muted-foreground">Ex: https://www.youtube.com/watch?v=...</p>
         </div>
 
@@ -250,7 +250,7 @@
       }
 
       if (!agenteSlug && !paramId) {
-        // Modo CriaÃ§Ã£o
+        // Modo Criação
         if (!sessionUser.is_admin) {
           alert('Apenas administradores podem criar agentes pelo painel. Cadastre-se normalmente.');
           window.location.href = '/';
@@ -265,7 +265,7 @@
         return;
       }
 
-      // Aguarda supabase se necessÃ¡rio
+      // Aguarda supabase se necessário
       let tries = 0;
       while (!window.supabaseClient && tries < 10) {
         await new Promise(r => setTimeout(r, 100));
@@ -322,7 +322,7 @@
         return;
       }
 
-      // PermissÃ£o
+      // Permissão
       // Auto-link do user_id se bater o email
       if (agente.id && !agente.user_id && sessionUser.id) {
         const matchesEmail = (agente.email_sujestao && sessionUser.email && agente.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase());
@@ -472,7 +472,7 @@
             newLng = parseFloat(data[0].lon);
           }
         } catch (e) {
-          console.error('Erro na geocodificaÃ§Ã£o:', e);
+          console.error('Erro na geocodificação:', e);
         }
       }
 
@@ -515,7 +515,7 @@
       
       if (error) {
         alert('Erro ao salvar agente: ' + error.message);
-        btn.innerText = agenteId ? 'Salvar AlteraÃ§Ãµes' : 'Criar Agente';
+        btn.innerText = agenteId ? 'Salvar Alterações' : 'Criar Agente';
         btn.disabled = false;
       } else {
         alert(agenteId ? 'Agente atualizado com sucesso!' : 'Agente criado com sucesso!');
@@ -555,7 +555,7 @@
       </a>
       <a href="../calendario/" data-path="calendario" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-        <span class="text-[10px] font-semibold mt-1">CalendÃ¡rio</span>
+        <span class="text-[10px] font-semibold mt-1">Calendário</span>
       </a>
       <a href="../eventos/" data-path="eventos" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
@@ -563,7 +563,7 @@
       </a>
       <a href="../espacos/" data-path="espacos" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M9 8h1"/><path d="M9 12h1"/><path d="M9 16h1"/><path d="M14 8h1"/><path d="M14 12h1"/><path d="M14 16h1"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
-        <span class="text-[10px] font-semibold mt-1">EspaÃ§os</span>
+        <span class="text-[10px] font-semibold mt-1">Espaços</span>
       </a>
       <a href="../agentes/" data-path="agentes" class="flex flex-col items-center justify-center min-w-[72px] px-2 py-1 text-muted-foreground hover:text-primary transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>

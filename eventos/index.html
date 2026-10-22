@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -84,7 +84,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_de_S%C3%A3o_Paulo_-_Marca_Vertical_2015.svg.png" alt="IFSP Logo" class="w-10 md:w-12">
       <div>
         <b class="block text-primary text-base font-display font-bold tracking-tight">Mapeamento Cultural</b>
-        <span class="block text-[13px] text-foreground/80 font-display font-medium">Vale do ParaÃ­ba</span>
+        <span class="block text-[13px] text-foreground/80 font-display font-medium">Vale do Paraíba</span>
       </div>
       </a>
       <button class="md:hidden p-2 text-foreground rounded-md hover:bg-muted transition-colors flex items-center justify-center" onclick="document.getElementById('nav-menu').classList.toggle('hidden'); document.getElementById('nav-menu').classList.toggle('flex');" aria-label="Menu">
@@ -145,16 +145,16 @@
             <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
               Filtrar por Categoria
             </div>
-            <button onclick="selecionarFiltro('Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="MÃºsica">
-              <span>MÃºsica</span>
+            <button onclick="selecionarFiltro('Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Música">
+              <span>Música</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
             <button onclick="selecionarFiltro('Teatro')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Teatro">
               <span>Teatro</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-            <button onclick="selecionarFiltro('Dança')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="DanÃ§a">
-              <span>DanÃ§a</span>
+            <button onclick="selecionarFiltro('Dança')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Dança">
+              <span>Dança</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
             <button onclick="selecionarFiltro('Artes Visuais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes Visuais">
@@ -287,15 +287,15 @@
         }
       }
 
-      // Se vazio, fallback bÃ¡sico
+      // Se vazio, fallback básico
       if (todosEventos.length === 0) {
         todosEventos = [
           {
             id: 1,
             nome: "Festival de Música da Mantiqueira",
             categoria: "Música",
-            data_hora: "20/09/2026 Ã s 19:00",
-            local: "Parque dos Espanhóis, Jacareí­",
+            data_hora: "20/09/2026 às 19:00",
+            local: "Parque dos Espanhóis, Jacareí",
             foto: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
             descricao: "Um grande encontro musical celebrando a diversidade sonora do Vale do Paraíba e da Serra da Mantiqueira com artistas autorais e atrações convidadas."
           },
@@ -303,7 +303,7 @@
             id: 2,
             nome: "Exposição Olhares do Vale",
             categoria: "Artes Visuais",
-            data_hora: "15/10/2026 Ã s 14:00",
+            data_hora: "15/10/2026 às 14:00",
             local: "MAB - Museu de Antropologia",
             foto: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800",
             descricao: "Mostra fotográfica e artística retratando as tradições, o patrimônio histórico e as manifestações culturais populares do Vale do Paraíba."
@@ -312,7 +312,7 @@
             id: 3,
             nome: "Teatro na Praça: Histórias do Rio",
             categoria: "Teatro",
-            data_hora: "05/11/2026 Ã s 16:30",
+            data_hora: "05/11/2026 às 16:30",
             local: "Sala Mário Lago",
             foto: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800",
             descricao: "Espetáculo cênico gratuito e ao ar livre baseado nas lendas e contos ribeirinhos que marcaram as gerações da nossa região."
