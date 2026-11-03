@@ -170,6 +170,7 @@
     "redes_sociais": "@sandrinho.cpv @dneyesandrinhooficial",
     "linguagens": "Shows em eventos populares, canções autorais e cover",
     "localizacao": "Estrada Municipal do Tijuco Preto, 2840 - Caçapava SP",
+    "municipio": "Caçapava",
     "fotos_galeria": [
       "../img/galerias/sandrinho-araujo-1.webp",
       "../img/galerias/sandrinho-araujo-2.webp",
@@ -181,7 +182,10 @@
     ],
     "videos": [],
     "documentos": [],
-    "coordenadas": null,
+    "coordenadas": [
+      -23.1507708,
+      -45.712874
+    ],
     "youtube_links": []
   },
   "noticias-da-selva-loba-inacio": {
