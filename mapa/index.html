@@ -423,6 +423,8 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
+      setTimeout(() => { map.invalidateSize(); }, 300);
+
       // Ícones coloridos
       const createBrandIcon = (color = 'hsl(var(--primary))', isHighlighted = false, iconType = 'espaco') => {
         const dropShadow = isHighlighted ? 'drop-shadow(0 4px 10px rgba(0,0,0,0.5))' : 'drop-shadow(0 3px 6px rgba(0,0,0,0.35))';
@@ -494,7 +496,7 @@
       });
 
       let selectedMarker = null;
-      let espacosList = [];
+      let espacosList = [...MOCK_ESPACOS];
 
       // Tentar carregar espaços do Supabase para ter os mais atualizados
       if (window.supabaseClient) {
@@ -543,7 +545,6 @@
 
       const allRawItems = [];
       let municipioAtual = 'todos';
-      let selectedMarker = null;
 
       const CIDADES_COORDS = {
         "Aparecida": [-22.8467, -45.2306],
