@@ -369,7 +369,8 @@
     "nome_original": "c4rneiroo",
     "redes_sociais": "ig: @c4rneiroo ",
     "linguagens": "lançados atualmente, 2 músicas\nmalboro jack e presente próspero",
-    "localizacao": "Rua Brasília Ragazini Saes,289",
+    "localizacao": "Rua Brasília Ragazini Saes, 289, São José dos Campos - SP",
+    "municipio": "São José dos Campos",
     "fotos_galeria": [
       "../img/galerias/carneiro-1.webp",
       "../img/galerias/carneiro-2.webp",
@@ -383,7 +384,10 @@
     ],
     "videos": [],
     "documentos": [],
-    "coordenadas": null,
+    "coordenadas": [
+      -23.237771,
+      -45.9144452
+    ],
     "youtube_links": []
   },
   "samira-aurea": {
@@ -734,7 +738,8 @@
     "nome_original": "Maria Eduarda Batista",
     "redes_sociais": "@dudaabatistaaa",
     "linguagens": "Livros, pesquisas.",
-    "localizacao": "Rua Cel José Antônio Araújo, 482 Vila menino jesus ",
+    "localizacao": "Rua Cel José Antônio Araújo, 482 Vila menino jesus, Caçapava - SP",
+    "municipio": "Caçapava",
     "fotos_galeria": [
       "../img/galerias/duda-batista-1.webp",
       "../img/galerias/duda-batista-2.webp",
@@ -748,7 +753,10 @@
     ],
     "videos": [],
     "documentos": [],
-    "coordenadas": null,
+    "coordenadas": [
+      -23.0713827,
+      -45.7105765
+    ],
     "youtube_links": []
   },
   "birma-vicentin-pires": {
