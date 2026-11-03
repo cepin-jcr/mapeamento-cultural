@@ -59,19 +59,6 @@
     const status = String(user.status_aprovacao || user.status || '').toLowerCase().trim();
     return status === 'aprovado' || status === 'approved';
   }
-  const MUNICIPIOS_VALE = [
-    "Aparecida", "Arapeí", "Areias", "Bananal", "Caçapava", "Cachoeira Paulista",
-    "Campos do Jordão", "Canas", "Caraguatatuba", "Cruzeiro", "Cunha", "Guaratinguetá",
-    "Igaratá", "Ilhabela", "Jacareí", "Jambeiro", "Lagoinha", "Lavrinhas", "Lorena",
-    "Monteiro Lobato", "Natividade da Serra", "Paraibuna", "Pindamonhangaba", "Piquete",
-    "Potim", "Queluz", "Redenção da Serra", "Roseira", "Santa Branca", "Santo Antônio do Pinhal",
-    "São Bento do Sapucaí", "São José do Barreiro", "São José dos Campos", "São Luís do Paraitinga",
-    "São Sebastião", "Silveiras", "Taubaté", "Tremembé", "Ubatuba"
-  ];
-
-  function renderMunicipioOptions(selected = 'Jacareí') {
-    return MUNICIPIOS_VALE.map(m => `<option value="${m}" ${m === selected ? 'selected' : ''}>${m}</option>`).join('');
-  }
 
   function createModalDOM() {
     if (document.getElementById('modal-cadastro-global')) return;
@@ -212,7 +199,7 @@
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes cênicas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes cênicas</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Teatro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Teatro</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Dança" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Dança</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ã“pera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ã“pera</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ópera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ópera</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Circo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Circo</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes visuais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes visuais</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes plásticas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes plásticas</span></label>
@@ -249,19 +236,11 @@
                 <input type="text" id="cad-agente-area-outra" placeholder="Outra profissão/área (opcional)" class="mt-2 w-full px-3 py-2 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
 
-              <div class="space-y-3 flex flex-col justify-between">
-                <div class="space-y-1.5">
-                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município (Vale do Paraíba) *</label>
-                  <select id="cad-agente-municipio" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                    ${renderMunicipioOptions('Jacareí')}
-                  </select>
-                </div>
-                <div>
-                  <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
-                    <input type="checkbox" id="cad-agente-mulheres" class="rounded text-primary focus:ring-primary h-4 w-4">
-                    <span class="text-xs font-semibold text-foreground">Selo "Mulheres na Música"</span>
-                  </label>
-                </div>
+              <div class="space-y-1.5 flex flex-col justify-end pb-1">
+                <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+                  <input type="checkbox" id="cad-agente-mulheres" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <span class="text-xs font-semibold text-foreground">Selo "Mulheres na Música"</span>
+                </label>
               </div>
             </div>
 
@@ -358,17 +337,9 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município (Vale do Paraíba) *</label>
-                <select id="cad-espaco-municipio" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  ${renderMunicipioOptions('Jacareí')}
-                </select>
-              </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo *</label>
-                <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-              </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo em Jacareí *</label>
+              <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="space-y-1.5">
@@ -582,9 +553,6 @@
             }
           } else if (tipo === 'agente') {
             document.getElementById('cad-agente-nome').value = data.nome || '';
-            if (document.getElementById('cad-agente-municipio')) {
-              document.getElementById('cad-agente-municipio').value = data.municipio || 'Jacareí';
-            }
             const savedArea = data.area || data.area_de_atuacao || data.categoria || 'Música';
             const selectedAreas = savedArea.split(',').map(s => s.trim());
             const matchedAreas = [];
@@ -611,9 +579,6 @@
             }
           } else if (tipo === 'espaco') {
             document.getElementById('cad-espaco-nome').value = data.nome || '';
-            if (document.getElementById('cad-espaco-municipio')) {
-              document.getElementById('cad-espaco-municipio').value = data.municipio || 'Jacareí';
-            }
             document.getElementById('cad-espaco-tipo').value = data.tipo || 'Espaço Público';
             document.getElementById('cad-espaco-categoria').value = data.categoria || '';
             document.getElementById('cad-espaco-endereco').value = data.endereco || '';
@@ -849,13 +814,9 @@
         contatoFinal = contatoFinal + ` | Email: ${email}`;
       }
 
-      const municipioEl = document.getElementById('cad-agente-municipio');
-      const municipio = municipioEl ? municipioEl.value : 'Jacareí';
-
       const payload = {
         nome,
         area,
-        municipio,
         bio,
         contato: contatoFinal,
         projeto_mulheres: mulheres,
@@ -936,8 +897,6 @@
       const tipo = document.getElementById('cad-espaco-tipo').value;
       const categoria = document.getElementById('cad-espaco-categoria').value.trim();
       const endereco = document.getElementById('cad-espaco-endereco').value.trim();
-      const municipioEl = document.getElementById('cad-espaco-municipio');
-      const municipio = municipioEl ? municipioEl.value : 'Jacareí';
       const descricao = document.getElementById('cad-espaco-descricao').value.trim();
       const contato = document.getElementById('cad-espaco-contato').value.trim();
       const fotoInput = document.getElementById('cad-espaco-foto');
@@ -948,7 +907,7 @@
       let lng = -45.9658;
       if (endereco) {
         try {
-          const q = encodeURIComponent(`${endereco}, ${municipio}, SP, Brasil`);
+          const q = encodeURIComponent(endereco);
           const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
           if (res.ok) {
             const data = await res.json();
@@ -966,7 +925,6 @@
         nome,
         tipo,
         categoria,
-        municipio,
         endereco,
         descricao,
         contato: contatoFinal,

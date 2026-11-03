@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil | Mapeamento Cultural</title>
+  <title>Meu Perfil " Mapeamento Cultural</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,6 +76,18 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    .step-item-connector {
+      position: relative;
+    }
+    .step-item-connector::after {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 38px;
+      bottom: -22px;
+      width: 2px;
+      background: hsl(var(--primary) / 0.25);
+    }
   </style>
 
 </head>
@@ -118,34 +130,155 @@
 
 
   <!-- Content Container -->
-  <div id="login-section" class="max-w-md w-full mx-auto px-6 flex flex-col justify-center min-h-screen pt-20 pb-12">
+  <div id="login-section" class="max-w-6xl w-full mx-auto px-4 sm:px-6 flex flex-col justify-center min-h-screen pt-24 pb-16">
     <div id="url-msg-alert" class="hidden mb-6 p-4 rounded-xl bg-primary/10 text-primary border border-primary/20 flex items-start gap-3">
       <svg class="w-5 h-5 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
       <p id="url-msg-text" class="text-sm font-medium"></p>
     </div>
-    <div class="bg-card border border-border p-8 rounded-xl shadow-sm">
-      <h2 class="text-2xl font-bold text-foreground mb-6 text-center">Acesso / Cadastro</h2>
-      <div class="space-y-4">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      
+      <!-- Coluna Esquerda: Introdução e Passo a Passo (7 colunas) -->
+      <div class="lg:col-span-7 space-y-6">
         <div>
-          <label class="text-xs font-semibold text-foreground uppercase tracking-wider mb-1 block">E-mail</label>
-          <input type="email" id="sbEmail" placeholder="seu@email.com" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary transition-colors text-sm">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-bold uppercase tracking-wider mb-3">
+            <span>✦ Comunidade Artística do Vale</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-display font-extrabold text-foreground tracking-tight leading-tight">
+            Participe do <span class="text-primary">Mapeamento Cultural</span>
+          </h1>
+          <p class="text-base text-muted-foreground mt-2 leading-relaxed">
+            Plataforma aberta e colaborativa para conectar agentes culturais, divulgar a agenda de eventos e valorizar os espaços artísticos do Vale do Paraíba.
+          </p>
         </div>
-        <div>
-          <label class="text-xs font-semibold text-foreground uppercase tracking-wider mb-1 block">Senha</label>
-          <input type="password" id="sbPassword" placeholder="""""""""" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:border-primary transition-colors text-sm">
+
+        <!-- Card dos 2 Passos -->
+        <div class="bg-card border border-border rounded-2xl p-6 sm:p-7 shadow-sm space-y-6">
+          <div class="border-b border-border/70 pb-3">
+            <h2 class="text-base font-bold font-display text-foreground">Como funciona o cadastro e acesso?</h2>
+          </div>
+
+          <!-- Timeline dos Passos -->
+          <div class="space-y-6">
+            <!-- Passo 1 -->
+            <div class="step-item-connector flex items-start gap-4">
+              <div class="w-9 h-9 rounded-xl bg-primary text-primary-foreground font-bold flex items-center justify-center shrink-0 shadow-xs z-10 text-sm">
+                1
+              </div>
+              <div class="space-y-1">
+                <h3 class="font-bold text-foreground text-base">Faça seu cadastro</h3>
+                <p class="text-sm text-muted-foreground leading-relaxed">
+                  Clique no botão <strong class="text-foreground">Cadastrar como Agente Cultural</strong> ao lado para informar seus dados artísticos (nome artístico, área de atuação, biografia e contatos) e definir seu e-mail e senha de acesso.
+                </p>
+              </div>
+            </div>
+
+            <!-- Passo 2 -->
+            <div class="flex items-start gap-4">
+              <div class="w-9 h-9 rounded-xl bg-primary text-primary-foreground font-bold flex items-center justify-center shrink-0 shadow-xs z-10 text-sm">
+                2
+              </div>
+              <div class="space-y-1">
+                <h3 class="font-bold text-foreground text-base">Entre na sua conta</h3>
+                <p class="text-sm text-muted-foreground leading-relaxed">
+                  Com sua conta criada, preencha seu e-mail e senha e clique em <strong class="text-foreground">Entrar</strong> para divulgar eventos no calendário cultural, mapear novos espaços e interagir no chat da comunidade.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <button onclick="sbLogin()" class="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary-glow shadow-sm transition-all flex justify-center items-center gap-2">
-          Entrar
-        </button>
-        <button onclick="iniciarCadastroCompleto()" class="w-full py-3 bg-background border border-input text-foreground font-semibold rounded-md hover:border-primary hover:text-primary transition-all">
-          Cadastro
-        </button>
-        <p id="sbError" class="text-sm text-red-500 text-center min-h-[20px]"></p>
-        <div class="flex flex-col items-center gap-2 mt-4 pt-4 border-t border-border">
-          <button onclick="showRecoveryModal('senha')" class="text-sm text-muted-foreground hover:text-primary transition-colors">Esqueci minha senha</button>
-          <button onclick="showRecoveryModal('email')" class="text-sm text-muted-foreground hover:text-primary transition-colors">Esqueci meu e-mail</button>
+
+        <!-- 2 Cards de Recursos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-border bg-card/60 flex items-start gap-3">
+            <div class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 text-base">
+              🏛️
+            </div>
+            <div>
+              <h4 class="font-bold text-xs uppercase tracking-wider text-foreground">Espaços Culturais</h4>
+              <p class="text-xs text-muted-foreground mt-0.5 leading-relaxed">Mapeie teatros, ateliês, centros culturais e galerias da região.</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-border bg-card/60 flex items-start gap-3">
+            <div class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 text-base">
+              🌟
+            </div>
+            <div>
+              <h4 class="font-bold text-xs uppercase tracking-wider text-foreground">Perfil Cultural</h4>
+              <p class="text-xs text-muted-foreground mt-0.5 leading-relaxed">Destaque sua biografia, fotos e atuação no catálogo público de agentes.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Coluna Direita: Card de Acesso / Cadastro (5 colunas) -->
+      <div class="lg:col-span-5 w-full max-w-md mx-auto lg:max-w-none">
+        <div class="bg-card border border-border p-7 sm:p-8 rounded-2xl shadow-sm lg:sticky lg:top-28">
+          
+          <div class="text-center mb-6">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3 shadow-xs">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <h2 class="text-2xl font-bold font-display text-foreground">Acesso / Cadastro</h2>
+            <p class="text-xs text-muted-foreground mt-1">Entre com seus dados ou crie seu perfil cultural</p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5 block">E-mail</label>
+              <input type="email" id="sbEmail" placeholder="seu@email.com" class="w-full px-4 py-3 bg-[#F7F5F0] border border-[#E8E5DD] rounded-xl focus:bg-card focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+            </div>
+
+            <div>
+              <label class="text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5 block">Senha</label>
+              <input type="password" id="sbPassword" placeholder="••••••••" class="w-full px-4 py-3 bg-[#F7F5F0] border border-[#E8E5DD] rounded-xl focus:bg-card focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+            </div>
+
+            <button onclick="sbLogin()" class="w-full py-3.5 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary-glow shadow-sm transition-all flex justify-center items-center gap-2 cursor-pointer text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+              Entrar na Plataforma
+            </button>
+
+            <p id="sbError" class="text-xs text-red-500 text-center min-h-[18px] font-medium"></p>
+
+            <!-- Divisor NOVO POR AQUI? -->
+            <div class="relative my-4">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-border"></div>
+              </div>
+              <div class="relative flex justify-center text-xs uppercase">
+                <span class="bg-card px-3 text-muted-foreground font-semibold tracking-wider">Novo por aqui?</span>
+              </div>
+            </div>
+
+            <!-- Botão Destaque Cadastro -->
+            <button onclick="iniciarCadastroCompleto()" class="w-full py-3.5 bg-[#F7F5F0] border border-primary/30 text-primary font-bold rounded-xl hover:bg-primary hover:text-primary-foreground transition-all flex items-center justify-center gap-2 group cursor-pointer text-sm shadow-xs">
+              <svg class="w-4 h-4 text-primary group-hover:text-primary-foreground transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" x2="20" y1="8" y2="14"/><line x1="23" x2="17" y1="11" y2="11"/></svg>
+              Cadastrar como Agente Cultural
+            </button>
+
+            <!-- Recuperação e Suporte WhatsApp -->
+            <div class="flex flex-col items-center gap-2 pt-4 border-t border-border">
+              <button onclick="showRecoveryModal('senha')" class="text-xs text-muted-foreground hover:text-primary transition-colors">Esqueci minha senha</button>
+              <button onclick="showRecoveryModal('email')" class="text-xs text-muted-foreground hover:text-primary transition-colors">Esqueci meu e-mail</button>
+              
+              <div class="pt-2 mt-1 border-t border-dashed border-border w-full text-center">
+                <a href="https://chat.whatsapp.com/KuO7hVC9DKKFbS4bMbtOl5?s=sw&p=a&ilr=0" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  Dúvidas? Entre no grupo de WhatsApp
+                </a>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -618,7 +751,7 @@
                   if (card) {
                     card.classList.remove('hidden');
                     document.getElementById('user-agent-nome').innerText = myAgent.nome || 'Agente Cultural';
-                    document.getElementById('user-agent-categoria').innerText = `${myAgent.area || myAgent.categoria || myAgent.area_de_atuacao || 'Agente'} · ${myAgent.municipio || 'Jacareí'}`;
+                    document.getElementById('user-agent-categoria').innerText = myAgent.categoria || myAgent.area_de_atuacao || '';
                     if (myAgent.foto) {
                       document.getElementById('user-agent-img').src = myAgent.foto;
                     }
@@ -1023,58 +1156,17 @@
     window.renderCepinEquipes = () => {
       const renderList = (id, arr, type) => {
         const list = document.getElementById(id);
-        list.innerHTML = (arr || []).map((m, i) => {
-          if (type === 'dev') {
-            return `
-              <div class="p-3 bg-muted/20 border border-border rounded-lg space-y-2 relative">
-                <button type="button" onclick="removeCepinEquipeMembro('dev', ${i})" class="absolute top-2 right-2 text-red-500 font-bold hover:bg-red-500/10 px-2 py-1 rounded text-xs">Excluir</button>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pr-16">
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Nome</label>
-                    <input type="text" placeholder="Nome do desenvolvedor" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${(m.nome || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Ano</label>
-                    <input type="text" placeholder="ex: 2024" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-ano" value="${(m.ano || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Período</label>
-                    <input type="text" placeholder="ex: Setembro - Atual" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-periodo" value="${(m.periodo || '').replace(/"/g, '&quot;')}">
-                  </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Função / Papel no projeto</label>
-                    <input type="text" placeholder="ex: Desenvolvimento Front-end" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${(m.cargo || m.funcao || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Bolsa / Vínculo</label>
-                    <input type="text" placeholder="ex: Bolsista de Extensão" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-bolsa" value="${(m.bolsa || '').replace(/"/g, '&quot;')}">
-                  </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Coordenador(es) responsável(is)</label>
-                    <input type="text" placeholder="ex: Profa. Simone Lisboa" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-coord" value="${(m.coordenadores || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Contato / E-mail</label>
-                    <input type="text" placeholder="ex: dev@ifsp.edu.br" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${(m.contato || '').replace(/"/g, '&quot;')}">
-                  </div>
-                </div>
-              </div>
-            `;
-          }
-          return `
-            <div class="flex gap-2 items-center flex-wrap sm:flex-nowrap">
-              <input type="text" placeholder="Nome" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${(m.nome || '').replace(/"/g, '&quot;')}">
-              ${type === 'membro' ? `<input type="text" placeholder="Câmpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${(m.campus || '').replace(/"/g, '&quot;')}">` : ''}
-              <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'Função'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${(m.cargo || m.funcao || '').replace(/"/g, '&quot;')}">
-              <input type="text" placeholder="Contato" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${(m.contato || '').replace(/"/g, '&quot;')}">
-              <button type="button" onclick="removeCepinEquipeMembro('${type}', ${i})" class="text-red-500 font-bold p-1 hover:bg-red-500/10 rounded">X</button>
-            </div>
-          `;
-        }).join('');
+        list.innerHTML = (arr || []).map((m, i) => `
+          <div class="flex gap-2 items-center flex-wrap sm:flex-nowrap">
+            <input type="text" placeholder="Nome" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${m.nome || ''}">
+            ${type === 'membro' ? `<input type="text" placeholder="Câmpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${m.campus || ''}">` : ''}
+            ${type === 'dev' ? `<input type="text" placeholder="Ano" class="w-16 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-ano" value="${m.ano || ''}">` : ''}
+            <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'Função'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${m.cargo || m.funcao || ''}">
+            ${type === 'dev' ? `<input type="text" placeholder="Coordenador(es)" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-coord" value="${m.coordenadores || ''}">` : ''}
+            <input type="text" placeholder="Contato" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${m.contato || ''}">
+            <button type="button" onclick="removeCepinEquipeMembro('${type}', ${i})" class="text-red-500 font-bold p-1 hover:bg-red-500/10 rounded">X</button>
+          </div>
+        `).join('');
       };
       renderList('cepin-equipe-membros-list', cepinCurrentData.equipeMembros, 'membro');
       renderList('cepin-equipe-colab-list', cepinCurrentData.equipeColaboradores, 'colab');
@@ -1083,11 +1175,7 @@
 
     window.addCepinEquipeMembro = (type) => {
       updateLocalCepinData();
-      const obj = type === 'membro'
-        ? {nome:"", campus:"", cargo:"", contato:""}
-        : (type === 'dev'
-            ? {nome:"", ano: new Date().getFullYear().toString(), periodo:"", funcao:"", bolsa:"", coordenadores:"", contato:""}
-            : {nome:"", funcao:"", contato:""});
+      const obj = type === 'membro' ? {nome:"", campus:"", cargo:"", contato:""} : {nome:"", funcao:"", contato:""};
       if (type === 'membro') { if(!cepinCurrentData.equipeMembros) cepinCurrentData.equipeMembros=[]; cepinCurrentData.equipeMembros.push(obj); }
       if (type === 'colab') { if(!cepinCurrentData.equipeColaboradores) cepinCurrentData.equipeColaboradores=[]; cepinCurrentData.equipeColaboradores.push(obj); }
       if (type === 'dev') { if(!cepinCurrentData.equipeDesenvolvedores) cepinCurrentData.equipeDesenvolvedores=[]; cepinCurrentData.equipeDesenvolvedores.push(obj); }
@@ -1131,14 +1219,10 @@
             obj.campus = c.querySelector(`.cepin-${type}-campus`).value;
             obj.cargo = c.querySelector(`.cepin-${type}-cargo`).value;
           } else if (type === 'dev') {
-            obj.funcao = c.querySelector(`.cepin-${type}-cargo`) ? c.querySelector(`.cepin-${type}-cargo`).value : '';
+            obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
             const anoEl = c.querySelector(`.cepin-${type}-ano`);
-            const periodoEl = c.querySelector(`.cepin-${type}-periodo`);
-            const bolsaEl = c.querySelector(`.cepin-${type}-bolsa`);
             const coordEl = c.querySelector(`.cepin-${type}-coord`);
             obj.ano = anoEl ? anoEl.value : '';
-            obj.periodo = periodoEl ? periodoEl.value : '';
-            obj.bolsa = bolsaEl ? bolsaEl.value : '';
             obj.coordenadores = coordEl ? coordEl.value : '';
           } else {
             obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
@@ -1277,9 +1361,6 @@
               const idade = document.getElementById('cad-agente-idade');
               if(idade) idade.checked = true;
 
-            if (document.getElementById('cad-agente-municipio') && data.municipio) {
-              document.getElementById('cad-agente-municipio').value = data.municipio;
-            }
             document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
             
             // We combined email/phone/instagram into contato in the payload
@@ -1561,7 +1642,6 @@
                   <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5 flex-wrap mb-1">
                       <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">${ag.area || ag.area_de_atuacao || ag.categoria || 'Agente'}</span>
-                      <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-muted text-muted-foreground">${ag.municipio || 'Jacareí'}</span>
                       ${(ag.projeto_mulheres || ag.mulheres_na_musica) ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500/10 text-pink-600 border border-pink-500/20">Mulheres na Música</span>' : ''}
                     </div>
                     <h5 class="text-sm font-bold text-foreground truncate" title="${ag.nome || ''}">${ag.nome || 'Sem nome'}</h5>
@@ -1617,7 +1697,6 @@
                     <div class="flex items-center gap-1.5 flex-wrap mb-1">
                       <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">${sp.tipo || 'Espaço'}</span>
                       <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-muted text-muted-foreground">${sp.categoria || 'Cultural'}</span>
-                      <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/5 text-primary border border-primary/20">${sp.municipio || 'Jacareí'}</span>
                     </div>
                     <h5 class="text-sm font-bold text-foreground truncate" title="${sp.nome || ''}">${sp.nome || 'Sem nome'}</h5>
                     <p class="text-xs text-muted-foreground truncate flex items-center gap-1 mt-0.5">
