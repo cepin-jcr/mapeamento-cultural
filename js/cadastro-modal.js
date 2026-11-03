@@ -245,6 +245,51 @@
             </div>
 
             <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município (Vale do Paraíba) *</label>
+              <select id="cad-agente-municipio" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <option value="Aparecida">Aparecida</option>
+                <option value="Arapeí">Arapeí</option>
+                <option value="Areias">Areias</option>
+                <option value="Bananal">Bananal</option>
+                <option value="Caçapava">Caçapava</option>
+                <option value="Cachoeira Paulista">Cachoeira Paulista</option>
+                <option value="Campos do Jordão">Campos do Jordão</option>
+                <option value="Canas">Canas</option>
+                <option value="Caraguatatuba">Caraguatatuba</option>
+                <option value="Cruzeiro">Cruzeiro</option>
+                <option value="Cunha">Cunha</option>
+                <option value="Guaratinguetá">Guaratinguetá</option>
+                <option value="Igaratá">Igaratá</option>
+                <option value="Ilhabela">Ilhabela</option>
+                <option value="Jacareí" selected>Jacareí</option>
+                <option value="Jambeiro">Jambeiro</option>
+                <option value="Lagoinha">Lagoinha</option>
+                <option value="Lavrinhas">Lavrinhas</option>
+                <option value="Lorena">Lorena</option>
+                <option value="Monteiro Lobato">Monteiro Lobato</option>
+                <option value="Natividade da Serra">Natividade da Serra</option>
+                <option value="Paraibuna">Paraibuna</option>
+                <option value="Pindamonhangaba">Pindamonhangaba</option>
+                <option value="Piquete">Piquete</option>
+                <option value="Potim">Potim</option>
+                <option value="Queluz">Queluz</option>
+                <option value="Redenção da Serra">Redenção da Serra</option>
+                <option value="Roseira">Roseira</option>
+                <option value="Santa Branca">Santa Branca</option>
+                <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
+                <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
+                <option value="São José do Barreiro">São José do Barreiro</option>
+                <option value="São José dos Campos">São José dos Campos</option>
+                <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
+                <option value="São Sebastião">São Sebastião</option>
+                <option value="Silveiras">Silveiras</option>
+                <option value="Taubaté">Taubaté</option>
+                <option value="Tremembé">Tremembé</option>
+                <option value="Ubatuba">Ubatuba</option>
+              </select>
+            </div>
+
+            <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Biografia / Histórico *</label>
               <textarea id="cad-agente-bio" rows="4" required placeholder="Conte sua trajetória, projetos realizados, influências e atuação na cidade..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
             </div>
@@ -337,9 +382,56 @@
               </div>
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo em Jacareí *</label>
-              <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município *</label>
+                <select id="cad-espaco-municipio" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <option value="Aparecida">Aparecida</option>
+                  <option value="Arapeí">Arapeí</option>
+                  <option value="Areias">Areias</option>
+                  <option value="Bananal">Bananal</option>
+                  <option value="Caçapava">Caçapava</option>
+                  <option value="Cachoeira Paulista">Cachoeira Paulista</option>
+                  <option value="Campos do Jordão">Campos do Jordão</option>
+                  <option value="Canas">Canas</option>
+                  <option value="Caraguatatuba">Caraguatatuba</option>
+                  <option value="Cruzeiro">Cruzeiro</option>
+                  <option value="Cunha">Cunha</option>
+                  <option value="Guaratinguetá">Guaratinguetá</option>
+                  <option value="Igaratá">Igaratá</option>
+                  <option value="Ilhabela">Ilhabela</option>
+                  <option value="Jacareí" selected>Jacareí</option>
+                  <option value="Jambeiro">Jambeiro</option>
+                  <option value="Lagoinha">Lagoinha</option>
+                  <option value="Lavrinhas">Lavrinhas</option>
+                  <option value="Lorena">Lorena</option>
+                  <option value="Monteiro Lobato">Monteiro Lobato</option>
+                  <option value="Natividade da Serra">Natividade da Serra</option>
+                  <option value="Paraibuna">Paraibuna</option>
+                  <option value="Pindamonhangaba">Pindamonhangaba</option>
+                  <option value="Piquete">Piquete</option>
+                  <option value="Potim">Potim</option>
+                  <option value="Queluz">Queluz</option>
+                  <option value="Redenção da Serra">Redenção da Serra</option>
+                  <option value="Roseira">Roseira</option>
+                  <option value="Santa Branca">Santa Branca</option>
+                  <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
+                  <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
+                  <option value="São José do Barreiro">São José do Barreiro</option>
+                  <option value="São José dos Campos">São José dos Campos</option>
+                  <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
+                  <option value="São Sebastião">São Sebastião</option>
+                  <option value="Silveiras">Silveiras</option>
+                  <option value="Taubaté">Taubaté</option>
+                  <option value="Tremembé">Tremembé</option>
+                  <option value="Ubatuba">Ubatuba</option>
+                </select>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo *</label>
+                <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              </div>
             </div>
 
             <div class="space-y-1.5">
@@ -569,6 +661,9 @@
               document.getElementById('cad-agente-area-outra').value = unmatchedAreas.join(', ');
             }
             document.getElementById('cad-agente-mulheres').checked = !!(data.projeto_mulheres || data.mulheres_na_musica);
+            if (document.getElementById('cad-agente-municipio')) {
+              document.getElementById('cad-agente-municipio').value = data.municipio || 'Jacareí';
+            }
             document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
             document.getElementById('cad-agente-contato').value = data.contato || '';
             document.getElementById('cad-agente-instagram').value = data.instagram || '';
@@ -581,6 +676,9 @@
             document.getElementById('cad-espaco-nome').value = data.nome || '';
             document.getElementById('cad-espaco-tipo').value = data.tipo || 'Espaço Público';
             document.getElementById('cad-espaco-categoria').value = data.categoria || '';
+            if (document.getElementById('cad-espaco-municipio')) {
+              document.getElementById('cad-espaco-municipio').value = data.municipio || 'Jacareí';
+            }
             document.getElementById('cad-espaco-endereco').value = data.endereco || '';
             document.getElementById('cad-espaco-descricao').value = data.descricao || '';
             document.getElementById('cad-espaco-contato').value = data.contato || '';
@@ -801,6 +899,7 @@
       }
       
       const mulheres = document.getElementById('cad-agente-mulheres').checked;
+      const municipio = document.getElementById('cad-agente-municipio') ? document.getElementById('cad-agente-municipio').value : 'Jacareí';
       const bio = document.getElementById('cad-agente-bio').value.trim();
       const contato = document.getElementById('cad-agente-contato').value.trim();
       const instagram = document.getElementById('cad-agente-instagram').value.trim();
@@ -817,6 +916,7 @@
       const payload = {
         nome,
         area,
+        municipio,
         bio,
         contato: contatoFinal,
         projeto_mulheres: mulheres,
@@ -896,6 +996,7 @@
       const nome = document.getElementById('cad-espaco-nome').value.trim();
       const tipo = document.getElementById('cad-espaco-tipo').value;
       const categoria = document.getElementById('cad-espaco-categoria').value.trim();
+      const municipio = document.getElementById('cad-espaco-municipio') ? document.getElementById('cad-espaco-municipio').value : 'Jacareí';
       const endereco = document.getElementById('cad-espaco-endereco').value.trim();
       const descricao = document.getElementById('cad-espaco-descricao').value.trim();
       const contato = document.getElementById('cad-espaco-contato').value.trim();
@@ -907,7 +1008,7 @@
       let lng = -45.9658;
       if (endereco) {
         try {
-          const q = encodeURIComponent(endereco);
+          const q = encodeURIComponent(`${endereco}, ${municipio}, SP, Brasil`);
           const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
           if (res.ok) {
             const data = await res.json();
@@ -925,6 +1026,7 @@
         nome,
         tipo,
         categoria,
+        municipio,
         endereco,
         descricao,
         contato: contatoFinal,
