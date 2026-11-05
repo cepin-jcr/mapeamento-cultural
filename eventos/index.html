@@ -129,32 +129,132 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="searchInput" placeholder="Buscar eventos por nome, local ou descrição..." class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
       </div>
-      <div class="flex items-center gap-2 w-full md:w-auto justify-center md:justify-end relative" id="categoryFilters">
+      <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-center md:justify-end relative" id="categoryFilters">
         <button id="btnFilterTodos" onclick="selecionarFiltro('Todos')" class="cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0">
           Todos
         </button>
 
+        <!-- Dropdown Status / PerÃ­odo -->
+        <div class="relative shrink-0" id="statusDropdownContainer">
+          <button id="btnStatusDropdown" onclick="toggleDropdownStatus(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="statusDropdownLabel">PerÃ­odo</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform duration-200" id="statusDropdownChevron"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+
+          <div id="statusDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-64 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
+              Filtrar por PerÃ­odo
+            </div>
+            <button onclick="selecionarStatus('todos')" class="status-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-primary bg-primary/5 transition-colors flex items-center justify-between" data-status="todos">
+              <span>Todos os Eventos</span>
+              <svg class="status-check-icon text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarStatus('proximos')" class="status-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-status="proximos">
+              <span class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>PrÃ³ximos / Em Breve</span>
+              </span>
+              <svg class="status-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarStatus('anuais')" class="status-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-status="anuais">
+              <span class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <span>Anuais / Recorrentes</span>
+              </span>
+              <svg class="status-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarStatus('anteriores')" class="status-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-status="anteriores">
+              <span class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                <span>Eventos Anteriores (Passados)</span>
+              </span>
+              <svg class="status-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dropdown MunicÃ­pio -->
+        <div class="relative shrink-0" id="muniDropdownContainer">
+          <button id="btnMuniDropdown" onclick="toggleDropdownMuni(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span id="muniDropdownLabel">MunicÃ­pio</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform duration-200" id="muniDropdownChevron"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+
+          <div id="muniDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-64 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200 max-h-80 overflow-y-auto">
+            <button onclick="selecionarMunicipio('todos')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-primary bg-primary/5 transition-colors flex items-center justify-between" data-muni="todos">
+              <span>Todos os MunicÃ­pios</span>
+              <svg class="muni-check-icon text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarMunicipio('Aparecida')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Aparecida"><span>Aparecida</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('ArapeÃ­')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="ArapeÃ­"><span>ArapeÃ­</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Areias')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Areias"><span>Areias</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Bananal')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Bananal"><span>Bananal</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('CaÃ§apava')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="CaÃ§apava"><span>CaÃ§apava</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Cachoeira Paulista')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Cachoeira Paulista"><span>Cachoeira Paulista</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Campos do JordÃ£o')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Campos do JordÃ£o"><span>Campos do JordÃ£o</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Canas')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Canas"><span>Canas</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Caraguatatuba')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Caraguatatuba"><span>Caraguatatuba</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Cruzeiro')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Cruzeiro"><span>Cruzeiro</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Cunha')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Cunha"><span>Cunha</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('GuaratinguetÃ¡')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="GuaratinguetÃ¡"><span>GuaratinguetÃ¡</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('IgaratÃ¡')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="IgaratÃ¡"><span>IgaratÃ¡</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Ilhabela')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Ilhabela"><span>Ilhabela</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('JacareÃ­')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="JacareÃ­"><span>JacareÃ­</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Jambeiro')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Jambeiro"><span>Jambeiro</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Lagoinha')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Lagoinha"><span>Lagoinha</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Lavrinhas')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Lavrinhas"><span>Lavrinhas</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Lorena')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Lorena"><span>Lorena</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Monteiro Lobato')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Monteiro Lobato"><span>Monteiro Lobato</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Natividade da Serra')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Natividade da Serra"><span>Natividade da Serra</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Paraibuna')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Paraibuna"><span>Paraibuna</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Pindamonhangaba')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Pindamonhangaba"><span>Pindamonhangaba</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Piquete')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Piquete"><span>Piquete</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Potim')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Potim"><span>Potim</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Queluz')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Queluz"><span>Queluz</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('RedenÃ§Ã£o da Serra')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="RedenÃ§Ã£o da Serra"><span>RedenÃ§Ã£o da Serra</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Roseira')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Roseira"><span>Roseira</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Santa Branca')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Santa Branca"><span>Santa Branca</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Santo AntÃ´nio do Pinhal')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Santo AntÃ´nio do Pinhal"><span>Santo AntÃ´nio do Pinhal</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('SÃ£o Bento do SapucaÃ­')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="SÃ£o Bento do SapucaÃ­"><span>SÃ£o Bento do SapucaÃ­</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('SÃ£o JosÃ© do Barreiro')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="SÃ£o JosÃ© do Barreiro"><span>SÃ£o JosÃ© do Barreiro</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('SÃ£o JosÃ© dos Campos')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="SÃ£o JosÃ© dos Campos"><span>SÃ£o JosÃ© dos Campos</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('SÃ£o LuÃ­s do Paraitinga')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="SÃ£o LuÃ­s do Paraitinga"><span>SÃ£o LuÃ­s do Paraitinga</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('SÃ£o SebastiÃ£o')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="SÃ£o SebastiÃ£o"><span>SÃ£o SebastiÃ£o</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Silveiras')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Silveiras"><span>Silveiras</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('TaubatÃ©')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="TaubatÃ©"><span>TaubatÃ©</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('TremembÃ©')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="TremembÃ©"><span>TremembÃ©</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <button onclick="selecionarMunicipio('Ubatuba')" class="muni-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-muni="Ubatuba"><span>Ubatuba</span><svg class="muni-check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Dropdown Categoria -->
         <div class="relative shrink-0" id="filterDropdownContainer">
           <button id="btnFilterDropdown" onclick="toggleDropdownFiltros(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            <span id="filterDropdownLabel">Filtros</span>
+            <span id="filterDropdownLabel">Categoria</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform duration-200" id="filterDropdownChevron"><path d="m6 9 6 6 6-6"/></svg>
           </button>
 
-          <div id="filterDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-52 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200 max-h-96 overflow-y-auto">
+          <div id="filterDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-56 bg-card border border-border rounded-xl shadow-carnival p-1.5 z-50 transition-all duration-200 max-h-96 overflow-y-auto">
             <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
               Filtrar por Categoria
             </div>
-            <button onclick="selecionarFiltro('Música')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Música">
-              <span>Música</span>
+            <button onclick="selecionarFiltro('Todos')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-primary bg-primary/5 transition-colors flex items-center justify-between" data-value="Todos">
+              <span>Todas as Categorias</span>
+              <svg class="check-icon text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button onclick="selecionarFiltro('MÃºsica')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="MÃºsica">
+              <span>MÃºsica</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
             <button onclick="selecionarFiltro('Teatro')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Teatro">
               <span>Teatro</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-            <button onclick="selecionarFiltro('Dança')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Dança">
-              <span>Dança</span>
+            <button onclick="selecionarFiltro('DanÃ§a')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="DanÃ§a">
+              <span>DanÃ§a</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
             <button onclick="selecionarFiltro('Artes Visuais')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Artes Visuais">
@@ -177,8 +277,8 @@
               <span>Cinema & Audiovisual</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
-            <button onclick="selecionarFiltro('Produção Cultural')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Produção Cultural">
-              <span>Produção Cultural</span>
+            <button onclick="selecionarFiltro('ProduÃ§Ã£o Cultural')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="ProduÃ§Ã£o Cultural">
+              <span>ProduÃ§Ã£o Cultural</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
             <button onclick="selecionarFiltro('Outro')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Outro">
@@ -273,7 +373,164 @@
   <script>
     let todosEventos = [];
     let categoriaAtual = 'Todos';
+    let municipioAtivo = 'todos';
+    let statusAtivo = 'todos'; // 'todos' | 'proximos' | 'anuais' | 'anteriores'
     let termoBusca = '';
+
+    const CIDADES_VALE = [
+      "Aparecida", "ArapeÃ­", "Areias", "Bananal", "CaÃ§apava", "Cachoeira Paulista", "Campos do JordÃ£o", "Canas",
+      "Caraguatatuba", "Cruzeiro", "Cunha", "GuaratinguetÃ¡", "IgaratÃ¡", "Ilhabela", "JacareÃ­", "Jambeiro",
+      "Lagoinha", "Lavrinhas", "Lorena", "Monteiro Lobato", "Natividade da Serra", "Paraibuna", "Pindamonhangaba",
+      "Piquete", "Potim", "Queluz", "RedenÃ§Ã£o da Serra", "Roseira", "Santa Branca", "Santo AntÃ´nio do Pinhal",
+      "SÃ£o Bento do SapucaÃ­", "SÃ£o JosÃ© do Barreiro", "SÃ£o JosÃ© dos Campos", "SÃ£o LuÃ­s do Paraitinga", "SÃ£o SebastiÃ£o",
+      "Silveiras", "TaubatÃ©", "TremembÃ©", "Ubatuba"
+    ];
+
+    const MESES_MAP = {
+      'jan': 0, 'janeiro': 0,
+      'fev': 1, 'fevereiro': 1,
+      'mar': 2, 'marco': 2, 'marÃ§o': 2,
+      'abr': 3, 'abril': 3,
+      'mai': 4, 'maio': 4,
+      'jun': 5, 'junho': 5,
+      'jul': 6, 'julho': 6,
+      'ago': 7, 'agosto': 7,
+      'set': 8, 'setembro': 8,
+      'out': 9, 'outubro': 9,
+      'nov': 10, 'novembro': 10,
+      'dez': 11, 'dezembro': 11
+    };
+
+    function normalizeStr(str) {
+      if (!str) return '';
+      return String(str).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    }
+
+    function extrairMunicipioEvento(ev) {
+      if (ev.municipio && ev.municipio.trim()) {
+        const direct = CIDADES_VALE.find(c => normalizeStr(c) === normalizeStr(ev.municipio));
+        if (direct) return direct;
+      }
+      const localNorm = normalizeStr(ev.local || '');
+      const descNorm = normalizeStr(ev.descricao || '');
+
+      // Local mappings for known venues in the Vale
+      if (localNorm.includes('sjc') || localNorm.includes('sao jose dos campos') || 
+          localNorm.includes('cine santana') || localNorm.includes('cet') || 
+          localNorm.includes('flavio craveiro') || localNorm.includes('rancho do tropeiro') || 
+          localNorm.includes('vicentina aranha') || localNorm.includes('parque da cidade') || 
+          localNorm.includes('shopping centro') || localNorm.includes('novo horizonte')) {
+        return 'SÃ£o JosÃ© dos Campos';
+      }
+      if (localNorm.includes('jacarei') || localNorm.includes('sala mario lago') || 
+          localNorm.includes('ariano suassuna') || localNorm.includes('parque dos espanhois') || 
+          localNorm.includes('mab')) {
+        return 'JacareÃ­';
+      }
+      if (localNorm.includes('guaratingueta') || localNorm.includes('mae tiana')) {
+        return 'GuaratinguetÃ¡';
+      }
+      if (localNorm.includes('taubate')) {
+        return 'TaubatÃ©';
+      }
+
+      // General check against the 39 cities
+      for (const c of CIDADES_VALE) {
+        if (localNorm.includes(normalizeStr(c)) || descNorm.includes(normalizeStr(c))) {
+          return c;
+        }
+      }
+      return 'SÃ£o JosÃ© dos Campos';
+    }
+
+    function parseEventoInfo(ev) {
+      const nomeNorm = normalizeStr(ev.nome);
+      const dataStr = normalizeStr(ev.data_hora || ev.data || '');
+      
+      const isAnual = Boolean(ev.anual) || 
+        nomeNorm.includes('anual') || 
+        dataStr.includes('anual') ||
+        dataStr.includes('recorrente');
+
+      let dateObj = null;
+
+      // DD/MM/YYYY
+      const slashMatch = dataStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if (slashMatch) {
+        const d = parseInt(slashMatch[1], 10);
+        const m = parseInt(slashMatch[2], 10) - 1;
+        const y = parseInt(slashMatch[3], 10);
+        dateObj = new Date(y, m, d);
+      }
+
+      // DD de [MÃªs] (de YYYY)?
+      if (!dateObj) {
+        const regexMes = /(\d{1,2})\s*(?:e\s*\d{1,2})?\s*de\s*([a-zÃ§]+)\.?(?:\s*(?:de\s*)?(\d{4}))?/;
+        const mMatch = dataStr.match(regexMes);
+        if (mMatch) {
+          const d = parseInt(mMatch[1], 10);
+          const mesName = mMatch[2].replace('.', '');
+          const mesIdx = MESES_MAP[mesName] !== undefined ? MESES_MAP[mesName] : 10;
+          const y = mMatch[3] ? parseInt(mMatch[3], 10) : 2026;
+          dateObj = new Date(y, mesIdx, d);
+        }
+      }
+
+      // Entre os dias X e Y de [MÃªs]
+      if (!dateObj) {
+        const entreMatch = dataStr.match(/entre\s*(?:os\s*dias)?\s*(\d{1,2})\s*e\s*(\d{1,2})\s*de\s*([a-zÃ§]+)/);
+        if (entreMatch) {
+          const d = parseInt(entreMatch[2], 10);
+          const mesName = entreMatch[3].replace('.', '');
+          const mesIdx = MESES_MAP[mesName] !== undefined ? MESES_MAP[mesName] : 10;
+          dateObj = new Date(2026, mesIdx, d);
+        }
+      }
+
+      if (!dateObj) {
+        dateObj = new Date(2026, 10, 15);
+      }
+
+      // Data de referÃªncia atual
+      const now = new Date(2026, 10, 5, 0, 0, 0);
+      const isPassado = !isAnual && (dateObj < now);
+
+      return {
+        isAnual,
+        isPassado,
+        isFuturo: !isAnual && !isPassado,
+        dateObj,
+        municipio: extrairMunicipioEvento(ev)
+      };
+    }
+
+    function sortEventos(eventos) {
+      return eventos.slice().sort((a, b) => {
+        const infoA = parseEventoInfo(a);
+        const infoB = parseEventoInfo(b);
+
+        // Ordem dos grupos:
+        // 0: PrÃ³ximos / Futuros (topo)
+        // 1: Anuais / Recorrentes (meio)
+        // 2: Eventos Anteriores / Passados (vÃ£o lÃ¡ para baixo, sÃ£o os Ãºltimos)
+        const groupA = infoA.isPassado ? 2 : (infoA.isAnual ? 1 : 0);
+        const groupB = infoB.isPassado ? 2 : (infoB.isAnual ? 1 : 0);
+
+        if (groupA !== groupB) {
+          return groupA - groupB;
+        }
+
+        // Dentro do mesmo grupo: ordenar por data
+        if (infoA.dateObj && infoB.dateObj) {
+          if (groupA === 2) {
+            // Eventos passados: cronologicamente ou mais recentes primeiro
+            return infoB.dateObj - infoA.dateObj;
+          }
+          return infoA.dateObj - infoB.dateObj;
+        }
+        return 0;
+      });
+    }
 
     async function carregarEventos() {
       if (window.supabaseClient) {
@@ -287,35 +544,35 @@
         }
       }
 
-      // Se vazio, fallback básico
+      // Se vazio, fallback bÃ¡sico
       if (todosEventos.length === 0) {
         todosEventos = [
           {
             id: 1,
-            nome: "Festival de Música da Mantiqueira",
-            categoria: "Música",
-            data_hora: "20/09/2026 às 19:00",
-            local: "Parque dos Espanhóis, Jacareí",
+            nome: "Festival de MÃºsica da Mantiqueira",
+            categoria: "MÃºsica",
+            data_hora: "20/09/2026 Ã s 19:00",
+            local: "Parque dos EspanhÃ³is, JacareÃ­",
             foto: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
-            descricao: "Um grande encontro musical celebrando a diversidade sonora do Vale do Paraíba e da Serra da Mantiqueira com artistas autorais e atrações convidadas."
+            descricao: "Um grande encontro musical celebrando a diversidade sonora do Vale do ParaÃ­ba e da Serra da Mantiqueira com artistas autorais e atraÃ§Ãµes convidadas."
           },
           {
             id: 2,
-            nome: "Exposição Olhares do Vale",
+            nome: "ExposiÃ§Ã£o Olhares do Vale",
             categoria: "Artes Visuais",
-            data_hora: "15/10/2026 às 14:00",
-            local: "MAB - Museu de Antropologia",
+            data_hora: "15/10/2026 Ã s 14:00",
+            local: "MAB - Museu de Antropologia, JacareÃ­",
             foto: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800",
-            descricao: "Mostra fotográfica e artística retratando as tradições, o patrimônio histórico e as manifestações culturais populares do Vale do Paraíba."
+            descricao: "Mostra fotogrÃ¡fica e artÃ­stica retratando as tradiÃ§Ãµes, o patrimÃ´nio histÃ³rico e as manifestaÃ§Ãµes culturais populares do Vale do ParaÃ­ba."
           },
           {
             id: 3,
-            nome: "Teatro na Praça: Histórias do Rio",
+            nome: "Teatro na PraÃ§a: HistÃ³rias do Rio",
             categoria: "Teatro",
-            data_hora: "05/11/2026 às 16:30",
-            local: "Sala Mário Lago",
+            data_hora: "05/11/2026 Ã s 16:30",
+            local: "Sala MÃ¡rio Lago, JacareÃ­",
             foto: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800",
-            descricao: "Espetáculo cênico gratuito e ao ar livre baseado nas lendas e contos ribeirinhos que marcaram as gerações da nossa região."
+            descricao: "EspetÃ¡culo cÃªnico gratuito e ao ar livre baseado nas lendas e contos ribeirinhos que marcaram as geraÃ§Ãµes da nossa regiÃ£o."
           }
         ];
       }
@@ -333,39 +590,57 @@
       }
 
       eventos.forEach(ev => {
+        const info = parseEventoInfo(ev);
         const fotoUrl = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
-        const descLimpa = (ev.descricao || 'Nenhuma descrição informada.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
-        const card = `
-          <div id="evento-card-${ev.id}" data-id="${ev.id}" data-nome="${(ev.nome || '').toLowerCase()}" class="evento-card group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
+        const descLimpa = (ev.descricao || 'Nenhuma descriÃ§Ã£o informada.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
+
+        // Badge de status temporal
+        let statusBadge = '';
+        let cardExtraClasses = '';
+        if (info.isPassado) {
+          statusBadge = '<span class="bg-muted/90 text-muted-foreground border border-border text-[11px] font-bold uppercase px-2.5 py-1 rounded-md shadow-sm">Evento Anterior</span>';
+          cardExtraClasses = 'opacity-85 hover:opacity-100 bg-card/70 border-border/80';
+        } else if (info.isAnual) {
+          statusBadge = '<span class="bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-[11px] font-bold uppercase px-2.5 py-1 rounded-md shadow-sm">Anual / Recorrente</span>';
+        } else {
+          statusBadge = '<span class="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-[11px] font-bold uppercase px-2.5 py-1 rounded-md shadow-sm">Em Breve</span>';
+        }
+
+        const card = 
+          <div id="evento-card-" data-id="" data-nome="" class="evento-card group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full ">
             <div class="h-48 overflow-hidden bg-muted relative">
-              <img src="${fotoUrl}" alt="${ev.nome || 'Evento'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2.5 py-1 rounded-md shadow-sm">
-                ${ev.categoria || 'Evento'}
+                
+              </div>
+              <div class="absolute top-3 right-3">
+                
               </div>
             </div>
             <div class="p-6 flex-grow flex flex-col">
-              <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">${ev.nome || 'Sem Nome'}</h3>
-              <p class="text-sm text-muted-foreground mb-4 line-clamp-2">${descLimpa}</p>
+              <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug"></h3>
+              <p class="text-sm text-muted-foreground mb-4 line-clamp-2"></p>
               <div class="flex flex-col gap-2 mt-auto">
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  ${ev.data_hora || ev.data || 'Data a confirmar'}
+                  
                 </div>
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                  ${ev.local || 'Local não informado'}
+                  <span class="truncate"></span>
+                  <span class="ml-auto shrink-0 px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold text-[11px]"></span>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-muted-foreground font-medium mt-1">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                  Organizado por: ${ev.organizador || 'Não informado'}
+                  <span class="truncate">Organizado por: </span>
                 </div>
-                <button onclick="abrirDetalhesEventoId('${ev.id}')" class="mt-4 w-full py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-sm rounded-lg transition-all text-center block shadow-sm">
+                <button onclick="abrirDetalhesEventoId('')" class="mt-4 w-full py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-sm rounded-lg transition-all text-center block shadow-sm">
                   Ver Detalhes
                 </button>
               </div>
             </div>
           </div>
-        `;
+        ;
         grid.innerHTML += card;
       });
     }
@@ -377,6 +652,7 @@
       }
     }
 
+    // Toggle Dropdown Categoria
     function toggleDropdownFiltros(e) {
       if (e) e.stopPropagation();
       const menu = document.getElementById('filterDropdownMenu');
@@ -385,6 +661,8 @@
       if (isOpen) {
         fecharDropdownFiltros();
       } else {
+        fecharDropdownStatus();
+        fecharDropdownMuni();
         menu.classList.remove('hidden');
         if (chevron) chevron.classList.add('rotate-180');
       }
@@ -397,12 +675,133 @@
       if (chevron) chevron.classList.remove('rotate-180');
     }
 
+    // Toggle Dropdown Status
+    function toggleDropdownStatus(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('statusDropdownMenu');
+      const chevron = document.getElementById('statusDropdownChevron');
+      const isOpen = !menu.classList.contains('hidden');
+      if (isOpen) {
+        fecharDropdownStatus();
+      } else {
+        fecharDropdownFiltros();
+        fecharDropdownMuni();
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      }
+    }
+
+    function fecharDropdownStatus() {
+      const menu = document.getElementById('statusDropdownMenu');
+      const chevron = document.getElementById('statusDropdownChevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    // Toggle Dropdown MunicÃ­pio
+    function toggleDropdownMuni(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('muniDropdownMenu');
+      const chevron = document.getElementById('muniDropdownChevron');
+      const isOpen = !menu.classList.contains('hidden');
+      if (isOpen) {
+        fecharDropdownMuni();
+      } else {
+        fecharDropdownFiltros();
+        fecharDropdownStatus();
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      }
+    }
+
+    function fecharDropdownMuni() {
+      const menu = document.getElementById('muniDropdownMenu');
+      const chevron = document.getElementById('muniDropdownChevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
     document.addEventListener('click', (e) => {
-      const container = document.getElementById('filterDropdownContainer');
-      if (container && !container.contains(e.target)) {
+      const containerFilter = document.getElementById('filterDropdownContainer');
+      if (containerFilter && !containerFilter.contains(e.target)) {
         fecharDropdownFiltros();
       }
+      const containerStatus = document.getElementById('statusDropdownContainer');
+      if (containerStatus && !containerStatus.contains(e.target)) {
+        fecharDropdownStatus();
+      }
+      const containerMuni = document.getElementById('muniDropdownContainer');
+      if (containerMuni && !containerMuni.contains(e.target)) {
+        fecharDropdownMuni();
+      }
     });
+
+    function selecionarStatus(status) {
+      statusAtivo = status;
+      fecharDropdownStatus();
+
+      const btn = document.getElementById('btnStatusDropdown');
+      const label = document.getElementById('statusDropdownLabel');
+
+      document.querySelectorAll('.status-opt-btn').forEach(b => {
+        const isMatch = b.getAttribute('data-status') === status;
+        const checkIcon = b.querySelector('.status-check-icon');
+        if (isMatch) {
+          b.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.remove('hidden');
+        } else {
+          b.classList.remove('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.add('hidden');
+        }
+      });
+
+      const labelMap = {
+        'todos': 'PerÃ­odo',
+        'proximos': 'PrÃ³ximos',
+        'anuais': 'Anuais',
+        'anteriores': 'Anteriores'
+      };
+
+      if (status === 'todos') {
+        if (btn) btn.className = "bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        if (label) label.innerText = 'PerÃ­odo';
+      } else {
+        if (btn) btn.className = "bg-primary/10 border border-primary text-primary font-semibold px-4 py-2.5 rounded-md text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        if (label) label.innerText = labelMap[status] || status;
+      }
+
+      aplicarFiltros();
+    }
+
+    function selecionarMunicipio(muni) {
+      municipioAtivo = muni;
+      fecharDropdownMuni();
+
+      const btn = document.getElementById('btnMuniDropdown');
+      const label = document.getElementById('muniDropdownLabel');
+
+      document.querySelectorAll('.muni-opt-btn').forEach(b => {
+        const isMatch = b.getAttribute('data-muni') === muni;
+        const checkIcon = b.querySelector('.muni-check-icon');
+        if (isMatch) {
+          b.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.remove('hidden');
+        } else {
+          b.classList.remove('bg-primary/10', 'text-primary', 'font-semibold');
+          if (checkIcon) checkIcon.classList.add('hidden');
+        }
+      });
+
+      if (muni === 'todos') {
+        if (btn) btn.className = "bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        if (label) label.innerText = 'MunicÃ­pio';
+      } else {
+        if (btn) btn.className = "bg-primary/10 border border-primary text-primary font-semibold px-4 py-2.5 rounded-md text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
+        if (label) label.innerText = muni;
+      }
+
+      aplicarFiltros();
+    }
 
     function selecionarFiltro(cat) {
       categoriaAtual = cat;
@@ -431,7 +830,7 @@
         if (btnDropdown) {
           btnDropdown.className = "bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
         }
-        if (label) label.innerText = 'Filtros';
+        if (label) label.innerText = 'Categoria';
       } else {
         if (btnTodos) {
           btnTodos.className = "cat-btn bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-1.5 shrink-0";
@@ -439,7 +838,7 @@
         if (btnDropdown) {
           btnDropdown.className = "bg-primary/10 border border-primary text-primary font-semibold px-4 py-2.5 rounded-md text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm";
         }
-        if (label) label.innerText = `Filtro: ${cat}`;
+        if (label) label.innerText = cat;
       }
 
       aplicarFiltros();
@@ -449,26 +848,46 @@
       selecionarFiltro(cat);
     }
 
-    function normalizeStr(str) {
-      if (!str) return '';
-      return String(str).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-    }
-
     function aplicarFiltros() {
-      let filtrados = todosEventos;
-      if (categoriaAtual !== 'Todos') {
-        const target = normalizeStr(categoriaAtual);
-        filtrados = filtrados.filter(ev => normalizeStr(ev.categoria).includes(target));
-      }
-      if (termoBusca) {
-        const termo = normalizeStr(termoBusca);
-        filtrados = filtrados.filter(ev => 
-          normalizeStr(ev.nome).includes(termo) ||
-          normalizeStr(ev.descricao).includes(termo) ||
-          normalizeStr(ev.local).includes(termo)
-        );
-      }
-      renderEventos(filtrados);
+      let filtrados = todosEventos.filter(ev => {
+        const info = parseEventoInfo(ev);
+
+        // 1. Filtro Categoria
+        if (categoriaAtual !== 'Todos') {
+          const target = normalizeStr(categoriaAtual);
+          if (!normalizeStr(ev.categoria).includes(target)) return false;
+        }
+
+        // 2. Filtro MunicÃ­pio
+        if (municipioAtivo !== 'todos') {
+          if (normalizeStr(info.municipio) !== normalizeStr(municipioAtivo)) return false;
+        }
+
+        // 3. Filtro Status / PerÃ­odo
+        if (statusAtivo === 'proximos') {
+          if (!info.isFuturo) return false;
+        } else if (statusAtivo === 'anuais') {
+          if (!info.isAnual) return false;
+        } else if (statusAtivo === 'anteriores') {
+          if (!info.isPassado) return false;
+        }
+
+        // 4. Busca textual
+        if (termoBusca) {
+          const termo = normalizeStr(termoBusca);
+          const matchBusca = normalizeStr(ev.nome).includes(termo) ||
+                             normalizeStr(ev.descricao).includes(termo) ||
+                             normalizeStr(ev.local).includes(termo) ||
+                             normalizeStr(info.municipio).includes(termo);
+          if (!matchBusca) return false;
+        }
+
+        return true;
+      });
+
+      // Ordenar: eventos futuros -> anuais -> eventos passados lÃ¡ para baixo!
+      const ordenados = sortEventos(filtrados);
+      renderEventos(ordenados);
     }
 
     document.getElementById('searchInput')?.addEventListener('input', (e) => {
@@ -477,11 +896,12 @@
     });
 
     function abrirDetalhesEvento(ev) {
+      const info = parseEventoInfo(ev);
       document.getElementById('modalEventoNome').innerText = ev.nome || 'Evento Cultural';
       document.getElementById('modalEventoCategoria').innerText = ev.categoria || 'Evento';
       document.getElementById('modalEventoDataHora').innerText = ev.data_hora || ev.data || 'Data a confirmar';
-      document.getElementById('modalEventoLocal').innerText = ev.local || 'Local não informado';
-      const descModal = (ev.descricao || 'Nenhuma descrição adicional informada para este evento.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
+      document.getElementById('modalEventoLocal').innerText = ${ev.local || 'Local nÃ£o informado'} ( - SP);
+      const descModal = (ev.descricao || 'Nenhuma descriÃ§Ã£o adicional informada para este evento.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
       document.getElementById('modalEventoDescricao').innerText = descModal;
       document.getElementById('modalEventoFoto').src = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
       
@@ -520,8 +940,8 @@
 
       if (eventoEncontrado) {
         setTimeout(() => {
-          const cardEl = document.getElementById(`evento-card-${eventoEncontrado.id}`) || 
-                         document.querySelector(`[data-nome="${(eventoEncontrado.nome || '').toLowerCase()}"]`);
+          const cardEl = document.getElementById(evento-card-) || 
+                         document.querySelector([data-nome=""]);
           if (cardEl) {
             cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
             cardEl.classList.add('ring-4', 'ring-primary', 'shadow-carnival');

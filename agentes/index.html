@@ -130,12 +130,13 @@
 
   <!-- Search and Filters Section -->
   <section class="max-w-7xl mx-auto px-6 py-8">
-    <div class="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col md:flex-row gap-4 items-center">
-      <div class="w-full md:flex-1 relative">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" id="searchInput" placeholder="Pesquisar agente por nome, bio ou especialidade..." oninput="filtrarAgentes()" class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
-      </div>
-      <div class="flex items-center gap-2 w-full md:w-auto justify-center md:justify-end relative" id="categoryFilters">
+    <div class="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col gap-4">
+      <div class="flex flex-col md:flex-row gap-4 items-center w-full">
+        <div class="w-full md:flex-1 relative">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="searchInput" placeholder="Pesquisar agente por nome, bio ou especialidade..." oninput="filtrarAgentes()" class="w-full pl-12 pr-4 py-2.5 bg-background border border-input rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+        </div>
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-center md:justify-end relative" id="categoryFilters">
         <button id="btnFilterTodos" onclick="selecionarFiltro('todos')" class="cat-btn active bg-primary text-primary-foreground px-4 py-2.5 rounded-md font-medium text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0">
           Todos
         </button>
@@ -268,13 +269,90 @@
           </div>
         </div>
 
+        <button id="btnFiltrosAvancados" onclick="togglePainelAvancado(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm relative shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          <span>Filtros Avançados</span>
+          <span id="badgeFiltrosAtivos" class="hidden w-2.5 h-2.5 rounded-full bg-primary absolute -top-1 -right-1 ring-2 ring-background"></span>
+        </button>
+
         <button onclick="abrirModalCadastro('agente')" class="btn-novo-item hidden px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 font-semibold text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
           <span>Novo Agente</span>
         </button>
       </div>
     </div>
-  </section>
+
+    <!-- Painel Expansível de Filtros Avançados -->
+    <div id="painelFiltrosAvancados" class="hidden w-full mt-2 pt-4 border-t border-border transition-all duration-300">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Identidade de Gênero -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Identidade de Gênero
+          </label>
+          <select id="advFiltroGenero" onchange="aplicarFiltros()" class="w-full px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+            <option value="todos">Todos os gêneros</option>
+            <option value="Mulher">Mulheres (Cis / Trans)</option>
+            <option value="Homem">Homens (Cis / Trans)</option>
+            <option value="Não-binário">Pessoas Não-binárias</option>
+            <option value="Outros">Outros / Não declarado</option>
+          </select>
+        </div>
+
+        <!-- Etnia / Raça -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+            Etnia / Raça
+          </label>
+          <select id="advFiltroEtnia" onchange="aplicarFiltros()" class="w-full px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+            <option value="todas">Todas as etnias</option>
+            <option value="ppi">PPI (Preta, Parda ou Indígena)</option>
+            <option value="Branca">Branca</option>
+            <option value="Preta">Preta</option>
+            <option value="Parda">Parda</option>
+            <option value="Indígena">Indígena</option>
+            <option value="Amarela">Amarela</option>
+          </select>
+        </div>
+
+        <!-- Acessibilidade / PcD -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="4" r="2"/><path d="m10 8 1 7 4 3"/><path d="M12 12h5l2 5"/><path d="M7 16a5 5 0 0 0 10 0"/></svg>
+            Acessibilidade / PcD
+          </label>
+          <select id="advFiltroPcd" onchange="aplicarFiltros()" class="w-full px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+            <option value="todos">Todos</option>
+            <option value="sim">Pessoas com Deficiência (PcD)</option>
+            <option value="nao">Não PcD</option>
+          </select>
+        </div>
+
+        <!-- Tipo de Atuação -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Tipo de Atuação
+          </label>
+          <select id="advFiltroTipoAtuacao" onchange="aplicarFiltros()" class="w-full px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+            <option value="todos">Todos os tipos</option>
+            <option value="individual">Artista Individual / Autônomo</option>
+            <option value="coletivo">Coletivo / Grupo / Cia Cultural</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-4 flex flex-wrap justify-between items-center pt-3 border-t border-border/60 text-xs text-muted-foreground gap-2">
+        <span id="advFiltroResumo" class="font-medium">Filtros avançados ativos: Nenhum</span>
+        <button type="button" onclick="limparFiltrosAvancados()" class="px-3 py-1.5 rounded-md hover:bg-muted font-medium text-primary hover:underline transition-colors cursor-pointer">
+          Limpar Filtros Avançados
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- Agents Grid -->
   <section class="max-w-7xl mx-auto px-6 mb-24">
@@ -673,7 +751,83 @@
       return String(str).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
     }
 
+    // Variáveis de Filtros Avançados
+    let advGenero = 'todos';
+    let advEtnia = 'todas';
+    let advPcd = 'todos';
+    let advTipoAtuacao = 'todos';
+
+    function togglePainelAvancado(e) {
+      if (e) e.stopPropagation();
+      const painel = document.getElementById('painelFiltrosAvancados');
+      const btn = document.getElementById('btnFiltrosAvancados');
+      if (!painel) return;
+      const isHidden = painel.classList.contains('hidden');
+      if (isHidden) {
+        painel.classList.remove('hidden');
+        if (btn) btn.classList.add('bg-primary/10', 'border-primary', 'text-primary');
+      } else {
+        painel.classList.add('hidden');
+        if (btn && !temFiltrosAvancadosAtivos()) {
+          btn.classList.remove('bg-primary/10', 'border-primary', 'text-primary');
+        }
+      }
+    }
+
+    function temFiltrosAvancadosAtivos() {
+      return (advGenero !== 'todos') || (advEtnia !== 'todas') || (advPcd !== 'todos') || (advTipoAtuacao !== 'todos');
+    }
+
+    function atualizarResumoFiltrosAvancados() {
+      const g = document.getElementById('advFiltroGenero');
+      const e = document.getElementById('advFiltroEtnia');
+      const p = document.getElementById('advFiltroPcd');
+      const t = document.getElementById('advFiltroTipoAtuacao');
+      if (g) advGenero = g.value;
+      if (e) advEtnia = e.value;
+      if (p) advPcd = p.value;
+      if (t) advTipoAtuacao = t.value;
+
+      const ativos = [];
+      if (advGenero !== 'todos') ativos.push('Gênero: ' + (g.options[g.selectedIndex]?.text || advGenero));
+      if (advEtnia !== 'todas') ativos.push('Etnia: ' + (e.options[e.selectedIndex]?.text || advEtnia));
+      if (advPcd !== 'todos') ativos.push('PcD: ' + (advPcd === 'sim' ? 'Sim' : 'Não'));
+      if (advTipoAtuacao !== 'todos') ativos.push('Atuação: ' + (advTipoAtuacao === 'coletivo' ? 'Coletivo' : 'Individual'));
+
+      const resumoEl = document.getElementById('advFiltroResumo');
+      const badgeEl = document.getElementById('badgeFiltrosAtivos');
+      const btnEl = document.getElementById('btnFiltrosAvancados');
+
+      if (ativos.length > 0) {
+        if (resumoEl) resumoEl.innerHTML = '<span class="text-primary font-semibold">Filtros ativos (' + ativos.length + '):</span> ' + ativos.join(' • ');
+        if (badgeEl) badgeEl.classList.remove('hidden');
+        if (btnEl) btnEl.classList.add('bg-primary/10', 'border-primary', 'text-primary');
+      } else {
+        if (resumoEl) resumoEl.innerText = 'Filtros avançados ativos: Nenhum';
+        if (badgeEl) badgeEl.classList.add('hidden');
+        const painel = document.getElementById('painelFiltrosAvancados');
+        if (btnEl && painel && painel.classList.contains('hidden')) {
+          btnEl.classList.remove('bg-primary/10', 'border-primary', 'text-primary');
+        }
+      }
+    }
+
+    function limparFiltrosAvancados() {
+      if (document.getElementById('advFiltroGenero')) document.getElementById('advFiltroGenero').value = 'todos';
+      if (document.getElementById('advFiltroEtnia')) document.getElementById('advFiltroEtnia').value = 'todas';
+      if (document.getElementById('advFiltroPcd')) document.getElementById('advFiltroPcd').value = 'todos';
+      if (document.getElementById('advFiltroTipoAtuacao')) document.getElementById('advFiltroTipoAtuacao').value = 'todos';
+      advGenero = 'todos';
+      advEtnia = 'todas';
+      advPcd = 'todos';
+      advTipoAtuacao = 'todos';
+      atualizarResumoFiltrosAvancados();
+      aplicarFiltros();
+    }
+
     function aplicarFiltros() {
+      atualizarResumoFiltrosAvancados();
+
       const rawQ = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
       const q = normalizeStr(rawQ);
 
@@ -726,7 +880,51 @@
         // Filtro de município
         const matchMunicipio = (municipioAtivo === 'todos') || (muniStr === normalizeStr(municipioAtivo));
 
-        return matchBusca && matchArea && matchMunicipio;
+        // FILTROS AVANÇADOS:
+        // 1. Identidade de Gênero
+        let matchGenero = true;
+        if (advGenero !== 'todos') {
+          const agGen = normalizeStr(a.genero || '');
+          const isMulher = agGen.includes('mulher') || Boolean(a.projeto_mulheres || a.mulheres_na_musica) || area.includes('mulheres na musica');
+          if (advGenero === 'Mulher') {
+            matchGenero = isMulher;
+          } else if (advGenero === 'Homem') {
+            matchGenero = agGen.includes('homem') || (!isMulher && agGen === '');
+          } else if (advGenero === 'Não-binário') {
+            matchGenero = agGen.includes('nao-binario') || agGen.includes('nao binario') || agGen.includes('nao-binaria');
+          } else if (advGenero === 'Outros') {
+            matchGenero = agGen.includes('outro') || agGen === '';
+          }
+        }
+
+        // 2. Etnia / Raça
+        let matchEtnia = true;
+        if (advEtnia !== 'todas') {
+          const agEt = normalizeStr(a.etnia || '');
+          if (advEtnia === 'ppi') {
+            matchEtnia = agEt.includes('preta') || agEt.includes('parda') || agEt.includes('indigena') || agEt.includes('negra');
+          } else {
+            matchEtnia = agEt.includes(normalizeStr(advEtnia));
+          }
+        }
+
+        // 3. Acessibilidade / PcD
+        let matchPcd = true;
+        if (advPcd !== 'todos') {
+          const agPcd = normalizeStr(a.pcd || '');
+          const isPcd = agPcd.includes('sim') || agPcd === 'true' || bio.includes('pcd');
+          matchPcd = (advPcd === 'sim') ? isPcd : !isPcd;
+        }
+
+        // 4. Tipo de Atuação
+        let matchTipoAtuacao = true;
+        if (advTipoAtuacao !== 'todos') {
+          const agTipo = normalizeStr(a.tipo_atuacao || 'individual');
+          const isColetivo = agTipo.includes('coletivo') || agTipo.includes('grupo') || agTipo.includes('cia') || nome.includes('coletivo') || nome.includes('cia') || nome.includes('banda') || nome.includes('grupo');
+          matchTipoAtuacao = (advTipoAtuacao === 'coletivo') ? isColetivo : !isColetivo;
+        }
+
+        return matchBusca && matchArea && matchMunicipio && matchGenero && matchEtnia && matchPcd && matchTipoAtuacao;
       });
 
       renderAgentes(filtrados);

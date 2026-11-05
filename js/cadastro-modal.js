@@ -289,6 +289,47 @@
               </select>
             </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Identidade de Gênero</label>
+                <select id="cad-agente-genero" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <option value="">Prefiro não declarar</option>
+                  <option value="Mulher">Mulher (Cis / Trans)</option>
+                  <option value="Homem">Homem (Cis / Trans)</option>
+                  <option value="Não-binário">Não-binário</option>
+                  <option value="Outros">Outros</option>
+                </select>
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Etnia / Raça</label>
+                <select id="cad-agente-etnia" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <option value="">Prefiro não declarar</option>
+                  <option value="Branca">Branca</option>
+                  <option value="Preta">Preta</option>
+                  <option value="Parda">Parda</option>
+                  <option value="Indígena">Indígena</option>
+                  <option value="Amarela">Amarela</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Acessibilidade / PcD</label>
+                <select id="cad-agente-pcd" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <option value="Não">Não sou PcD</option>
+                  <option value="Sim">Pessoa com Deficiência (PcD)</option>
+                </select>
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Tipo de Atuação</label>
+                <select id="cad-agente-tipo-atuacao" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <option value="Individual">Artista Individual / Autônomo</option>
+                  <option value="Coletivo">Coletivo / Grupo / Cia Cultural</option>
+                </select>
+              </div>
+            </div>
+
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Biografia / Histórico *</label>
               <textarea id="cad-agente-bio" rows="4" required placeholder="Conte sua trajetória, projetos realizados, influências e atuação na cidade..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
@@ -664,6 +705,10 @@
             if (document.getElementById('cad-agente-municipio')) {
               document.getElementById('cad-agente-municipio').value = data.municipio || 'Jacareí';
             }
+                        if (document.getElementById('cad-agente-genero')) document.getElementById('cad-agente-genero').value = data.genero || '';
+            if (document.getElementById('cad-agente-etnia')) document.getElementById('cad-agente-etnia').value = data.etnia || '';
+            if (document.getElementById('cad-agente-pcd')) document.getElementById('cad-agente-pcd').value = data.pcd || 'NÃ£o';
+            if (document.getElementById('cad-agente-tipo-atuacao')) document.getElementById('cad-agente-tipo-atuacao').value = data.tipo_atuacao || 'Individual';
             document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
             document.getElementById('cad-agente-contato').value = data.contato || '';
             document.getElementById('cad-agente-instagram').value = data.instagram || '';
@@ -920,6 +965,10 @@
         bio,
         contato: contatoFinal,
         projeto_mulheres: mulheres,
+        genero: document.getElementById('cad-agente-genero') ? document.getElementById('cad-agente-genero').value : '',
+        etnia: document.getElementById('cad-agente-etnia') ? document.getElementById('cad-agente-etnia').value : '',
+        pcd: document.getElementById('cad-agente-pcd') ? document.getElementById('cad-agente-pcd').value : 'NÃ£o',
+        tipo_atuacao: document.getElementById('cad-agente-tipo-atuacao') ? document.getElementById('cad-agente-tipo-atuacao').value : 'Individual',
         lat: -23.3055,
         lng: -45.9658
       };
