@@ -825,9 +825,16 @@
       }
 
       function addRawItem(lat, lng, htmlContent, isTarget, color = 'hsl(var(--primary))', iconType = 'espaco', municipio = 'Jacareí', categoria = '', areaExtra = '') {
+        let pLat = parseFloat(String(lat).replace(',', '.'));
+        let pLng = parseFloat(String(lng).replace(',', '.'));
+        if (isNaN(pLat) || isNaN(pLng)) {
+          const coords = CIDADES_COORDS[municipio] || CIDADES_COORDS['Jacareí'];
+          pLat = coords[0];
+          pLng = coords[1];
+        }
         allRawItems.push({
-          lat: parseFloat(lat),
-          lng: parseFloat(lng),
+          lat: pLat,
+          lng: pLng,
           htmlContent,
           isTarget,
           color,
@@ -1104,16 +1111,25 @@
       let eventosList = [];
       let agentesList = [];
 
+      let tries = 0;
+      while (!window.supabaseClient && tries < 20) {
+        await new Promise(r => setTimeout(r, 100));
+        tries++;
+      }
+
       if (window.supabaseClient) {
         try {
           const [resEspacos, resEventos, resAgentes] = await Promise.all([
             supabaseClient.from('espacos').select('*'),
             supabaseClient.from('eventos').select('*'),
-            supabaseClient.from('agentes').select('*').not('lat', 'is', null)
+            supabaseClient.from('agentes').select('*')
           ]);
 
           if (resEspacos && resEspacos.data && resEspacos.data.length > 0) {
-            espacosList = resEspacos.data;
+            const dbEspacos = resEspacos.data;
+            const dbNames = new Set(dbEspacos.map(e => (e.nome || '').trim().toLowerCase()));
+            const extraMock = MOCK_ESPACOS.filter(m => !dbNames.has(m.nome.trim().toLowerCase()));
+            espacosList = [...dbEspacos, ...extraMock];
           }
           if (resEventos && resEventos.data && !resEventos.error) {
             eventosList = resEventos.data;
@@ -1128,21 +1144,28 @@
 
       // Adicionar Marcadores de Espaços
       espacosList.forEach(esp => {
-        let lat = esp.lat ? parseFloat(esp.lat) : null;
-        let lng = esp.lng ? parseFloat(esp.lng) : null;
+        let lat = esp.lat ? parseFloat(String(esp.lat).replace(',', '.')) : null;
+        let lng = esp.lng ? parseFloat(String(esp.lng).replace(',', '.')) : null;
 
         if ((!lat || !lng) && targetNome && esp.nome && esp.nome.toLowerCase() === targetNome && targetLat && targetLng) {
           lat = targetLat;
           lng = targetLng;
         }
 
-        if (!lat || !lng) return;
+        const muni = esp.municipio || 'Jacareí';
+
+        // Fallback de coordenadas para garantir que todo espaço apareça no mapa
+        if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+          const coords = CIDADES_COORDS[muni] || CIDADES_COORDS['Jacareí'];
+          const hash = ((esp.id || 1) * 41 + (esp.nome || '').length) % 100;
+          lat = coords[0] + (hash - 50) * 0.0003;
+          lng = coords[1] + ((hash * 7) % 100 - 50) * 0.0003;
+        }
 
         const isTarget = (targetEspacoId && String(esp.id) === String(targetEspacoId)) ||
                          (targetNome && esp.nome && esp.nome.toLowerCase() === targetNome) ||
                          (targetLat && targetLng && Math.abs(lat - targetLat) < 0.0005 && Math.abs(lng - targetLng) < 0.0005);
 
-        const muni = esp.municipio || 'Jacareí';
         const categoria = esp.categoria || esp.tipo || 'Espaço Cultural';
         const popupContent = `
           <div class="p-1">
@@ -1181,8 +1204,8 @@
 
       // Adicionar Marcadores de Eventos
       eventosList.forEach(ev => {
-        let lat = ev.lat ? parseFloat(ev.lat) : null;
-        let lng = ev.lng ? parseFloat(ev.lng) : null;
+        let lat = ev.lat ? parseFloat(String(ev.lat).replace(',', '.')) : null;
+        let lng = ev.lng ? parseFloat(String(ev.lng).replace(',', '.')) : null;
         let muni = ev.municipio || 'Jacareí';
 
         // Se não tiver coordenadas, verificar se o local/espaço bate com algum espaço conhecido
@@ -1190,14 +1213,14 @@
           const localLower = ev.local.toLowerCase();
           const matchedEsp = espacosList.find(s => s.nome && (localLower.includes(s.nome.toLowerCase()) || s.nome.toLowerCase().includes(localLower)));
           if (matchedEsp && matchedEsp.lat && matchedEsp.lng) {
-            lat = parseFloat(matchedEsp.lat);
-            lng = parseFloat(matchedEsp.lng);
+            lat = parseFloat(String(matchedEsp.lat).replace(',', '.'));
+            lng = parseFloat(String(matchedEsp.lng).replace(',', '.'));
             if (matchedEsp.municipio) muni = matchedEsp.municipio;
           }
         }
 
         // Fallback para centróide da cidade com ligeira dispersão determinística
-        if (!lat || !lng) {
+        if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
           const coords = CIDADES_COORDS[muni] || CIDADES_COORDS['Jacareí'];
           const hash = ((ev.id || 1) * 37 + (ev.nome || ev.titulo || '').length) % 100;
           lat = coords[0] + (hash - 50) * 0.0003;
@@ -1238,11 +1261,25 @@
       // Funções para Agentes Culturais
       const addedSlugs = new Set();
       const addAgentToMap = (nome, endereco, lat, lng, slug, categoria, municipio, areaExtra) => {
-        if (addedSlugs.has(slug)) return;
+        if (!slug || addedSlugs.has(slug)) return;
         addedSlugs.add(slug);
 
         const muniText = municipio || 'Jacareí';
         const cat = categoria || 'Agente Cultural';
+
+        let finalLat = lat ? parseFloat(String(lat).replace(',', '.')) : null;
+        let finalLng = lng ? parseFloat(String(lng).replace(',', '.')) : null;
+
+        // Fallback determinístico de coordenadas se não tiver
+        if (!finalLat || !finalLng || isNaN(finalLat) || isNaN(finalLng)) {
+          const coords = CIDADES_COORDS[muniText] || CIDADES_COORDS['Jacareí'];
+          let hash = 0;
+          const str = slug || nome || '';
+          for (let i = 0; i < str.length; i++) { hash = (hash * 31 + str.charCodeAt(i)) % 1000; }
+          finalLat = coords[0] + ((hash % 100) - 50) * 0.0004;
+          finalLng = coords[1] + (((hash * 3) % 100) - 50) * 0.0004;
+        }
+
         const popupContent = `
           <div class="p-1">
             <span class="text-xs font-semibold text-primary uppercase tracking-wider mb-1 block">${cat}</span>
@@ -1259,30 +1296,40 @@
           </div>
         `;
         
-        addRawItem(lat, lng, popupContent, false, 'hsl(var(--primary))', 'agente', muniText, cat, areaExtra || '');
+        addRawItem(finalLat, finalLng, popupContent, false, 'hsl(var(--primary))', 'agente', muniText, cat, areaExtra || '');
       };
 
-      // Adicionar agentes carregados do Supabase
+      // 1. Adicionar todos os agentes carregados do Supabase
       agentesList.forEach(ag => {
-        const slug = ag.nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+        const slug = (ag.nome || 'agente').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
         addAgentToMap(ag.nome, ag.endereco, ag.lat, ag.lng, slug, ag.atuacao || ag.categoria || ag.area, ag.municipio, ag.linguagens || ag.bio || '');
       });
 
-      // Fallback de Agentes via JSON (apenas se Supabase não tiver agentes cadastrados)
-      if (agentesList.length === 0) {
-        try {
-          const resAgExtra = await fetch('../data/agentes_extra.json');
-          if (resAgExtra.ok) {
-            const data = await resAgExtra.json();
-            for (const [slug, info] of Object.entries(data)) {
-              if (info.coordenadas && info.coordenadas.length === 2) {
-                addAgentToMap(info.nome_original, info.localizacao, info.coordenadas[0], info.coordenadas[1], slug, info.atuacao || info.categoria, info.municipio, info.area || '');
-              }
+      // 2. Adicionar agentes do acervo complementar (agentes_extra.json) sem duplicatas
+      try {
+        const resAgExtra = await fetch('../data/agentes_extra.json');
+        if (resAgExtra.ok) {
+          const data = await resAgExtra.json();
+          for (const [slug, info] of Object.entries(data)) {
+            let lat = null, lng = null;
+            if (info.coordenadas && info.coordenadas.length === 2) {
+              lat = parseFloat(String(info.coordenadas[0]).replace(',', '.'));
+              lng = parseFloat(String(info.coordenadas[1]).replace(',', '.'));
             }
+            addAgentToMap(
+              info.nome_original || info.nome,
+              info.localizacao || info.endereco || '',
+              lat,
+              lng,
+              slug,
+              info.atuacao || info.categoria,
+              info.municipio || 'Jacareí',
+              info.area || info.linguagens || ''
+            );
           }
-        } catch (err) {
-          console.warn('Erro ao carregar fallback de agentes JSON:', err);
         }
+      } catch (err) {
+        console.warn('Erro ao carregar acervo complementar de agentes JSON:', err);
       }
 
       // Renderização inicial

@@ -535,6 +535,12 @@
     }
 
     async function carregarEventos() {
+      let tries = 0;
+      while (!window.supabaseClient && tries < 20) {
+        await new Promise(r => setTimeout(r, 100));
+        tries++;
+      }
+
       if (window.supabaseClient) {
         try {
           const { data, error } = await supabaseClient.from('eventos').select('*').order('id', {ascending: false});
@@ -585,12 +591,13 @@
 
     function renderEventos(eventos) {
       const grid = document.getElementById('eventosGrid');
-      grid.innerHTML = '';
+      if (!grid) return;
       if (!eventos || eventos.length === 0) {
         grid.innerHTML = '<div class="col-span-full text-center py-16 text-muted-foreground text-sm font-medium">Nenhum evento encontrado para os filtros selecionados.</div>';
         return;
       }
 
+      let cardsHtml = '';
       eventos.forEach(ev => {
         const info = parseEventoInfo(ev);
         const nomeEvento = ev.nome || ev.titulo || 'Evento Cultural';
@@ -647,8 +654,9 @@
             </div>
           </div>
         `;
-        grid.innerHTML += card;
+        cardsHtml += card;
       });
+      grid.innerHTML = cardsHtml;
     }
 
     function abrirDetalhesEventoId(id) {
@@ -946,8 +954,8 @@
 
       if (eventoEncontrado) {
         setTimeout(() => {
-          const cardEl = document.getElementById(evento-card-) || 
-                         document.querySelector([data-nome=""]);
+          const cardEl = document.getElementById(`evento-card-${eventoEncontrado.id}`) || 
+                         document.querySelector(`[data-nome="${(eventoEncontrado.nome || '').toLowerCase()}"]`);
           if (cardEl) {
             cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
             cardEl.classList.add('ring-4', 'ring-primary', 'shadow-carnival');
