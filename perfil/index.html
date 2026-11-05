@@ -298,6 +298,7 @@
       </a>
     </div>
   </div>
+
   <!-- MODAL DE CALIBRAÇÃO DE ESTATÍSTICAS (ADMIN) -->
   <div id="modal-calibrar-estatisticas" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
     <div class="bg-card border border-border rounded-2xl max-w-md w-full shadow-2xl overflow-hidden scale-95 transition-transform duration-300 p-6">
@@ -355,7 +356,8 @@
     </div>
   </div>
 
-  <section id="profile-section" class="max-w-7xl mx-auto px-4 sm:px-6 pt-32 pb-12 hidden">
+
+    <section id="profile-section" class="max-w-7xl mx-auto px-4 sm:px-6 pt-32 pb-12 hidden">
     <div id="profile-grid-container" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       
       <!-- Coluna da Esquerda: Dados do UsuÃ¡rio & Painel Administrativo -->
@@ -546,7 +548,7 @@
         </div>
       </div>
 
-      <div id="admin-panel" class="hidden mb-8 p-6 rounded-xl bg-card border border-border shadow-sm">
+            <div id="admin-panel" class="hidden mb-8 p-6 rounded-xl bg-card border border-border shadow-sm">
         <div class="flex items-center justify-between pb-4 mb-6 border-b border-border">
           <h3 class="text-lg font-bold text-foreground flex items-center gap-2">
             <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -604,8 +606,8 @@
           <!-- Conteúdo da Aba Ativa -->
           <div class="flex-1 min-w-0">
 
-        <!-- Tab: Pendentes -->
-        <div id="admin-tab-pendentes" class="space-y-6">
+
+<div id="admin-tab-pendentes" class="space-y-6">
           <div>
             <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 border-b border-border pb-2">Usuários Pendentes</h4>
             <div id="admin-users-list" class="space-y-2">
@@ -752,10 +754,12 @@
             </div>
           </div>
         </div>
+
           </div>
         </div>
       </div>
     </div>
+
     <!-- COLUNA DA DIREITA: ESTATÍSTICAS CULTURAIS & DASHBOARD ADMIN -->
     <div id="admin-stats-column" class="hidden lg:col-span-5 space-y-6">
       
@@ -967,6 +971,7 @@
 
     </div>
 
+
     </div>
   </section>
 
@@ -1023,8 +1028,7 @@
               localStorage.setItem('custom_session', JSON.stringify(sessionUser));
               if (typeof updateAuthNav === 'function') updateAuthNav();
 
-              if (perfil.is_admin) {
-              if (perfil.is_admin) {
+                            if (perfil.is_admin) {
                 const adminBadge = document.getElementById('admin-badge');
                 if (adminBadge) adminBadge.classList.remove('hidden');
                 
@@ -1076,6 +1080,16 @@
                   loadUserContent();
                 }
               }
+            } else {
+              document.getElementById('admin-panel').classList.add('hidden');
+              document.getElementById('pending-status').classList.remove('hidden');
+              const quickActions = document.getElementById('user-quick-actions');
+              if (quickActions) quickActions.classList.add('hidden');
+              const myContent = document.getElementById('user-my-content-section');
+              if (myContent) myContent.classList.add('hidden');
+            }
+
+
             // Buscar agente vinculado a este usuário
             try {
               const { data: agentes } = await supabaseClient.from('agentes').select('*');
@@ -1111,8 +1125,8 @@
       }, 500);
     });
 
-    window.switchAdminTab = (tabId) => {
-      const tabs = ['pendentes', 'usuÃ¡rios', 'agentes', 'espacos', 'eventos', 'cepin', 'destaques', 'perfil'];
+        window.switchAdminTab = (tabId) => {
+      const tabs = ['pendentes', 'usuários', 'agentes', 'espacos', 'eventos', 'cepin', 'destaques', 'perfil'];
       
       tabs.forEach(t => {
         const tabContent = document.getElementById(`admin-tab-${t}`);
@@ -1140,6 +1154,7 @@
       }
     };
 
+
     function slugify(text) {
       if(!text) return '';
       return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
@@ -1152,8 +1167,7 @@
       const allUsersList = document.getElementById('admin-all-users-list');
       
       if (users) {
-        const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
-        const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
+                const pendentes = users.filter(u => u.status_aprovacao === 'pendente');
         const badgeCount = document.getElementById('badge-pendentes-count');
         if (badgeCount) {
           if (pendentes.length > 0) {
@@ -1163,6 +1177,8 @@
             badgeCount.classList.add('hidden');
           }
         }
+        if (pendentes.length > 0) {
+
           pendentesList.innerHTML = pendentes.map(u => `
             <div class="flex justify-between items-center p-3 bg-card border border-border rounded-lg shadow-sm">
               <span class="text-sm font-medium">${u.email}</span>
@@ -2147,7 +2163,7 @@
           }
         });
       })();
-
+    
 
 
     // =========================================================================
@@ -2731,13 +2747,12 @@
       }
     };
 
-
-
-    </script>
+  </script>
   </nav>
 
 </body>
 </html>
+
 
 
 
