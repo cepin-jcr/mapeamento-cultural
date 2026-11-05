@@ -371,7 +371,7 @@
             </div>
           </form>
 
-          <!-- ================= FORM ESPAÃ‡O ================= -->
+          <!-- ================= FORM ESPAÇO ================= -->
           <form id="form-cadastro-espaco" onsubmit="submeterCadastroEspaco(event)" class="space-y-4 hidden">
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome do Espaço *</label>
@@ -624,7 +624,7 @@
     }
   };
 
-  // Abre modal para EDIÃ‡ÃƒO de um item existente
+  // Abre modal para EDIÇÃO de um item existente
   window.abrirModalEdicao = async (tipo, id) => {
     const user = getLoggedUser();
     if (!user || !isUserApproved(user)) {
@@ -707,7 +707,7 @@
             }
                         if (document.getElementById('cad-agente-genero')) document.getElementById('cad-agente-genero').value = data.genero || '';
             if (document.getElementById('cad-agente-etnia')) document.getElementById('cad-agente-etnia').value = data.etnia || '';
-            if (document.getElementById('cad-agente-pcd')) document.getElementById('cad-agente-pcd').value = data.pcd || 'NÃ£o';
+            if (document.getElementById('cad-agente-pcd')) document.getElementById('cad-agente-pcd').value = data.pcd || 'Não';
             if (document.getElementById('cad-agente-tipo-atuacao')) document.getElementById('cad-agente-tipo-atuacao').value = data.tipo_atuacao || 'Individual';
             document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
             document.getElementById('cad-agente-contato').value = data.contato || '';
@@ -967,7 +967,7 @@
         projeto_mulheres: mulheres,
         genero: document.getElementById('cad-agente-genero') ? document.getElementById('cad-agente-genero').value : '',
         etnia: document.getElementById('cad-agente-etnia') ? document.getElementById('cad-agente-etnia').value : '',
-        pcd: document.getElementById('cad-agente-pcd') ? document.getElementById('cad-agente-pcd').value : 'NÃ£o',
+        pcd: document.getElementById('cad-agente-pcd') ? document.getElementById('cad-agente-pcd').value : 'Não',
         tipo_atuacao: document.getElementById('cad-agente-tipo-atuacao') ? document.getElementById('cad-agente-tipo-atuacao').value : 'Individual',
         lat: -23.3055,
         lng: -45.9658
