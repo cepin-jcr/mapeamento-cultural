@@ -294,8 +294,8 @@
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Identidade de Gênero</label>
                 <select id="cad-agente-genero" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
                   <option value="">Prefiro não declarar</option>
-                  <option value="Mulher">Mulher (Cis / Trans)</option>
-                  <option value="Homem">Homem (Cis / Trans)</option>
+                  <option value="Mulher">Mulher </option>
+                  <option value="Homem">Homem</option>
                   <option value="Não-binário">Não-binário</option>
                   <option value="Outros">Outros</option>
                 </select>
