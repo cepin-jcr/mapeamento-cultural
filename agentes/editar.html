@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Agente â€¢ Mapeamento Cultural</title>
+  <title>Editar Agente • Mapeamento Cultural</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -173,6 +173,50 @@
           </select>
         </div>
 
+        <!-- Informações Complementares e Ações Afirmativas (Filtros Avançados) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Identidade de Gênero</label>
+            <select id="edit-genero" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="">Prefiro não declarar</option>
+              <option value="Mulher">Mulher (Cis / Trans)</option>
+              <option value="Homem">Homem (Cis / Trans)</option>
+              <option value="Não-binário">Não-binário</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Etnia / Raça</label>
+            <select id="edit-etnia" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="">Prefiro não declarar</option>
+              <option value="Branca">Branca</option>
+              <option value="Preta">Preta</option>
+              <option value="Parda">Parda</option>
+              <option value="Indígena">Indígena</option>
+              <option value="Amarela">Amarela</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Acessibilidade / PcD</label>
+            <select id="edit-pcd" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="Não">Não sou PcD</option>
+              <option value="Sim">Pessoa com Deficiência (PcD)</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Tipo de Atuação</label>
+            <select id="edit-tipo-atuacao" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="Individual">Artista Individual / Autônomo</option>
+              <option value="Coletivo">Coletivo / Grupo / Cia Cultural</option>
+            </select>
+          </div>
+        </div>
+
         <!-- Opção Projeto Mulheres na Música -->
         <div class="p-4 rounded-xl border border-pink-500/30 bg-gradient-to-r from-pink-500/10 via-purple-500/5 to-transparent flex items-start gap-3 transition-all hover:border-pink-500/50 shadow-sm">
           <input type="checkbox" id="edit-projeto-mulheres" class="mt-1 w-5 h-5 rounded border-input text-pink-600 focus:ring-pink-500 focus:ring-offset-0 cursor-pointer accent-[#b1336b]">
@@ -305,6 +349,10 @@
         document.getElementById('btn-delete').classList.add('hidden');
         document.getElementById('btn-save').innerText = 'Criar Agente';
         document.getElementById('edit-projeto-mulheres').checked = false;
+        if (document.getElementById('edit-genero')) document.getElementById('edit-genero').value = '';
+        if (document.getElementById('edit-etnia')) document.getElementById('edit-etnia').value = '';
+        if (document.getElementById('edit-pcd')) document.getElementById('edit-pcd').value = 'Não';
+        if (document.getElementById('edit-tipo-atuacao')) document.getElementById('edit-tipo-atuacao').value = 'Individual';
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('edit-form-container').classList.remove('hidden');
         return;
@@ -349,7 +397,11 @@
             endereco: ex.localizacao || '',
             foto: ex.foto || null,
             galeria: ex.fotos_galeria || [],
-            videos: ex.videos_links || []
+            videos: ex.videos_links || [],
+            genero: ex.genero || '',
+            etnia: ex.etnia || '',
+            pcd: ex.pcd || 'Não',
+            tipo_atuacao: ex.tipo_atuacao || 'Individual'
           };
         }
       } catch(e) {
@@ -390,6 +442,16 @@
       document.getElementById('edit-nome').value = agente.nome || '';
       document.getElementById('edit-area').value = agente.area || '';
       document.getElementById('edit-municipio').value = agente.municipio || 'Jacareí';
+      if (document.getElementById('edit-genero')) document.getElementById('edit-genero').value = agente.genero || '';
+      if (document.getElementById('edit-etnia')) document.getElementById('edit-etnia').value = agente.etnia || '';
+      if (document.getElementById('edit-pcd')) {
+        const isSim = (agente.pcd === 'Sim' || agente.pcd === true || String(agente.pcd).toLowerCase() === 'sim');
+        document.getElementById('edit-pcd').value = isSim ? 'Sim' : 'Não';
+      }
+      if (document.getElementById('edit-tipo-atuacao')) {
+        const isColetivo = (agente.tipo_atuacao && String(agente.tipo_atuacao).toLowerCase().includes('coletivo'));
+        document.getElementById('edit-tipo-atuacao').value = isColetivo ? 'Coletivo' : 'Individual';
+      }
       document.getElementById('edit-projeto-mulheres').checked = Boolean(agente.projeto_mulheres);
       document.getElementById('edit-bio').value = agente.bio || '';
       document.getElementById('edit-contato').value = agente.contato || '';
@@ -529,6 +591,10 @@
         nome: document.getElementById('edit-nome').value,
         area: document.getElementById('edit-area').value,
         municipio: document.getElementById('edit-municipio').value || 'Jacareí',
+        genero: document.getElementById('edit-genero') ? document.getElementById('edit-genero').value : '',
+        etnia: document.getElementById('edit-etnia') ? document.getElementById('edit-etnia').value : '',
+        pcd: document.getElementById('edit-pcd') ? document.getElementById('edit-pcd').value : 'Não',
+        tipo_atuacao: document.getElementById('edit-tipo-atuacao') ? document.getElementById('edit-tipo-atuacao').value : 'Individual',
         projeto_mulheres: document.getElementById('edit-projeto-mulheres').checked,
         bio: document.getElementById('edit-bio').value,
         contato: document.getElementById('edit-contato').value,
