@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -147,51 +147,6 @@
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Município (Vale do Paraíba)</label>
-          <select id="edit-municipio" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
-            <option value="Aparecida">Aparecida</option>
-            <option value="Arapeí">Arapeí</option>
-            <option value="Areias">Areias</option>
-            <option value="Bananal">Bananal</option>
-            <option value="Caçapava">Caçapava</option>
-            <option value="Cachoeira Paulista">Cachoeira Paulista</option>
-            <option value="Campos do Jordão">Campos do Jordão</option>
-            <option value="Canas">Canas</option>
-            <option value="Caraguatatuba">Caraguatatuba</option>
-            <option value="Cruzeiro">Cruzeiro</option>
-            <option value="Cunha">Cunha</option>
-            <option value="Guaratinguetá">Guaratinguetá</option>
-            <option value="Igaratá">Igaratá</option>
-            <option value="Ilhabela">Ilhabela</option>
-            <option value="Jacareí">Jacareí</option>
-            <option value="Jambeiro">Jambeiro</option>
-            <option value="Lagoinha">Lagoinha</option>
-            <option value="Lavrinhas">Lavrinhas</option>
-            <option value="Lorena">Lorena</option>
-            <option value="Monteiro Lobato">Monteiro Lobato</option>
-            <option value="Natividade da Serra">Natividade da Serra</option>
-            <option value="Paraibuna">Paraibuna</option>
-            <option value="Pindamonhangaba">Pindamonhangaba</option>
-            <option value="Piquete">Piquete</option>
-            <option value="Potim">Potim</option>
-            <option value="Queluz">Queluz</option>
-            <option value="Redenção da Serra">Redenção da Serra</option>
-            <option value="Roseira">Roseira</option>
-            <option value="Santa Branca">Santa Branca</option>
-            <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
-            <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
-            <option value="São José do Barreiro">São José do Barreiro</option>
-            <option value="São José dos Campos">São José dos Campos</option>
-            <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
-            <option value="São Sebastião">São Sebastião</option>
-            <option value="Silveiras">Silveiras</option>
-            <option value="Taubaté">Taubaté</option>
-            <option value="Tremembé">Tremembé</option>
-            <option value="Ubatuba">Ubatuba</option>
-          </select>
-        </div>
-
-        <div class="space-y-2">
           <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Endereço Físico</label>
           <input type="text" id="edit-endereco" required placeholder="Ex: Rua XV de Novembro, 143 - Centro, Jacareí - SP" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
         </div>
@@ -317,7 +272,6 @@
       if(document.getElementById('edit-categoria')) document.getElementById('edit-categoria').value = agente.categoria || '';
       if(document.getElementById('edit-descricao')) document.getElementById('edit-descricao').value = agente.descricao || '';
       document.getElementById('edit-endereco').value = agente.endereco || '';
-      if(document.getElementById('edit-municipio')) document.getElementById('edit-municipio').value = agente.municipio || 'Jacareí';
       if(document.getElementById('edit-lat')) document.getElementById('edit-lat').value = agente.lat || '';
       if(document.getElementById('edit-lng')) document.getElementById('edit-lng').value = agente.lng || '';
       window.originalEndereco = agente.endereco || '';
@@ -390,8 +344,7 @@
       } else if (enderecoDigitado && enderecoDigitado !== window.originalEndereco) {
         btn.innerText = 'Buscando Coordenadas...';
         try {
-          const muniGeo = document.getElementById('edit-municipio') ? document.getElementById('edit-municipio').value : 'Jacareí';
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoDigitado + ', ' + muniGeo + ', SP, Brasil')}`);
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoDigitado)}`);
           const data = await res.json();
           if (data && data.length > 0) {
             newLat = parseFloat(data[0].lat);
@@ -410,7 +363,6 @@
         nome: document.getElementById('edit-nome').value,
         tipo: document.getElementById('edit-tipo') ? document.getElementById('edit-tipo').value : '',
         categoria: document.getElementById('edit-categoria') ? document.getElementById('edit-categoria').value : '',
-        municipio: document.getElementById('edit-municipio') ? document.getElementById('edit-municipio').value : 'Jacareí',
         descricao: document.getElementById('edit-descricao') ? document.getElementById('edit-descricao').value : '',
         endereco: enderecoDigitado,
         foto: window.currentFotoData || null
@@ -419,6 +371,14 @@
       if (newLat !== undefined && newLng !== undefined) {
         updates.lat = newLat;
         updates.lng = newLng;
+      }
+
+      const session = localStorage.getItem('custom_session');
+      const sessionUser = session ? JSON.parse(session) : null;
+      if (sessionUser && !agenteId) {
+        updates.usuario_id = sessionUser.id;
+        updates.email_criador = sessionUser.email;
+        updates.nome_criador = (sessionUser.dados_agente && sessionUser.dados_agente.nome) || sessionUser.nome || sessionUser.email;
       }
 
       let error;

@@ -199,7 +199,7 @@
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes cênicas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes cênicas</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Teatro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Teatro</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Dança" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Dança</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ópera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ópera</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ã“pera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ã“pera</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Circo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Circo</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes visuais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes visuais</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes plásticas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes plásticas</span></label>
@@ -245,92 +245,6 @@
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município (Vale do Paraíba) *</label>
-              <select id="cad-agente-municipio" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                <option value="Aparecida">Aparecida</option>
-                <option value="Arapeí">Arapeí</option>
-                <option value="Areias">Areias</option>
-                <option value="Bananal">Bananal</option>
-                <option value="Caçapava">Caçapava</option>
-                <option value="Cachoeira Paulista">Cachoeira Paulista</option>
-                <option value="Campos do Jordão">Campos do Jordão</option>
-                <option value="Canas">Canas</option>
-                <option value="Caraguatatuba">Caraguatatuba</option>
-                <option value="Cruzeiro">Cruzeiro</option>
-                <option value="Cunha">Cunha</option>
-                <option value="Guaratinguetá">Guaratinguetá</option>
-                <option value="Igaratá">Igaratá</option>
-                <option value="Ilhabela">Ilhabela</option>
-                <option value="Jacareí" selected>Jacareí</option>
-                <option value="Jambeiro">Jambeiro</option>
-                <option value="Lagoinha">Lagoinha</option>
-                <option value="Lavrinhas">Lavrinhas</option>
-                <option value="Lorena">Lorena</option>
-                <option value="Monteiro Lobato">Monteiro Lobato</option>
-                <option value="Natividade da Serra">Natividade da Serra</option>
-                <option value="Paraibuna">Paraibuna</option>
-                <option value="Pindamonhangaba">Pindamonhangaba</option>
-                <option value="Piquete">Piquete</option>
-                <option value="Potim">Potim</option>
-                <option value="Queluz">Queluz</option>
-                <option value="Redenção da Serra">Redenção da Serra</option>
-                <option value="Roseira">Roseira</option>
-                <option value="Santa Branca">Santa Branca</option>
-                <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
-                <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
-                <option value="São José do Barreiro">São José do Barreiro</option>
-                <option value="São José dos Campos">São José dos Campos</option>
-                <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
-                <option value="São Sebastião">São Sebastião</option>
-                <option value="Silveiras">Silveiras</option>
-                <option value="Taubaté">Taubaté</option>
-                <option value="Tremembé">Tremembé</option>
-                <option value="Ubatuba">Ubatuba</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Identidade de Gênero</label>
-                <select id="cad-agente-genero" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="">Prefiro não declarar</option>
-                  <option value="Mulher">Mulher </option>
-                  <option value="Homem">Homem</option>
-                  <option value="Não-binário">Não-binário</option>
-                  <option value="Outros">Outros</option>
-                </select>
-              </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Etnia / Raça</label>
-                <select id="cad-agente-etnia" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="">Prefiro não declarar</option>
-                  <option value="Branca">Branca</option>
-                  <option value="Preta">Preta</option>
-                  <option value="Parda">Parda</option>
-                  <option value="Indígena">Indígena</option>
-                  <option value="Amarela">Amarela</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Acessibilidade / PcD</label>
-                <select id="cad-agente-pcd" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="Não">Não sou PcD</option>
-                  <option value="Sim">Pessoa com Deficiência (PcD)</option>
-                </select>
-              </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Tipo de Atuação</label>
-                <select id="cad-agente-tipo-atuacao" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="Individual">Artista Individual / Autônomo</option>
-                  <option value="Coletivo">Coletivo / Grupo / Cia Cultural</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Biografia / Histórico *</label>
               <textarea id="cad-agente-bio" rows="4" required placeholder="Conte sua trajetória, projetos realizados, influências e atuação na cidade..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
             </div>
@@ -371,7 +285,7 @@
             </div>
           </form>
 
-          <!-- ================= FORM ESPAÇO ================= -->
+          <!-- ================= FORM ESPAÃ‡O ================= -->
           <form id="form-cadastro-espaco" onsubmit="submeterCadastroEspaco(event)" class="space-y-4 hidden">
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome do Espaço *</label>
@@ -423,56 +337,9 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município *</label>
-                <select id="cad-espaco-municipio" required class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                  <option value="Aparecida">Aparecida</option>
-                  <option value="Arapeí">Arapeí</option>
-                  <option value="Areias">Areias</option>
-                  <option value="Bananal">Bananal</option>
-                  <option value="Caçapava">Caçapava</option>
-                  <option value="Cachoeira Paulista">Cachoeira Paulista</option>
-                  <option value="Campos do Jordão">Campos do Jordão</option>
-                  <option value="Canas">Canas</option>
-                  <option value="Caraguatatuba">Caraguatatuba</option>
-                  <option value="Cruzeiro">Cruzeiro</option>
-                  <option value="Cunha">Cunha</option>
-                  <option value="Guaratinguetá">Guaratinguetá</option>
-                  <option value="Igaratá">Igaratá</option>
-                  <option value="Ilhabela">Ilhabela</option>
-                  <option value="Jacareí" selected>Jacareí</option>
-                  <option value="Jambeiro">Jambeiro</option>
-                  <option value="Lagoinha">Lagoinha</option>
-                  <option value="Lavrinhas">Lavrinhas</option>
-                  <option value="Lorena">Lorena</option>
-                  <option value="Monteiro Lobato">Monteiro Lobato</option>
-                  <option value="Natividade da Serra">Natividade da Serra</option>
-                  <option value="Paraibuna">Paraibuna</option>
-                  <option value="Pindamonhangaba">Pindamonhangaba</option>
-                  <option value="Piquete">Piquete</option>
-                  <option value="Potim">Potim</option>
-                  <option value="Queluz">Queluz</option>
-                  <option value="Redenção da Serra">Redenção da Serra</option>
-                  <option value="Roseira">Roseira</option>
-                  <option value="Santa Branca">Santa Branca</option>
-                  <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
-                  <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
-                  <option value="São José do Barreiro">São José do Barreiro</option>
-                  <option value="São José dos Campos">São José dos Campos</option>
-                  <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
-                  <option value="São Sebastião">São Sebastião</option>
-                  <option value="Silveiras">Silveiras</option>
-                  <option value="Taubaté">Taubaté</option>
-                  <option value="Tremembé">Tremembé</option>
-                  <option value="Ubatuba">Ubatuba</option>
-                </select>
-              </div>
-
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo *</label>
-                <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-              </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo em Jacareí *</label>
+              <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="space-y-1.5">
@@ -624,7 +491,7 @@
     }
   };
 
-  // Abre modal para EDIÇÃO de um item existente
+  // Abre modal para EDIÃ‡ÃƒO de um item existente
   window.abrirModalEdicao = async (tipo, id) => {
     const user = getLoggedUser();
     if (!user || !isUserApproved(user)) {
@@ -702,13 +569,6 @@
               document.getElementById('cad-agente-area-outra').value = unmatchedAreas.join(', ');
             }
             document.getElementById('cad-agente-mulheres').checked = !!(data.projeto_mulheres || data.mulheres_na_musica);
-            if (document.getElementById('cad-agente-municipio')) {
-              document.getElementById('cad-agente-municipio').value = data.municipio || 'Jacareí';
-            }
-                        if (document.getElementById('cad-agente-genero')) document.getElementById('cad-agente-genero').value = data.genero || '';
-            if (document.getElementById('cad-agente-etnia')) document.getElementById('cad-agente-etnia').value = data.etnia || '';
-            if (document.getElementById('cad-agente-pcd')) document.getElementById('cad-agente-pcd').value = data.pcd || 'Não';
-            if (document.getElementById('cad-agente-tipo-atuacao')) document.getElementById('cad-agente-tipo-atuacao').value = data.tipo_atuacao || 'Individual';
             document.getElementById('cad-agente-bio').value = data.bio || data.biografia || '';
             document.getElementById('cad-agente-contato').value = data.contato || '';
             document.getElementById('cad-agente-instagram').value = data.instagram || '';
@@ -721,9 +581,6 @@
             document.getElementById('cad-espaco-nome').value = data.nome || '';
             document.getElementById('cad-espaco-tipo').value = data.tipo || 'Espaço Público';
             document.getElementById('cad-espaco-categoria').value = data.categoria || '';
-            if (document.getElementById('cad-espaco-municipio')) {
-              document.getElementById('cad-espaco-municipio').value = data.municipio || 'Jacareí';
-            }
             document.getElementById('cad-espaco-endereco').value = data.endereco || '';
             document.getElementById('cad-espaco-descricao').value = data.descricao || '';
             document.getElementById('cad-espaco-contato').value = data.contato || '';
@@ -944,7 +801,6 @@
       }
       
       const mulheres = document.getElementById('cad-agente-mulheres').checked;
-      const municipio = document.getElementById('cad-agente-municipio') ? document.getElementById('cad-agente-municipio').value : 'Jacareí';
       const bio = document.getElementById('cad-agente-bio').value.trim();
       const contato = document.getElementById('cad-agente-contato').value.trim();
       const instagram = document.getElementById('cad-agente-instagram').value.trim();
@@ -961,14 +817,9 @@
       const payload = {
         nome,
         area,
-        municipio,
         bio,
         contato: contatoFinal,
         projeto_mulheres: mulheres,
-        genero: document.getElementById('cad-agente-genero') ? document.getElementById('cad-agente-genero').value : '',
-        etnia: document.getElementById('cad-agente-etnia') ? document.getElementById('cad-agente-etnia').value : '',
-        pcd: document.getElementById('cad-agente-pcd') ? document.getElementById('cad-agente-pcd').value : 'Não',
-        tipo_atuacao: document.getElementById('cad-agente-tipo-atuacao') ? document.getElementById('cad-agente-tipo-atuacao').value : 'Individual',
         lat: -23.3055,
         lng: -45.9658
       };
@@ -1045,7 +896,6 @@
       const nome = document.getElementById('cad-espaco-nome').value.trim();
       const tipo = document.getElementById('cad-espaco-tipo').value;
       const categoria = document.getElementById('cad-espaco-categoria').value.trim();
-      const municipio = document.getElementById('cad-espaco-municipio') ? document.getElementById('cad-espaco-municipio').value : 'Jacareí';
       const endereco = document.getElementById('cad-espaco-endereco').value.trim();
       const descricao = document.getElementById('cad-espaco-descricao').value.trim();
       const contato = document.getElementById('cad-espaco-contato').value.trim();
@@ -1057,7 +907,7 @@
       let lng = -45.9658;
       if (endereco) {
         try {
-          const q = encodeURIComponent(`${endereco}, ${municipio}, SP, Brasil`);
+          const q = encodeURIComponent(endereco);
           const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
           if (res.ok) {
             const data = await res.json();
@@ -1075,7 +925,6 @@
         nome,
         tipo,
         categoria,
-        municipio,
         endereco,
         descricao,
         contato: contatoFinal,
@@ -1083,7 +932,11 @@
         lng: lng
       };
 
-      // user_id was removed due to UUID type mismatch in DB, linkage is handled via contatoFinal email.
+      if (user) {
+        payload.usuario_id = user.id;
+        payload.email_criador = user.email;
+        payload.nome_criador = (user.dados_agente && user.dados_agente.nome) || user.nome || user.email;
+      }
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
