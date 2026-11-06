@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil | Mapeamento Cultural</title>
+  <title>Meu Perfil " Mapeamento Cultural</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,6 +75,18 @@
     .hide-scroll-indicator {
       -ms-overflow-style: none;
       scrollbar-width: none;
+    }
+    .step-item-connector {
+      position: relative;
+    }
+    .step-item-connector::after {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 38px;
+      bottom: -22px;
+      width: 2px;
+      background: hsl(var(--primary) / 0.25);
     }
   </style>
 
@@ -270,7 +282,7 @@
     </div>
   </div>
 
-    <!-- Recovery Modal -->
+  <!-- Recovery Modal -->
   <div id="recovery-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
     <div class="bg-card border border-border p-8 rounded-xl shadow-xl max-w-sm w-full transform scale-95 transition-transform duration-300">
       <div class="flex justify-between items-center mb-6">
@@ -1208,58 +1220,17 @@
     window.renderCepinEquipes = () => {
       const renderList = (id, arr, type) => {
         const list = document.getElementById(id);
-        list.innerHTML = (arr || []).map((m, i) => {
-          if (type === 'dev') {
-            return `
-              <div class="p-3 bg-muted/20 border border-border rounded-lg space-y-2 relative">
-                <button type="button" onclick="removeCepinEquipeMembro('dev', ${i})" class="absolute top-2 right-2 text-red-500 font-bold hover:bg-red-500/10 px-2 py-1 rounded text-xs">Excluir</button>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pr-16">
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Nome</label>
-                    <input type="text" placeholder="Nome do desenvolvedor" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${(m.nome || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Ano</label>
-                    <input type="text" placeholder="ex: 2024" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-ano" value="${(m.ano || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Período</label>
-                    <input type="text" placeholder="ex: Setembro - Atual" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-periodo" value="${(m.periodo || '').replace(/"/g, '&quot;')}">
-                  </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Função / Papel no projeto</label>
-                    <input type="text" placeholder="ex: Desenvolvimento Front-end" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${(m.cargo || m.funcao || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Bolsa / Vínculo</label>
-                    <input type="text" placeholder="ex: Bolsista de Extensão" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-bolsa" value="${(m.bolsa || '').replace(/"/g, '&quot;')}">
-                  </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Coordenador(es) responsável(is)</label>
-                    <input type="text" placeholder="ex: Profa. Simone Lisboa" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-coord" value="${(m.coordenadores || '').replace(/"/g, '&quot;')}">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-semibold text-muted-foreground mb-1">Contato / E-mail</label>
-                    <input type="text" placeholder="ex: dev@ifsp.edu.br" class="w-full px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${(m.contato || '').replace(/"/g, '&quot;')}">
-                  </div>
-                </div>
-              </div>
-            `;
-          }
-          return `
-            <div class="flex gap-2 items-center flex-wrap sm:flex-nowrap">
-              <input type="text" placeholder="Nome" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${(m.nome || '').replace(/"/g, '&quot;')}">
-              ${type === 'membro' ? `<input type="text" placeholder="Câmpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${(m.campus || '').replace(/"/g, '&quot;')}">` : ''}
-              <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'Função'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${(m.cargo || m.funcao || '').replace(/"/g, '&quot;')}">
-              <input type="text" placeholder="Contato" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${(m.contato || '').replace(/"/g, '&quot;')}">
-              <button type="button" onclick="removeCepinEquipeMembro('${type}', ${i})" class="text-red-500 font-bold p-1 hover:bg-red-500/10 rounded">X</button>
-            </div>
-          `;
-        }).join('');
+        list.innerHTML = (arr || []).map((m, i) => `
+          <div class="flex gap-2 items-center flex-wrap sm:flex-nowrap">
+            <input type="text" placeholder="Nome" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-nome" value="${m.nome || ''}">
+            ${type === 'membro' ? `<input type="text" placeholder="Câmpus" class="w-24 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-campus" value="${m.campus || ''}">` : ''}
+            ${type === 'dev' ? `<input type="text" placeholder="Ano" class="w-16 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-ano" value="${m.ano || ''}">` : ''}
+            <input type="text" placeholder="${type === 'membro' ? 'Cargo' : 'Função'}" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-cargo" value="${m.cargo || m.funcao || ''}">
+            ${type === 'dev' ? `<input type="text" placeholder="Coordenador(es)" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-coord" value="${m.coordenadores || ''}">` : ''}
+            <input type="text" placeholder="Contato" class="flex-1 px-2 py-1 bg-background border border-input rounded text-xs cepin-${type}-contato" value="${m.contato || ''}">
+            <button type="button" onclick="removeCepinEquipeMembro('${type}', ${i})" class="text-red-500 font-bold p-1 hover:bg-red-500/10 rounded">X</button>
+          </div>
+        `).join('');
       };
       renderList('cepin-equipe-membros-list', cepinCurrentData.equipeMembros, 'membro');
       renderList('cepin-equipe-colab-list', cepinCurrentData.equipeColaboradores, 'colab');
@@ -1268,11 +1239,7 @@
 
     window.addCepinEquipeMembro = (type) => {
       updateLocalCepinData();
-      const obj = type === 'membro'
-        ? {nome:"", campus:"", cargo:"", contato:""}
-        : (type === 'dev'
-            ? {nome:"", ano: new Date().getFullYear().toString(), periodo:"", funcao:"", bolsa:"", coordenadores:"", contato:""}
-            : {nome:"", funcao:"", contato:""});
+      const obj = type === 'membro' ? {nome:"", campus:"", cargo:"", contato:""} : {nome:"", funcao:"", contato:""};
       if (type === 'membro') { if(!cepinCurrentData.equipeMembros) cepinCurrentData.equipeMembros=[]; cepinCurrentData.equipeMembros.push(obj); }
       if (type === 'colab') { if(!cepinCurrentData.equipeColaboradores) cepinCurrentData.equipeColaboradores=[]; cepinCurrentData.equipeColaboradores.push(obj); }
       if (type === 'dev') { if(!cepinCurrentData.equipeDesenvolvedores) cepinCurrentData.equipeDesenvolvedores=[]; cepinCurrentData.equipeDesenvolvedores.push(obj); }
@@ -1316,14 +1283,10 @@
             obj.campus = c.querySelector(`.cepin-${type}-campus`).value;
             obj.cargo = c.querySelector(`.cepin-${type}-cargo`).value;
           } else if (type === 'dev') {
-            obj.funcao = c.querySelector(`.cepin-${type}-cargo`) ? c.querySelector(`.cepin-${type}-cargo`).value : '';
+            obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;
             const anoEl = c.querySelector(`.cepin-${type}-ano`);
-            const periodoEl = c.querySelector(`.cepin-${type}-periodo`);
-            const bolsaEl = c.querySelector(`.cepin-${type}-bolsa`);
             const coordEl = c.querySelector(`.cepin-${type}-coord`);
             obj.ano = anoEl ? anoEl.value : '';
-            obj.periodo = periodoEl ? periodoEl.value : '';
-            obj.bolsa = bolsaEl ? bolsaEl.value : '';
             obj.coordenadores = coordEl ? coordEl.value : '';
           } else {
             obj.funcao = c.querySelector(`.cepin-${type}-cargo`).value;

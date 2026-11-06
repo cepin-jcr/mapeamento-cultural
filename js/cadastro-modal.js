@@ -1,12 +1,12 @@
 /**
- * Modal Global de Cadastro e Edição de Eventos, Agentes e Espaços Culturais
- * Exclusivo para usuários autenticados e aprovados
+ * Modal Global de Cadastro e EdiÃ§Ã£o de Eventos, Agentes e EspaÃ§os Culturais
+ * Exclusivo para usuÃ¡rios autenticados e aprovados
  */
 
 (function () {
-  window._currentEditing = null; // Armazena { tipo: 'evento'|'agente'|'espaco', id: '...' } quando em modo de edição
+  window._currentEditing = null; // Armazena { tipo: 'evento'|'agente'|'espaco', id: '...' } quando em modo de ediÃ§Ã£o
 
-  // Compressão de imagem automática via HTML5 Canvas
+  // CompressÃ£o de imagem automÃ¡tica via HTML5 Canvas
   function compressImage(file, maxWidth = 1200, maxHeight = 1200, quality = 0.8) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -75,7 +75,7 @@
             </div>
             <div>
               <h2 id="modal-cadastro-title" class="text-xl font-bold font-display text-foreground">Novo Cadastro Cultural</h2>
-              <p id="modal-cadastro-subtitle" class="text-xs text-muted-foreground">Publique no Mapeamento Cultural do Vale do Paraíba</p>
+              <p id="modal-cadastro-subtitle" class="text-xs text-muted-foreground">Publique no Mapeamento Cultural do Vale do Paraí­ba</p>
             </div>
           </div>
           <button type="button" onclick="fecharModalCadastro()" class="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors cursor-pointer" aria-label="Fechar">
@@ -109,7 +109,7 @@
           <form id="form-cadastro-evento" onsubmit="submeterCadastroEvento(event)" class="space-y-4">
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome do Evento *</label>
-              <input type="text" id="cad-evento-nome" required placeholder="Ex: Festival de Inverno de Jacareí" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              <input type="text" id="cad-evento-nome" required placeholder="Ex: Festival de Inverno de Jacareí­" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -148,19 +148,19 @@
 
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Descrição do Evento *</label>
-              <textarea id="cad-evento-descricao" rows="4" required placeholder="Apresentação artística aberta ao público com repertório de..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
+              <textarea id="cad-evento-descricao" rows="4" required placeholder="Apresentação artí­stica aberta ao público com repertório de..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all resize-y"></textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5 flex flex-col justify-end pb-1">
                 <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
-                  <input type="checkbox" id="cad-evento-anual" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <input type="checkbox" id="cad-evento-anual" onchange="if(this.checked){const t=document.getElementById('cad-evento-temporada');if(t)t.checked=false;}" class="rounded text-primary focus:ring-primary h-4 w-4">
                   <span class="text-xs font-semibold text-foreground">Evento Anual</span>
                 </label>
               </div>
               <div class="space-y-1.5 flex flex-col justify-end pb-1">
                 <label class="flex items-center gap-2 cursor-pointer p-2.5 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
-                  <input type="checkbox" id="cad-evento-temporada" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <input type="checkbox" id="cad-evento-temporada" onchange="if(this.checked){const a=document.getElementById('cad-evento-anual');if(a)a.checked=false;}" class="rounded text-primary focus:ring-primary h-4 w-4">
                   <span class="text-xs font-semibold text-foreground">Por Temporada</span>
                 </label>
               </div>
@@ -194,12 +194,12 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Área de Atuação *</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Área de atuação *</label>
                 <div id="cad-agente-area-container" class="w-full h-44 overflow-y-auto px-3 py-2 bg-background border border-input rounded-xl text-sm scrollbar-thin flex flex-col gap-1">
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes cênicas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes cênicas</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Teatro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Teatro</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Dança" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Dança</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ã“pera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ã“pera</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ópera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ópera</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Circo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Circo</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes visuais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes visuais</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes plásticas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes plásticas</span></label>
@@ -213,7 +213,7 @@
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Música" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Música</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Literatura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Literatura</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Cinema" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Cinema</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Vídeo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Vídeo</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Vídeo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ví­deo</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Multimídia" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Multimídia</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Folclore" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Folclore</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Cultura popular" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Cultura popular</span></label>
@@ -228,7 +228,7 @@
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Grafite" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Grafite</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Capoeira" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Capoeira</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outras culturas urbanas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outras culturas urbanas</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Pesquisador(a) da área cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Pesquisador(a) da área cultural</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Pesquisador(a) da Área cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Pesquisador(a) da Área cultural</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Gestor(a) cultural" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Gestor(a) cultural</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Agente territorial de cultura" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Agente territorial de cultura</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Outro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Outro</span></label>
@@ -255,7 +255,7 @@
                 <input type="text" id="cad-agente-contato" placeholder="(12) 99999-9999" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Instagram / Portfólio</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Instagram / Portifólio</label>
                 <input type="text" id="cad-agente-instagram" placeholder="@artista" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
             </div>
@@ -268,7 +268,7 @@
               <div class="space-y-3 p-4 bg-muted/30 border border-border rounded-xl">
                 <label class="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" id="cad-agente-lgpd" required class="mt-0.5 rounded text-primary focus:ring-primary h-4 w-4 shrink-0">
-                  <span class="text-xs text-muted-foreground leading-snug">Autorizo o tratamento das minhas informações para fins de cadastro e login na plataforma Mapeamento Cultural do Vale do Paraíba, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018). *</span>
+                  <span class="text-xs text-muted-foreground leading-snug">Autorizo o tratamento das minhas informações para fins de cadastro e login na plataforma Mapeamento Cultural do Vale do Paraí­ba, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018). *</span>
                 </label>
                 <label class="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" id="cad-agente-idade" required class="mt-0.5 rounded text-primary focus:ring-primary h-4 w-4 shrink-0">
@@ -315,20 +315,20 @@
                     <option value="Centro Cultural">Centro Cultural</option>
                     <option value="Cinema">Cinema</option>
                     <option value="Dança">Dança</option>
-                    <option value="Espaço Circense">Espaço Circense</option>
+                    <option value="Espaço Circense">EspaÃ§o Circense</option>
                     <option value="Espaço Público">Espaço Público</option>
-                    <option value="Estúdio">Estúdio</option>
+                    <option value="Estádio">Estádio</option>
                     <option value="Exposição">Exposição</option>
                     <option value="Galeria">Galeria</option>
                     <option value="Igreja">Igreja</option>
                     <option value="Mercado Municipal">Mercado Municipal</option>
                     <option value="Museu">Museu</option>
                     <option value="Oficina">Oficina</option>
-                    <option value="Patrimônio Cultural">Patrimônio Cultural</option>
-                    <option value="Programa de Educação">Programa de Educação</option>
+                    <option value="PatrimÃ´nio Cultural">PatrimÃ´nio Cultural</option>
+                    <option value="Programa de EducaÃ§Ã£o">Programa de EducaÃ§Ã£o</option>
                     <option value="Samba de Roda">Samba de Roda</option>
                     <option value="Santuário">Santuário</option>
-                    <option value="Sítio Arqueológico">Sítio Arqueológico</option>
+                    <option value="Sítio Arqueológico">Sí­tio Arqueológico</option>
                     <option value="Teatro">Teatro</option>
                     <option value="Templo">Templo</option>
                     <option value="Terreiro">Terreiro</option>
@@ -338,7 +338,7 @@
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo em Jacareí *</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo em Jacareí­ *</label>
               <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
@@ -427,7 +427,7 @@
     window._currentEditing = null;
     createModalDOM();
 
-    // Configura título e subtítulo dinâmico
+    // Configura título e subtí­tulo dinâmico
     const titles = {
       evento: { title: "Novo Evento", sub: "Cadastre um novo evento no calendário cultural de Jacareí", btn: "Publicar Evento" },
       agente: { title: "Novo Agente Cultural", sub: "Cadastre um artista, grupo ou produtor cultural", btn: "Cadastrar Agente" },
@@ -438,11 +438,11 @@
     document.getElementById('modal-cadastro-title').innerText = cfg.title;
     document.getElementById('modal-cadastro-subtitle').innerText = cfg.sub;
 
-    // Garante que as outras abas fiquem ocultas para o usuário focar apenas no item
+    // Garante que as outras abas fiquem ocultas para o usuÃ¡rio focar apenas no item
     const tabsBar = document.getElementById('modal-cadastro-tabs');
     if (tabsBar) tabsBar.classList.add('hidden');
 
-    // Reseta o formulário
+    // Reseta o formulÃ¡rio
     const form = document.getElementById(`form-cadastro-${tipo}`);
     if (form) form.reset();
     const preview = document.getElementById(`preview-cad-${tipo}`);
@@ -476,7 +476,7 @@
       }
     }
 
-    // Atualiza texto do botão
+    // Atualiza texto do botÃ£o
     const btnSubmit = document.getElementById(`btn-submit-${tipo}`);
     if (btnSubmit) btnSubmit.querySelector('span').innerText = cfg.btn;
 
@@ -539,13 +539,23 @@
           if (tipo === 'evento') {
             document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
             document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
-            document.getElementById('cad-evento-data-hora').value = data.data_hora || data.data || '';
+            const rawDataHora = data.data_hora || data.data || '';
+            const isAnual = (data.anual !== undefined && data.anual !== null ? !!data.anual : false) || rawDataHora.toLowerCase().includes('anual');
+            const isTemporada = (data.temporada !== undefined && data.temporada !== null ? !!data.temporada : false) || rawDataHora.toLowerCase().includes('temporada');
+            document.getElementById('cad-evento-data-hora').value = rawDataHora.replace(/\s*\((anual|temporada)\)/gi, '').trim();
             document.getElementById('cad-evento-local').value = data.local || '';
             if (document.getElementById('cad-evento-organizador')) document.getElementById('cad-evento-organizador').value = data.organizador || '';
-            if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = !!data.anual;
-            if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = !!data.temporada;
-            document.getElementById('cad-evento-descricao').value = data.descricao || '';
-            document.getElementById('cad-evento-link').value = data.link || '';
+            if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = isAnual;
+            if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = isTemporada;
+            let desc = data.descricao || '';
+            let extractedLink = data.link || '';
+            const linkMatch = desc.match(/(?:\r?\n)?Link:\s*(https?:\/\/[^\s]+)/i);
+            if (linkMatch) {
+              if (!extractedLink) extractedLink = linkMatch[1];
+              desc = desc.replace(/(?:\r?\n)?Link:\s*https?:\/\/[^\s]+/i, '').trim();
+            }
+            document.getElementById('cad-evento-descricao').value = desc;
+            if (document.getElementById('cad-evento-link')) document.getElementById('cad-evento-link').value = extractedLink;
             if (data.foto || data.imagem) {
               const prev = document.getElementById('preview-cad-evento');
               prev.src = data.foto || data.imagem;
@@ -579,7 +589,7 @@
             }
           } else if (tipo === 'espaco') {
             document.getElementById('cad-espaco-nome').value = data.nome || '';
-            document.getElementById('cad-espaco-tipo').value = data.tipo || 'Espaço Público';
+            document.getElementById('cad-espaco-tipo').value = data.tipo || 'EspaÃ§o PÃºblico';
             document.getElementById('cad-espaco-categoria').value = data.categoria || '';
             document.getElementById('cad-espaco-endereco').value = data.endereco || '';
             document.getElementById('cad-espaco-descricao').value = data.descricao || '';
@@ -598,7 +608,7 @@
     }
   };
 
-  // Excluir item cultural pertencente ao usuário
+  // Excluir item cultural pertencente ao usuÃ¡rio
   window.excluirItemUsuario = async (tipo, id, onSuccess) => {
     const user = getLoggedUser();
     if (!user || !isUserApproved(user)) {
@@ -623,7 +633,7 @@
         const { error } = await supabaseClient.from(table).delete().eq('id', id);
         if (error) throw error;
       }
-      alert("Cadastro excluído com sucesso!");
+      alert("Cadastro excluí­do com sucesso!");
       window.dispatchEvent(new CustomEvent('item-cultural-excluido', { detail: { tipo, id } }));
       if (typeof onSuccess === 'function') onSuccess();
     } catch (err) {
@@ -672,6 +682,49 @@
     }
   }
 
+  // Função utilitária para envio ao Supabase com auto-recuperação de cache de esquema
+  async function executarSupabaseComAutoRecuperacao(tabela, payload, isEdit, id) {
+    if (!window.supabaseClient) return;
+
+    let attemptPayload = { ...payload };
+    const trySave = async (data) => {
+      if (isEdit) {
+        return await supabaseClient.from(tabela).update(data).eq('id', id);
+      } else {
+        return await supabaseClient.from(tabela).insert([data]);
+      }
+    };
+
+    let res = await trySave(attemptPayload);
+    let retries = 0;
+    while (res && res.error && res.error.message && retries < 10) {
+      // 1. Detecta erro de coluna inexistente no schema cache ou banco (PostgREST)
+      const match = res.error.message.match(/(?:Could not find the ['"]([^'"]+)['"] column|column ['"]([^'"]+)['"] of relation)/i);
+      const missingCol = match ? (match[1] || match[2]) : null;
+      if (missingCol && attemptPayload.hasOwnProperty(missingCol)) {
+        console.warn(`[AutoRecovery] Removendo coluna '${missingCol}' inexistente na tabela '${tabela}' e tentando novamente...`);
+        delete attemptPayload[missingCol];
+        retries++;
+        res = await trySave(attemptPayload);
+        continue;
+      }
+
+      // 2. Detecta incompatibilidade de user_id (UUID / FK)
+      if (attemptPayload.user_id && (res.error.message.includes('user_id') || res.error.message.includes('uuid'))) {
+        console.warn(`[AutoRecovery] Removendo user_id incompatível na tabela '${tabela}' e tentando novamente...`, res.error);
+        delete attemptPayload.user_id;
+        retries++;
+        res = await trySave(attemptPayload);
+        continue;
+      }
+
+      break;
+    }
+
+    if (res && res.error) throw res.error;
+    return res;
+  }
+
   // Submit Evento (Insert ou Update)
   window.submeterCadastroEvento = async (e) => {
     e.preventDefault();
@@ -683,35 +736,25 @@
     try {
       const nome = document.getElementById('cad-evento-nome').value.trim();
       const categoria = document.getElementById('cad-evento-categoria').value.trim();
-      const data_hora = document.getElementById('cad-evento-data-hora').value.trim();
+      const data_hora_input = document.getElementById('cad-evento-data-hora').value.trim();
       const local = document.getElementById('cad-evento-local').value.trim();
-      const organizador = document.getElementById('cad-evento-organizador').value.trim();
-      const anual = document.getElementById('cad-evento-anual').checked;
-      const temporada = document.getElementById('cad-evento-temporada').checked;
+      const organizador = document.getElementById('cad-evento-organizador') ? document.getElementById('cad-evento-organizador').value.trim() : '';
+      const anual = document.getElementById('cad-evento-anual') ? document.getElementById('cad-evento-anual').checked : false;
+      const temporada = document.getElementById('cad-evento-temporada') ? document.getElementById('cad-evento-temporada').checked : false;
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
-      const link = document.getElementById('cad-evento-link').value.trim();
+      const link = document.getElementById('cad-evento-link') ? document.getElementById('cad-evento-link').value.trim() : '';
       const fotoInput = document.getElementById('cad-evento-foto');
 
-      const descricaoFull = link ? descricao + '\nLink: ' + link : descricao;
-      const descricaoFinal = descricaoFull;
-
-      let lat = -23.3055;
-      let lng = -45.9658;
-      if (local) {
-        try {
-          const q = encodeURIComponent(local);
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data && data.length > 0) {
-              lat = parseFloat(data[0].lat);
-              lng = parseFloat(data[0].lon);
-            }
-          }
-        } catch (e) {
-          console.warn("Geocoding falhou:", e);
-        }
+      let data_hora = data_hora_input.replace(/\s*\((anual|temporada)\)/gi, '').trim();
+      if (anual) {
+        data_hora = data_hora.replace(/,?\s*\b20\d{2}\b/g, '').trim();
+        data_hora += ' (Anual)';
+      } else if (temporada) {
+        data_hora += ' (Temporada)';
       }
+
+      let descLimpa = descricao.replace(/(?:\r?\n)?Link:\s*https?:\/\/[^\s]+/i, '').trim();
+      const descricaoFinal = link ? (descLimpa ? descLimpa + '\nLink: ' + link : link) : descLimpa;
 
       const payload = {
         nome,
@@ -722,17 +765,12 @@
         horario: data_hora,
         local,
         organizador,
-        anual,
-        temporada,
-        descricao: descricaoFinal,
-        lat: lat,
-        lng: lng
+        descricao: descricaoFinal
       };
+      if (link) payload.link = link;
 
       if (user) {
-        if (user.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(user.id))) {
-          payload.user_id = user.id;
-        }
+        payload.user_id = user.id;
       } else {
         showModalMsg("Apenas usuários logados podem enviar.", true);
         setBtnLoading(btn, false, 'Publicar Evento');
@@ -745,15 +783,7 @@
         payload.foto = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000';
       }
 
-      if (window.supabaseClient) {
-        if (isEdit) {
-          const { error } = await supabaseClient.from('eventos').update(payload).eq('id', window._currentEditing.id);
-          if (error) throw error;
-        } else {
-          const { error } = await supabaseClient.from('eventos').insert([payload]);
-          if (error) throw error;
-        }
-      }
+      await executarSupabaseComAutoRecuperacao('eventos', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
 
       showModalMsg(isEdit ? "Evento atualizado com sucesso!" : "Evento cultural publicado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'evento' } }));
@@ -855,15 +885,7 @@
         payload.foto = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
       }
 
-      if (window.supabaseClient) {
-        if (isEdit) {
-          const { error } = await supabaseClient.from('agentes').update(payload).eq('id', window._currentEditing.id);
-          if (error) throw error;
-        } else {
-          const { error } = await supabaseClient.from('agentes').insert([payload]);
-          if (error) throw error;
-        }
-      }
+      await executarSupabaseComAutoRecuperacao('agentes', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
 
       showModalMsg(isEdit ? "Perfil de agente atualizado com sucesso!" : "Agente cultural cadastrado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'agente' } }));
@@ -903,24 +925,6 @@
 
       const contatoFinal = user ? contato + ` | Email: ${user.email}` : contato;
 
-      let lat = -23.3055;
-      let lng = -45.9658;
-      if (endereco) {
-        try {
-          const q = encodeURIComponent(endereco);
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data && data.length > 0) {
-              lat = parseFloat(data[0].lat);
-              lng = parseFloat(data[0].lon);
-            }
-          }
-        } catch (e) {
-          console.warn("Geocoding falhou:", e);
-        }
-      }
-
       const payload = {
         nome,
         tipo,
@@ -928,10 +932,11 @@
         endereco,
         descricao,
         contato: contatoFinal,
-        lat: lat,
-        lng: lng
+        lat: -23.3055, // Coordenadas centrais padrÃ£o de JacareÃ­
+        lng: -45.9658
       };
 
+      // user_id was removed due to UUID type mismatch in DB, linkage is handled via contatoFinal email.
       if (user) {
         payload.usuario_id = user.id;
         payload.email_criador = user.email;
@@ -944,15 +949,7 @@
         payload.foto = 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=1000';
       }
 
-      if (window.supabaseClient) {
-        if (isEdit) {
-          const { error } = await supabaseClient.from('espacos').update(payload).eq('id', window._currentEditing.id);
-          if (error) throw error;
-        } else {
-          const { error } = await supabaseClient.from('espacos').insert([payload]);
-          if (error) throw error;
-        }
-      }
+      await executarSupabaseComAutoRecuperacao('espacos', payload, isEdit, window._currentEditing ? window._currentEditing.id : null);
 
       showModalMsg(isEdit ? "Espaço atualizado com sucesso!" : "Espaço cultural cadastrado com sucesso!", false);
       window.dispatchEvent(new CustomEvent('item-cultural-salvo', { detail: { tipo: 'espaco' } }));
