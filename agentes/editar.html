@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Agente â€¢ Mapeamento Cultural</title>
+  <title>Editar Agente • Mapeamento Cultural</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,6 +126,95 @@
         <div class="space-y-2">
           <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Área / Especialidade</label>
           <input type="text" id="edit-area" required class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Município (Vale do Paraíba)</label>
+          <select id="edit-municipio" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+            <option value="Aparecida">Aparecida</option>
+            <option value="Arapeí">Arapeí</option>
+            <option value="Areias">Areias</option>
+            <option value="Bananal">Bananal</option>
+            <option value="Caçapava">Caçapava</option>
+            <option value="Cachoeira Paulista">Cachoeira Paulista</option>
+            <option value="Campos do Jordão">Campos do Jordão</option>
+            <option value="Canas">Canas</option>
+            <option value="Caraguatatuba">Caraguatatuba</option>
+            <option value="Cruzeiro">Cruzeiro</option>
+            <option value="Cunha">Cunha</option>
+            <option value="Guaratinguetá">Guaratinguetá</option>
+            <option value="Igaratá">Igaratá</option>
+            <option value="Ilhabela">Ilhabela</option>
+            <option value="Jacareí">Jacareí</option>
+            <option value="Jambeiro">Jambeiro</option>
+            <option value="Lagoinha">Lagoinha</option>
+            <option value="Lavrinhas">Lavrinhas</option>
+            <option value="Lorena">Lorena</option>
+            <option value="Monteiro Lobato">Monteiro Lobato</option>
+            <option value="Natividade da Serra">Natividade da Serra</option>
+            <option value="Paraibuna">Paraibuna</option>
+            <option value="Pindamonhangaba">Pindamonhangaba</option>
+            <option value="Piquete">Piquete</option>
+            <option value="Potim">Potim</option>
+            <option value="Queluz">Queluz</option>
+            <option value="Redenção da Serra">Redenção da Serra</option>
+            <option value="Roseira">Roseira</option>
+            <option value="Santa Branca">Santa Branca</option>
+            <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
+            <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
+            <option value="São José do Barreiro">São José do Barreiro</option>
+            <option value="São José dos Campos">São José dos Campos</option>
+            <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
+            <option value="São Sebastião">São Sebastião</option>
+            <option value="Silveiras">Silveiras</option>
+            <option value="Taubaté">Taubaté</option>
+            <option value="Tremembé">Tremembé</option>
+            <option value="Ubatuba">Ubatuba</option>
+          </select>
+        </div>
+
+        <!-- Informações Complementares e Ações Afirmativas (Filtros Avançados) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Identidade de Gênero</label>
+            <select id="edit-genero" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="">Prefiro não declarar</option>
+              <option value="Mulher">Mulher</option>
+              <option value="Homem">Homem</option>
+              <option value="Não-binário">Não-binário</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Etnia / Raça</label>
+            <select id="edit-etnia" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="">Prefiro não declarar</option>
+              <option value="Branca">Branca</option>
+              <option value="Preta">Preta</option>
+              <option value="Parda">Parda</option>
+              <option value="Indígena">Indígena</option>
+              <option value="Amarela">Amarela</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Acessibilidade / PcD</label>
+            <select id="edit-pcd" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="Não">Não sou PcD</option>
+              <option value="Sim">Pessoa com Deficiência (PcD)</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Tipo de Atuação</label>
+            <select id="edit-tipo-atuacao" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
+              <option value="Individual">Artista Individual / Autônomo</option>
+              <option value="Coletivo">Coletivo / Grupo / Cia Cultural</option>
+            </select>
+          </div>
         </div>
 
         <!-- Opção Projeto Mulheres na Música -->
@@ -260,6 +349,10 @@
         document.getElementById('btn-delete').classList.add('hidden');
         document.getElementById('btn-save').innerText = 'Criar Agente';
         document.getElementById('edit-projeto-mulheres').checked = false;
+        if (document.getElementById('edit-genero')) document.getElementById('edit-genero').value = '';
+        if (document.getElementById('edit-etnia')) document.getElementById('edit-etnia').value = '';
+        if (document.getElementById('edit-pcd')) document.getElementById('edit-pcd').value = 'Não';
+        if (document.getElementById('edit-tipo-atuacao')) document.getElementById('edit-tipo-atuacao').value = 'Individual';
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('edit-form-container').classList.remove('hidden');
         return;
@@ -267,7 +360,7 @@
 
       // Aguarda supabase se necessário
       let tries = 0;
-      while (!window.supabaseClient && tries < 10) {
+      while (!window.supabaseClient && tries < 25) {
         await new Promise(r => setTimeout(r, 100));
         tries++;
       }
@@ -304,7 +397,11 @@
             endereco: ex.localizacao || '',
             foto: ex.foto || null,
             galeria: ex.fotos_galeria || [],
-            videos: ex.videos_links || []
+            videos: ex.videos_links || [],
+            genero: ex.genero || '',
+            etnia: ex.etnia || '',
+            pcd: ex.pcd || 'Não',
+            tipo_atuacao: ex.tipo_atuacao || 'Individual'
           };
         }
       } catch(e) {
@@ -344,7 +441,18 @@
 
       document.getElementById('edit-nome').value = agente.nome || '';
       document.getElementById('edit-area').value = agente.area || '';
-      document.getElementById('edit-projeto-mulheres').checked = Boolean(agente.projeto_mulheres);
+      document.getElementById('edit-municipio').value = agente.municipio || 'Jacareí';
+      if (document.getElementById('edit-genero')) document.getElementById('edit-genero').value = agente.genero || '';
+      if (document.getElementById('edit-etnia')) document.getElementById('edit-etnia').value = agente.etnia || '';
+      if (document.getElementById('edit-pcd')) {
+        const isSim = (agente.pcd === 'Sim' || agente.pcd === true || String(agente.pcd).toLowerCase() === 'sim');
+        document.getElementById('edit-pcd').value = isSim ? 'Sim' : 'Não';
+      }
+      if (document.getElementById('edit-tipo-atuacao')) {
+        const isColetivo = (agente.tipo_atuacao && String(agente.tipo_atuacao).toLowerCase().includes('coletivo'));
+        document.getElementById('edit-tipo-atuacao').value = isColetivo ? 'Coletivo' : 'Individual';
+      }
+      document.getElementById('edit-projeto-mulheres').checked = Boolean(agente.projeto_mulheres || agente.mulheres_na_musica);
       document.getElementById('edit-bio').value = agente.bio || '';
       document.getElementById('edit-contato').value = agente.contato || '';
       document.getElementById('edit-endereco').value = agente.endereco || '';
@@ -384,21 +492,27 @@
         reader.onload = (event) => {
           const img = new Image();
           img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-            if (width > maxWidth) {
-              height = Math.round((height * maxWidth) / width);
-              width = maxWidth;
+            try {
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              resolve(canvas.toDataURL('image/webp', 0.8));
+            } catch (errCanvas) {
+              resolve(event.target.result);
             }
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL('image/webp', 0.8));
           };
+          img.onerror = () => resolve(event.target.result);
           img.src = event.target.result;
         };
+        reader.onerror = () => resolve(null);
         reader.readAsDataURL(file);
       });
     }
@@ -465,7 +579,8 @@
       } else if (enderecoDigitado && enderecoDigitado !== window.originalEndereco) {
         btn.innerText = 'Buscando Coordenadas...';
         try {
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoDigitado)}`);
+          const muniGeo = document.getElementById('edit-municipio').value || 'Jacareí';
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoDigitado + ', ' + muniGeo + ', SP, Brasil')}`);
           const data = await res.json();
           if (data && data.length > 0) {
             newLat = parseFloat(data[0].lat);
@@ -481,6 +596,11 @@
       const updates = {
         nome: document.getElementById('edit-nome').value,
         area: document.getElementById('edit-area').value,
+        municipio: document.getElementById('edit-municipio').value || 'Jacareí',
+        genero: document.getElementById('edit-genero') ? document.getElementById('edit-genero').value : '',
+        etnia: document.getElementById('edit-etnia') ? document.getElementById('edit-etnia').value : '',
+        pcd: document.getElementById('edit-pcd') ? document.getElementById('edit-pcd').value : 'Não',
+        tipo_atuacao: document.getElementById('edit-tipo-atuacao') ? document.getElementById('edit-tipo-atuacao').value : 'Individual',
         projeto_mulheres: document.getElementById('edit-projeto-mulheres').checked,
         bio: document.getElementById('edit-bio').value,
         contato: document.getElementById('edit-contato').value,
@@ -546,7 +666,11 @@
       }
     };
 
-    window.addEventListener('DOMContentLoaded', checkAuthAndLoad);
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', checkAuthAndLoad);
+    } else {
+      checkAuthAndLoad();
+    }
   </script>
 
   
@@ -606,9 +730,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
