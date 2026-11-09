@@ -1151,6 +1151,11 @@
 
       if (tabId === 'cepin') {
         loadCepinAdminData();
+      } else if (tabId === 'agentes') {
+        const el = document.getElementById('admin-all-agentes-list');
+        if (el && (!el.children.length || el.innerText.includes('Carregando'))) {
+          loadAdminData();
+        }
       }
     };
 
@@ -1211,54 +1216,78 @@
         `).join('');
       }
       
-      // Load Agentes
-      const { data: agentes } = await supabaseClient.from('agentes').select('id, nome, foto, destaque, user_id').order('id', {ascending: false});
-      const destaquesList = document.getElementById('admin-destaques-list');
-      const allAgentesList = document.getElementById('admin-all-agentes-list');
-      
       window._adminAllUsers = users || [];
       const userOptions = `<option value="">Nenhum usuário vinculado</option>` + (users ? users.map(u => {
         const label = (u.dados_agente && u.dados_agente.nome) ? `${u.dados_agente.nome} (${u.email})` : u.email;
         return `<option value="${u.id}">${label}</option>`;
       }).join('') : '');
 
-      if (agentes) {
-        destaquesList.innerHTML = agentes.map(ag => {
-          let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
-          return `
-          <div class="flex flex-col p-3 bg-card border ${ag.destaque ? 'border-primary' : 'border-border'} rounded-lg shadow-sm transition-all" id="card-ag-${ag.id}">
-            <div class="flex gap-3 mb-2 items-center">
-              <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
-              <span class="text-sm font-semibold flex-1 truncate">${ag.nome}</span>
-            </div>
-            <label class="flex items-center gap-2 text-xs font-medium cursor-pointer">
-              <input type="checkbox" ${ag.destaque ? 'checked' : ''} onchange="toggleDestaque(${ag.id}, this, 'card-ag-${ag.id}')">
-              Destaque na Home
-            </label>
-          </div>
-        `}).join('');
+      // Load Agentes
+      try {
+        const { data: agentes, error: agError } = await supabaseClient.from('agentes').select('id, nome, foto, destaque, user_id').order('id', {ascending: false});
+        const destaquesList = document.getElementById('admin-destaques-list');
+        const allAgentesList = document.getElementById('admin-all-agentes-list');
 
-        allAgentesList.innerHTML = agentes.map(ag => {
-          let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
-          return `
-          <div class="flex flex-col sm:flex-row sm:justify-between p-3 bg-card border border-border rounded-lg shadow-sm gap-4 items-start sm:items-center">
-            <div class="flex gap-3 items-center flex-1 w-full">
-              <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
-              <div class="flex-1">
-                <span class="text-sm font-semibold block">${ag.nome}</span>
-                <select onchange="linkAgentToUser(${ag.id}, this.value)" class="mt-1 w-full text-xs p-1 rounded border border-input bg-background">
-                  ${userOptions.replace(`value="${ag.user_id}"`, `value="${ag.user_id}" selected`)}
-                </select>
+        const buildUserOptions = (currentUserId) => {
+          let opts = '<option value="">Nenhum usuário vinculado</option>';
+          if (users && users.length > 0) {
+            users.forEach(u => {
+              const label = (u.dados_agente && u.dados_agente.nome) ? `${u.dados_agente.nome} (${u.email})` : u.email;
+              const isSelected = (currentUserId !== null && currentUserId !== undefined && String(u.id) === String(currentUserId)) ? 'selected' : '';
+              opts += `<option value="${u.id}" ${isSelected}>${label}</option>`;
+            });
+          }
+          return opts;
+        };
+
+        if (agentes && agentes.length > 0) {
+          if (destaquesList) {
+            destaquesList.innerHTML = agentes.map(ag => {
+              let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+              return `
+              <div class="flex flex-col p-3 bg-card border ${ag.destaque ? 'border-primary' : 'border-border'} rounded-lg shadow-sm transition-all" id="card-ag-${ag.id}">
+                <div class="flex gap-3 mb-2 items-center">
+                  <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
+                  <span class="text-sm font-semibold flex-1 truncate">${ag.nome || 'Sem Nome'}</span>
+                </div>
+                <label class="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                  <input type="checkbox" ${ag.destaque ? 'checked' : ''} onchange="toggleDestaque(${ag.id}, this, 'card-ag-${ag.id}')">
+                  Destaque na Home
+                </label>
               </div>
-            </div>
-            <div class="w-full sm:w-auto flex gap-2">
-              <button onclick="editAgentAdmin('${slugify(ag.nome)}')" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
-              <button onclick="deleteAgentAdmin(${ag.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
-            </div>
-          </div>
-        `}).join('');
-      } else {
-        allAgentesList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum agente encontrado.</p>';
+            `}).join('');
+          }
+
+          if (allAgentesList) {
+            allAgentesList.innerHTML = agentes.map(ag => {
+              let fotoUrl = ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+              return `
+              <div class="flex flex-col sm:flex-row sm:justify-between p-3 bg-card border border-border rounded-lg shadow-sm gap-4 items-start sm:items-center">
+                <div class="flex gap-3 items-center flex-1 w-full">
+                  <img src="${fotoUrl}" class="w-10 h-10 object-cover rounded-md" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';">
+                  <div class="flex-1 min-w-0">
+                    <span class="text-sm font-semibold block truncate">${ag.nome || 'Sem Nome'}</span>
+                    <select onchange="linkAgentToUser(${ag.id}, this.value)" class="mt-1 w-full text-xs p-1 rounded border border-input bg-background">
+                      ${buildUserOptions(ag.user_id)}
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full sm:w-auto flex gap-2 shrink-0">
+                  <button onclick="editAgentAdmin('${slugify(ag.nome)}', ${ag.id})" class="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded hover:bg-primary-glow transition-colors">Editar</button>
+                  <button onclick="deleteAgentAdmin(${ag.id})" class="w-full sm:w-auto px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded hover:bg-red-600 transition-colors">Excluir</button>
+                </div>
+              </div>
+            `}).join('');
+          }
+        } else {
+          if (allAgentesList) allAgentesList.innerHTML = '<p class="text-sm text-muted-foreground italic">Nenhum agente encontrado.</p>';
+        }
+      } catch (errAg) {
+        console.error("Erro ao carregar agentes no admin:", errAg);
+        const allAgentesList = document.getElementById('admin-all-agentes-list');
+        if (allAgentesList) {
+          allAgentesList.innerHTML = '<p class="text-sm text-red-500 italic">Erro ao carregar agentes. <button onclick="loadAdminData()" class="underline font-semibold ml-2">Tentar novamente</button></p>';
+        }
       }
 
       // Load Espaços
@@ -1377,8 +1406,9 @@
       abrirModalCadastro('evento');
     };
 
-    window.editAgentAdmin = (slug) => {
-      window.location.href = `../agentes/editar.html?slug=${slug}`;
+    window.editAgentAdmin = (slug, id) => {
+      const param = id ? `id=${id}&slug=${encodeURIComponent(slug || '')}` : `slug=${encodeURIComponent(slug || '')}`;
+      window.location.href = `../agentes/editar.html?${param}`;
     };
 
     window.editSpaceAdmin = (slug) => {
@@ -2023,56 +2053,64 @@
         }
 
         // 2. Meus Agentes
-        const { data: agentes } = await supabaseClient.from('agentes').select('*');
-        const myAgentes = (agentes || []).filter(a => {
-          if (a.user_id) return String(a.user_id) === String(sessionUser.id);
-          return (a.email_sujestao && sessionUser.email && a.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase());
-        });
+        try {
+          const { data: agentes } = await supabaseClient.from('agentes').select('*');
+          const myAgentes = (agentes || []).filter(a => {
+            if (a.user_id) return String(a.user_id) === String(sessionUser.id);
+            return (a.email_sujestao && sessionUser.email && a.email_sujestao.trim().toLowerCase() === sessionUser.email.trim().toLowerCase());
+          });
 
-        const countAgentesEl = document.getElementById('user-count-agentes');
-        if (countAgentesEl) countAgentesEl.innerText = myAgentes.length;
+          const countAgentesEl = document.getElementById('user-count-agentes');
+          if (countAgentesEl) countAgentesEl.innerText = myAgentes.length;
 
-        const agentesList = document.getElementById('user-my-agentes-list');
-        if (agentesList) {
-          if (myAgentes.length === 0) {
-            agentesList.innerHTML = `
-              <div class="col-span-full p-8 text-center bg-background rounded-xl border border-dashed border-border flex flex-col items-center justify-center">
-                <div class="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground mb-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          const agentesList = document.getElementById('user-my-agentes-list');
+          if (agentesList) {
+            if (myAgentes.length === 0) {
+              agentesList.innerHTML = `
+                <div class="col-span-full p-8 text-center bg-background rounded-xl border border-dashed border-border flex flex-col items-center justify-center">
+                  <div class="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <p class="text-sm font-semibold text-foreground">Nenhum agente cultural cadastrado por você ainda</p>
+                  <p class="text-xs text-muted-foreground mt-1 mb-4">Crie seu perfil de artista, produtor, instrutor ou coletivo cultural.</p>
+                  <button type="button" onclick="abrirModalCadastro('agente')" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg hover:bg-primary-glow transition-all">
+                    + Cadastrar Perfil de Agente
+                  </button>
                 </div>
-                <p class="text-sm font-semibold text-foreground">Nenhum agente cultural cadastrado por você ainda</p>
-                <p class="text-xs text-muted-foreground mt-1 mb-4">Crie seu perfil de artista, produtor, instrutor ou coletivo cultural.</p>
-                <button type="button" onclick="abrirModalCadastro('agente')" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg hover:bg-primary-glow transition-all">
-                  + Cadastrar Perfil de Agente
-                </button>
-              </div>
-            `;
-          } else {
-            agentesList.innerHTML = myAgentes.map(ag => `
-              <div class="p-4 rounded-xl border border-border bg-background hover:border-primary/40 transition-all flex flex-col justify-between gap-3 shadow-xs">
-                <div class="flex items-start gap-3">
-                  <img src="${ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600'}" class="w-16 h-16 rounded-lg object-cover border border-border shrink-0" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600';">
-                  <div class="min-w-0 flex-1">
-                    <div class="flex items-center gap-1.5 flex-wrap mb-1">
-                      <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">${ag.area || ag.area_de_atuacao || ag.categoria || 'Agente'}</span>
-                      ${(ag.projeto_mulheres || ag.mulheres_na_musica) ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500/10 text-pink-600 border border-pink-500/20">Mulheres na Música</span>' : ''}
+              `;
+            } else {
+              agentesList.innerHTML = myAgentes.map(ag => `
+                <div class="p-4 rounded-xl border border-border bg-background hover:border-primary/40 transition-all flex flex-col justify-between gap-3 shadow-xs">
+                  <div class="flex items-start gap-3">
+                    <img src="${ag.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600'}" class="w-16 h-16 rounded-lg object-cover border border-border shrink-0" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600';">
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                        <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">${ag.area || ag.area_de_atuacao || ag.categoria || 'Agente'}</span>
+                        ${(ag.projeto_mulheres || ag.mulheres_na_musica) ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500/10 text-pink-600 border border-pink-500/20">Mulheres na Música</span>' : ''}
+                      </div>
+                      <h5 class="text-sm font-bold text-foreground truncate" title="${ag.nome || ''}">${ag.nome || 'Sem nome'}</h5>
+                      <p class="text-xs text-muted-foreground line-clamp-2 mt-0.5">${ag.bio || ag.biografia || 'Sem biografia informada.'}</p>
                     </div>
-                    <h5 class="text-sm font-bold text-foreground truncate" title="${ag.nome || ''}">${ag.nome || 'Sem nome'}</h5>
-                    <p class="text-xs text-muted-foreground line-clamp-2 mt-0.5">${ag.bio || ag.biografia || 'Sem biografia informada.'}</p>
+                  </div>
+                  <div class="pt-3 border-t border-border/60 flex items-center justify-end gap-2">
+                    <button type="button" onclick="abrirModalEdicao('agente', '${ag.id}')" class="px-3 py-1.5 rounded-md bg-secondary text-secondary-foreground text-xs font-semibold hover:bg-secondary/80 transition-colors flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                      <span>Editar</span>
+                    </button>
+                    <button type="button" onclick="excluirItemUsuario('agente', '${ag.id}', loadUserContent)" class="px-3 py-1.5 rounded-md bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground text-xs font-semibold transition-colors flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                      <span>Excluir</span>
+                    </button>
                   </div>
                 </div>
-                <div class="pt-3 border-t border-border/60 flex items-center justify-end gap-2">
-                  <button type="button" onclick="abrirModalEdicao('agente', '${ag.id}')" class="px-3 py-1.5 rounded-md bg-secondary text-secondary-foreground text-xs font-semibold hover:bg-secondary/80 transition-colors flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                    <span>Editar</span>
-                  </button>
-                  <button type="button" onclick="excluirItemUsuario('agente', '${ag.id}', loadUserContent)" class="px-3 py-1.5 rounded-md bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground text-xs font-semibold transition-colors flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                    <span>Excluir</span>
-                  </button>
-                </div>
-              </div>
-            `).join('');
+              `).join('');
+            }
+          }
+        } catch (errMyAg) {
+          console.error("Erro ao buscar meus agentes:", errMyAg);
+          const agentesList = document.getElementById('user-my-agentes-list');
+          if (agentesList) {
+            agentesList.innerHTML = '<p class="text-xs text-red-500 italic col-span-2">Erro ao carregar agentes.</p>';
           }
         }
 
