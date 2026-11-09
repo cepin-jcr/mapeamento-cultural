@@ -1797,6 +1797,17 @@
                 cb.checked = selectedAreas.includes(val) || selectedAreas.some(s => s === val || s.replace(/[^a-z]/g,'') === val.replace(/[^a-z]/g,''));
               });
             document.getElementById('cad-agente-mulheres').checked = !!(data.projeto_mulheres || data.mulheres_na_musica);
+            if (document.getElementById('cad-agente-municipio')) document.getElementById('cad-agente-municipio').value = data.municipio || 'Jacareí';
+            if (document.getElementById('cad-agente-genero')) document.getElementById('cad-agente-genero').value = data.genero || '';
+            if (document.getElementById('cad-agente-etnia')) document.getElementById('cad-agente-etnia').value = data.etnia || '';
+            if (document.getElementById('cad-agente-pcd')) {
+              const isSim = (data.pcd === 'Sim' || data.pcd === true || String(data.pcd).toLowerCase() === 'sim');
+              document.getElementById('cad-agente-pcd').value = isSim ? 'Sim' : 'Não';
+            }
+            if (document.getElementById('cad-agente-tipo-atuacao')) {
+              const isColetivo = (data.tipo_atuacao && String(data.tipo_atuacao).toLowerCase().includes('coletivo'));
+              document.getElementById('cad-agente-tipo-atuacao').value = isColetivo ? 'Coletivo' : 'Individual';
+            }
               
               // Force check LGPD and Idade since they were required to submit the form
               const lgpd = document.getElementById('cad-agente-lgpd');
@@ -1826,7 +1837,7 @@
             const btn = document.getElementById('btn-submit-agente');
             if (btn) btn.style.display = 'none';
             
-            document.querySelectorAll('#form-cadastro-agente input, #form-cadastro-agente textarea').forEach(el => { el.style.pointerEvents = 'none'; el.classList.add('opacity-80'); el.readOnly = true; });
+            document.querySelectorAll('#form-cadastro-agente input, #form-cadastro-agente textarea, #form-cadastro-agente select').forEach(el => { el.style.pointerEvents = 'none'; el.classList.add('opacity-80'); el.readOnly = true; el.disabled = true; });
           }, 100);
         } else {
           alert("Erro ao carregar o formulário.");
