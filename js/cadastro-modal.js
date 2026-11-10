@@ -137,13 +137,58 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município (Vale do Paraíba) *</label>
+                <select id="cad-evento-municipio" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <option value="Aparecida">Aparecida</option>
+                  <option value="Arapeí">Arapeí</option>
+                  <option value="Areias">Areias</option>
+                  <option value="Bananal">Bananal</option>
+                  <option value="Caçapava">Caçapava</option>
+                  <option value="Cachoeira Paulista">Cachoeira Paulista</option>
+                  <option value="Campos do Jordão">Campos do Jordão</option>
+                  <option value="Canas">Canas</option>
+                  <option value="Caraguatatuba">Caraguatatuba</option>
+                  <option value="Cruzeiro">Cruzeiro</option>
+                  <option value="Cunha">Cunha</option>
+                  <option value="Guaratinguetá">Guaratinguetá</option>
+                  <option value="Igaratá">Igaratá</option>
+                  <option value="Ilhabela">Ilhabela</option>
+                  <option value="Jacareí" selected>Jacareí</option>
+                  <option value="Jambeiro">Jambeiro</option>
+                  <option value="Lagoinha">Lagoinha</option>
+                  <option value="Lavrinhas">Lavrinhas</option>
+                  <option value="Lorena">Lorena</option>
+                  <option value="Monteiro Lobato">Monteiro Lobato</option>
+                  <option value="Natividade da Serra">Natividade da Serra</option>
+                  <option value="Paraibuna">Paraibuna</option>
+                  <option value="Pindamonhangaba">Pindamonhangaba</option>
+                  <option value="Piquete">Piquete</option>
+                  <option value="Potim">Potim</option>
+                  <option value="Queluz">Queluz</option>
+                  <option value="Redenção da Serra">Redenção da Serra</option>
+                  <option value="Roseira">Roseira</option>
+                  <option value="Santa Branca">Santa Branca</option>
+                  <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
+                  <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
+                  <option value="São José do Barreiro">São José do Barreiro</option>
+                  <option value="São José dos Campos">São José dos Campos</option>
+                  <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
+                  <option value="São Sebastião">São Sebastião</option>
+                  <option value="Silveiras">Silveiras</option>
+                  <option value="Taubaté">Taubaté</option>
+                  <option value="Tremembé">Tremembé</option>
+                  <option value="Ubatuba">Ubatuba</option>
+                </select>
+              </div>
+              <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-foreground">Local do Evento *</label>
                 <input type="text" id="cad-evento-local" required placeholder="Ex: Sala Mário Lago - Pátio dos Trilhos" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
               </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Organizador / Realizador</label>
-                <input type="text" id="cad-evento-organizador" placeholder="Nome do organizador" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-              </div>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Organizador / Realizador</label>
+              <input type="text" id="cad-evento-organizador" placeholder="Nome do organizador" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
             <div class="space-y-1.5">
@@ -199,7 +244,7 @@
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes cênicas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes cênicas</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Teatro" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Teatro</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Dança" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Dança</span></label>
-                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ã“pera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ã“pera</span></label>
+                  <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Ópera" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Ópera</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Circo" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Circo</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes visuais" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes visuais</span></label>
                   <label class="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1 rounded transition-colors"><input type="checkbox" value="Artes plásticas" class="cad-agente-area-cb rounded text-primary focus:ring-primary h-4 w-4"> <span class="text-foreground">Artes plásticas</span></label>
@@ -290,6 +335,13 @@
               </select>
             </div>
 
+            <!-- Endereço Completo -->
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo (Rua, Número, Bairro) *</label>
+              <input type="text" id="cad-agente-endereco" required placeholder="Ex: Rua XV de Novembro, 143 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+              <p class="text-[11px] text-muted-foreground">O endereço é posicionado automaticamente no mapa cultural do Vale do Paraíba.</p>
+            </div>
+
             <!-- Informações Complementares e Ações Afirmativas (Filtros Avançados) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1.5">
@@ -375,7 +427,7 @@
             </div>
           </form>
 
-          <!-- ================= FORM ESPAÃ‡O ================= -->
+          <!-- ================= FORM ESPAÇO ================= -->
           <form id="form-cadastro-espaco" onsubmit="submeterCadastroEspaco(event)" class="space-y-4 hidden">
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome do Espaço *</label>
@@ -428,7 +480,52 @@
             </div>
 
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo em Jacareí *</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Município (Vale do Paraíba) *</label>
+              <select id="cad-espaco-municipio" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <option value="Aparecida">Aparecida</option>
+                <option value="Arapeí">Arapeí</option>
+                <option value="Areias">Areias</option>
+                <option value="Bananal">Bananal</option>
+                <option value="Caçapava">Caçapava</option>
+                <option value="Cachoeira Paulista">Cachoeira Paulista</option>
+                <option value="Campos do Jordão">Campos do Jordão</option>
+                <option value="Canas">Canas</option>
+                <option value="Caraguatatuba">Caraguatatuba</option>
+                <option value="Cruzeiro">Cruzeiro</option>
+                <option value="Cunha">Cunha</option>
+                <option value="Guaratinguetá">Guaratinguetá</option>
+                <option value="Igaratá">Igaratá</option>
+                <option value="Ilhabela">Ilhabela</option>
+                <option value="Jacareí" selected>Jacareí</option>
+                <option value="Jambeiro">Jambeiro</option>
+                <option value="Lagoinha">Lagoinha</option>
+                <option value="Lavrinhas">Lavrinhas</option>
+                <option value="Lorena">Lorena</option>
+                <option value="Monteiro Lobato">Monteiro Lobato</option>
+                <option value="Natividade da Serra">Natividade da Serra</option>
+                <option value="Paraibuna">Paraibuna</option>
+                <option value="Pindamonhangaba">Pindamonhangaba</option>
+                <option value="Piquete">Piquete</option>
+                <option value="Potim">Potim</option>
+                <option value="Queluz">Queluz</option>
+                <option value="Redenção da Serra">Redenção da Serra</option>
+                <option value="Roseira">Roseira</option>
+                <option value="Santa Branca">Santa Branca</option>
+                <option value="Santo Antônio do Pinhal">Santo Antônio do Pinhal</option>
+                <option value="São Bento do Sapucaí">São Bento do Sapucaí</option>
+                <option value="São José do Barreiro">São José do Barreiro</option>
+                <option value="São José dos Campos">São José dos Campos</option>
+                <option value="São Luís do Paraitinga">São Luís do Paraitinga</option>
+                <option value="São Sebastião">São Sebastião</option>
+                <option value="Silveiras">Silveiras</option>
+                <option value="Taubaté">Taubaté</option>
+                <option value="Tremembé">Tremembé</option>
+                <option value="Ubatuba">Ubatuba</option>
+              </select>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-foreground">Endereço Completo *</label>
               <input type="text" id="cad-espaco-endereco" required placeholder="Ex: Rua Barão de Jacareí, 123 - Centro" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
@@ -595,7 +692,7 @@
     }
   };
 
-  // Abre modal para EDIÃ‡ÃƒO de um item existente
+  // Abre modal para EDIÇÃO de um item existente
   window.abrirModalEdicao = async (tipo, id) => {
     const user = getLoggedUser();
     if (!user || !isUserApproved(user)) {
@@ -605,6 +702,7 @@
 
     createModalDOM();
     window._currentEditing = { tipo, id };
+    window._currentEditingFoto = null;
 
     const titles = {
       evento: { title: "Editar Evento", sub: "Atualize as informações do seu evento", table: 'eventos' },
@@ -640,10 +738,12 @@
         const { data, error } = await supabaseClient.from(cfg.table).select('*').eq('id', id).single();
         if (error) throw error;
         if (data) {
+          window._currentEditingFoto = data.foto || data.imagem || null;
           if (tipo === 'evento') {
             document.getElementById('cad-evento-nome').value = data.nome || data.titulo || '';
             document.getElementById('cad-evento-categoria').value = data.categoria || 'Música';
             document.getElementById('cad-evento-data-hora').value = data.data_hora || data.data || '';
+            if (document.getElementById('cad-evento-municipio')) document.getElementById('cad-evento-municipio').value = data.municipio || 'Jacareí';
             document.getElementById('cad-evento-local').value = data.local || '';
             if (document.getElementById('cad-evento-organizador')) document.getElementById('cad-evento-organizador').value = data.organizador || '';
             if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = !!data.anual;
@@ -674,6 +774,7 @@
             }
             document.getElementById('cad-agente-mulheres').checked = !!(data.projeto_mulheres || data.mulheres_na_musica);
             if (document.getElementById('cad-agente-municipio')) document.getElementById('cad-agente-municipio').value = data.municipio || 'Jacareí';
+            if (document.getElementById('cad-agente-endereco')) document.getElementById('cad-agente-endereco').value = data.endereco || '';
             if (document.getElementById('cad-agente-genero')) document.getElementById('cad-agente-genero').value = data.genero || '';
             if (document.getElementById('cad-agente-etnia')) document.getElementById('cad-agente-etnia').value = data.etnia || '';
             if (document.getElementById('cad-agente-pcd')) {
@@ -700,6 +801,7 @@
             document.getElementById('cad-espaco-nome').value = data.nome || '';
             document.getElementById('cad-espaco-tipo').value = data.tipo || 'Espaço Público';
             document.getElementById('cad-espaco-categoria').value = data.categoria || '';
+            if (document.getElementById('cad-espaco-municipio')) document.getElementById('cad-espaco-municipio').value = data.municipio || 'Jacareí';
             document.getElementById('cad-espaco-endereco').value = data.endereco || '';
             document.getElementById('cad-espaco-descricao').value = data.descricao || '';
             document.getElementById('cad-espaco-contato').value = data.contato || '';
@@ -805,6 +907,7 @@
       const data_hora = document.getElementById('cad-evento-data-hora').value.trim();
       const local = document.getElementById('cad-evento-local').value.trim();
       const organizador = document.getElementById('cad-evento-organizador').value.trim();
+      const municipio = document.getElementById('cad-evento-municipio') ? document.getElementById('cad-evento-municipio').value : 'Jacareí';
       const anual = document.getElementById('cad-evento-anual').checked;
       const temporada = document.getElementById('cad-evento-temporada').checked;
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
@@ -818,7 +921,7 @@
       let lng = -45.9658;
       if (local) {
         try {
-          const q = encodeURIComponent(local);
+          const q = encodeURIComponent(local + ', ' + municipio + ', SP, Brasil');
           const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
           if (res.ok) {
             const data = await res.json();
@@ -836,6 +939,7 @@
         nome,
         titulo: nome,
         categoria,
+        municipio,
         data_hora,
         data: data_hora,
         horario: data_hora,
@@ -860,6 +964,8 @@
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
+      } else if (isEdit && window._currentEditingFoto) {
+        payload.foto = window._currentEditingFoto;
       } else if (!isEdit) {
         payload.foto = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000';
       }
@@ -926,6 +1032,7 @@
       const pcd = document.getElementById('cad-agente-pcd') ? document.getElementById('cad-agente-pcd').value : 'Não';
       const tipo_atuacao = document.getElementById('cad-agente-tipo-atuacao') ? document.getElementById('cad-agente-tipo-atuacao').value : 'Individual';
       const bio = document.getElementById('cad-agente-bio').value.trim();
+      const endereco = document.getElementById('cad-agente-endereco') ? document.getElementById('cad-agente-endereco').value.trim() : '';
       const contato = document.getElementById('cad-agente-contato').value.trim();
       const instagram = document.getElementById('cad-agente-instagram').value.trim();
       const fotoInput = document.getElementById('cad-agente-foto');
@@ -938,10 +1045,52 @@
         if (email) contatoFinal = contatoFinal + ` | Email: ${email}`;
       }
 
+      let lat = null;
+      let lng = null;
+      if (endereco) {
+        try {
+          const q = encodeURIComponent(endereco + ', ' + municipio + ', SP, Brasil');
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
+          if (res.ok) {
+            const geoData = await res.json();
+            if (geoData && geoData.length > 0) {
+              lat = parseFloat(geoData[0].lat);
+              lng = parseFloat(geoData[0].lon);
+            }
+          }
+        } catch (geoErr) {
+          console.warn("Geocoding do agente falhou:", geoErr);
+        }
+      }
+
+      if (!lat || !lng) {
+        const coordsMap = {
+          'Aparecida': [-22.8489, -45.2319], 'Arapeí': [-22.6739, -44.4503], 'Areias': [-22.5806, -44.6978],
+          'Bananal': [-22.6819, -44.3236], 'Caçapava': [-23.1008, -45.7072], 'Cachoeira Paulista': [-22.6644, -44.9758],
+          'Campos do Jordão': [-22.7394, -45.5914], 'Canas': [-22.7042, -45.0561], 'Caraguatatuba': [-23.6226, -45.4128],
+          'Cruzeiro': [-22.5739, -44.9625], 'Cunha': [-23.0747, -44.9606], 'Guaratinguetá': [-22.8164, -45.1931],
+          'Igaratá': [-23.2056, -46.1578], 'Ilhabela': [-23.7781, -45.3581], 'Jacareí': [-23.3055, -45.9658],
+          'Jambeiro': [-23.2558, -45.6881], 'Lagoinha': [-23.0906, -45.1906], 'Lavrinhas': [-22.5694, -44.9011],
+          'Lorena': [-22.7339, -45.1219], 'Monteiro Lobato': [-22.9556, -45.8417], 'Natividade da Serra': [-23.3761, -45.4419],
+          'Paraibuna': [-23.3858, -45.6628], 'Pindamonhangaba': [-22.9258, -45.4614], 'Piquete': [-22.6133, -45.1764],
+          'Potim': [-22.8428, -45.2514], 'Queluz': [-22.5292, -44.7739], 'Redenção da Serra': [-23.2958, -45.5347],
+          'Roseira': [-22.8989, -45.3047], 'Santa Branca': [-23.3969, -45.8842], 'Santo Antônio do Pinhal': [-22.8258, -45.6669],
+          'São Bento do Sapucaí': [-22.6889, -45.7339], 'São José do Barreiro': [-22.6458, -44.5778], 'São José dos Campos': [-23.2237, -45.9009],
+          'São Luís do Paraitinga': [-23.2222, -45.3108], 'São Sebastião': [-23.7600, -45.4097], 'Silveiras': [-22.6681, -44.8519],
+          'Taubaté': [-23.0264, -45.5553], 'Tremembé': [-22.9589, -45.5494], 'Ubatuba': [-23.4339, -45.0839]
+        };
+        const baseCoord = coordsMap[municipio] || [-23.3055, -45.9658];
+        let hash = 0;
+        for (let i = 0; i < nome.length; i++) { hash = (hash * 31 + nome.charCodeAt(i)) % 1000; }
+        lat = baseCoord[0] + ((hash % 100) - 50) * 0.0004;
+        lng = baseCoord[1] + (((hash * 3) % 100) - 50) * 0.0004;
+      }
+
       const payload = {
         nome,
         area,
         municipio,
+        endereco,
         genero,
         etnia,
         pcd,
@@ -950,8 +1099,8 @@
         contato: contatoFinal,
         projeto_mulheres: !!mulheres,
         mulheres_na_musica: !!mulheres,
-        lat: -23.3055,
-        lng: -45.9658
+        lat: lat,
+        lng: lng
       };
       
       if (isSignup) {
@@ -993,10 +1142,14 @@
           payload.foto = await compressImage(fotoInput.files[0]);
         } catch (imgErr) {
           console.warn("Falha ao comprimir imagem, usando imagem padrão:", imgErr);
-          if (!isEdit) {
+          if (isEdit && window._currentEditingFoto) {
+            payload.foto = window._currentEditingFoto;
+          } else if (!isEdit) {
             payload.foto = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
           }
         }
+      } else if (isEdit && window._currentEditingFoto) {
+        payload.foto = window._currentEditingFoto;
       } else if (!isEdit) {
         payload.foto = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
       }
@@ -1055,6 +1208,7 @@
       const tipo = document.getElementById('cad-espaco-tipo').value;
       const categoria = document.getElementById('cad-espaco-categoria').value.trim();
       const endereco = document.getElementById('cad-espaco-endereco').value.trim();
+      const municipio = document.getElementById('cad-espaco-municipio') ? document.getElementById('cad-espaco-municipio').value : 'Jacareí';
       const descricao = document.getElementById('cad-espaco-descricao').value.trim();
       const contato = document.getElementById('cad-espaco-contato').value.trim();
       const fotoInput = document.getElementById('cad-espaco-foto');
@@ -1065,13 +1219,24 @@
       let lng = -45.9658;
       if (endereco) {
         try {
-          const q = encodeURIComponent(endereco);
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
+          const enderecoBusca = municipio ? `${endereco}, ${municipio}, SP, Brasil` : `${endereco}, Jacareí, SP, Brasil`;
+          const q = encodeURIComponent(enderecoBusca);
+          let res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`);
           if (res.ok) {
-            const data = await res.json();
+            let data = await res.json();
             if (data && data.length > 0) {
               lat = parseFloat(data[0].lat);
               lng = parseFloat(data[0].lon);
+            } else if (municipio) {
+              const qMun = encodeURIComponent(`${municipio}, SP, Brasil`);
+              const resMun = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${qMun}&limit=1`);
+              if (resMun.ok) {
+                const dataMun = await resMun.json();
+                if (dataMun && dataMun.length > 0) {
+                  lat = parseFloat(dataMun[0].lat);
+                  lng = parseFloat(dataMun[0].lon);
+                }
+              }
             }
           }
         } catch (e) {
@@ -1084,33 +1249,39 @@
         tipo,
         categoria,
         endereco,
+        municipio,
         descricao,
         contato: contatoFinal,
         lat: lat,
         lng: lng
       };
 
-      // user_id was removed due to UUID type mismatch in DB, linkage is handled via contatoFinal email.
       if (user) {
-        payload.usuario_id = user.id;
+        const uid = parseInt(user.id, 10);
+        if (!isNaN(uid)) {
+          payload.usuario_id = uid;
+        }
         payload.email_criador = user.email;
         payload.nome_criador = (user.dados_agente && user.dados_agente.nome) || user.nome || user.email;
       }
 
       if (fotoInput.files && fotoInput.files[0]) {
         payload.foto = await compressImage(fotoInput.files[0]);
+      } else if (isEdit && window._currentEditingFoto) {
+        payload.foto = window._currentEditingFoto;
       } else if (!isEdit) {
         payload.foto = 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=1000';
       }
 
-      if (window.supabaseClient) {
-        if (isEdit) {
-          const { error } = await supabaseClient.from('espacos').update(payload).eq('id', window._currentEditing.id);
-          if (error) throw error;
-        } else {
-          const { error } = await supabaseClient.from('espacos').insert([payload]);
-          if (error) throw error;
-        }
+      const client = window.supabaseClient || window.supabase;
+      if (!client) throw new Error("Cliente Supabase não inicializado.");
+
+      if (isEdit) {
+        const { error } = await client.from('espacos').update(payload).eq('id', window._currentEditing.id);
+        if (error) throw error;
+      } else {
+        const { error } = await client.from('espacos').insert([payload]);
+        if (error) throw error;
       }
 
       showModalMsg(isEdit ? "Espaço atualizado com sucesso!" : "Espaço cultural cadastrado com sucesso!", false);
