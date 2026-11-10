@@ -3,6 +3,98 @@ const supabaseAnonKey = "sb_publishable_8d-74DfMFs3l2OHSMLaGzA_bvXHEd03";
 
 window.supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
+// =====================================================================
+// PROTEÇÃO DE EGRESS: nunca gravar imagens Base64 (data:image...) no banco.
+// Qualquer insert/update/upsert que contenha "data:image..." tem as imagens
+// enviadas para o Supabase Storage (bucket "fotos") e substituídas pela URL
+// pública ANTES de chegar ao banco. Imagens em Base64 dentro das tabelas
+// eram baixadas inteiras em cada consulta e consumiam GBs de egress.
+// =====================================================================
+(function protegerContraBase64() {
+    const client = window.supabaseClient;
+    const originalFrom = client.from.bind(client);
+
+    function hasBase64(value) {
+        if (typeof value === 'string') return value.startsWith('data:image');
+        if (Array.isArray(value)) return value.some(hasBase64);
+        if (value && typeof value === 'object') return Object.values(value).some(hasBase64);
+        return false;
+    }
+
+    function dataUrlToBlob(dataUrl) {
+        const [header, b64] = dataUrl.split(';base64,');
+        const contentType = header.split(':')[1] || 'image/jpeg';
+        const bin = atob(b64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return new Blob([bytes], { type: contentType });
+    }
+
+    async function uploadDataUrl(dataUrl, table) {
+        const blob = dataUrlToBlob(dataUrl);
+        let ext = (blob.type.split('/')[1] || 'jpeg').toLowerCase();
+        if (ext === 'jpg') ext = 'jpeg';
+        const path = `${table}/auto/${Date.now()}_${Math.random().toString(36).slice(2, 9)}.${ext}`;
+        const { error } = await client.storage.from('fotos').upload(path, blob, { contentType: blob.type, upsert: true });
+        if (error) throw new Error('Falha ao enviar imagem para o Storage: ' + error.message);
+        return client.storage.from('fotos').getPublicUrl(path).data.publicUrl;
+    }
+
+    async function replaceBase64(value, table) {
+        if (typeof value === 'string') return value.startsWith('data:image') ? uploadDataUrl(value, table) : value;
+        if (Array.isArray(value)) {
+            const out = [];
+            for (const item of value) out.push(await replaceBase64(item, table));
+            return out;
+        }
+        if (value && typeof value === 'object') {
+            const out = {};
+            for (const [k, v] of Object.entries(value)) out[k] = await replaceBase64(v, table);
+            return out;
+        }
+        return value;
+    }
+
+    // Grava a cadeia de chamadas (.select().single().eq()...) e só executa
+    // depois que as imagens foram enviadas ao Storage.
+    function deferredBuilder(table, method, payload, extraArgs) {
+        const calls = [];
+        let promise = null;
+        const run = () => {
+            if (!promise) {
+                promise = (async () => {
+                    const clean = await replaceBase64(payload, table);
+                    let builder = originalFrom(table)[method](clean, ...extraArgs);
+                    for (const [name, args] of calls) builder = builder[name](...args);
+                    return await builder;
+                })().catch(err => ({ data: null, error: { message: err.message || String(err) } }));
+            }
+            return promise;
+        };
+        const proxy = new Proxy({}, {
+            get(_t, prop) {
+                if (prop === 'then') return (res, rej) => run().then(res, rej);
+                if (prop === 'catch') return (rej) => run().catch(rej);
+                if (prop === 'finally') return (fn) => run().finally(fn);
+                return (...args) => { calls.push([prop, args]); return proxy; };
+            }
+        });
+        return proxy;
+    }
+
+    client.from = function (table) {
+        const qb = originalFrom(table);
+        ['insert', 'update', 'upsert'].forEach(method => {
+            const original = qb[method].bind(qb);
+            qb[method] = (payload, ...extraArgs) => {
+                if (!hasBase64(payload)) return original(payload, ...extraArgs);
+                return deferredBuilder(table, method, payload, extraArgs);
+            };
+        });
+        return qb;
+    };
+})();
+
 // Fix local file:// navigation for clean URLs
 if (window.location.protocol === 'file:') {
     document.addEventListener('click', function(e) {
@@ -69,7 +161,10 @@ window.fetch = async function(resource, config) {
                 // Default table handler (agentes, espacos, etc)
                 if (method === 'GET') {
                     try {
-                        const { data, error } = await supabaseClient.from(endpoint).select('*');
+                        const selectQuery = endpoint === 'agentes' 
+                            ? 'id, nome, area, foto, destaque, projeto_mulheres, mulheres_na_musica, endereco, lat, lng, municipio, bio, contato, redes_sociais'
+                            : '*';
+                        const { data, error } = await supabaseClient.from(endpoint).select(selectQuery);
                         if (error) throw error;
                         return new Response(JSON.stringify(data || []), { status: 200, headers: { 'Content-Type': 'application/json' } });
                     } catch (supabaseError) {
