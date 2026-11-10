@@ -346,7 +346,8 @@
     let galleryInterval = null;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const rawSlug = urlParams.get('slug') || urlParams.get('id');
+    const paramId = urlParams.get('id');
+    const rawSlug = urlParams.get('slug') || paramId;
     const slug = rawSlug ? decodeURIComponent(rawSlug) : '';
 
     function slugify(text) {
@@ -355,7 +356,7 @@
     }
 
     async function loadAgente() {
-      if (!slug || !window.supabaseClient) {
+      if ((!slug && !paramId) || !window.supabaseClient) {
         document.getElementById('agente-not-found').classList.remove('hidden');
         return;
       }
@@ -369,13 +370,14 @@
           supabaseClient.from('agentes').select('*')
         ]);
         
-        extraData = extraRes[slug] || extraRes[slugify(slug)] || {};
+        extraData = extraRes[slug] || extraRes[slugify(slug)] || (paramId ? extraRes['agente-' + paramId] : {}) || {};
         
         if (supaRes.data) {
           supaData = supaRes.data.find(a => 
+            (paramId && String(a.id) === String(paramId)) ||
             String(a.id) === String(slug) || 
             slugify(a.nome) === slugify(slug) || 
-            a.nome.toLowerCase() === slug.toLowerCase()
+            (a.nome && a.nome.toLowerCase() === slug.toLowerCase())
           );
         }
       } catch(e) {
@@ -567,8 +569,18 @@
         html += createSection('Documentos', docHtml, docIcon);
       }
       
-      let mapLat = agente.lat || (extra.coordenadas ? extra.coordenadas[0] : -23.3055);
-      let mapLng = agente.lng || (extra.coordenadas ? extra.coordenadas[1] : -45.9658);
+      const CIDADES_COORDS_FALLBACK = {
+        'aparecida': [-22.8467, -45.2306], 'cacapava': [-23.1008, -45.7067], 'campos do jordao': [-22.7394, -45.5914],
+        'caraguatatuba': [-23.6226, -45.4124], 'cruzeiro': [-22.5744, -44.9639], 'cunha': [-23.0747, -44.9592],
+        'guaratingueta': [-22.8164, -45.1931], 'ilhabela': [-23.7781, -45.3581], 'jacarei': [-23.3055, -45.9658],
+        'lorena': [-22.7331, -45.1242], 'pindamonhangaba': [-22.9247, -45.4614], 'sao jose dos campos': [-23.1896, -45.8841],
+        'sao sebastiao': [-23.7600, -45.4097], 'taubate': [-23.0264, -45.5553], 'ubatuba': [-23.4339, -45.0711]
+      };
+      const agentMuniKey = ((agente && agente.municipio) || (extra && extra.municipio) || 'jacarei').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      const defaultCoords = CIDADES_COORDS_FALLBACK[agentMuniKey] || [-23.3055, -45.9658];
+
+      let mapLat = agente.lat || (extra.coordenadas ? extra.coordenadas[0] : defaultCoords[0]);
+      let mapLng = agente.lng || (extra.coordenadas ? extra.coordenadas[1] : defaultCoords[1]);
 
       if (mapLat && mapLng) {
         let mapHtml = `<div id="agent-map" class="w-full rounded-lg border border-border" style="height: 350px; z-index: 10;"></div>`;

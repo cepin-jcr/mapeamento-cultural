@@ -720,6 +720,26 @@
         return text.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
       };
 
+      const getCidadeCoords = (muni) => {
+        if (!muni) return CIDADES_COORDS['Jacareí'];
+        if (CIDADES_COORDS[muni]) return CIDADES_COORDS[muni];
+        const norm = normalizeStr(muni);
+        for (const [cidade, coords] of Object.entries(CIDADES_COORDS)) {
+          if (normalizeStr(cidade) === norm) return coords;
+        }
+        return CIDADES_COORDS['Jacareí'];
+      };
+
+      const getDistanceKm = (lat1, lon1, lat2, lon2) => {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      };
+
       // Estado dos Filtros
       const allRawItems = [];
       let municipioAtual = initialMuni;
@@ -828,7 +848,7 @@
         let pLat = parseFloat(String(lat).replace(',', '.'));
         let pLng = parseFloat(String(lng).replace(',', '.'));
         if (isNaN(pLat) || isNaN(pLng)) {
-          const coords = CIDADES_COORDS[municipio] || CIDADES_COORDS['Jacareí'];
+          const coords = getCidadeCoords(municipio);
           pLat = coords[0];
           pLng = coords[1];
         }
@@ -1153,10 +1173,11 @@
         }
 
         const muni = esp.municipio || 'Jacareí';
+        const coords = getCidadeCoords(muni);
+        const isFar = (lat && lng) ? (getDistanceKm(lat, lng, coords[0], coords[1]) > 20) : false;
 
-        // Fallback de coordenadas para garantir que todo espaço apareça no mapa
-        if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
-          const coords = CIDADES_COORDS[muni] || CIDADES_COORDS['Jacareí'];
+        // Fallback de coordenadas para garantir que todo espaço apareça no mapa em sua cidade correta
+        if (!lat || !lng || isNaN(lat) || isNaN(lng) || isFar) {
           const hash = ((esp.id || 1) * 41 + (esp.nome || '').length) % 100;
           lat = coords[0] + (hash - 50) * 0.0003;
           lng = coords[1] + ((hash * 7) % 100 - 50) * 0.0003;
@@ -1220,8 +1241,9 @@
         }
 
         // Fallback para centróide da cidade com ligeira dispersão determinística
-        if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
-          const coords = CIDADES_COORDS[muni] || CIDADES_COORDS['Jacareí'];
+        const coords = getCidadeCoords(muni);
+        const isFar = (lat && lng) ? (getDistanceKm(lat, lng, coords[0], coords[1]) > 25) : false;
+        if (!lat || !lng || isNaN(lat) || isNaN(lng) || isFar) {
           const hash = ((ev.id || 1) * 37 + (ev.nome || ev.titulo || '').length) % 100;
           lat = coords[0] + (hash - 50) * 0.0003;
           lng = coords[1] + ((hash * 7) % 100 - 50) * 0.0003;
@@ -1267,12 +1289,15 @@
         const muniText = municipio || 'Jacareí';
         const cat = categoria || 'Agente Cultural';
 
+        const coords = getCidadeCoords(muniText);
         let finalLat = lat ? parseFloat(String(lat).replace(',', '.')) : null;
         let finalLng = lng ? parseFloat(String(lng).replace(',', '.')) : null;
 
-        // Fallback determinístico de coordenadas se não tiver
-        if (!finalLat || !finalLng || isNaN(finalLat) || isNaN(finalLng)) {
-          const coords = CIDADES_COORDS[muniText] || CIDADES_COORDS['Jacareí'];
+        // Se não tiver coordenadas válidas ou estiver a mais de 20km do município declarado
+        const isFar = (finalLat && finalLng) ? (getDistanceKm(finalLat, finalLng, coords[0], coords[1]) > 20) : false;
+
+        // Fallback determinístico de coordenadas caso não tenha ou esteja fora do município
+        if (!finalLat || !finalLng || isNaN(finalLat) || isNaN(finalLng) || isFar) {
           let hash = 0;
           const str = slug || nome || '';
           for (let i = 0; i < str.length; i++) { hash = (hash * 31 + str.charCodeAt(i)) % 1000; }
