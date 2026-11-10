@@ -538,7 +538,7 @@
           // Busca apenas as colunas leves necessárias para a listagem (evita baixar megabytes de galerias e PDFs)
           const { data, error } = await supabaseClient
             .from('agentes')
-            .select('id, nome, area, municipio, foto, bio, sobre, biografia, descricao, linguagens, projeto_mulheres, mulheres_na_musica, genero, etnia, pcd, tipo_atuacao')
+            .select('id, nome, area, municipio, foto, bio, contato, endereco, redes_sociais, projeto_mulheres, mulheres_na_musica, genero, etnia, pcd, tipo_atuacao, destaque')
             .order('nome', {ascending: true});
 
           if (!error && Array.isArray(data) && data.length > 0) {
@@ -546,6 +546,8 @@
               ...item,
               bio: extrairBio(item)
             }));
+          } else if (error) {
+            console.error("Erro ao consultar agentes no Supabase:", error);
           }
         } catch (e) {
           console.warn("Erro ao buscar agentes do Supabase, tentando fallback local:", e);
@@ -890,18 +892,18 @@
 
       const filterMapping = {
         'Mulheres na Música': ['mulheres na musica', 'mulheres na música'],
-        'Artes Visuais': ['artes visuais', 'pintura', 'escultura', 'fotografia', 'design', 'artesanato', 'grafite', 'ilustração', 'artes plásticas', 'moda', 'hq', 'quadrinhos'],
-        'Audiovisual': ['audiovisual', 'cinema', 'vídeo', 'tv', 'rádio', 'podcast', 'animação'],
+        'Artes Visuais': ['artes visuais', 'pintura', 'escultura', 'fotografia', 'design', 'artesanato', 'grafite', 'ilustração', 'artes plásticas', 'moda', 'hq', 'quadrinhos', 'desenho', 'gravura', 'arte aplicada'],
+        'Audiovisual': ['audiovisual', 'cinema', 'vídeo', 'video', 'tv', 'rádio', 'podcast', 'animação', 'multimídia', 'multimidia'],
         'Cultura Digital e Games': ['cultura digital', 'games', 'jogos', 'realidade virtual', 'tecnologia', 'arte digital'],
-        'Cultura Popular': ['cultura popular', 'folclore', 'capoeira', 'maracatu', 'carnaval', 'samba', 'cultura indígena', 'cultura afro', 'jongo', 'congada', 'moçambique'],
-        'Dança': ['dança', 'ballet', 'dança contemporânea', 'danças urbanas', 'hip hop'],
-        'Educação e Pesquisa': ['educação', 'pesquisa', 'formação', 'palestra', 'workshop', 'oficina'],
-        'Literatura': ['literatura', 'poesia', 'escrita', 'cordel', 'saraus', 'contação de histórias', 'slam'],
-        'Mestre(a) de Cultura': ['mestre(a) de cultura', 'mestre de cultura', 'mestra de cultura'],
-        'Música': ['música', 'canto', 'instrumental', 'banda', 'coral', 'dj', 'produção musical'],
-        'Patrimônio e Memória': ['patrimônio', 'memória', 'museu', 'história', 'arquitetura', 'restauro'],
-        'Produção e Gestão Cultural': ['produção cultural', 'gestão', 'curadoria', 'eventos', 'políticas culturais'],
-        'Teatro e Circo': ['teatro', 'circo', 'atuação', 'direção', 'cenografia', 'iluminação', 'palhaçaria']
+        'Cultura Popular': ['cultura popular', 'folclore', 'capoeira', 'maracatu', 'carnaval', 'samba', 'cultura indígena', 'cultura afro', 'jongo', 'congada', 'moçambique', 'escolas de samba', 'blocos carnavalescos', 'outras manifestações'],
+        'Dança': ['dança', 'danca', 'ballet', 'dança contemporânea', 'danças urbanas', 'hip hop'],
+        'Educação e Pesquisa': ['educação', 'educacao', 'pesquisa', 'pesquisador', 'pesquisadora', 'formação', 'palestra', 'workshop', 'oficina'],
+        'Literatura': ['literatura', 'poesia', 'escrita', 'cordel', 'saraus', 'contação de histórias', 'slam', 'escritor', 'escritora'],
+        'Mestre(a) de Cultura': ['mestre(a) de cultura', 'mestre de cultura', 'mestra de cultura', 'mestre', 'mestra'],
+        'Música': ['música', 'musica', 'canto', 'instrumental', 'banda', 'coral', 'dj', 'produção musical'],
+        'Patrimônio e Memória': ['patrimônio', 'patrimonio', 'memória', 'memoria', 'museu', 'história', 'arquitetura', 'restauro', 'acervo'],
+        'Produção e Gestão Cultural': ['produção cultural', 'producao cultural', 'gestão', 'gestao', 'gestor', 'gestora', 'curadoria', 'eventos', 'políticas culturais', 'agente territorial', 'produtor', 'produtora'],
+        'Teatro e Circo': ['teatro', 'circo', 'artes cênicas', 'artes cenicas', 'atuação', 'direção', 'cenografia', 'iluminação', 'palhaçaria', 'ator', 'atriz', 'ópera', 'opera']
       };
 
       const filtrados = todosAgentes.filter(a => {
@@ -996,6 +998,13 @@
       } else {
         navbar.classList.add('bg-background/80');
         navbar.classList.remove('shadow-md', 'bg-background/95');
+      }
+    });
+
+    window.addEventListener('item-cultural-salvo', (e) => {
+      if (!e.detail || e.detail.tipo === 'agente') {
+        sessionStorage.removeItem('agentes_cache');
+        carregarAgentes();
       }
     });
 
