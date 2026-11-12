@@ -945,15 +945,16 @@
         if (advGenero !== 'todos') {
           const agGen = normalizeStr(a.genero || '');
           const isMulher = agGen.includes('mulher') || Boolean(a.projeto_mulheres || a.mulheres_na_musica) || area.includes('mulheres na musica');
-          if (advGenero === 'Mulher') {
-            matchGenero = isMulher;
-          } else if (advGenero === 'Homem') {
-            matchGenero = agGen.includes('homem') || (!isMulher && agGen === '');
-          } else if (advGenero === 'Não-binário') {
-            matchGenero = agGen.includes('nao-binario') || agGen.includes('nao binario') || agGen.includes('nao-binaria');
-          } else if (advGenero === 'Outros') {
-            matchGenero = agGen.includes('outro') || agGen === '';
-          }
+          // CÓDIGO CORRIGIDO:
+if (advGenero === 'Mulher') {
+  matchGenero = isMulher;
+} else if (advGenero === 'Homem') {
+  matchGenero = !isMulher && agGen.includes('homem');
+} else if (advGenero === 'Não-binário') {
+  matchGenero = agGen.includes('nao-binario') || agGen.includes('nao binario') || agGen.includes('nao-binaria');
+} else if (advGenero === 'Outros') {
+  matchGenero = agGen === '' || agGen.includes('outro') || agGen.includes('declarar') || (!isMulher && !agGen.includes('homem') && !agGen.includes('nao-binar'));
+}
         }
 
         // 2. Etnia / Raça
