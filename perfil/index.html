@@ -2704,6 +2704,68 @@
       `).join('');
     }
 
+    // Função para calcular a vocação principal diretamente a partir dos agentes da cidade
+    function calcularVocacaoPrincipalAgentes(agentesCidade) {
+      if (!agentesCidade || agentesCidade.length === 0) return null;
+
+      const areaCounts = {};
+
+      agentesCidade.forEach(ag => {
+        const raw = ag.area || ag.categoria || ag.linguagens || '';
+        if (!raw || typeof raw !== 'string') return;
+
+        // Quebra áreas compostas (vírgula, ponto e vírgula, barra ou ' e ')
+        const parts = raw.split(/[,/;|]/);
+        parts.forEach(p => {
+          let clean = p.trim().replace(/^\(+|\)+$/g, '');
+          if (!clean || clean.length < 2) return;
+
+          // Normalização para categorias canônicas
+          if (/gastronom/i.test(clean)) clean = 'Gastronomia';
+          else if (/^m[uú]sica/i.test(clean)) clean = 'Música';
+          else if (/literatura|poesia|slam|cordel/i.test(clean)) clean = 'Literatura';
+          else if (/teatro/i.test(clean)) clean = 'Teatro';
+          else if (/artes\s*c[eê]nicas/i.test(clean)) clean = 'Artes Cênicas';
+          else if (/artes\s*visuais|artes\s*pl[aá]sticas/i.test(clean)) clean = 'Artes Visuais';
+          else if (/dan[cç]a/i.test(clean)) clean = 'Dança';
+          else if (/cinema|audiovisual|v[ií]deo/i.test(clean)) clean = 'Cinema e Audiovisual';
+          else if (/circo/i.test(clean)) clean = 'Circo';
+          else if (/cultura\s*popular|folclore|congada|mo[cç]ambique|maracatu/i.test(clean)) clean = 'Cultura Popular e Folclore';
+          else if (/artesanato/i.test(clean)) clean = 'Artesanato';
+          else if (/capoeira/i.test(clean)) clean = 'Capoeira';
+          else if (/hip\s*hop/i.test(clean)) clean = 'Hip Hop';
+          else if (/fotografia/i.test(clean)) clean = 'Fotografia';
+          else if (/gest[aã]o|produtor/i.test(clean)) clean = 'Gestão e Produção Cultural';
+          else if (/pesquisa/i.test(clean)) clean = 'Pesquisa e Formação Cultural';
+          else if (/design/i.test(clean)) clean = 'Design';
+          else if (/escultura/i.test(clean)) clean = 'Escultura';
+          else if (/pintura/i.test(clean)) clean = 'Pintura';
+          else if (/desenho/i.test(clean)) clean = 'Desenho';
+          else if (/mestre/i.test(clean)) clean = 'Mestres de Cultura';
+          else {
+            clean = clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+          }
+
+          areaCounts[clean] = (areaCounts[clean] || 0) + 1;
+        });
+      });
+
+      const ranking = Object.entries(areaCounts).sort((a, b) => b[1] - a[1]);
+      if (ranking.length === 0) return null;
+
+      const top1 = ranking[0];
+      const outros = ranking.slice(1, 3).map(([area, count]) => `${area} (${count})`).join(', ');
+
+      return {
+        principal: top1[0],
+        contagem: top1[1],
+        outros: outros,
+        textoFormatado: outros 
+          ? `${top1[0]} (${top1[1]} agente${top1[1] > 1 ? 's' : ''}) • Destaques: ${outros}`
+          : `${top1[0]} (${top1[1]} agente${top1[1] > 1 ? 's' : ''})`
+      };
+    }
+
     // Selecionar Cidade e Exibir Vocação Cultural
     window.selecionarCidadeVocacao = (cidade) => {
       if (!cidade) return;
@@ -2712,14 +2774,23 @@
         texto: 'Município integrante do ecossistema cultural do Vale do Paraíba, com iniciativas comunitárias, patrimônio material e festividades tradicionais.'
       };
 
-      // Verificar se há customização salva no Supabase config
-      const customConfig = (window._cachedStatsConfig && window._cachedStatsConfig.cidades_vocacoes && window._cachedStatsConfig.cidades_vocacoes[cidade]) || {};
-      const foco = customConfig.foco || baseData.foco;
-      const texto = customConfig.texto || baseData.texto;
-
       // Calcular contagem de agentes e espaços dessa cidade
       const agentesCidade = (window._cachedAgentes || []).filter(a => normalizarNomeCidade(a.municipio || a.endereco || '') === cidade);
       const espacosCidade = (window._cachedEspacos || []).filter(s => normalizarNomeCidade(s.municipio || s.endereco || '') === cidade);
+
+      // Calcular vocação principal baseada DIRETAMENTE nos agentes da cidade
+      const vocacaoAgentes = calcularVocacaoPrincipalAgentes(agentesCidade);
+      let foco = '';
+
+      if (vocacaoAgentes) {
+        foco = vocacaoAgentes.textoFormatado;
+      } else {
+        const customConfig = (window._cachedStatsConfig && window._cachedStatsConfig.cidades_vocacoes && window._cachedStatsConfig.cidades_vocacoes[cidade]) || {};
+        foco = customConfig.foco || `${baseData.foco} (Estimativa histórica - sem agentes cadastrados)`;
+      }
+
+      const customConfig = (window._cachedStatsConfig && window._cachedStatsConfig.cidades_vocacoes && window._cachedStatsConfig.cidades_vocacoes[cidade]) || {};
+      const texto = customConfig.texto || baseData.texto;
 
       document.getElementById('vocacao-cidade-nome').innerText = cidade;
       document.getElementById('vocacao-cidade-stats').innerText = `${agentesCidade.length} agentes · ${espacosCidade.length} espaços`;
