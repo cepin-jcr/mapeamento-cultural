@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" class="">
 <head>
   <meta charset="UTF-8">
@@ -603,7 +603,7 @@
 
               <button type="button" onclick="switchAdminTab('campos')" id="tab-campos" class="flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all text-left">
                 <svg class="w-4 h-4 shrink-0 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                <span>Campos / FormulÃ¡rios</span>
+                <span>Campos / Formulários</span>
               </button>
 
             </nav>
@@ -761,7 +761,7 @@
           </div>
         </div>
 
-        <!-- Tab: Gerenciador de Campos / FormulÃ¡rios DinÃ¢micos -->
+        <!-- Tab: Gerenciador de Campos / Formulários Dinâmicos -->
         <div id="admin-tab-campos" class="hidden space-y-6">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-3 border-b border-border pb-4">
             <div>
@@ -769,9 +769,9 @@
                 <span class="p-1.5 rounded-lg bg-primary/10 text-primary">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                 </span>
-                <h4 class="text-base font-bold text-foreground">Gerenciador de Campos dos FormulÃ¡rios</h4>
+                <h4 class="text-base font-bold text-foreground">Gerenciador de Campos dos Formulários</h4>
               </div>
-              <p class="text-xs text-muted-foreground mt-1">Adicione, edite, reorganize ou remova colunas e campos nos cadastros de Agentes, EspaÃ§os e Eventos sem alterar o cÃ³digo-fonte.</p>
+              <p class="text-xs text-muted-foreground mt-1">Adicione, edite, reorganize ou remova colunas e campos nos cadastros de Agentes, Espaços e Eventos sem alterar o código-fonte.</p>
             </div>
             <div class="flex items-center gap-2">
               <button type="button" onclick="loadAdminCamposData(true)" class="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Recarregar dados">
@@ -793,7 +793,7 @@
             </button>
             <button type="button" onclick="trocarEntidadeCampos('espaco')" id="subtab-campos-espaco" class="flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              <span>EspaÃ§os Culturais</span>
+              <span>Espaços Culturais</span>
               <span id="badge-count-espaco" class="px-1.5 py-0.2 rounded-full text-[10px] bg-muted text-muted-foreground font-semibold">0</span>
             </button>
             <button type="button" onclick="trocarEntidadeCampos('evento')" id="subtab-campos-evento" class="flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50">
@@ -803,15 +803,15 @@
             </button>
           </div>
 
-          <!-- VisualizaÃ§Ã£o e OrganizaÃ§Ã£o dos Campos -->
+          <!-- Visualização e Organização dos Campos -->
           <div id="admin-campos-container" class="space-y-6">
             <div class="text-center py-8 text-muted-foreground text-sm italic">
-              Carregando campos do formulÃ¡rio...
+              Carregando campos do formulário...
             </div>
           </div>
         </div>
 
-        <!-- Modal de CriaÃ§Ã£o / EdiÃ§Ã£o de Campo Personalizado -->
+        <!-- Modal de Criação / Edição de Campo Personalizado -->
         <div id="modal-campo-form" class="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-background/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
           <div class="relative w-full max-w-xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transform scale-95 transition-all duration-300" id="modal-campo-form-dialog">
             <!-- Header Modal -->
@@ -822,7 +822,7 @@
                 </span>
                 <div>
                   <h3 id="modal-campo-title" class="text-base font-bold text-foreground">Novo Campo Personalizado</h3>
-                  <p class="text-xs text-muted-foreground">Defina as propriedades do campo para os formulÃ¡rios</p>
+                  <p class="text-xs text-muted-foreground">Defina as propriedades do campo para os formulários</p>
                 </div>
               </div>
               <button type="button" onclick="fecharModalCampo()" class="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer" aria-label="Fechar">
@@ -839,7 +839,7 @@
                   <label class="text-xs font-bold uppercase tracking-wider text-foreground">Entidade Alvo *</label>
                   <select id="modal-campo-entidade" required class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
                     <option value="agente">Agente Cultural</option>
-                    <option value="espaco">EspaÃ§o Cultural</option>
+                    <option value="espaco">Espaço Cultural</option>
                     <option value="evento">Evento</option>
                   </select>
                 </div>
@@ -848,43 +848,43 @@
                   <label class="text-xs font-bold uppercase tracking-wider text-foreground">Tipo de Entrada *</label>
                   <select id="modal-campo-tipo" required onchange="toggleCampoOpcoesVisibility(this.value)" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
                     <option value="text">Texto Curto (Input comum)</option>
-                    <option value="textarea">Texto Longo / DescriÃ§Ã£o (Textarea)</option>
-                    <option value="number">NÃºmero (Inteiro ou Decimal)</option>
-                    <option value="boolean">Checkbox Sim / NÃ£o</option>
-                    <option value="select">Lista de SeleÃ§Ã£o (Dropdown)</option>
+                    <option value="textarea">Texto Longo / Descrição (Textarea)</option>
+                    <option value="number">Número (Inteiro ou Decimal)</option>
+                    <option value="boolean">Checkbox Sim / Não</option>
+                    <option value="select">Lista de Seleção (Dropdown)</option>
                   </select>
                 </div>
               </div>
 
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">RÃ³tulo VisÃ­vel (Label) *</label>
-                <input type="text" id="modal-campo-rotulo" required placeholder="Ex: Capacidade de PÃºblico, IntÃ©rprete de Libras" onblur="sugerirNomeCampo(this.value)" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
-                <p class="text-[11px] text-muted-foreground">O texto que o usuÃ¡rio ou administrador verÃ¡ acima do campo no formulÃ¡rio.</p>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Rótulo Visível (Label) *</label>
+                <input type="text" id="modal-campo-rotulo" required placeholder="Ex: Capacidade de Público, Intérprete de Libras" onblur="sugerirNomeCampo(this.value)" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <p class="text-[11px] text-muted-foreground">O texto que o usuário ou administrador verá acima do campo no formulário.</p>
               </div>
 
               <div class="space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome TÃ©cnico da Chave (ID Interno) *</label>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome Técnico da Chave (ID Interno) *</label>
                 <input type="text" id="modal-campo-nome" required placeholder="Ex: capacidade_publico, interprete_libras" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-mono transition-all">
-                <p class="text-[11px] text-muted-foreground">Nome Ãºnico da propriedade gravada no banco de dados (letras minÃºsculas e _).</p>
+                <p class="text-[11px] text-muted-foreground">Nome único da propriedade gravada no banco de dados (letras minúsculas e _).</p>
               </div>
 
-              <!-- OpÃ§Ãµes do Select (oculto por padrÃ£o) -->
+              <!-- Opções do Select (oculto por padrão) -->
               <div id="container-modal-campo-opcoes" class="hidden space-y-1.5">
-                <label class="text-xs font-bold uppercase tracking-wider text-foreground">OpÃ§Ãµes da Lista de SeleÃ§Ã£o (Separadas por VÃ­rgula) *</label>
-                <textarea id="modal-campo-opcoes" rows="2" placeholder="Ex: ManhÃ£, Tarde, Noite, Integral" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"></textarea>
-                <p class="text-[11px] text-muted-foreground">Digite as alternativas disponÃ­veis separadas por vÃ­rgula.</p>
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Opções da Lista de Seleção (Separadas por Vírgula) *</label>
+                <textarea id="modal-campo-opcoes" rows="2" placeholder="Ex: Manhã, Tarde, Noite, Integral" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"></textarea>
+                <p class="text-[11px] text-muted-foreground">Digite as alternativas disponíveis separadas por vírgula.</p>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-1.5">
-                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">SeÃ§Ã£o / Categoria Visual</label>
-                  <input type="text" id="modal-campo-secao" list="secoes-sugeridas" placeholder="Ex: Estrutura & LotaÃ§Ã£o" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">Seção / Categoria Visual</label>
+                  <input type="text" id="modal-campo-secao" list="secoes-sugeridas" placeholder="Ex: Estrutura & Lotação" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
                   <datalist id="secoes-sugeridas">
                     <option value="Geral">
-                    <option value="Estrutura & LotaÃ§Ã£o">
-                    <option value="Acessibilidade & InclusÃ£o">
-                    <option value="Redes & ComunicaÃ§Ã£o">
-                    <option value="InformaÃ§Ãµes Adicionais">
+                    <option value="Estrutura & Lotação">
+                    <option value="Acessibilidade & Inclusão">
+                    <option value="Redes & Comunicação">
+                    <option value="Informações Adicionais">
                   </datalist>
                   <p class="text-[11px] text-muted-foreground">Agrupa visualmente o campo com outros da mesma categoria.</p>
                 </div>
@@ -898,7 +898,7 @@
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                 <label class="flex items-center gap-2 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
                   <input type="checkbox" id="modal-campo-obrigatorio" class="rounded text-primary focus:ring-primary h-4 w-4">
-                  <span class="text-xs font-semibold text-foreground">ObrigatÃ³rio</span>
+                  <span class="text-xs font-semibold text-foreground">Obrigatório</span>
                 </label>
 
                 <label class="flex items-center gap-2 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
@@ -906,10 +906,15 @@
                   <span class="text-xs font-semibold text-foreground">Ativo no Site</span>
                 </label>
 
-                <div class="space-y-1">
-                  <label class="text-[11px] font-bold uppercase text-muted-foreground block">Ordem</label>
-                  <input type="number" id="modal-campo-ordem" value="10" min="0" class="w-full px-3 py-2 bg-background border border-input rounded-xl text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary">
-                </div>
+                <label class="flex items-center gap-2 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors" title="Transforma este campo em um filtro de busca dinâmico na aba correspondente">
+                  <input type="checkbox" id="modal-campo-filtravel" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <span class="text-xs font-semibold text-foreground">Filtro de Busca</span>
+                </label>
+              </div>
+
+              <div class="space-y-1 max-w-[140px]">
+                <label class="text-[11px] font-bold uppercase text-muted-foreground block">Ordem</label>
+                <input type="number" id="modal-campo-ordem" value="10" min="0" class="w-full px-3 py-2 bg-background border border-input rounded-xl text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary">
               </div>
 
               <!-- Footer Modal -->
@@ -1877,51 +1882,51 @@
     };
 
     // =========================================================================
-    // GERENCIADOR DE CAMPOS E FORMULÃRIOS DINÃ‚MICOS (ADMIN)
+    // GERENCIADOR DE CAMPOS E FORMULÁRIOS DINÂMICOS (ADMIN)
     // =========================================================================
     let currentEntidadeCampos = 'agente';
     let todosCamposAdmin = [];
     let editandoCampoId = null;
 
-    // Campos nativos fixos do sistema para orientaÃ§Ã£o visual
+    // Campos nativos fixos do sistema para orientação visual
     const camposPadraoConfig = {
       agente: [
-        { rotulo: 'Nome ArtÃ­stico / Coletivo', tipo: 'Texto Curto', secao: 'IdentificaÃ§Ã£o & Principal', obrigatorio: true },
-        { rotulo: 'Ãrea de AtuaÃ§Ã£o Cultural (MÃºsica, Teatro, etc.)', tipo: 'Lista / SeleÃ§Ã£o MÃºltipla', secao: 'IdentificaÃ§Ã£o & Principal', obrigatorio: true },
-        { rotulo: 'Selo "Mulheres na MÃºsica"', tipo: 'Checkbox Sim/NÃ£o', secao: 'IdentificaÃ§Ã£o & Principal', obrigatorio: false },
-        { rotulo: 'MunicÃ­pio do Vale do ParaÃ­ba', tipo: 'SeleÃ§Ã£o', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
-        { rotulo: 'EndereÃ§o Completo (Rua, NÃºmero, Bairro)', tipo: 'Texto Curto', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
-        { rotulo: 'GÃªnero / Identidade de GÃªnero', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
-        { rotulo: 'RaÃ§a / Cor / Etnia', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
-        { rotulo: 'Pessoa com DeficiÃªncia (PcD)', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
-        { rotulo: 'Tipo de AtuaÃ§Ã£o (Individual / Coletivo)', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
-        { rotulo: 'Biografia / Mini-bio', tipo: 'Texto Longo', secao: 'ApresentaÃ§Ã£o & PortfÃ³lio', obrigatorio: false },
-        { rotulo: 'Contato & Redes Sociais', tipo: 'Texto Curto', secao: 'ApresentaÃ§Ã£o & PortfÃ³lio', obrigatorio: false },
-        { rotulo: 'Foto de Perfil & Galeria', tipo: 'Arquivo / Imagem', secao: 'MÃ­dia & PortfÃ³lio', obrigatorio: false }
+        { rotulo: 'Nome Artístico / Coletivo', tipo: 'Texto Curto', secao: 'Identificação & Principal', obrigatorio: true },
+        { rotulo: 'Área de Atuação Cultural (Música, Teatro, etc.)', tipo: 'Lista / Seleção Múltipla', secao: 'Identificação & Principal', obrigatorio: true },
+        { rotulo: 'Selo "Mulheres na Música"', tipo: 'Checkbox Sim/Não', secao: 'Identificação & Principal', obrigatorio: false },
+        { rotulo: 'Município do Vale do Paraíba', tipo: 'Seleção', secao: 'Localização', obrigatorio: true },
+        { rotulo: 'Endereço Completo (Rua, Número, Bairro)', tipo: 'Texto Curto', secao: 'Localização', obrigatorio: true },
+        { rotulo: 'Gênero / Identidade de Gênero', tipo: 'Seleção', secao: 'Dados Demográficos', obrigatorio: false },
+        { rotulo: 'Raça / Cor / Etnia', tipo: 'Seleção', secao: 'Dados Demográficos', obrigatorio: false },
+        { rotulo: 'Pessoa com Deficiência (PcD)', tipo: 'Seleção', secao: 'Dados Demográficos', obrigatorio: false },
+        { rotulo: 'Tipo de Atuação (Individual / Coletivo)', tipo: 'Seleção', secao: 'Dados Demográficos', obrigatorio: false },
+        { rotulo: 'Biografia / Mini-bio', tipo: 'Texto Longo', secao: 'Apresentação & Portfólio', obrigatorio: false },
+        { rotulo: 'Contato & Redes Sociais', tipo: 'Texto Curto', secao: 'Apresentação & Portfólio', obrigatorio: false },
+        { rotulo: 'Foto de Perfil & Galeria', tipo: 'Arquivo / Imagem', secao: 'Mídia & Portfólio', obrigatorio: false }
       ],
       espaco: [
-        { rotulo: 'Nome do EspaÃ§o Cultural', tipo: 'Texto Curto', secao: 'Geral', obrigatorio: true },
-        { rotulo: 'Tipo de EspaÃ§o (PÃºblico, Privado, etc.)', tipo: 'SeleÃ§Ã£o', secao: 'Geral', obrigatorio: true },
+        { rotulo: 'Nome do Espaço Cultural', tipo: 'Texto Curto', secao: 'Geral', obrigatorio: true },
+        { rotulo: 'Tipo de Espaço (Público, Privado, etc.)', tipo: 'Seleção', secao: 'Geral', obrigatorio: true },
         { rotulo: 'Categoria Cultural', tipo: 'Texto Curto', secao: 'Geral', obrigatorio: false },
-        { rotulo: 'MunicÃ­pio do Vale do ParaÃ­ba', tipo: 'SeleÃ§Ã£o', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
-        { rotulo: 'EndereÃ§o Completo', tipo: 'Texto Curto', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
-        { rotulo: 'EspaÃ§o com Acessibilidade para PcD', tipo: 'Checkbox Sim/NÃ£o', secao: 'Acessibilidade & InclusÃ£o', obrigatorio: false },
-        { rotulo: 'DescriÃ§Ã£o do EspaÃ§o', tipo: 'Texto Longo', secao: 'InformaÃ§Ãµes', obrigatorio: false },
-        { rotulo: 'Contato & InformaÃ§Ãµes', tipo: 'Texto Curto', secao: 'InformaÃ§Ãµes', obrigatorio: false },
-        { rotulo: 'Foto de Capa', tipo: 'Arquivo / Imagem', secao: 'MÃ­dia', obrigatorio: false }
+        { rotulo: 'Município do Vale do Paraíba', tipo: 'Seleção', secao: 'Localização', obrigatorio: true },
+        { rotulo: 'Endereço Completo', tipo: 'Texto Curto', secao: 'Localização', obrigatorio: true },
+        { rotulo: 'Espaço com Acessibilidade para PcD', tipo: 'Checkbox Sim/Não', secao: 'Acessibilidade & Inclusão', obrigatorio: false },
+        { rotulo: 'Descrição do Espaço', tipo: 'Texto Longo', secao: 'Informações', obrigatorio: false },
+        { rotulo: 'Contato & Informações', tipo: 'Texto Curto', secao: 'Informações', obrigatorio: false },
+        { rotulo: 'Foto de Capa', tipo: 'Arquivo / Imagem', secao: 'Mídia', obrigatorio: false }
       ],
       evento: [
-        { rotulo: 'Nome do Evento', tipo: 'Texto Curto', secao: 'IdentificaÃ§Ã£o & Categoria', obrigatorio: true },
-        { rotulo: 'Categoria do Evento (MÃºsica, Teatro, etc.)', tipo: 'SeleÃ§Ã£o', secao: 'IdentificaÃ§Ã£o & Categoria', obrigatorio: true },
-        { rotulo: 'Data e HorÃ¡rio', tipo: 'Texto Curto', secao: 'ProgramaÃ§Ã£o', obrigatorio: true },
-        { rotulo: 'MunicÃ­pio do Vale do ParaÃ­ba', tipo: 'SeleÃ§Ã£o', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
-        { rotulo: 'Local do Evento', tipo: 'Texto Curto', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
-        { rotulo: 'Organizador / Realizador', tipo: 'Texto Curto', secao: 'OrganizaÃ§Ã£o', obrigatorio: false },
-        { rotulo: 'Evento Anual / Por Temporada', tipo: 'Checkbox Sim/NÃ£o', secao: 'ProgramaÃ§Ã£o', obrigatorio: false },
-        { rotulo: 'Evento com Acessibilidade para PcD', tipo: 'Checkbox Sim/NÃ£o', secao: 'Acessibilidade & InclusÃ£o', obrigatorio: false },
-        { rotulo: 'DescriÃ§Ã£o do Evento', tipo: 'Texto Longo', secao: 'InformaÃ§Ãµes', obrigatorio: true },
-        { rotulo: 'Link de InformaÃ§Ãµes / Ingressos', tipo: 'URL / Link', secao: 'InformaÃ§Ãµes', obrigatorio: false },
-        { rotulo: 'Cartaz / Imagem de DivulgaÃ§Ã£o', tipo: 'Arquivo / Imagem', secao: 'MÃ­dia', obrigatorio: false }
+        { rotulo: 'Nome do Evento', tipo: 'Texto Curto', secao: 'Identificação & Categoria', obrigatorio: true },
+        { rotulo: 'Categoria do Evento (Música, Teatro, etc.)', tipo: 'Seleção', secao: 'Identificação & Categoria', obrigatorio: true },
+        { rotulo: 'Data e Horário', tipo: 'Texto Curto', secao: 'Programação', obrigatorio: true },
+        { rotulo: 'Município do Vale do Paraíba', tipo: 'Seleção', secao: 'Localização', obrigatorio: true },
+        { rotulo: 'Local do Evento', tipo: 'Texto Curto', secao: 'Localização', obrigatorio: true },
+        { rotulo: 'Organizador / Realizador', tipo: 'Texto Curto', secao: 'Organização', obrigatorio: false },
+        { rotulo: 'Evento Anual / Por Temporada', tipo: 'Checkbox Sim/Não', secao: 'Programação', obrigatorio: false },
+        { rotulo: 'Evento com Acessibilidade para PcD', tipo: 'Checkbox Sim/Não', secao: 'Acessibilidade & Inclusão', obrigatorio: false },
+        { rotulo: 'Descrição do Evento', tipo: 'Texto Longo', secao: 'Informações', obrigatorio: true },
+        { rotulo: 'Link de Informações / Ingressos', tipo: 'URL / Link', secao: 'Informações', obrigatorio: false },
+        { rotulo: 'Cartaz / Imagem de Divulgação', tipo: 'Arquivo / Imagem', secao: 'Mídia', obrigatorio: false }
       ]
     };
 
@@ -1929,7 +1934,7 @@
       const container = document.getElementById('admin-campos-container');
       if (!container) return;
       if (!window.supabaseClient) {
-        container.innerHTML = '<div class="p-4 rounded-xl border border-destructive/20 bg-destructive/10 text-destructive text-sm font-semibold">Cliente Supabase nÃ£o inicializado.</div>';
+        container.innerHTML = '<div class="p-4 rounded-xl border border-destructive/20 bg-destructive/10 text-destructive text-sm font-semibold">Cliente Supabase não inicializado.</div>';
         return;
       }
 
@@ -1969,10 +1974,10 @@
 
         renderAdminCampos();
       } catch (err) {
-        console.error("Erro ao carregar campos de formulÃ¡rio:", err);
+        console.error("Erro ao carregar campos de formulário:", err);
         container.innerHTML = `
           <div class="p-4 rounded-xl border border-destructive/20 bg-destructive/10 text-destructive text-sm space-y-2">
-            <p class="font-bold">Erro ao carregar campos de formulÃ¡rios:</p>
+            <p class="font-bold">Erro ao carregar campos de formulários:</p>
             <p class="text-xs">${err.message}</p>
           </div>
         `;
@@ -2011,12 +2016,12 @@
 
       const camposCustom = todosCamposAdmin.filter(c => c.entidade === currentEntidadeCampos);
       const padroes = camposPadraoConfig[currentEntidadeCampos] || [];
-      const entidadeNomeMap = { agente: 'Agente Cultural', espaco: 'EspaÃ§o Cultural', evento: 'Evento' };
+      const entidadeNomeMap = { agente: 'Agente Cultural', espaco: 'Espaço Cultural', evento: 'Evento' };
       const entidadeNome = entidadeNomeMap[currentEntidadeCampos] || currentEntidadeCampos;
 
       let html = '';
 
-      // 1. Painel de Campos PadrÃ£o (Fixos do Sistema) para visualizaÃ§Ã£o e organizaÃ§Ã£o
+      // 1. Painel de Campos Padrão (Fixos do Sistema) para visualização e organização
       html += `
         <div class="border border-border/80 rounded-2xl bg-card overflow-hidden shadow-xs">
           <div class="p-4 bg-muted/20 border-b border-border/60 flex items-center justify-between">
@@ -2039,9 +2044,9 @@
           <div class="p-2.5 rounded-xl border border-border/50 bg-background/60 flex items-center justify-between">
             <div class="truncate pr-2">
               <span class="block text-xs font-semibold text-foreground truncate">${p.rotulo}</span>
-              <span class="block text-[10px] text-muted-foreground">${p.secao} Â· ${p.tipo}</span>
+              <span class="block text-[10px] text-muted-foreground">${p.secao} · ${p.tipo}</span>
             </div>
-            <span class="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded ${p.obrigatorio ? 'bg-amber-500/10 text-amber-600' : 'bg-muted text-muted-foreground'}">${p.obrigatorio ? 'ObrigatÃ³rio' : 'Opcional'}</span>
+            <span class="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded ${p.obrigatorio ? 'bg-amber-500/10 text-amber-600' : 'bg-muted text-muted-foreground'}">${p.obrigatorio ? 'Obrigatório' : 'Opcional'}</span>
           </div>
         `;
       });
@@ -2051,7 +2056,7 @@
         </div>
       `;
 
-      // 2. Painel de Campos Personalizados (DinÃ¢micos)
+      // 2. Painel de Campos Personalizados (Dinâmicos)
       html += `
         <div class="space-y-4">
           <div class="flex items-center justify-between">
@@ -2073,7 +2078,7 @@
             </div>
             <div>
               <p class="text-sm font-bold text-foreground">Nenhum campo personalizado cadastrado para ${entidadeNome}</p>
-              <p class="text-xs text-muted-foreground max-w-md mx-auto mt-1">Crie colunas extras personalizadas (como capacidade, links, acessibilidade especÃ­fica) que aparecerÃ£o automaticamente na criaÃ§Ã£o e ediÃ§Ã£o!</p>
+              <p class="text-xs text-muted-foreground max-w-md mx-auto mt-1">Crie colunas extras personalizadas (como capacidade, links, acessibilidade específica) que aparecerão automaticamente na criação e edição!</p>
             </div>
             <button type="button" onclick="abrirModalCriarCampo('${currentEntidadeCampos}')" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-xl hover:bg-primary-glow shadow-sm transition-all cursor-pointer inline-flex items-center gap-1.5">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
@@ -2082,10 +2087,10 @@
           </div>
         `;
       } else {
-        // Agrupar por seÃ§Ã£o para manter a visualizaÃ§Ã£o organizada e limpa
+        // Agrupar por seção para manter a visualização organizada e limpa
         const secoesMap = {};
         camposCustom.forEach(c => {
-          const sec = c.secao || 'InformaÃ§Ãµes Adicionais';
+          const sec = c.secao || 'Informações Adicionais';
           if (!secoesMap[sec]) secoesMap[sec] = [];
           secoesMap[sec].push(c);
         });
@@ -2093,9 +2098,9 @@
         const tipoLabels = {
           text: 'Texto Curto',
           textarea: 'Texto Longo',
-          number: 'NÃºmero',
-          boolean: 'Sim / NÃ£o',
-          select: 'Lista de SeleÃ§Ã£o'
+          number: 'Número',
+          boolean: 'Sim / Não',
+          select: 'Lista de Seleção'
         };
 
         for (const [nomeSecao, camposSec] of Object.entries(secoesMap)) {
@@ -2117,8 +2122,11 @@
               ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Ativo</span>'
               : '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">Oculto</span>';
             const reqBadge = campo.obrigatorio
-              ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-600">ObrigatÃ³rio</span>'
+              ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-600">Obrigatório</span>'
               : '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-muted text-muted-foreground">Opcional</span>';
+            const filtroBadge = campo.filtravel
+              ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 border border-sky-500/20 inline-flex items-center gap-1"><svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>Filtro na Aba</span>'
+              : '';
 
             html += `
               <div class="p-4 rounded-xl border ${campo.ativo ? 'border-border bg-background' : 'border-border/50 bg-muted/10 opacity-75'} flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors shadow-2xs">
@@ -2130,7 +2138,8 @@
                       </h6>
                       <code class="text-[10px] text-muted-foreground font-mono bg-muted/40 px-1.5 py-0.5 rounded mt-1 inline-block">dados_extras.${campo.nome_campo}</code>
                     </div>
-                    <div class="flex items-center gap-1 shrink-0">
+                    <div class="flex items-center gap-1 shrink-0 flex-wrap justify-end">
+                      ${filtroBadge}
                       ${statusBadge}
                       ${reqBadge}
                     </div>
@@ -2144,15 +2153,20 @@
 
                   ${campo.tipo_campo === 'select' && campo.opcoes ? `
                     <div class="mt-2 text-[10px] text-muted-foreground">
-                      <span class="font-semibold text-foreground">OpÃ§Ãµes:</span> ${(Array.isArray(campo.opcoes) ? campo.opcoes : String(campo.opcoes).split(',')).map(o => `<span class="inline-block bg-muted px-1.5 py-0.2 rounded mr-1 mt-0.5">${o.trim()}</span>`).join('')}
+                      <span class="font-semibold text-foreground">Opções:</span> ${(Array.isArray(campo.opcoes) ? campo.opcoes : String(campo.opcoes).split(',')).map(o => `<span class="inline-block bg-muted px-1.5 py-0.2 rounded mr-1 mt-0.5">${o.trim()}</span>`).join('')}
                     </div>
                   ` : ''}
                 </div>
 
-                <div class="pt-3 border-t border-border/60 flex items-center justify-between gap-2">
-                  <button type="button" onclick="toggleStatusCampo('${campo.id}', ${campo.ativo})" class="px-2.5 py-1 rounded-lg text-xs font-semibold ${campo.ativo ? 'text-amber-600 hover:bg-amber-500/10' : 'text-emerald-600 hover:bg-emerald-500/10'} transition-colors cursor-pointer">
-                    ${campo.ativo ? 'Ocultar' : 'Ativar'}
-                  </button>
+                <div class="pt-3 border-t border-border/60 flex items-center justify-between gap-2 flex-wrap">
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="toggleStatusCampo('${campo.id}', ${campo.ativo})" class="px-2.5 py-1 rounded-lg text-xs font-semibold ${campo.ativo ? 'text-amber-600 hover:bg-amber-500/10' : 'text-emerald-600 hover:bg-emerald-500/10'} transition-colors cursor-pointer">
+                      ${campo.ativo ? 'Ocultar' : 'Ativar'}
+                    </button>
+                    <button type="button" onclick="toggleFiltroCampo('${campo.id}', ${!!campo.filtravel})" class="px-2.5 py-1 rounded-lg text-xs font-semibold ${campo.filtravel ? 'text-sky-600 hover:bg-sky-500/10' : 'text-muted-foreground hover:bg-muted'} transition-colors cursor-pointer" title="${campo.filtravel ? 'Remover dos filtros de busca da aba' : 'Ativar como filtro de busca na aba'}">
+                      ${campo.filtravel ? '🔍 Remover Filtro' : '🔍 Ativar Filtro'}
+                    </button>
+                  </div>
                   <div class="flex items-center gap-1">
                     <button type="button" onclick="abrirModalEditarCampo('${campo.id}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer">
                       Editar
@@ -2214,10 +2228,11 @@
       document.getElementById('modal-campo-nome').value = "";
       document.getElementById('modal-campo-tipo').value = "text";
       document.getElementById('modal-campo-opcoes').value = "";
-      document.getElementById('modal-campo-secao').value = "InformaÃ§Ãµes Adicionais";
+      document.getElementById('modal-campo-secao').value = "Informações Adicionais";
       document.getElementById('modal-campo-placeholder').value = "";
       document.getElementById('modal-campo-obrigatorio').checked = false;
       document.getElementById('modal-campo-ativo').checked = true;
+      document.getElementById('modal-campo-filtravel').checked = false;
       document.getElementById('modal-campo-ordem').value = "10";
       toggleCampoOpcoesVisibility('text');
 
@@ -2247,10 +2262,11 @@
       else if (typeof campo.opcoes === 'string') opts = campo.opcoes;
       document.getElementById('modal-campo-opcoes').value = opts;
 
-      document.getElementById('modal-campo-secao').value = campo.secao || 'InformaÃ§Ãµes Adicionais';
+      document.getElementById('modal-campo-secao').value = campo.secao || 'Informações Adicionais';
       document.getElementById('modal-campo-placeholder').value = campo.placeholder || '';
       document.getElementById('modal-campo-obrigatorio').checked = !!campo.obrigatorio;
       document.getElementById('modal-campo-ativo').checked = (campo.ativo !== false);
+      document.getElementById('modal-campo-filtravel').checked = !!campo.filtravel;
       document.getElementById('modal-campo-ordem').value = campo.ordem || 10;
 
       toggleCampoOpcoesVisibility(campo.tipo_campo);
@@ -2287,13 +2303,14 @@
         const rotulo = document.getElementById('modal-campo-rotulo').value.trim();
         let nome_campo = document.getElementById('modal-campo-nome').value.trim();
         const tipo_campo = document.getElementById('modal-campo-tipo').value;
-        const secao = document.getElementById('modal-campo-secao').value.trim() || 'InformaÃ§Ãµes Adicionais';
+        const secao = document.getElementById('modal-campo-secao').value.trim() || 'Informações Adicionais';
         const placeholder = document.getElementById('modal-campo-placeholder').value.trim();
         const obrigatorio = document.getElementById('modal-campo-obrigatorio').checked;
         const ativo = document.getElementById('modal-campo-ativo').checked;
+        const filtravel = document.getElementById('modal-campo-filtravel').checked;
         const ordem = parseInt(document.getElementById('modal-campo-ordem').value, 10) || 10;
 
-        if (!rotulo) throw new Error("O rÃ³tulo do campo Ã© obrigatÃ³rio.");
+        if (!rotulo) throw new Error("O rótulo do campo é obrigatório.");
         if (!nome_campo) {
           nome_campo = rotulo
             .normalize('NFD')
@@ -2307,7 +2324,7 @@
         let opcoes = null;
         if (tipo_campo === 'select') {
           const rawOpts = document.getElementById('modal-campo-opcoes').value.trim();
-          if (!rawOpts) throw new Error("Insira as opÃ§Ãµes separadas por vÃ­rgula para listas de seleÃ§Ã£o.");
+          if (!rawOpts) throw new Error("Insira as opções separadas por vírgula para listas de seleção.");
           opcoes = rawOpts.split(',').map(s => s.trim()).filter(Boolean);
         }
 
@@ -2321,6 +2338,7 @@
           placeholder,
           obrigatorio,
           ativo,
+          filtravel,
           ordem
         };
 
@@ -2367,8 +2385,24 @@
       }
     };
 
+    window.toggleFiltroCampo = async (id, statusFiltroAtual) => {
+      try {
+        const novoStatus = !statusFiltroAtual;
+        const { error } = await supabaseClient
+          .from('campos_formulario')
+          .update({ filtravel: novoStatus })
+          .eq('id', id);
+
+        if (error) throw error;
+        await loadAdminCamposData(true);
+      } catch (err) {
+        console.error("Erro ao alterar status de filtro do campo:", err);
+        alert("Erro ao alterar status de filtro: " + err.message);
+      }
+    };
+
     window.excluirCampoFormulario = async (id, rotulo) => {
-      if (!confirm(`Tem certeza que deseja excluir o campo "${rotulo}"? Ele deixarÃ¡ de aparecer em novos cadastros e ediÃ§Ãµes.`)) {
+      if (!confirm(`Tem certeza que deseja excluir o campo "${rotulo}"? Ele deixará de aparecer em novos cadastros e edições.`)) {
         return;
       }
 
@@ -2380,7 +2414,7 @@
 
         if (error) throw error;
         await loadAdminCamposData(true);
-        alert(`Campo "${rotulo}" excluÃ­do com sucesso!`);
+        alert(`Campo "${rotulo}" excluído com sucesso!`);
       } catch (err) {
         console.error("Erro ao excluir campo:", err);
         alert("Erro ao excluir campo: " + err.message);

@@ -212,10 +212,29 @@
           </div>
         </div>
 
+        <!-- Botão Filtros Avançados -->
+        <button id="btnFiltrosAvancadosEventos" onclick="togglePainelAvancadoEventos(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm relative shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          <span>Filtros Avançados</span>
+          <span id="badgeFiltrosAtivosEventos" class="hidden w-2.5 h-2.5 rounded-full bg-primary absolute -top-1 -right-1 ring-2 ring-background"></span>
+        </button>
+
         <button onclick="abrirModalCadastro('evento')" class="btn-novo-item px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 font-semibold text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
           <span>Novo Evento</span>
         </button>
+      </div>
+
+      <!-- Painel Expansível de Filtros Avançados de Eventos -->
+      <div id="painelFiltrosAvancadosEventos" class="hidden w-full mt-2 pt-4 border-t border-border transition-all duration-300">
+        <!-- Container dos Filtros Dinâmicos -->
+        <div id="dynFiltrosEventos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+        <div class="mt-4 flex flex-wrap justify-between items-center pt-3 border-t border-border/60 text-xs text-muted-foreground gap-2">
+          <span id="advFiltroResumoEventos" class="font-medium">Filtros avançados ativos: Nenhum</span>
+          <button type="button" onclick="limparFiltrosAvancadosEventos()" class="px-3 py-1.5 rounded-md hover:bg-muted font-medium text-primary hover:underline transition-colors cursor-pointer">
+            Limpar Filtros Avançados
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -491,6 +510,10 @@
         ];
       }
 
+      if (window.CamposDinamicos) {
+        await CamposDinamicos.renderizarFiltrosDinamicos('evento', 'dynFiltrosEventos', aplicarFiltros);
+      }
+
       aplicarFiltros();
       verificarParametrosUrl();
     }
@@ -683,7 +706,83 @@
       if (elAnterior) elAnterior.innerText = countAnterior;
     }
 
+    window.togglePainelAvancadoEventos = (e) => {
+      e?.stopPropagation();
+      const painel = document.getElementById('painelFiltrosAvancadosEventos');
+      const btn = document.getElementById('btnFiltrosAvancadosEventos');
+      if (painel) {
+        const isHidden = painel.classList.contains('hidden');
+        if (isHidden) {
+          painel.classList.remove('hidden');
+          if (btn) btn.classList.add('bg-primary/10', 'border-primary', 'text-primary');
+        } else {
+          painel.classList.add('hidden');
+          if (btn && !temFiltrosAvancadosEventosAtivos()) {
+            btn.classList.remove('bg-primary/10', 'border-primary', 'text-primary');
+          }
+        }
+      }
+    };
+
+    function temFiltrosAvancadosEventosAtivos() {
+      const dynFiltros = window.CamposDinamicos ? CamposDinamicos.coletarValoresFiltros('dynFiltrosEventos') : {};
+      return Object.keys(dynFiltros).length > 0;
+    }
+
+    function atualizarResumoFiltrosAvancadosEventos() {
+      const ativos = [];
+      if (window.CamposDinamicos) {
+        const dynFiltros = CamposDinamicos.coletarValoresFiltros('dynFiltrosEventos');
+        const container = document.getElementById('dynFiltrosEventos');
+        if (container) {
+          Object.keys(dynFiltros).forEach(key => {
+            const el = container.querySelector(`[data-filtro-campo="${key}"]`);
+            if (el) {
+              const rotulo = el.getAttribute('data-filtro-rotulo') || key;
+              let val = dynFiltros[key];
+              if (el.tagName === 'SELECT' && el.selectedIndex >= 0) {
+                val = el.options[el.selectedIndex].text;
+              } else if (el.type === 'checkbox') {
+                val = 'Sim';
+              }
+              ativos.push(`${rotulo}: ${val}`);
+            }
+          });
+        }
+      }
+
+      const resumoEl = document.getElementById('advFiltroResumoEventos');
+      const badgeEl = document.getElementById('badgeFiltrosAtivosEventos');
+      const btnEl = document.getElementById('btnFiltrosAvancadosEventos');
+
+      if (ativos.length > 0) {
+        if (resumoEl) resumoEl.innerHTML = '<span class="text-primary font-semibold">Filtros ativos (' + ativos.length + '):</span> ' + ativos.join(' • ');
+        if (badgeEl) badgeEl.classList.remove('hidden');
+        if (btnEl) btnEl.classList.add('bg-primary/10', 'border-primary', 'text-primary');
+      } else {
+        if (resumoEl) resumoEl.innerText = 'Filtros avançados ativos: Nenhum';
+        if (badgeEl) badgeEl.classList.add('hidden');
+        const painel = document.getElementById('painelFiltrosAvancadosEventos');
+        if (btnEl && painel && painel.classList.contains('hidden')) {
+          btnEl.classList.remove('bg-primary/10', 'border-primary', 'text-primary');
+        }
+      }
+    }
+
+    window.limparFiltrosAvancadosEventos = () => {
+      const container = document.getElementById('dynFiltrosEventos');
+      if (container) {
+        container.querySelectorAll('input, select').forEach(input => {
+          if (input.type === 'checkbox') input.checked = false;
+          else input.value = '';
+        });
+      }
+      atualizarResumoFiltrosAvancadosEventos();
+      aplicarFiltros();
+    };
+
     function aplicarFiltros() {
+      atualizarResumoFiltrosAvancadosEventos();
       let filtrados = todosEventos;
 
       // 1. Filtro de Status
@@ -712,7 +811,15 @@
         );
       }
 
-      // 4. Ordenação inteligente
+      // 4. Filtros Dinâmicos Personalizados do Admin
+      if (window.CamposDinamicos) {
+        const dynFiltros = CamposDinamicos.coletarValoresFiltros('dynFiltrosEventos');
+        if (Object.keys(dynFiltros).length > 0) {
+          filtrados = filtrados.filter(ev => CamposDinamicos.avaliarItemFiltro(ev, dynFiltros));
+        }
+      }
+
+      // 5. Ordenação inteligente
       // "Em breve" primeiro (do mais próximo para o mais distante), depois "Anteriores" (do mais recente para o mais antigo)
       filtrados.sort((a, b) => {
         const stA = calcularStatusEvento(a);

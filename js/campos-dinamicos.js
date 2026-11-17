@@ -223,5 +223,142 @@ window.CamposDinamicos = {
     `;
 
     container.innerHTML = html;
+  },
+
+  // Retorna os campos ativos configurados pelo admin como filtro de busca (filtravel === true)
+  async obterCamposFiltro(entidade) {
+    const campos = await this.obterCampos(entidade);
+    return (campos || []).filter(c => c.filtravel === true);
+  },
+
+  // Renderiza controles de filtro no container especificado
+  async renderizarFiltrosDinamicos(entidade, containerId, onChangeCallback) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+
+    const filtros = await this.obterCamposFiltro(entidade);
+    if (!filtros || filtros.length === 0) {
+      container.classList.add('hidden');
+      return;
+    }
+
+    container.classList.remove('hidden');
+
+    let html = '';
+    filtros.forEach(campo => {
+      const inputId = `filtro-dyn-${entidade}-${campo.nome_campo}`;
+      
+      if (campo.tipo_campo === 'boolean') {
+        html += `
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>${campo.rotulo}</span>
+            </label>
+            <select id="${inputId}" data-filtro-campo="${campo.nome_campo}" data-filtro-nome="${campo.nome_campo}" data-filtro-rotulo="${campo.rotulo}" data-filtro-tipo="boolean" class="filtro-dinamico-input w-full px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+              <option value="todos">Todos</option>
+              <option value="sim">Sim (${campo.rotulo})</option>
+              <option value="nao">Não</option>
+            </select>
+          </div>
+        `;
+      } else if (campo.tipo_campo === 'select') {
+        let opcoes = [];
+        if (Array.isArray(campo.opcoes)) {
+          opcoes = campo.opcoes;
+        } else if (typeof campo.opcoes === 'string') {
+          try { opcoes = JSON.parse(campo.opcoes); } catch (e) { opcoes = campo.opcoes.split(',').map(s => s.trim()).filter(Boolean); }
+        }
+
+        html += `
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              <span>${campo.rotulo}</span>
+            </label>
+            <select id="${inputId}" data-filtro-campo="${campo.nome_campo}" data-filtro-nome="${campo.nome_campo}" data-filtro-rotulo="${campo.rotulo}" data-filtro-tipo="select" class="filtro-dinamico-input w-full px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+              <option value="todos">Todos (${campo.rotulo})</option>
+              ${opcoes.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      } else {
+        html += `
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>${campo.rotulo}</span>
+            </label>
+            <input type="${campo.tipo_campo === 'number' ? 'number' : 'text'}" id="${inputId}" data-filtro-campo="${campo.nome_campo}" data-filtro-nome="${campo.nome_campo}" data-filtro-rotulo="${campo.rotulo}" data-filtro-tipo="${campo.tipo_campo}" placeholder="${campo.placeholder || campo.rotulo}" class="filtro-dinamico-input w-full px-3 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors">
+          </div>
+        `;
+      }
+    });
+
+    container.innerHTML = html;
+
+    // Vincular listener de mudança
+    if (typeof onChangeCallback === 'function') {
+      const inputs = container.querySelectorAll('.filtro-dinamico-input');
+      inputs.forEach(input => {
+        input.addEventListener('change', onChangeCallback);
+        if (input.tagName === 'INPUT') {
+          input.addEventListener('input', onChangeCallback);
+        }
+      });
+    }
+  },
+
+  // Coleta os critérios de filtros dinâmicos ativos
+  coletarValoresFiltros(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return {};
+    const inputs = container.querySelectorAll('.filtro-dinamico-input');
+    const filtros = {};
+
+    inputs.forEach(input => {
+      const nome = input.getAttribute('data-filtro-campo') || input.getAttribute('data-filtro-nome');
+      const tipo = input.getAttribute('data-filtro-tipo');
+      if (!nome) return;
+
+      const val = input.value.trim();
+      if (val !== '' && val !== 'todos') {
+        filtros[nome] = { tipo, valor: val };
+      }
+    });
+
+    return filtros;
+  },
+
+  // Avalia se um item cultural satisfaz todos os critérios de filtros dinâmicos selecionados
+  avaliarItemFiltro(item, filtrosAtivos) {
+    if (!filtrosAtivos || Object.keys(filtrosAtivos).length === 0) return true;
+    const extras = item.dados_extras || {};
+
+    for (const [nomeCampo, filtro] of Object.entries(filtrosAtivos)) {
+      const itemVal = extras[nomeCampo];
+
+      if (filtro.tipo === 'boolean') {
+        const isSim = (itemVal === true || itemVal === 'Sim' || itemVal === 'sim' || itemVal === 'true');
+        if (filtro.valor === 'sim' && !isSim) return false;
+        if (filtro.valor === 'nao' && isSim) return false;
+      } else if (filtro.tipo === 'select') {
+        if (!itemVal || String(itemVal).trim().toLowerCase() !== String(filtro.valor).trim().toLowerCase()) {
+          return false;
+        }
+      } else if (filtro.tipo === 'number') {
+        const numVal = parseFloat(itemVal);
+        const reqNum = parseFloat(filtro.valor);
+        if (isNaN(numVal) || numVal < reqNum) return false;
+      } else {
+        // text
+        if (!itemVal || !String(itemVal).toLowerCase().includes(String(filtro.valor).toLowerCase())) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 };

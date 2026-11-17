@@ -68,6 +68,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <script src="../js/campos-dinamicos.js"></script>
   <script src="../js/cadastro-modal.js?v=5"></script>
 
   <style>
@@ -344,6 +345,9 @@
         </div>
       </div>
 
+      <!-- Filtros Dinâmicos Personalizados pelo Admin -->
+      <div id="advFiltrosDinamicosAgentes" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4"></div>
+
       <div class="mt-4 flex flex-wrap justify-between items-center pt-3 border-t border-border/60 text-xs text-muted-foreground gap-2">
         <span id="advFiltroResumo" class="font-medium">Filtros avançados ativos: Nenhum</span>
         <button type="button" onclick="limparFiltrosAvancados()" class="px-3 py-1.5 rounded-md hover:bg-muted font-medium text-primary hover:underline transition-colors cursor-pointer">
@@ -538,7 +542,7 @@
           // Busca apenas as colunas leves necessárias para a listagem (evita baixar megabytes de galerias e PDFs)
           const { data, error } = await supabaseClient
             .from('agentes')
-            .select('id, nome, area, municipio, foto, bio, contato, endereco, redes_sociais, projeto_mulheres, mulheres_na_musica, genero, etnia, pcd, tipo_atuacao, destaque')
+            .select('id, nome, area, municipio, foto, bio, contato, endereco, redes_sociais, projeto_mulheres, mulheres_na_musica, genero, etnia, pcd, tipo_atuacao, destaque, dados_extras')
             .order('nome', {ascending: true});
 
           if (!error && Array.isArray(data) && data.length > 0) {
@@ -586,6 +590,11 @@
         try {
           sessionStorage.setItem('agentes_cache', JSON.stringify(loaded));
         } catch (e) {}
+      }
+
+      // Renderiza filtros dinâmicos configurados pelo admin
+      if (window.CamposDinamicos) {
+        await CamposDinamicos.renderizarFiltrosDinamicos('agente', 'advFiltrosDinamicosAgentes', aplicarFiltros);
       }
 
       const urlParams = new URLSearchParams(window.location.search);
@@ -834,7 +843,9 @@
     }
 
     function temFiltrosAvancadosAtivos() {
-      return (advGenero !== 'todos') || (advEtnia !== 'todas') || (advPcd !== 'todos') || (advTipoAtuacao !== 'todos');
+      const padrao = (advGenero !== 'todos') || (advEtnia !== 'todas') || (advPcd !== 'todos') || (advTipoAtuacao !== 'todos');
+      const dynFiltros = window.CamposDinamicos ? CamposDinamicos.coletarValoresFiltros('advFiltrosDinamicosAgentes') : {};
+      return padrao || Object.keys(dynFiltros).length > 0;
     }
 
     function atualizarResumoFiltrosAvancados() {
@@ -852,6 +863,26 @@
       if (advEtnia !== 'todas') ativos.push('Etnia: ' + (e.options[e.selectedIndex]?.text || advEtnia));
       if (advPcd !== 'todos') ativos.push('PcD: ' + (advPcd === 'sim' ? 'Sim' : 'Não'));
       if (advTipoAtuacao !== 'todos') ativos.push('Atuação: ' + (advTipoAtuacao === 'coletivo' ? 'Coletivo' : 'Individual'));
+
+      if (window.CamposDinamicos) {
+        const dynFiltros = CamposDinamicos.coletarValoresFiltros('advFiltrosDinamicosAgentes');
+        const container = document.getElementById('advFiltrosDinamicosAgentes');
+        if (container) {
+          Object.keys(dynFiltros).forEach(key => {
+            const el = container.querySelector(`[data-filtro-campo="${key}"]`);
+            if (el) {
+              const rotulo = el.getAttribute('data-filtro-rotulo') || key;
+              let val = dynFiltros[key];
+              if (el.tagName === 'SELECT' && el.selectedIndex >= 0) {
+                val = el.options[el.selectedIndex].text;
+              } else if (el.type === 'checkbox') {
+                val = 'Sim';
+              }
+              ativos.push(`${rotulo}: ${val}`);
+            }
+          });
+        }
+      }
 
       const resumoEl = document.getElementById('advFiltroResumo');
       const badgeEl = document.getElementById('badgeFiltrosAtivos');
@@ -880,6 +911,15 @@
       advEtnia = 'todas';
       advPcd = 'todos';
       advTipoAtuacao = 'todos';
+
+      const dynCont = document.getElementById('advFiltrosDinamicosAgentes');
+      if (dynCont) {
+        dynCont.querySelectorAll('input, select').forEach(input => {
+          if (input.type === 'checkbox') input.checked = false;
+          else input.value = '';
+        });
+      }
+
       atualizarResumoFiltrosAvancados();
       aplicarFiltros();
     }
@@ -983,7 +1023,16 @@
           matchTipoAtuacao = (advTipoAtuacao === 'coletivo') ? isColetivo : !isColetivo;
         }
 
-        return matchBusca && matchArea && matchMunicipio && matchGenero && matchEtnia && matchPcd && matchTipoAtuacao;
+        // 5. Filtros Dinâmicos Personalizados do Admin
+        let matchDinamico = true;
+        if (window.CamposDinamicos) {
+          const dynFiltros = CamposDinamicos.coletarValoresFiltros('advFiltrosDinamicosAgentes');
+          if (Object.keys(dynFiltros).length > 0) {
+            matchDinamico = CamposDinamicos.avaliarItemFiltro(a, dynFiltros);
+          }
+        }
+
+        return matchBusca && matchArea && matchMunicipio && matchGenero && matchEtnia && matchPcd && matchTipoAtuacao && matchDinamico;
       });
 
       renderAgentes(filtrados);

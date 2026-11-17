@@ -63,6 +63,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="../js/supabase-integration.js?v=2" defer></script>
+  <script src="../js/campos-dinamicos.js" defer></script>
   <script src="../js/cadastro-modal.js?v=5" defer></script>
 
   <style>
@@ -344,10 +345,29 @@
           </div>
         </div>
 
+        <!-- Botão Filtros Avançados -->
+        <button id="btnFiltrosAvancadosEspacos" onclick="togglePainelAvancadoEspacos(event)" class="bg-background border border-input text-foreground hover:border-primary hover:text-primary px-4 py-2.5 rounded-md font-medium text-sm transition-all flex items-center gap-2 cursor-pointer shadow-sm relative shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          <span>Filtros Avançados</span>
+          <span id="badgeFiltrosAtivosEspacos" class="hidden w-2.5 h-2.5 rounded-full bg-primary absolute -top-1 -right-1 ring-2 ring-background"></span>
+        </button>
+
         <button onclick="abrirModalCadastro('espaco')" class="btn-novo-item px-4 py-2.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 font-semibold text-sm transition-all shadow-sm flex items-center gap-1.5 shrink-0 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
           <span>Novo Espaço</span>
         </button>
+      </div>
+
+      <!-- Painel Expansível de Filtros Avançados de Espaços -->
+      <div id="painelFiltrosAvancadosEspacos" class="hidden w-full mt-2 pt-4 border-t border-border transition-all duration-300">
+        <!-- Container dos Filtros Dinâmicos -->
+        <div id="dynFiltrosEspacos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+        <div class="mt-4 flex flex-wrap justify-between items-center pt-3 border-t border-border/60 text-xs text-muted-foreground gap-2">
+          <span id="advFiltroResumoEspacos" class="font-medium">Filtros avançados ativos: Nenhum</span>
+          <button type="button" onclick="limparFiltrosAvancadosEspacos()" class="px-3 py-1.5 rounded-md hover:bg-muted font-medium text-primary hover:underline transition-colors cursor-pointer">
+            Limpar Filtros Avançados
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -455,6 +475,9 @@
       }
 
       todosEspacos = fetched;
+      if (window.CamposDinamicos) {
+        await CamposDinamicos.renderizarFiltrosDinamicos('espaco', 'dynFiltrosEspacos', aplicarFiltros);
+      }
       aplicarFiltros();
     }
 
@@ -647,7 +670,83 @@
       return String(str).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
     }
 
+    window.togglePainelAvancadoEspacos = (e) => {
+      e?.stopPropagation();
+      const painel = document.getElementById('painelFiltrosAvancadosEspacos');
+      const btn = document.getElementById('btnFiltrosAvancadosEspacos');
+      if (painel) {
+        const isHidden = painel.classList.contains('hidden');
+        if (isHidden) {
+          painel.classList.remove('hidden');
+          if (btn) btn.classList.add('bg-primary/10', 'border-primary', 'text-primary');
+        } else {
+          painel.classList.add('hidden');
+          if (btn && !temFiltrosAvancadosEspacosAtivos()) {
+            btn.classList.remove('bg-primary/10', 'border-primary', 'text-primary');
+          }
+        }
+      }
+    };
+
+    function temFiltrosAvancadosEspacosAtivos() {
+      const dynFiltros = window.CamposDinamicos ? CamposDinamicos.coletarValoresFiltros('dynFiltrosEspacos') : {};
+      return Object.keys(dynFiltros).length > 0;
+    }
+
+    function atualizarResumoFiltrosAvancadosEspacos() {
+      const ativos = [];
+      if (window.CamposDinamicos) {
+        const dynFiltros = CamposDinamicos.coletarValoresFiltros('dynFiltrosEspacos');
+        const container = document.getElementById('dynFiltrosEspacos');
+        if (container) {
+          Object.keys(dynFiltros).forEach(key => {
+            const el = container.querySelector(`[data-filtro-campo="${key}"]`);
+            if (el) {
+              const rotulo = el.getAttribute('data-filtro-rotulo') || key;
+              let val = dynFiltros[key];
+              if (el.tagName === 'SELECT' && el.selectedIndex >= 0) {
+                val = el.options[el.selectedIndex].text;
+              } else if (el.type === 'checkbox') {
+                val = 'Sim';
+              }
+              ativos.push(`${rotulo}: ${val}`);
+            }
+          });
+        }
+      }
+
+      const resumoEl = document.getElementById('advFiltroResumoEspacos');
+      const badgeEl = document.getElementById('badgeFiltrosAtivosEspacos');
+      const btnEl = document.getElementById('btnFiltrosAvancadosEspacos');
+
+      if (ativos.length > 0) {
+        if (resumoEl) resumoEl.innerHTML = '<span class="text-primary font-semibold">Filtros ativos (' + ativos.length + '):</span> ' + ativos.join(' • ');
+        if (badgeEl) badgeEl.classList.remove('hidden');
+        if (btnEl) btnEl.classList.add('bg-primary/10', 'border-primary', 'text-primary');
+      } else {
+        if (resumoEl) resumoEl.innerText = 'Filtros avançados ativos: Nenhum';
+        if (badgeEl) badgeEl.classList.add('hidden');
+        const painel = document.getElementById('painelFiltrosAvancadosEspacos');
+        if (btnEl && painel && painel.classList.contains('hidden')) {
+          btnEl.classList.remove('bg-primary/10', 'border-primary', 'text-primary');
+        }
+      }
+    }
+
+    window.limparFiltrosAvancadosEspacos = () => {
+      const container = document.getElementById('dynFiltrosEspacos');
+      if (container) {
+        container.querySelectorAll('input, select').forEach(input => {
+          if (input.type === 'checkbox') input.checked = false;
+          else input.value = '';
+        });
+      }
+      atualizarResumoFiltrosAvancadosEspacos();
+      aplicarFiltros();
+    };
+
     function aplicarFiltros() {
+      atualizarResumoFiltrosAvancadosEspacos();
       let filtrados = todosEspacos;
       if (tipoAtual !== 'Todos') {
         if (tipoAtual === 'Acessível PcD') {
@@ -679,6 +778,15 @@
           normalizeStr(esp.municipio || 'Jacareí').includes(termo)
         );
       }
+
+      // Filtros Dinâmicos Personalizados do Admin
+      if (window.CamposDinamicos) {
+        const dynFiltros = CamposDinamicos.coletarValoresFiltros('dynFiltrosEspacos');
+        if (Object.keys(dynFiltros).length > 0) {
+          filtrados = filtrados.filter(esp => CamposDinamicos.avaliarItemFiltro(esp, dynFiltros));
+        }
+      }
+
       renderEspacos(filtrados);
     }
 
