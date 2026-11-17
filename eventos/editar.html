@@ -51,6 +51,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <script src="../js/campos-dinamicos.js"></script>
 
   <style>
     .hide-scroll-indicator::-webkit-scrollbar {
@@ -323,6 +324,10 @@
         window.currentFotoData = agente.foto;
       }
 
+      if (window.CamposDinamicos) {
+        window.CamposDinamicos.renderizar('evento', 'edit-evento-dynamic-fields', agente.dados_extras || {});
+      }
+
       document.getElementById('loading-state').classList.add('hidden');
       document.getElementById('edit-form-container').classList.remove('hidden');
     }
@@ -391,6 +396,10 @@
         pcd: document.getElementById('edit-pcd') ? document.getElementById('edit-pcd').checked : false,
         foto: window.currentFotoData || null
       };
+
+      if (window.CamposDinamicos) {
+        updates.dados_extras = window.CamposDinamicos.coletarValores('edit-evento-dynamic-fields');
+      }
 
       if (updates.local) {
         try {

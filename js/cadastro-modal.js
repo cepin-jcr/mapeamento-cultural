@@ -4,6 +4,18 @@
  */
 
 (function () {
+  // Garante que o modulo de campos dinamicos esteja carregado
+  if (typeof window.CamposDinamicos === 'undefined') {
+    var cdScript = document.createElement('script');
+    var isSubdir = window.location.pathname.indexOf('/agentes/') !== -1 ||
+                   window.location.pathname.indexOf('/espacos/') !== -1 ||
+                   window.location.pathname.indexOf('/eventos/') !== -1 ||
+                   window.location.pathname.indexOf('/perfil/') !== -1 ||
+                   window.location.pathname.indexOf('/mapa/') !== -1 ||
+                   window.location.pathname.indexOf('/calendario/') !== -1;
+    cdScript.src = (isSubdir ? '../' : './') + 'js/campos-dinamicos.js';
+    document.head.appendChild(cdScript);
+  }
   window._currentEditing = null; // Armazena { tipo: 'evento'|'agente'|'espaco', id: '...' } quando em modo de edição
 
   // Compressão de imagem automática via HTML5 Canvas
@@ -232,6 +244,9 @@
               <img id="preview-cad-evento" class="hidden mt-2 h-36 w-full object-cover rounded-xl border border-border">
             </div>
 
+            <!-- Campos Dinamicos Evento -->
+            <div id="cad-evento-dynamic-fields" class="space-y-4"></div>
+
             <div class="pt-4 border-t border-border flex justify-end gap-3">
               <button type="button" onclick="fecharModalCadastro()" class="px-5 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer">Cancelar</button>
               <button type="submit" id="btn-submit-evento" class="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-glow shadow-sm transition-all flex items-center gap-2 cursor-pointer">
@@ -429,6 +444,9 @@
               </div>
 
 
+            <!-- Campos Dinamicos Agente -->
+            <div id="cad-agente-dynamic-fields" class="space-y-4"></div>
+
             <div class="pt-4 border-t border-border flex justify-end gap-3">
               <button type="button" onclick="fecharModalCadastro()" class="px-5 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer">Cancelar</button>
               <button type="submit" id="btn-submit-agente" class="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-glow shadow-sm transition-all flex items-center gap-2 cursor-pointer">
@@ -564,6 +582,9 @@
               <input type="file" id="cad-espaco-foto" accept="image/*" onchange="previewImagemCadastro(event, 'preview-cad-espaco')" class="w-full text-xs text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer">
               <img id="preview-cad-espaco" class="hidden mt-2 h-36 w-full object-cover rounded-xl border border-border">
             </div>
+
+            <!-- Campos Dinamicos Espaco -->
+            <div id="cad-espaco-dynamic-fields" class="space-y-4"></div>
 
             <div class="pt-4 border-t border-border flex justify-end gap-3">
               <button type="button" onclick="fecharModalCadastro()" class="px-5 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer">Cancelar</button>
@@ -708,6 +729,9 @@
     if (btnSubmit) btnSubmit.querySelector('span').innerText = cfg.btn;
 
     trocarAbaCadastro(tipo);
+    if (window.CamposDinamicos) {
+      window.CamposDinamicos.renderizar(tipo, 'cad-' + tipo + '-dynamic-fields', {});
+    }
 
     const modal = document.getElementById('modal-cadastro-global');
     const dialog = document.getElementById('modal-cadastro-dialog');
@@ -844,6 +868,10 @@
               prev.src = data.foto || data.imagem;
               prev.classList.remove('hidden');
             }
+          }
+
+          if (window.CamposDinamicos) {
+            window.CamposDinamicos.renderizar(tipo, 'cad-' + tipo + '-dynamic-fields', data.dados_extras || {});
           }
         }
       }
@@ -987,6 +1015,10 @@
         lat: lat,
         lng: lng
       };
+
+      if (window.CamposDinamicos) {
+        payload.dados_extras = window.CamposDinamicos.coletarValores('cad-evento-dynamic-fields');
+      }
 
       if (user) {
         if (user.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(user.id))) {
@@ -1138,6 +1170,10 @@
         lat: lat,
         lng: lng
       };
+
+      if (window.CamposDinamicos) {
+        payload.dados_extras = window.CamposDinamicos.coletarValores('cad-agente-dynamic-fields');
+      }
       
       if (isSignup) {
         const lgpd = document.getElementById('cad-agente-lgpd');
@@ -1294,6 +1330,10 @@
         lat: lat,
         lng: lng
       };
+
+      if (window.CamposDinamicos) {
+        payload.dados_extras = window.CamposDinamicos.coletarValores('cad-espaco-dynamic-fields');
+      }
 
       if (user) {
         const uid = parseInt(user.id, 10);

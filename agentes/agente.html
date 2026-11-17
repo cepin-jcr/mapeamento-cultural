@@ -72,6 +72,7 @@
   <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
+  <script src="../js/campos-dinamicos.js"></script>
 
   <style>
     .hide-scroll-indicator::-webkit-scrollbar {
@@ -197,6 +198,8 @@
             <p id="agente-bio" class="text-muted-foreground leading-relaxed">
               Carregando biografia...
             </p>
+            <!-- Campos Dinâmicos Extras -->
+            <div id="agente-campos-extras" class="hidden"></div>
           </div>
         </div>
 
@@ -455,6 +458,9 @@
       document.getElementById('agente-area').innerText = agente.area || 'Diversos';
       document.getElementById('sidebar-area').innerText = agente.area || 'Diversos';
       document.getElementById('agente-bio').innerText = agente.bio || 'Nenhuma biografia informada.';
+      if (window.CamposDinamicos) {
+        window.CamposDinamicos.renderizarExibicao(agente.dados_extras, 'agente', 'agente-campos-extras');
+      }
       const muni = agente.municipio || 'Jacareí';
       if (document.getElementById('agente-location')) {
         document.getElementById('agente-location').innerText = `${muni} - SP`;

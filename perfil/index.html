@@ -64,6 +64,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-integration.js?v=2"></script>
   <script src="../js/db.js"></script>
+  <script src="../js/campos-dinamicos.js"></script>
   <script src="../js/cadastro-modal.js?v=5"></script>
   <!-- bcryptjs for password hashing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
@@ -600,6 +601,11 @@
                 <span>CEPIN</span>
               </button>
 
+              <button type="button" onclick="switchAdminTab('campos')" id="tab-campos" class="flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all text-left">
+                <svg class="w-4 h-4 shrink-0 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                <span>Campos / FormulÃ¡rios</span>
+              </button>
+
             </nav>
           </aside>
 
@@ -752,6 +758,168 @@
                 <div id="cepin-equipe-dev-list" class="space-y-2"></div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Tab: Gerenciador de Campos / FormulÃ¡rios DinÃ¢micos -->
+        <div id="admin-tab-campos" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-3 border-b border-border pb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="p-1.5 rounded-lg bg-primary/10 text-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </span>
+                <h4 class="text-base font-bold text-foreground">Gerenciador de Campos dos FormulÃ¡rios</h4>
+              </div>
+              <p class="text-xs text-muted-foreground mt-1">Adicione, edite, reorganize ou remova colunas e campos nos cadastros de Agentes, EspaÃ§os e Eventos sem alterar o cÃ³digo-fonte.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="loadAdminCamposData(true)" class="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Recarregar dados">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              </button>
+              <button type="button" onclick="abrirModalCriarCampo()" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg hover:bg-primary-glow transition-all flex items-center gap-1.5 shadow-sm cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                <span>Novo Campo</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Seletor de Entidade (Sub-tabs) -->
+          <div class="flex gap-2 p-1 bg-muted/30 rounded-xl border border-border/60">
+            <button type="button" onclick="trocarEntidadeCampos('agente')" id="subtab-campos-agente" class="flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-primary text-primary-foreground shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12"/><circle cx="17" cy="7" r="5"/></svg>
+              <span>Agentes Culturais</span>
+              <span id="badge-count-agente" class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 text-white font-semibold">0</span>
+            </button>
+            <button type="button" onclick="trocarEntidadeCampos('espaco')" id="subtab-campos-espaco" class="flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>EspaÃ§os Culturais</span>
+              <span id="badge-count-espaco" class="px-1.5 py-0.2 rounded-full text-[10px] bg-muted text-muted-foreground font-semibold">0</span>
+            </button>
+            <button type="button" onclick="trocarEntidadeCampos('evento')" id="subtab-campos-evento" class="flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>Eventos</span>
+              <span id="badge-count-evento" class="px-1.5 py-0.2 rounded-full text-[10px] bg-muted text-muted-foreground font-semibold">0</span>
+            </button>
+          </div>
+
+          <!-- VisualizaÃ§Ã£o e OrganizaÃ§Ã£o dos Campos -->
+          <div id="admin-campos-container" class="space-y-6">
+            <div class="text-center py-8 text-muted-foreground text-sm italic">
+              Carregando campos do formulÃ¡rio...
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de CriaÃ§Ã£o / EdiÃ§Ã£o de Campo Personalizado -->
+        <div id="modal-campo-form" class="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-background/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+          <div class="relative w-full max-w-xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transform scale-95 transition-all duration-300" id="modal-campo-form-dialog">
+            <!-- Header Modal -->
+            <div class="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/20">
+              <div class="flex items-center gap-2.5">
+                <span class="p-2 rounded-xl bg-primary/10 text-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </span>
+                <div>
+                  <h3 id="modal-campo-title" class="text-base font-bold text-foreground">Novo Campo Personalizado</h3>
+                  <p class="text-xs text-muted-foreground">Defina as propriedades do campo para os formulÃ¡rios</p>
+                </div>
+              </div>
+              <button type="button" onclick="fecharModalCampo()" class="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer" aria-label="Fechar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+
+            <!-- Body Form -->
+            <form id="form-salvar-campo" onsubmit="salvarCampoFormulario(event)" class="p-6 overflow-y-auto space-y-4">
+              <input type="hidden" id="modal-campo-id" value="">
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">Entidade Alvo *</label>
+                  <select id="modal-campo-entidade" required class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                    <option value="agente">Agente Cultural</option>
+                    <option value="espaco">EspaÃ§o Cultural</option>
+                    <option value="evento">Evento</option>
+                  </select>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">Tipo de Entrada *</label>
+                  <select id="modal-campo-tipo" required onchange="toggleCampoOpcoesVisibility(this.value)" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                    <option value="text">Texto Curto (Input comum)</option>
+                    <option value="textarea">Texto Longo / DescriÃ§Ã£o (Textarea)</option>
+                    <option value="number">NÃºmero (Inteiro ou Decimal)</option>
+                    <option value="boolean">Checkbox Sim / NÃ£o</option>
+                    <option value="select">Lista de SeleÃ§Ã£o (Dropdown)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">RÃ³tulo VisÃ­vel (Label) *</label>
+                <input type="text" id="modal-campo-rotulo" required placeholder="Ex: Capacidade de PÃºblico, IntÃ©rprete de Libras" onblur="sugerirNomeCampo(this.value)" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                <p class="text-[11px] text-muted-foreground">O texto que o usuÃ¡rio ou administrador verÃ¡ acima do campo no formulÃ¡rio.</p>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">Nome TÃ©cnico da Chave (ID Interno) *</label>
+                <input type="text" id="modal-campo-nome" required placeholder="Ex: capacidade_publico, interprete_libras" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-mono transition-all">
+                <p class="text-[11px] text-muted-foreground">Nome Ãºnico da propriedade gravada no banco de dados (letras minÃºsculas e _).</p>
+              </div>
+
+              <!-- OpÃ§Ãµes do Select (oculto por padrÃ£o) -->
+              <div id="container-modal-campo-opcoes" class="hidden space-y-1.5">
+                <label class="text-xs font-bold uppercase tracking-wider text-foreground">OpÃ§Ãµes da Lista de SeleÃ§Ã£o (Separadas por VÃ­rgula) *</label>
+                <textarea id="modal-campo-opcoes" rows="2" placeholder="Ex: ManhÃ£, Tarde, Noite, Integral" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"></textarea>
+                <p class="text-[11px] text-muted-foreground">Digite as alternativas disponÃ­veis separadas por vÃ­rgula.</p>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">SeÃ§Ã£o / Categoria Visual</label>
+                  <input type="text" id="modal-campo-secao" list="secoes-sugeridas" placeholder="Ex: Estrutura & LotaÃ§Ã£o" class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                  <datalist id="secoes-sugeridas">
+                    <option value="Geral">
+                    <option value="Estrutura & LotaÃ§Ã£o">
+                    <option value="Acessibilidade & InclusÃ£o">
+                    <option value="Redes & ComunicaÃ§Ã£o">
+                    <option value="InformaÃ§Ãµes Adicionais">
+                  </datalist>
+                  <p class="text-[11px] text-muted-foreground">Agrupa visualmente o campo com outros da mesma categoria.</p>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-bold uppercase tracking-wider text-foreground">Placeholder (Texto de Exemplo)</label>
+                  <input type="text" id="modal-campo-placeholder" placeholder="Ex: Digite aqui..." class="w-full px-3.5 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <label class="flex items-center gap-2 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+                  <input type="checkbox" id="modal-campo-obrigatorio" class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <span class="text-xs font-semibold text-foreground">ObrigatÃ³rio</span>
+                </label>
+
+                <label class="flex items-center gap-2 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+                  <input type="checkbox" id="modal-campo-ativo" checked class="rounded text-primary focus:ring-primary h-4 w-4">
+                  <span class="text-xs font-semibold text-foreground">Ativo no Site</span>
+                </label>
+
+                <div class="space-y-1">
+                  <label class="text-[11px] font-bold uppercase text-muted-foreground block">Ordem</label>
+                  <input type="number" id="modal-campo-ordem" value="10" min="0" class="w-full px-3 py-2 bg-background border border-input rounded-xl text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary">
+                </div>
+              </div>
+
+              <!-- Footer Modal -->
+              <div class="pt-4 border-t border-border flex justify-end gap-3">
+                <button type="button" onclick="fecharModalCampo()" class="px-5 py-2.5 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer">Cancelar</button>
+                <button type="submit" id="btn-salvar-campo-modal" class="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary-glow shadow-sm transition-all flex items-center gap-2 cursor-pointer">
+                  <span>Salvar Campo</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -1151,6 +1319,8 @@
 
       if (tabId === 'cepin') {
         loadCepinAdminData();
+      } else if (tabId === 'campos') {
+        loadAdminCamposData();
       } else if (tabId === 'agentes') {
         const el = document.getElementById('admin-all-agentes-list');
         if (el && (!el.children.length || el.innerText.includes('Carregando'))) {
@@ -1705,6 +1875,518 @@
         alert('Erro ao salvar. Verifique se você criou a tabela "configuracoes_cepin" no Supabase como indicado. Erro: ' + error.message);
       }
     };
+
+    // =========================================================================
+    // GERENCIADOR DE CAMPOS E FORMULÃRIOS DINÃ‚MICOS (ADMIN)
+    // =========================================================================
+    let currentEntidadeCampos = 'agente';
+    let todosCamposAdmin = [];
+    let editandoCampoId = null;
+
+    // Campos nativos fixos do sistema para orientaÃ§Ã£o visual
+    const camposPadraoConfig = {
+      agente: [
+        { rotulo: 'Nome ArtÃ­stico / Coletivo', tipo: 'Texto Curto', secao: 'IdentificaÃ§Ã£o & Principal', obrigatorio: true },
+        { rotulo: 'Ãrea de AtuaÃ§Ã£o Cultural (MÃºsica, Teatro, etc.)', tipo: 'Lista / SeleÃ§Ã£o MÃºltipla', secao: 'IdentificaÃ§Ã£o & Principal', obrigatorio: true },
+        { rotulo: 'Selo "Mulheres na MÃºsica"', tipo: 'Checkbox Sim/NÃ£o', secao: 'IdentificaÃ§Ã£o & Principal', obrigatorio: false },
+        { rotulo: 'MunicÃ­pio do Vale do ParaÃ­ba', tipo: 'SeleÃ§Ã£o', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
+        { rotulo: 'EndereÃ§o Completo (Rua, NÃºmero, Bairro)', tipo: 'Texto Curto', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
+        { rotulo: 'GÃªnero / Identidade de GÃªnero', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
+        { rotulo: 'RaÃ§a / Cor / Etnia', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
+        { rotulo: 'Pessoa com DeficiÃªncia (PcD)', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
+        { rotulo: 'Tipo de AtuaÃ§Ã£o (Individual / Coletivo)', tipo: 'SeleÃ§Ã£o', secao: 'Dados DemogrÃ¡ficos', obrigatorio: false },
+        { rotulo: 'Biografia / Mini-bio', tipo: 'Texto Longo', secao: 'ApresentaÃ§Ã£o & PortfÃ³lio', obrigatorio: false },
+        { rotulo: 'Contato & Redes Sociais', tipo: 'Texto Curto', secao: 'ApresentaÃ§Ã£o & PortfÃ³lio', obrigatorio: false },
+        { rotulo: 'Foto de Perfil & Galeria', tipo: 'Arquivo / Imagem', secao: 'MÃ­dia & PortfÃ³lio', obrigatorio: false }
+      ],
+      espaco: [
+        { rotulo: 'Nome do EspaÃ§o Cultural', tipo: 'Texto Curto', secao: 'Geral', obrigatorio: true },
+        { rotulo: 'Tipo de EspaÃ§o (PÃºblico, Privado, etc.)', tipo: 'SeleÃ§Ã£o', secao: 'Geral', obrigatorio: true },
+        { rotulo: 'Categoria Cultural', tipo: 'Texto Curto', secao: 'Geral', obrigatorio: false },
+        { rotulo: 'MunicÃ­pio do Vale do ParaÃ­ba', tipo: 'SeleÃ§Ã£o', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
+        { rotulo: 'EndereÃ§o Completo', tipo: 'Texto Curto', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
+        { rotulo: 'EspaÃ§o com Acessibilidade para PcD', tipo: 'Checkbox Sim/NÃ£o', secao: 'Acessibilidade & InclusÃ£o', obrigatorio: false },
+        { rotulo: 'DescriÃ§Ã£o do EspaÃ§o', tipo: 'Texto Longo', secao: 'InformaÃ§Ãµes', obrigatorio: false },
+        { rotulo: 'Contato & InformaÃ§Ãµes', tipo: 'Texto Curto', secao: 'InformaÃ§Ãµes', obrigatorio: false },
+        { rotulo: 'Foto de Capa', tipo: 'Arquivo / Imagem', secao: 'MÃ­dia', obrigatorio: false }
+      ],
+      evento: [
+        { rotulo: 'Nome do Evento', tipo: 'Texto Curto', secao: 'IdentificaÃ§Ã£o & Categoria', obrigatorio: true },
+        { rotulo: 'Categoria do Evento (MÃºsica, Teatro, etc.)', tipo: 'SeleÃ§Ã£o', secao: 'IdentificaÃ§Ã£o & Categoria', obrigatorio: true },
+        { rotulo: 'Data e HorÃ¡rio', tipo: 'Texto Curto', secao: 'ProgramaÃ§Ã£o', obrigatorio: true },
+        { rotulo: 'MunicÃ­pio do Vale do ParaÃ­ba', tipo: 'SeleÃ§Ã£o', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
+        { rotulo: 'Local do Evento', tipo: 'Texto Curto', secao: 'LocalizaÃ§Ã£o', obrigatorio: true },
+        { rotulo: 'Organizador / Realizador', tipo: 'Texto Curto', secao: 'OrganizaÃ§Ã£o', obrigatorio: false },
+        { rotulo: 'Evento Anual / Por Temporada', tipo: 'Checkbox Sim/NÃ£o', secao: 'ProgramaÃ§Ã£o', obrigatorio: false },
+        { rotulo: 'Evento com Acessibilidade para PcD', tipo: 'Checkbox Sim/NÃ£o', secao: 'Acessibilidade & InclusÃ£o', obrigatorio: false },
+        { rotulo: 'DescriÃ§Ã£o do Evento', tipo: 'Texto Longo', secao: 'InformaÃ§Ãµes', obrigatorio: true },
+        { rotulo: 'Link de InformaÃ§Ãµes / Ingressos', tipo: 'URL / Link', secao: 'InformaÃ§Ãµes', obrigatorio: false },
+        { rotulo: 'Cartaz / Imagem de DivulgaÃ§Ã£o', tipo: 'Arquivo / Imagem', secao: 'MÃ­dia', obrigatorio: false }
+      ]
+    };
+
+    window.loadAdminCamposData = async (force = false) => {
+      const container = document.getElementById('admin-campos-container');
+      if (!container) return;
+      if (!window.supabaseClient) {
+        container.innerHTML = '<div class="p-4 rounded-xl border border-destructive/20 bg-destructive/10 text-destructive text-sm font-semibold">Cliente Supabase nÃ£o inicializado.</div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="text-center py-10 space-y-3">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <p class="text-xs text-muted-foreground font-medium">Carregando campos do banco de dados...</p>
+        </div>
+      `;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('campos_formulario')
+          .select('*')
+          .order('ordem', { ascending: true })
+          .order('id', { ascending: true });
+
+        if (error) throw error;
+        todosCamposAdmin = data || [];
+
+        // Atualiza contadores dos badges
+        const countAg = todosCamposAdmin.filter(c => c.entidade === 'agente').length;
+        const countEsp = todosCamposAdmin.filter(c => c.entidade === 'espaco').length;
+        const countEv = todosCamposAdmin.filter(c => c.entidade === 'evento').length;
+
+        const bAg = document.getElementById('badge-count-agente');
+        const bEsp = document.getElementById('badge-count-espaco');
+        const bEv = document.getElementById('badge-count-evento');
+        if (bAg) bAg.innerText = countAg;
+        if (bEsp) bEsp.innerText = countEsp;
+        if (bEv) bEv.innerText = countEv;
+
+        // Se CamposDinamicos existe, limpa seu cache para refletir novidades
+        if (window.CamposDinamicos) {
+          window.CamposDinamicos._cache = {};
+        }
+
+        renderAdminCampos();
+      } catch (err) {
+        console.error("Erro ao carregar campos de formulÃ¡rio:", err);
+        container.innerHTML = `
+          <div class="p-4 rounded-xl border border-destructive/20 bg-destructive/10 text-destructive text-sm space-y-2">
+            <p class="font-bold">Erro ao carregar campos de formulÃ¡rios:</p>
+            <p class="text-xs">${err.message}</p>
+          </div>
+        `;
+      }
+    };
+
+    window.trocarEntidadeCampos = (entidade) => {
+      currentEntidadeCampos = entidade;
+      ['agente', 'espaco', 'evento'].forEach(ent => {
+        const btn = document.getElementById(`subtab-campos-${ent}`);
+        if (!btn) return;
+        if (ent === entidade) {
+          btn.classList.remove('text-muted-foreground', 'hover:text-foreground', 'hover:bg-muted/50', 'font-medium');
+          btn.classList.add('bg-primary', 'text-primary-foreground', 'shadow-sm', 'font-bold');
+          const badge = btn.querySelector('span[id^="badge-count-"]');
+          if (badge) {
+            badge.classList.remove('bg-muted', 'text-muted-foreground');
+            badge.classList.add('bg-white/20', 'text-white');
+          }
+        } else {
+          btn.classList.remove('bg-primary', 'text-primary-foreground', 'shadow-sm', 'font-bold');
+          btn.classList.add('text-muted-foreground', 'hover:text-foreground', 'hover:bg-muted/50', 'font-medium');
+          const badge = btn.querySelector('span[id^="badge-count-"]');
+          if (badge) {
+            badge.classList.remove('bg-white/20', 'text-white');
+            badge.classList.add('bg-muted', 'text-muted-foreground');
+          }
+        }
+      });
+      renderAdminCampos();
+    };
+
+    window.renderAdminCampos = () => {
+      const container = document.getElementById('admin-campos-container');
+      if (!container) return;
+
+      const camposCustom = todosCamposAdmin.filter(c => c.entidade === currentEntidadeCampos);
+      const padroes = camposPadraoConfig[currentEntidadeCampos] || [];
+      const entidadeNomeMap = { agente: 'Agente Cultural', espaco: 'EspaÃ§o Cultural', evento: 'Evento' };
+      const entidadeNome = entidadeNomeMap[currentEntidadeCampos] || currentEntidadeCampos;
+
+      let html = '';
+
+      // 1. Painel de Campos PadrÃ£o (Fixos do Sistema) para visualizaÃ§Ã£o e organizaÃ§Ã£o
+      html += `
+        <div class="border border-border/80 rounded-2xl bg-card overflow-hidden shadow-xs">
+          <div class="p-4 bg-muted/20 border-b border-border/60 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="p-1.5 rounded-lg bg-muted text-muted-foreground">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <div>
+                <h5 class="text-xs font-bold uppercase tracking-wider text-foreground">Colunas Nativas do Sistema (${entidadeNome})</h5>
+                <p class="text-[11px] text-muted-foreground">Campos essenciais fixos protegidos na base de dados</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-muted text-muted-foreground uppercase tracking-wide">Fixo (${padroes.length})</span>
+          </div>
+          <div class="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+      `;
+
+      padroes.forEach(p => {
+        html += `
+          <div class="p-2.5 rounded-xl border border-border/50 bg-background/60 flex items-center justify-between">
+            <div class="truncate pr-2">
+              <span class="block text-xs font-semibold text-foreground truncate">${p.rotulo}</span>
+              <span class="block text-[10px] text-muted-foreground">${p.secao} Â· ${p.tipo}</span>
+            </div>
+            <span class="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded ${p.obrigatorio ? 'bg-amber-500/10 text-amber-600' : 'bg-muted text-muted-foreground'}">${p.obrigatorio ? 'ObrigatÃ³rio' : 'Opcional'}</span>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      // 2. Painel de Campos Personalizados (DinÃ¢micos)
+      html += `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              <h5 class="text-xs font-bold uppercase tracking-wider text-foreground">Campos Personalizados Criados pelo Admin (${camposCustom.length})</h5>
+            </div>
+            <button type="button" onclick="abrirModalCriarCampo('${currentEntidadeCampos}')" class="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer">
+              <span>+ Adicionar Campo para ${entidadeNome}</span>
+            </button>
+          </div>
+      `;
+
+      if (camposCustom.length === 0) {
+        html += `
+          <div class="p-8 text-center rounded-2xl border border-dashed border-border bg-muted/10 space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-foreground">Nenhum campo personalizado cadastrado para ${entidadeNome}</p>
+              <p class="text-xs text-muted-foreground max-w-md mx-auto mt-1">Crie colunas extras personalizadas (como capacidade, links, acessibilidade especÃ­fica) que aparecerÃ£o automaticamente na criaÃ§Ã£o e ediÃ§Ã£o!</p>
+            </div>
+            <button type="button" onclick="abrirModalCriarCampo('${currentEntidadeCampos}')" class="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-xl hover:bg-primary-glow shadow-sm transition-all cursor-pointer inline-flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              <span>Criar Primeiro Campo</span>
+            </button>
+          </div>
+        `;
+      } else {
+        // Agrupar por seÃ§Ã£o para manter a visualizaÃ§Ã£o organizada e limpa
+        const secoesMap = {};
+        camposCustom.forEach(c => {
+          const sec = c.secao || 'InformaÃ§Ãµes Adicionais';
+          if (!secoesMap[sec]) secoesMap[sec] = [];
+          secoesMap[sec].push(c);
+        });
+
+        const tipoLabels = {
+          text: 'Texto Curto',
+          textarea: 'Texto Longo',
+          number: 'NÃºmero',
+          boolean: 'Sim / NÃ£o',
+          select: 'Lista de SeleÃ§Ã£o'
+        };
+
+        for (const [nomeSecao, camposSec] of Object.entries(secoesMap)) {
+          html += `
+            <div class="border border-border rounded-2xl bg-card overflow-hidden shadow-xs">
+              <div class="px-5 py-3.5 bg-muted/20 border-b border-border flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  <h6 class="text-xs font-bold uppercase tracking-wider text-foreground">${nomeSecao}</h6>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">${camposSec.length} ${camposSec.length === 1 ? 'campo' : 'campos'}</span>
+              </div>
+              <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          `;
+
+          camposSec.forEach(campo => {
+            const tipoLabel = tipoLabels[campo.tipo_campo] || campo.tipo_campo;
+            const statusBadge = campo.ativo 
+              ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Ativo</span>'
+              : '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">Oculto</span>';
+            const reqBadge = campo.obrigatorio
+              ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-600">ObrigatÃ³rio</span>'
+              : '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-muted text-muted-foreground">Opcional</span>';
+
+            html += `
+              <div class="p-4 rounded-xl border ${campo.ativo ? 'border-border bg-background' : 'border-border/50 bg-muted/10 opacity-75'} flex flex-col justify-between gap-3 hover:border-primary/40 transition-colors shadow-2xs">
+                <div>
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <h6 class="text-sm font-bold text-foreground flex items-center gap-1.5">
+                        <span>${campo.rotulo}</span>
+                      </h6>
+                      <code class="text-[10px] text-muted-foreground font-mono bg-muted/40 px-1.5 py-0.5 rounded mt-1 inline-block">dados_extras.${campo.nome_campo}</code>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                      ${statusBadge}
+                      ${reqBadge}
+                    </div>
+                  </div>
+
+                  <div class="mt-3 flex flex-wrap gap-1.5 text-[11px] text-muted-foreground">
+                    <span class="px-2 py-0.5 rounded bg-muted/50 font-medium">Tipo: <strong class="text-foreground">${tipoLabel}</strong></span>
+                    ${campo.placeholder ? `<span class="px-2 py-0.5 rounded bg-muted/50 font-medium truncate max-w-[200px]" title="${campo.placeholder}">Ex: "${campo.placeholder}"</span>` : ''}
+                    <span class="px-2 py-0.5 rounded bg-muted/50 font-medium">Ordem: ${campo.ordem || 0}</span>
+                  </div>
+
+                  ${campo.tipo_campo === 'select' && campo.opcoes ? `
+                    <div class="mt-2 text-[10px] text-muted-foreground">
+                      <span class="font-semibold text-foreground">OpÃ§Ãµes:</span> ${(Array.isArray(campo.opcoes) ? campo.opcoes : String(campo.opcoes).split(',')).map(o => `<span class="inline-block bg-muted px-1.5 py-0.2 rounded mr-1 mt-0.5">${o.trim()}</span>`).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+
+                <div class="pt-3 border-t border-border/60 flex items-center justify-between gap-2">
+                  <button type="button" onclick="toggleStatusCampo('${campo.id}', ${campo.ativo})" class="px-2.5 py-1 rounded-lg text-xs font-semibold ${campo.ativo ? 'text-amber-600 hover:bg-amber-500/10' : 'text-emerald-600 hover:bg-emerald-500/10'} transition-colors cursor-pointer">
+                    ${campo.ativo ? 'Ocultar' : 'Ativar'}
+                  </button>
+                  <div class="flex items-center gap-1">
+                    <button type="button" onclick="abrirModalEditarCampo('${campo.id}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer">
+                      Editar
+                    </button>
+                    <button type="button" onclick="excluirCampoFormulario('${campo.id}', '${campo.rotulo.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-500/10 transition-colors cursor-pointer">
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+
+          html += `
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      html += `
+        </div>
+      `;
+
+      container.innerHTML = html;
+    };
+
+    window.toggleCampoOpcoesVisibility = (tipo) => {
+      const c = document.getElementById('container-modal-campo-opcoes');
+      if (!c) return;
+      if (tipo === 'select') {
+        c.classList.remove('hidden');
+        document.getElementById('modal-campo-opcoes').setAttribute('required', 'required');
+      } else {
+        c.classList.add('hidden');
+        document.getElementById('modal-campo-opcoes').removeAttribute('required');
+      }
+    };
+
+    window.sugerirNomeCampo = (rotulo) => {
+      const nomeInput = document.getElementById('modal-campo-nome');
+      if (nomeInput && !nomeInput.value.trim() && rotulo) {
+        nomeInput.value = rotulo
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, '_')
+          .replace(/_+/g, '_')
+          .replace(/^_|_$/g, '');
+      }
+    };
+
+    window.abrirModalCriarCampo = (entidadePredefinida) => {
+      editandoCampoId = null;
+      document.getElementById('modal-campo-title').innerText = "Novo Campo Personalizado";
+      document.getElementById('modal-campo-id').value = "";
+      document.getElementById('modal-campo-entidade').value = entidadePredefinida || currentEntidadeCampos || 'agente';
+      document.getElementById('modal-campo-rotulo').value = "";
+      document.getElementById('modal-campo-nome').value = "";
+      document.getElementById('modal-campo-tipo').value = "text";
+      document.getElementById('modal-campo-opcoes').value = "";
+      document.getElementById('modal-campo-secao').value = "InformaÃ§Ãµes Adicionais";
+      document.getElementById('modal-campo-placeholder').value = "";
+      document.getElementById('modal-campo-obrigatorio').checked = false;
+      document.getElementById('modal-campo-ativo').checked = true;
+      document.getElementById('modal-campo-ordem').value = "10";
+      toggleCampoOpcoesVisibility('text');
+
+      const modal = document.getElementById('modal-campo-form');
+      const dialog = document.getElementById('modal-campo-form-dialog');
+      if (modal && dialog) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        dialog.classList.remove('scale-95');
+        dialog.classList.add('scale-100');
+      }
+    };
+
+    window.abrirModalEditarCampo = (campoId) => {
+      const campo = todosCamposAdmin.find(c => String(c.id) === String(campoId));
+      if (!campo) return;
+      editandoCampoId = campo.id;
+
+      document.getElementById('modal-campo-title').innerText = "Editar Campo Personalizado";
+      document.getElementById('modal-campo-id').value = campo.id;
+      document.getElementById('modal-campo-entidade').value = campo.entidade || 'agente';
+      document.getElementById('modal-campo-rotulo').value = campo.rotulo || '';
+      document.getElementById('modal-campo-nome').value = campo.nome_campo || '';
+      document.getElementById('modal-campo-tipo').value = campo.tipo_campo || 'text';
+      
+      let opts = '';
+      if (Array.isArray(campo.opcoes)) opts = campo.opcoes.join(', ');
+      else if (typeof campo.opcoes === 'string') opts = campo.opcoes;
+      document.getElementById('modal-campo-opcoes').value = opts;
+
+      document.getElementById('modal-campo-secao').value = campo.secao || 'InformaÃ§Ãµes Adicionais';
+      document.getElementById('modal-campo-placeholder').value = campo.placeholder || '';
+      document.getElementById('modal-campo-obrigatorio').checked = !!campo.obrigatorio;
+      document.getElementById('modal-campo-ativo').checked = (campo.ativo !== false);
+      document.getElementById('modal-campo-ordem').value = campo.ordem || 10;
+
+      toggleCampoOpcoesVisibility(campo.tipo_campo);
+
+      const modal = document.getElementById('modal-campo-form');
+      const dialog = document.getElementById('modal-campo-form-dialog');
+      if (modal && dialog) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        dialog.classList.remove('scale-95');
+        dialog.classList.add('scale-100');
+      }
+    };
+
+    window.fecharModalCampo = () => {
+      const modal = document.getElementById('modal-campo-form');
+      const dialog = document.getElementById('modal-campo-form-dialog');
+      if (modal && dialog) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        dialog.classList.remove('scale-100');
+        dialog.classList.add('scale-95');
+      }
+    };
+
+    window.salvarCampoFormulario = async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-salvar-campo-modal');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span>Salvando...</span>';
+      btn.disabled = true;
+
+      try {
+        const id = document.getElementById('modal-campo-id').value;
+        const entidade = document.getElementById('modal-campo-entidade').value;
+        const rotulo = document.getElementById('modal-campo-rotulo').value.trim();
+        let nome_campo = document.getElementById('modal-campo-nome').value.trim();
+        const tipo_campo = document.getElementById('modal-campo-tipo').value;
+        const secao = document.getElementById('modal-campo-secao').value.trim() || 'InformaÃ§Ãµes Adicionais';
+        const placeholder = document.getElementById('modal-campo-placeholder').value.trim();
+        const obrigatorio = document.getElementById('modal-campo-obrigatorio').checked;
+        const ativo = document.getElementById('modal-campo-ativo').checked;
+        const ordem = parseInt(document.getElementById('modal-campo-ordem').value, 10) || 10;
+
+        if (!rotulo) throw new Error("O rÃ³tulo do campo Ã© obrigatÃ³rio.");
+        if (!nome_campo) {
+          nome_campo = rotulo
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '_')
+            .replace(/_+/g, '_')
+            .replace(/^_|_$/g, '');
+        }
+
+        let opcoes = null;
+        if (tipo_campo === 'select') {
+          const rawOpts = document.getElementById('modal-campo-opcoes').value.trim();
+          if (!rawOpts) throw new Error("Insira as opÃ§Ãµes separadas por vÃ­rgula para listas de seleÃ§Ã£o.");
+          opcoes = rawOpts.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        const payload = {
+          entidade,
+          rotulo,
+          nome_campo,
+          tipo_campo,
+          opcoes,
+          secao,
+          placeholder,
+          obrigatorio,
+          ativo,
+          ordem
+        };
+
+        if (id) {
+          // Update
+          const { error } = await supabaseClient
+            .from('campos_formulario')
+            .update(payload)
+            .eq('id', id);
+          if (error) throw error;
+        } else {
+          // Insert
+          const { error } = await supabaseClient
+            .from('campos_formulario')
+            .insert([payload]);
+          if (error) throw error;
+        }
+
+        fecharModalCampo();
+        await loadAdminCamposData(true);
+        alert(`Campo "${rotulo}" salvo com sucesso!`);
+      } catch (err) {
+        console.error("Erro ao salvar campo:", err);
+        alert("Erro ao salvar campo: " + err.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    };
+
+    window.toggleStatusCampo = async (id, statusAtual) => {
+      try {
+        const novoStatus = !statusAtual;
+        const { error } = await supabaseClient
+          .from('campos_formulario')
+          .update({ ativo: novoStatus })
+          .eq('id', id);
+
+        if (error) throw error;
+        await loadAdminCamposData(true);
+      } catch (err) {
+        console.error("Erro ao alterar status do campo:", err);
+        alert("Erro ao alterar status do campo: " + err.message);
+      }
+    };
+
+    window.excluirCampoFormulario = async (id, rotulo) => {
+      if (!confirm(`Tem certeza que deseja excluir o campo "${rotulo}"? Ele deixarÃ¡ de aparecer em novos cadastros e ediÃ§Ãµes.`)) {
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('campos_formulario')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        await loadAdminCamposData(true);
+        alert(`Campo "${rotulo}" excluÃ­do com sucesso!`);
+      } catch (err) {
+        console.error("Erro ao excluir campo:", err);
+        alert("Erro ao excluir campo: " + err.message);
+      }
+    };
+
 
     window.approveUser = async (id) => {
       const { data: user } = await supabaseClient.from('perfis').select('*').eq('id', id).single();
