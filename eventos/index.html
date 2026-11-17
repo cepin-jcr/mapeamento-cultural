@@ -239,6 +239,12 @@
       </div>
       <div class="p-6 md:p-8 space-y-6">
         <div>
+          <div class="flex items-center gap-2 flex-wrap mb-2">
+            <div id="modalEventoPcdBadge" class="hidden inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>Evento acessível para pessoas com deficiência (PcD)</span>
+            </div>
+          </div>
           <h2 id="modalEventoNome" class="text-2xl md:text-3xl font-display font-extrabold text-foreground mb-3 leading-tight"></h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-muted/40 rounded-xl border border-border">
             <div class="flex items-center gap-3 text-sm text-foreground">
@@ -497,6 +503,7 @@
         const fotoUrl = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
         const descLimpa = (ev.descricao || 'Nenhuma descrição informada.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
         const st = calcularStatusEvento(ev);
+        const isPcd = (ev.pcd === true || ev.pcd === 'Sim' || String(ev.pcd).toLowerCase() === 'sim' || ev.pcd === 'true');
         const card = `
           <div id="evento-card-${ev.id}" data-id="${ev.id}" data-nome="${(ev.nome || '').toLowerCase()}" class="evento-card group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full ${st.isAnual ? 'ring-1 ring-amber-500/30' : ''}">
             <div class="h-48 overflow-hidden bg-muted relative">
@@ -511,6 +518,12 @@
               ${st.isAnual ? `
                 <div class="absolute bottom-3 left-3 bg-amber-500/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow flex items-center gap-1.5 backdrop-blur">
                   <span>✦ Tradição Anual</span>
+                </div>
+              ` : ''}
+              ${isPcd ? `
+                <div class="absolute ${st.isAnual ? 'bottom-3 right-3' : 'bottom-3 left-3'} bg-emerald-600/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow flex items-center gap-1.5 backdrop-blur">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  <span>Acessível PcD</span>
                 </div>
               ` : ''}
             </div>
@@ -740,6 +753,13 @@
       const descModal = (ev.descricao || 'Nenhuma descrição adicional informada para este evento.').replace(/(?:\r?\n)?Cadastrado por:.*$/is, '').trim();
       document.getElementById('modalEventoDescricao').innerText = descModal;
       document.getElementById('modalEventoFoto').src = ev.foto || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800';
+
+      const isPcd = (ev.pcd === true || ev.pcd === 'Sim' || String(ev.pcd).toLowerCase() === 'sim' || ev.pcd === 'true');
+      const badgePcd = document.getElementById('modalEventoPcdBadge');
+      if (badgePcd) {
+        if (isPcd) badgePcd.classList.remove('hidden');
+        else badgePcd.classList.add('hidden');
+      }
       
       const modal = document.getElementById('eventoModal');
       const content = document.getElementById('eventoModalContent');

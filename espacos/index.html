@@ -218,6 +218,13 @@
             <div class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-3 py-1.5 border-b border-border mb-1">
               Tipo e Categoria
             </div>
+            <button onclick="selecionarFiltro('Acessível PcD')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-emerald-600 transition-colors flex items-center justify-between" data-value="Acessível PcD">
+              <span class="flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Acessível PcD
+              </span>
+              <svg class="check-icon hidden text-emerald-600" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
             <button onclick="selecionarFiltro('Público')" class="filter-opt-btn w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted font-medium text-foreground transition-colors flex items-center justify-between" data-value="Público">
               <span>Público</span>
               <svg class="check-icon hidden text-primary" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -465,12 +472,20 @@
         const lng = esp.lng || -45.9658;
         const mapUrl = `../mapa/index.html?espaco=${encodeURIComponent(esp.id || '')}&nome=${encodeURIComponent(esp.nome || '')}&lat=${lat}&lng=${lng}`;
 
+        const isPcd = (esp.pcd === true || esp.pcd === 'Sim' || String(esp.pcd).toLowerCase() === 'sim' || esp.pcd === 'true');
+
         const card = `
           <div class="group bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col h-full">
             <div class="h-48 overflow-hidden bg-muted relative">
               <img src="${fotoUrl}" alt="${esp.nome || 'Espaço'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-3 left-3 bg-background/90 backdrop-blur text-foreground text-xs font-bold uppercase px-2.5 py-1 rounded shadow-sm">${esp.categoria || 'Espaço'}</div>
               <div class="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold uppercase px-2.5 py-1 rounded shadow-sm">${esp.tipo || 'Público'}</div>
+              ${isPcd ? `
+                <div class="absolute bottom-3 left-3 bg-emerald-600/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow flex items-center gap-1.5 backdrop-blur">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  <span>Acessível PcD</span>
+                </div>
+              ` : ''}
             </div>
             <div class="p-6 flex-grow flex flex-col">
               <h3 class="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">${esp.nome || 'Sem Nome'}</h3>
@@ -635,11 +650,17 @@
     function aplicarFiltros() {
       let filtrados = todosEspacos;
       if (tipoAtual !== 'Todos') {
-        const target = normalizeStr(tipoAtual);
-        filtrados = filtrados.filter(esp => 
-          normalizeStr(esp.tipo).includes(target) ||
-          normalizeStr(esp.categoria).includes(target)
-        );
+        if (tipoAtual === 'Acessível PcD') {
+          filtrados = filtrados.filter(esp => {
+            return (esp.pcd === true || esp.pcd === 'Sim' || String(esp.pcd).toLowerCase() === 'sim' || esp.pcd === 'true');
+          });
+        } else {
+          const target = normalizeStr(tipoAtual);
+          filtrados = filtrados.filter(esp => 
+            normalizeStr(esp.tipo).includes(target) ||
+            normalizeStr(esp.categoria).includes(target)
+          );
+        }
       }
       if (municipioAtual !== 'Todos') {
         const targetMuni = normalizeStr(municipioAtual);

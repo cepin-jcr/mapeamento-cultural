@@ -194,6 +194,16 @@
           </div>
         </div>
 
+        <div class="space-y-1.5 flex flex-col justify-end pb-1">
+          <label class="flex items-center gap-2.5 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+            <input type="checkbox" id="edit-pcd" class="rounded text-primary focus:ring-primary h-4 w-4">
+            <span class="text-xs font-semibold text-foreground flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Evento com acessibilidade para pessoas com deficiência (PcD)
+            </span>
+          </label>
+        </div>
+
         <div class="space-y-2">
           <label class="text-sm font-semibold text-foreground uppercase tracking-wider">Foto de Capa</label>
           <input type="file" id="edit-foto" accept="image/*" class="w-full px-4 py-3 bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-sm">
@@ -301,6 +311,10 @@
       if(document.getElementById('edit-link')) document.getElementById('edit-link').value = agente.link || '';
       if(document.getElementById('edit-anual')) document.getElementById('edit-anual').checked = !!agente.anual;
       if(document.getElementById('edit-temporada')) document.getElementById('edit-temporada').checked = !!agente.temporada;
+      if(document.getElementById('edit-pcd')) {
+        const isPcd = (agente.pcd === true || agente.pcd === 'Sim' || String(agente.pcd).toLowerCase() === 'sim' || agente.pcd === 'true');
+        document.getElementById('edit-pcd').checked = !!isPcd;
+      }
       
       if (agente.foto) {
         const preview = document.getElementById('preview-foto');
@@ -374,6 +388,7 @@
         link: document.getElementById('edit-link') ? document.getElementById('edit-link').value.trim() : '',
         anual: document.getElementById('edit-anual') ? document.getElementById('edit-anual').checked : false,
         temporada: document.getElementById('edit-temporada') ? document.getElementById('edit-temporada').checked : false,
+        pcd: document.getElementById('edit-pcd') ? document.getElementById('edit-pcd').checked : false,
         foto: window.currentFotoData || null
       };
 

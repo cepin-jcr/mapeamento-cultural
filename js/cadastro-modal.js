@@ -211,6 +211,16 @@
               </div>
             </div>
 
+            <div class="space-y-1.5 flex flex-col justify-end pb-1">
+              <label class="flex items-center gap-2.5 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+                <input type="checkbox" id="cad-evento-pcd" class="rounded text-primary focus:ring-primary h-4 w-4">
+                <span class="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  Evento com acessibilidade para pessoas com deficiência (PcD)
+                </span>
+              </label>
+            </div>
+
             <div class="space-y-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Link de Informações / Ingressos (Opcional)</label>
               <input type="url" id="cad-evento-link" placeholder="https://..." class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
@@ -539,6 +549,16 @@
               <input type="text" id="cad-espaco-contato" placeholder="(12) 3955-0000 | contato@espaco.com" class="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all">
             </div>
 
+            <div class="space-y-1.5 flex flex-col justify-end pb-1">
+              <label class="flex items-center gap-2.5 cursor-pointer p-3 rounded-xl border border-border bg-background hover:bg-muted/40 transition-colors">
+                <input type="checkbox" id="cad-espaco-pcd" class="rounded text-primary focus:ring-primary h-4 w-4">
+                <span class="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  Espaço com acessibilidade para pessoas com deficiência (PcD)
+                </span>
+              </label>
+            </div>
+
             <div class="space-y-2">
               <label class="text-xs font-bold uppercase tracking-wider text-foreground">Foto do Espaço</label>
               <input type="file" id="cad-espaco-foto" accept="image/*" onchange="previewImagemCadastro(event, 'preview-cad-espaco')" class="w-full text-xs text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer">
@@ -649,6 +669,12 @@
       if (document.getElementById('cad-agente-etnia')) document.getElementById('cad-agente-etnia').value = '';
       if (document.getElementById('cad-agente-pcd')) document.getElementById('cad-agente-pcd').value = 'Não';
       if (document.getElementById('cad-agente-tipo-atuacao')) document.getElementById('cad-agente-tipo-atuacao').value = 'Individual';
+    } else if (tipo === 'evento') {
+      if (document.getElementById('cad-evento-pcd')) document.getElementById('cad-evento-pcd').checked = false;
+      if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = false;
+      if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = false;
+    } else if (tipo === 'espaco') {
+      if (document.getElementById('cad-espaco-pcd')) document.getElementById('cad-espaco-pcd').checked = false;
     }
     if (preview) { preview.src = ''; preview.classList.add('hidden'); }
     
@@ -748,6 +774,10 @@
             if (document.getElementById('cad-evento-organizador')) document.getElementById('cad-evento-organizador').value = data.organizador || '';
             if (document.getElementById('cad-evento-anual')) document.getElementById('cad-evento-anual').checked = !!data.anual;
             if (document.getElementById('cad-evento-temporada')) document.getElementById('cad-evento-temporada').checked = !!data.temporada;
+            if (document.getElementById('cad-evento-pcd')) {
+              const isPcd = (data.pcd === true || data.pcd === 'Sim' || String(data.pcd).toLowerCase() === 'sim' || data.pcd === 'true');
+              document.getElementById('cad-evento-pcd').checked = !!isPcd;
+            }
             document.getElementById('cad-evento-descricao').value = data.descricao || '';
             document.getElementById('cad-evento-link').value = data.link || '';
             if (data.foto || data.imagem) {
@@ -805,6 +835,10 @@
             document.getElementById('cad-espaco-endereco').value = data.endereco || '';
             document.getElementById('cad-espaco-descricao').value = data.descricao || '';
             document.getElementById('cad-espaco-contato').value = data.contato || '';
+            if (document.getElementById('cad-espaco-pcd')) {
+              const isPcd = (data.pcd === true || data.pcd === 'Sim' || String(data.pcd).toLowerCase() === 'sim' || data.pcd === 'true');
+              document.getElementById('cad-espaco-pcd').checked = !!isPcd;
+            }
             if (data.foto || data.imagem) {
               const prev = document.getElementById('preview-cad-espaco');
               prev.src = data.foto || data.imagem;
@@ -910,6 +944,7 @@
       const municipio = document.getElementById('cad-evento-municipio') ? document.getElementById('cad-evento-municipio').value : 'Jacareí';
       const anual = document.getElementById('cad-evento-anual').checked;
       const temporada = document.getElementById('cad-evento-temporada').checked;
+      const pcd = document.getElementById('cad-evento-pcd') ? document.getElementById('cad-evento-pcd').checked : false;
       const descricao = document.getElementById('cad-evento-descricao').value.trim();
       const link = document.getElementById('cad-evento-link').value.trim();
       const fotoInput = document.getElementById('cad-evento-foto');
@@ -947,6 +982,7 @@
         organizador,
         anual,
         temporada,
+        pcd: !!pcd,
         descricao: descricaoFinal,
         lat: lat,
         lng: lng
@@ -1244,6 +1280,8 @@
         }
       }
 
+      const pcd = document.getElementById('cad-espaco-pcd') ? document.getElementById('cad-espaco-pcd').checked : false;
+
       const payload = {
         nome,
         tipo,
@@ -1252,6 +1290,7 @@
         municipio,
         descricao,
         contato: contatoFinal,
+        pcd: !!pcd,
         lat: lat,
         lng: lng
       };
